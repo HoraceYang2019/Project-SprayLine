@@ -1,0 +1,29 @@
+{
+  "window_id": "w0002",
+  "line_id": "sprayline01",
+  "batch_id": "batch-A",
+  "segment_id": "seg-001",
+  "start_time": "2026-05-10T09:00:00.200",
+  "end_time": "2026-05-10T09:00:00.400",
+  "reference": {
+    "nominal_pressure_bar": 2.0,
+    "nominal_flow_ml_min": 220.0,
+    "nominal_spray_width_mm": 120.0,
+    "target_thickness_um": 35.0
+  },
+  "signals": {
+    "pressure_bar": 1.42,
+    "flow_ml_min": 128.0,
+    "spray_width_mm": 86.0,
+    "thickness_um": 25.0,
+    "viscosity_cp": 122.0,
+    "temperature_c": 26.7
+  },
+  "robot": {
+    "tcp_x_mm": 127.0,
+    "tcp_y_mm": 245.0,
+    "tcp_z_mm": 381.0,
+    "speed_mm_s": 450.0,
+    "stand_off_mm": 180.0
+  }
+}

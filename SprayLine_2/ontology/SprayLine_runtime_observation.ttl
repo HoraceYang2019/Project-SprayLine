@@ -1,0 +1,16 @@
+@prefix mis: <http://nkust.edu.tw/mislab#> .
+@prefix sth: <http://nkust.edu.tw/mislab/cnc/ontology/sth#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sth:Window_w0413004
+    a sth:SensingWindow ;
+    mis:hasWindowId "w0413004" ;
+    mis:inFlow 100.0 ;
+    mis:outFlow 72.0 ;
+    mis:sprayWidth 82.0 ;
+    mis:targetSprayWidth 80.0 ;
+    mis:sprayPressure 2.4 ;
+    mis:targetSprayPressure 2.5 ;
+    mis:measuredThickness 55.0 ;
+    mis:targetThickness 50.0 ;
+    mis:observedAt "2026-04-26T09:00:00+08:00"^^xsd:dateTime .

@@ -1,0 +1,8 @@
+01_filter_state.rq: added triples for flowLossRatio and inferredFilterState
+02_nozzle_state.rq: added triples for sprayWidthErrorRatio, pressureErrorRatio, nozzleErrorRatio, and inferredNozzleState
+03_process_state.rq: added triples for thicknessErrorRatio, maxComponentSeverityRank, and process state
+04_diagnosis_construct.rq: added diagnosis triples
+Expected result:
+  Filter state:  mis:FilterModerateBlock
+  Nozzle state:  mis:NozzleEarly
+  Process state: mis:IssuedProcess

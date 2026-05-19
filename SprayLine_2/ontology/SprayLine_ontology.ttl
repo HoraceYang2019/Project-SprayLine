@@ -1,0 +1,925 @@
+@prefix : <http://nkust.edu.tw/mislab/cnc/ontology/sth#STHExtendedOntology> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mis: <http://nkust.edu.tw/mislab#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sth: <http://nkust.edu.tw/mislab/cnc/ontology/sth#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mis:ArmController_1 a mis:Controller,
+        owl:NamedIndividual ;
+    mis:belongsToArm mis:SprayArm_1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:45:41+00:00"^^xsd:dateTime .
+
+mis:ArmTCP_t1 a mis:TCPSensing,
+        owl:NamedIndividual ;
+    mis:belongsToArm mis:SprayArm_1 ;
+    mis:hasTCPAngle "" ;
+    mis:hasTCPDistance "" ;
+    mis:hasTCPVelocity "" ;
+    sth:belongsToMSWindow sth:w0413001 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:25:50+00:00"^^xsd:dateTime ;
+    rdfs:comment "Arm TCP records the angle, velocity, and distance between the nozzle and surface of part." .
+
+mis:ChamberFilter_3 a mis:ChamberFilter,
+        owl:NamedIndividual ;
+    mis:belongsToChamber mis:Chamber_3 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T08:45:04+00:00"^^xsd:dateTime .
+
+mis:ChamberSensing_t1 a mis:ChamberSensing,
+        owl:NamedIndividual ;
+    mis:belongsToChamber mis:Chamber_1 ;
+    mis:hasHumidty "" ;
+    mis:hasTemperature "" ;
+    mis:hasVOC "" ;
+    sth:belongsToMSWindow sth:w0413001 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:33:29+00:00"^^xsd:dateTime .
+
+mis:Defect_P1 a mis:Defect,
+        owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:07:13+00:00"^^xsd:dateTime .
+
+mis:DiagnosisModel a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T01:07:40+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:Model .
+
+mis:FeatureSelectionModel a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T01:08:16+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:Model .
+
+mis:FilterModerateBlock a mis:FilterState,
+        owl:NamedIndividual ;
+    mis:hasMaxLifeTime 100 ;
+    mis:hasState "Moderate Block Stage" ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:17:52+00:00"^^xsd:dateTime ;
+    rdfs:comment "Moderate filter blocking state; maintenance warning."@en .
+
+mis:FilterSensing_t1 a mis:FilterSensing,
+        owl:NamedIndividual ;
+    mis:hasInFlow "" ;
+    mis:hasOutFlow "" ;
+    sth:belongsToMSWindow sth:w0413001 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:52:26+00:00"^^xsd:dateTime .
+
+mis:FilterSevereBlock a mis:FilterState,
+        owl:NamedIndividual ;
+    mis:hasMaxLifeTime 20 ;
+    mis:hasState "Severe Block Stage" ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:17:06+00:00"^^xsd:dateTime ;
+    rdfs:comment "Severe filter blockage state; unstable flow risk."@en .
+
+mis:IssuedProcess a sth:ChamberState,
+        owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:37:25+00:00"^^xsd:dateTime ;
+    rdfs:comment "Transition / issued process condition that requires attention."@en .
+
+mis:MeasuresdThickness a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T01:16:57+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasQuality .
+
+mis:NozzleBlock a mis:NozzleState,
+        owl:NamedIndividual ;
+    mis:hasMaxLifeTime "" ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:06:25+00:00"^^xsd:dateTime ;
+    rdfs:comment "Nozzle blockage state inferred from large spray-width or pressure deviation."@en .
+
+mis:NozzleSensing_t1 a mis:NozzleSensing,
+        owl:NamedIndividual ;
+    mis:belongsToNozzle mis:GunNozzle_1 ;
+    mis:hasNozzleID "" ;
+    mis:hasSprayFlow "" ;
+    mis:hasSprayPresure "" ;
+    mis:hasSprayWidth "" ;
+    sth:belongsToMSWindow sth:w0413001 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:30:09+00:00"^^xsd:dateTime .
+
+mis:NozzleSensing_t2 a mis:NozzleSensing,
+        owl:NamedIndividual ;
+    sth:belongsToMSWindow sth:w0413002 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T01:22:29+00:00"^^xsd:dateTime .
+
+mis:NozzleWear a mis:NozzleState,
+        owl:NamedIndividual ;
+    mis:hasMaxLifeTime "" ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:05:49+00:00"^^xsd:dateTime ;
+    rdfs:comment "Nozzle wear state inferred from spray-width or pressure deviation."@en .
+
+mis:Part_1 a mis:Part,
+        owl:NamedIndividual ;
+    mis:hasColor "" ;
+    mis:hasSprayDegree "" ;
+    mis:hasViscosity "" ;
+    mis:usesChamber mis:Chamber_1,
+        mis:Chamber_2,
+        mis:Chamber_3 ;
+    mis:usesPaint mis:Paint_1,
+        mis:Paint_2,
+        mis:Paint_3 ;
+    mis:usesSprayPath mis:SprayPath_1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:54:26+00:00"^^xsd:dateTime .
+
+mis:PathBlock a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-22T12:50:57+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:PathFile .
+
+mis:PreprocessingModel a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T01:07:58+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:Model .
+
+mis:ROIThickness_P1 a mis:ROIThickness,
+        owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:31:59+00:00"^^xsd:dateTime .
+
+mis:SprayPressure_t1 a owl:NamedIndividual ;
+    sth:belongsToMSWindow sth:w0413001 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:56:14+00:00"^^xsd:dateTime .
+
+mis:SprayWidth_ a owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:40:11+00:00"^^xsd:dateTime .
+
+mis:TCPAngle_t1 a owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:47:49+00:00"^^xsd:dateTime .
+
+mis:TCPDistance_t1 a owl:NamedIndividual ;
+    mis:hasVelocity mis:TCPVelocity_t1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:53:15+00:00"^^xsd:dateTime .
+
+mis:ThicknessTolerance a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T01:17:20+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasQuality .
+
+mis:belongsToArm a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:36:13+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+mis:belongsToChamber a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:44:58+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+mis:belongsToNozzle a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:43:33+00:00"^^xsd:dateTime .
+
+mis:hasAngle a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:44:34+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasController .
+
+mis:hasColor a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:01:30+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasProcessParameter .
+
+mis:hasConfidence a owl:DatatypeProperty ;
+    rdfs:label "hasConfidence"@en .
+
+mis:hasDiagnosisTimestamp a owl:DatatypeProperty ;
+    rdfs:label "hasDiagnosisTimestamp"@en .
+
+mis:hasDistance a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:44:25+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasController .
+
+mis:hasFilter a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:10:18+00:00"^^xsd:dateTime .
+
+mis:hasFlowLossRatio a owl:DatatypeProperty ;
+    rdfs:label "hasFlowLossRatio"@en .
+
+mis:hasHumidty a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:36:31+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasChamber .
+
+mis:hasInFlow a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:34:58+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasChamber .
+
+mis:hasMaxLifeTime a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:37:01+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasDevice .
+
+mis:hasNozzleID a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:04:08+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasNozzle .
+
+mis:hasOutFlow a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:35:07+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasChamber .
+
+mis:hasPressureErrorRatio a owl:DatatypeProperty ;
+    rdfs:label "hasPressureErrorRatio"@en .
+
+mis:hasRUL a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:36:45+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasDevice .
+
+mis:hasSprayDegree a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:57:42+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasProcessParameter .
+
+mis:hasSprayFlow a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:31:19+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasNozzle .
+
+mis:hasSprayPresure a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:30:43+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasNozzle .
+
+mis:hasSprayWidth a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:03:41+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasNozzle .
+
+mis:hasSprayWidthErrorRatio a owl:DatatypeProperty ;
+    rdfs:label "hasSprayWidthErrorRatio"@en .
+
+mis:hasState a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:26:44+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasDevice .
+
+mis:hasTCPAngle a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:28:40+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasTCP .
+
+mis:hasTCPDistance a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:28:52+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasTCP .
+
+mis:hasTCPVelocity a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:46:54+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasTCP .
+
+mis:hasTemperature a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:36:44+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasChamber .
+
+mis:hasThicknessErrorRatio a owl:DatatypeProperty ;
+    rdfs:label "hasThicknessErrorRatio"@en .
+
+mis:hasVOC a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:35:33+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasChamber .
+
+mis:hasVelocity a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:44:47+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasController .
+
+mis:hasViscosity a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:01:14+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf mis:hasProcessParameter .
+
+mis:indicatesFilterState a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:31:39+00:00"^^xsd:dateTime .
+
+mis:indicatesNozzleState a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:31:56+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+mis:inferredFilterState a owl:ObjectProperty ;
+    rdfs:label "inferredFilterState"@en ;
+    rdfs:comment "Links a diagnosis window to the inferred filter state."@en .
+
+mis:inferredNozzleState a owl:ObjectProperty ;
+    rdfs:label "inferredNozzleState"@en ;
+    rdfs:comment "Links a diagnosis window to the inferred nozzle state."@en .
+
+mis:inferredProcessState a owl:ObjectProperty ;
+    rdfs:label "inferredProcessState"@en ;
+    rdfs:comment "Links a diagnosis window to the inferred process state."@en .
+
+mis:maxFlowLossRatio a owl:DatatypeProperty ;
+    rdfs:label "maxFlowLossRatio"@en ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T02:41:03+00:00"^^xsd:dateTime ;
+    rdfs:comment "Maximum allowed flow-loss ratio for a filter state."@en ;
+    rdfs:range xsd:decimal ;
+    rdfs:subPropertyOf mis:hasFlowLoss .
+
+mis:maxPressureErrorRatio a owl:DatatypeProperty ;
+    rdfs:label "maxPressureErrorRatio"@en ;
+    rdfs:comment "Maximum spray-pressure relative error for a nozzle state."@en ;
+    rdfs:range xsd:decimal .
+
+mis:maxSeverityRank a owl:DatatypeProperty ;
+    rdfs:label "maxSeverityRank"@en ;
+    rdfs:comment "Maximum combined severity rank for a process state."@en ;
+    rdfs:range xsd:decimal .
+
+mis:maxSprayWidthErrorRatio a owl:DatatypeProperty ;
+    rdfs:label "maxSprayWidthErrorRatio"@en ;
+    rdfs:comment "Maximum spray-width relative error for a nozzle state."@en ;
+    rdfs:range xsd:decimal .
+
+mis:maxThicknessErrorRatio a owl:DatatypeProperty ;
+    rdfs:label "maxThicknessErrorRatio"@en ;
+    rdfs:comment "Maximum coating-thickness relative error for a process state."@en ;
+    rdfs:range xsd:decimal .
+
+mis:minFlowLossRatio a owl:DatatypeProperty ;
+    rdfs:label "minFlowLossRatio"@en ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T02:40:48+00:00"^^xsd:dateTime ;
+    rdfs:comment "Minimum allowed flow-loss ratio for a filter state."@en ;
+    rdfs:range xsd:decimal ;
+    rdfs:subPropertyOf mis:hasFlowLoss .
+
+mis:minPressureErrorRatio a owl:DatatypeProperty ;
+    rdfs:label "minPressureErrorRatio"@en ;
+    rdfs:comment "Minimum spray-pressure relative error for a nozzle state."@en ;
+    rdfs:range xsd:decimal .
+
+mis:minSeverityRank a owl:DatatypeProperty ;
+    rdfs:label "minSeverityRank"@en ;
+    rdfs:comment "Minimum combined severity rank for a process state."@en ;
+    rdfs:range xsd:decimal .
+
+mis:minSprayWidthErrorRatio a owl:DatatypeProperty ;
+    rdfs:label "minSprayWidthErrorRatio"@en ;
+    rdfs:comment "Minimum spray-width relative error for a nozzle state."@en ;
+    rdfs:range xsd:decimal .
+
+mis:minThicknessErrorRatio a owl:DatatypeProperty ;
+    rdfs:label "minThicknessErrorRatio"@en ;
+    rdfs:comment "Minimum coating-thickness relative error for a process state."@en ;
+    rdfs:range xsd:decimal .
+
+mis:severityRank a owl:DatatypeProperty ;
+    rdfs:label "severityRank"@en ;
+    rdfs:comment "Ordinal severity rank used by the inference engine."@en ;
+    rdfs:range xsd:decimal .
+
+mis:usesChamber a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T03:03:46+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+mis:usesPaint a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:59:04+00:00"^^xsd:dateTime .
+
+mis:usesSprayPath a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:55:14+00:00"^^xsd:dateTime .
+
+<http://nkust.edu.tw/mislab/cnc/ontology/sprayline> a owl:Ontology ;
+    rdfs:label "SprayLine structural ontology"@en .
+
+sth:DiagSeq_001 a sth:DiagnosisSequence,
+        owl:NamedIndividual ;
+    sth:hasDiagnosis sth:Diagnosis_w0413001_stable,
+        sth:Diagnosis_w0413002_issused,
+        sth:Diagnosis_w0413003_unstable ;
+    sth:hasName "Diagnosis sequence for CNC window progression" ;
+    sth:mapsToJSONField sth:Field_diagnosis_sequence ;
+    sth:mapsToMQTTTopic sth:Topic_DiagnosisSequence ;
+    sth:mapsToOPCUANode sth:OPCUA_DiagnosisSequence .
+
+sth:Field_diagnosis_score a sth:JSONField,
+        owl:NamedIndividual ;
+    sth:hasJSONKey "chatter_score" .
+
+sth:OPCUA_DiagnosisScore a sth:OPCUANode,
+        owl:NamedIndividual ;
+    sth:hasNodeId "ns=4;s=CNC.Machines.cncA.SmartToolHolder.sth01.Diagnosis.ChatterScore" .
+
+: a owl:Ontology ;
+    rdfs:label "Extended Smart Tool Holder Ontology with NC File and Sensing Windows"@en ;
+    rdfs:comment "Ontology for CNC smart tool holder monitoring with NC files, NC blocks, sensing windows, multi-sensor alignment, diagnosis, prediction, and communication mapping."@en .
+
+sth:StableState_01 a owl:NamedIndividual ;
+    sth:hasName "Stable state" .
+
+sth:TransitionState_01 a owl:NamedIndividual ;
+    sth:hasName "Transition state" .
+
+sth:affectsQuality a owl:ObjectProperty .
+
+sth:belongsToMSWindow a owl:ObjectProperty .
+
+sth:diagnosesWindow a owl:ObjectProperty .
+
+sth:hasConfidence a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+sth:hasDiagnosis a owl:ObjectProperty .
+
+sth:hasEndTime a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime .
+
+sth:hasJSONKey a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+sth:hasMQTTTopicString a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+sth:hasModelVersion a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+sth:hasName a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+sth:hasNodeId a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+sth:hasStartTime a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime .
+
+sth:hasStateLabel a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+sth:hasTimestamp a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime .
+
+sth:hasUnit a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf mis:hasDevice .
+
+sth:hasValue a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+sth:indicatesProcessState a owl:ObjectProperty .
+
+sth:indicatesState a owl:ObjectProperty .
+
+sth:mapsToJSONField a owl:ObjectProperty .
+
+sth:mapsToMQTTTopic a owl:ObjectProperty .
+
+sth:mapsToOPCUANode a owl:ObjectProperty .
+
+sth:nextDiagnosis a owl:ObjectProperty .
+
+sth:previousDiagnosis a owl:ObjectProperty .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:date a owl:AnnotationProperty .
+
+mis:ChamberFilter_1 a mis:ChamberFilter,
+        owl:NamedIndividual ;
+    mis:belongsToChamber mis:Chamber_1 ;
+    mis:hasMaxLifeTime "" ;
+    mis:hasRUL "" ;
+    sth:affectsQuality mis:PartThickness_P1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T01:23:21+00:00"^^xsd:dateTime .
+
+mis:ChamberSensing a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:38:59+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:Chamber .
+
+mis:Controller a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T01:12:14+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:SprayArm .
+
+mis:Coverage a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T08:41:25+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf sth:QualityMetric .
+
+mis:Coverge_P1 a mis:Coverage,
+        owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T08:58:14+00:00"^^xsd:dateTime .
+
+mis:Defect a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T08:41:33+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf sth:QualityMetric .
+
+mis:FilterEarly a mis:FilterState,
+        owl:NamedIndividual ;
+    mis:hasMaxLifeTime 500 ;
+    mis:hasState "Early Stage" ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:09:49+00:00"^^xsd:dateTime ;
+    rdfs:comment "Normal or early filter state; low flow loss."@en .
+
+mis:FilterSensing a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:51:54+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:ChamberFilter .
+
+mis:GunNozzle_2 a mis:GunNozzle,
+        owl:NamedIndividual ;
+    mis:belongsToArm mis:SprayArm_2 ;
+    sth:affectsQuality mis:PartThickness_P2 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T08:44:34+00:00"^^xsd:dateTime .
+
+mis:GunNozzle_3 a mis:GunNozzle,
+        owl:NamedIndividual ;
+    mis:belongsToArm mis:SprayArm_3 ;
+    sth:affectsQuality mis:PartThickness_P3 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T08:44:41+00:00"^^xsd:dateTime .
+
+mis:NozzleEarly a mis:NozzleState,
+        owl:NamedIndividual ;
+    mis:hasMaxLifeTime "" ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:05:38+00:00"^^xsd:dateTime ;
+    rdfs:comment "Normal or early nozzle state."@en .
+
+mis:Paint_1 a mis:Paint,
+        owl:NamedIndividual ;
+    mis:hasColor "black" ;
+    mis:hasViscosity -1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-22T12:50:06+00:00"^^xsd:dateTime .
+
+mis:Paint_2 a mis:Paint,
+        owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T03:05:30+00:00"^^xsd:dateTime .
+
+mis:Paint_3 a mis:Paint,
+        owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T03:05:37+00:00"^^xsd:dateTime .
+
+mis:PartThickness_P2 a sth:PartThickness,
+        owl:NamedIndividual ;
+    mis:MeasuresdThickness -1 ;
+    mis:ThicknessTolerance -1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T01:18:20+00:00"^^xsd:dateTime .
+
+mis:PartThickness_P3 a sth:PartThickness,
+        owl:NamedIndividual ;
+    mis:MeasuresdThickness -1 ;
+    mis:ThicknessTolerance -1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T01:19:57+00:00"^^xsd:dateTime .
+
+mis:ROIThickness a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:23:42+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf sth:QualityMetric .
+
+mis:SprayPath_1 a mis:PathFile,
+        owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:56:03+00:00"^^xsd:dateTime .
+
+mis:StableProcess a sth:ChamberState,
+        owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:36:27+00:00"^^xsd:dateTime ;
+    rdfs:comment "Stable spray process condition."@en .
+
+mis:TCPSensing a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T00:33:47+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:SprayArm .
+
+mis:TCPVelocity_t1 a owl:NamedIndividual ;
+    sth:belongsToMSWindow sth:w0413001 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:53:00+00:00"^^xsd:dateTime .
+
+mis:UnstableProcess a sth:ChamberState,
+        owl:NamedIndividual ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T00:37:47+00:00"^^xsd:dateTime ;
+    rdfs:comment "Unstable spray process condition."@en .
+
+sth:DiagnosisSequence a owl:Class ;
+    rdfs:subClassOf sth:CyberAsset .
+
+sth:Field_diagnosis_label a sth:JSONField,
+        owl:NamedIndividual ;
+    sth:hasJSONKey "state_label" .
+
+sth:Field_diagnosis_sequence a sth:JSONField,
+        owl:NamedIndividual ;
+    sth:hasJSONKey "diagnosis_windows" .
+
+sth:Field_window a sth:JSONField,
+        owl:NamedIndividual ;
+    sth:hasJSONKey "window_id" .
+
+sth:OPCUA_DiagnosisSequence a sth:OPCUANode,
+        owl:NamedIndividual ;
+    sth:hasNodeId "ns=4;s=CNC.Machines.cncA.SmartToolHolder.sth01.Diagnosis.Sequence" .
+
+sth:OPCUA_DiagnosisState a sth:OPCUANode,
+        owl:NamedIndividual ;
+    sth:hasNodeId "ns=4;s=CNC.Machines.cncA.SmartToolHolder.sth01.Diagnosis.StateLabel" .
+
+sth:OPCUA_Window a sth:OPCUANode,
+        owl:NamedIndividual ;
+    sth:hasNodeId "ns=4;s=CNC.Machines.cncA.SmartToolHolder.sth01.Window.WindowId" .
+
+sth:SensingWindow a owl:Class ;
+    rdfs:subClassOf sth:CyberAsset .
+
+sth:Topic_Diagnosis a sth:MQTTTopic,
+        owl:NamedIndividual ;
+    sth:hasMQTTTopicString "nkust/mislab/cnc/factory1/lineA/cncA/sth01/diagnosis/chatter" .
+
+sth:Topic_DiagnosisSequence a sth:MQTTTopic,
+        owl:NamedIndividual ;
+    sth:hasMQTTTopicString "nkust/mislab/cnc/factory1/lineA/cncA/sth01/diagnosis/sequence" .
+
+sth:Topic_Window a sth:MQTTTopic,
+        owl:NamedIndividual ;
+    sth:hasMQTTTopicString "nkust/mislab/cnc/factory1/lineA/cncA/sth01/window" .
+
+sth:w0413003 a sth:MultiSensorWindow,
+        owl:NamedIndividual ;
+    sth:hasEndTime "2026-04-13T10:00:00.400000"^^xsd:dateTime ;
+    sth:hasName "window 10233" ;
+    sth:hasStartTime "2026-04-13T10:00:00.300000"^^xsd:dateTime .
+
+mis:ChamberFilter_2 a mis:ChamberFilter,
+        owl:NamedIndividual ;
+    mis:belongsToChamber mis:Chamber_2 ;
+    sth:affectsQuality mis:PartThickness_P1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T08:44:51+00:00"^^xsd:dateTime .
+
+mis:GunNozzle_1 a mis:GunNozzle,
+        owl:NamedIndividual ;
+    mis:belongsToArm mis:SprayArm_1 ;
+    sth:affectsQuality mis:PartThickness_P1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T08:44:28+00:00"^^xsd:dateTime .
+
+mis:NozzleSensing a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:07:37+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:GunNozzle .
+
+mis:PathFile a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-22T12:50:44+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:Part .
+
+mis:SprayArm_2 a mis:SprayArm,
+        owl:NamedIndividual ;
+    mis:belongsToChamber mis:Chamber_2 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T01:15:27+00:00"^^xsd:dateTime .
+
+mis:SprayArm_3 a mis:SprayArm,
+        owl:NamedIndividual ;
+    mis:belongsToChamber mis:Chamber_3 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T01:15:34+00:00"^^xsd:dateTime .
+
+mis:hasFlowLoss a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T02:40:34+00:00"^^xsd:dateTime .
+
+mis:hasQuality a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-22T06:56:12+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+sth:Diagnosis_w0413001_stable a sth:DiagnosisWindow,
+        owl:NamedIndividual ;
+    mis:indicatesFilterState mis:FilterEarly ;
+    mis:indicatesNozzleState mis:NozzleEarly ;
+    sth:affectsQuality mis:Coverge_P1 ;
+    sth:diagnosesWindow sth:w0413001 ;
+    sth:hasConfidence 0.96 ;
+    sth:hasModelVersion "lstm-chatter-v2.1" ;
+    sth:hasName "Diagnosis for window w10231" ;
+    sth:hasStateLabel "stable" ;
+    sth:indicatesProcessState mis:StableProcess ;
+    sth:nextDiagnosis sth:Diagnosis_w0413002_issused .
+
+sth:Diagnosis_w0413003_unstable a sth:DiagnosisWindow,
+        owl:NamedIndividual ;
+    sth:diagnosesWindow sth:w0413003 ;
+    sth:hasConfidence 0.94 ;
+    sth:hasModelVersion "lstm-chatter-v2.1" ;
+    sth:hasName "Diagnosis for window w10233" ;
+    sth:hasStateLabel "chatter" ;
+    sth:mapsToJSONField sth:Field_diagnosis_label ;
+    sth:mapsToMQTTTopic sth:Topic_Diagnosis ;
+    sth:mapsToOPCUANode sth:OPCUA_DiagnosisState ;
+    sth:previousDiagnosis sth:Diagnosis_w0413002_issused .
+
+sth:Entity a owl:Class .
+
+sth:PhysicalAsset a owl:Class ;
+    rdfs:subClassOf sth:Entity .
+
+sth:w0413002 a sth:MultiSensorWindow,
+        owl:NamedIndividual ;
+    sth:hasEndTime "2026-04-13T10:00:00.300000"^^xsd:dateTime ;
+    sth:hasName "window 10232" ;
+    sth:hasStartTime "2026-04-13T10:00:00.200000"^^xsd:dateTime .
+
+mis:Chamber_2 a mis:Chamber,
+        owl:NamedIndividual ;
+    mis:hasDevice mis:ChamberFilter_2,
+        mis:GunNozzle_2,
+        mis:SprayArm_2 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:24:29+00:00"^^xsd:dateTime .
+
+mis:Chamber_3 a mis:Chamber,
+        owl:NamedIndividual ;
+    mis:hasDevice mis:ChamberFilter_2,
+        mis:GunNozzle_3,
+        mis:SprayArm_3 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:24:36+00:00"^^xsd:dateTime .
+
+mis:FilterState a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-22T12:53:27+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:ChamberFilter .
+
+mis:Model a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-26T01:07:27+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf sth:CyberAsset .
+
+mis:NozzleState a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-22T12:53:11+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:GunNozzle .
+
+mis:Paint a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-22T02:48:11+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:Part .
+
+mis:PartThickness_P1 a sth:PartThickness,
+        owl:NamedIndividual ;
+    mis:MeasuresdThickness -1 ;
+    mis:ThicknessTolerance -1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T01:26:19+00:00"^^xsd:dateTime .
+
+mis:hasController a owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-22T02:32:32+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+mis:hasProcessParameter a owl:DatatypeProperty .
+
+mis:hasTCP a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:26:44+00:00"^^xsd:dateTime .
+
+sth:ChamberState a owl:Class ;
+    rdfs:subClassOf mis:Chamber .
+
+sth:CommunicationAsset a owl:Class ;
+    rdfs:subClassOf sth:CyberAsset .
+
+sth:DiagnosisWindow a owl:Class ;
+    rdfs:subClassOf sth:CyberAsset .
+
+sth:Diagnosis_w0413002_issused a sth:DiagnosisWindow,
+        owl:NamedIndividual ;
+    sth:diagnosesWindow sth:w0413002 ;
+    sth:hasConfidence 0.94 ;
+    sth:hasModelVersion "lstm-chatter-v2.1" ;
+    sth:hasName "Diagnosis for window w10232" ;
+    sth:hasStateLabel "transition" ;
+    sth:indicatesProcessState mis:UnstableProcess ;
+    sth:nextDiagnosis sth:Diagnosis_w0413003_unstable ;
+    sth:previousDiagnosis sth:Diagnosis_w0413001_stable .
+
+sth:MQTTTopic a owl:Class ;
+    rdfs:subClassOf sth:CommunicationAsset .
+
+sth:MultiSensorWindow a owl:Class ;
+    rdfs:subClassOf sth:SensingWindow .
+
+sth:PartThickness a owl:Class ;
+    rdfs:subClassOf sth:QualityMetric .
+
+mis:Chamber_1 a mis:Chamber,
+        owl:NamedIndividual ;
+    mis:hasDevice mis:ChamberFilter_1,
+        mis:GunNozzle_1,
+        mis:SprayArm_1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:24:23+00:00"^^xsd:dateTime .
+
+mis:Part a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:53:48+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf sth:PhysicalAsset .
+
+mis:SprayArm_1 a mis:SprayArm,
+        owl:NamedIndividual ;
+    mis:belongsToChamber mis:Chamber_1 ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T01:15:11+00:00"^^xsd:dateTime .
+
+mis:hasDevice a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:25:11+00:00"^^xsd:dateTime,
+        "2026-04-26T00:24:39+00:00"^^xsd:dateTime .
+
+mis:hasNozzle a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:31:07+00:00"^^xsd:dateTime ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+sth:JSONField a owl:Class ;
+    rdfs:subClassOf sth:CommunicationAsset .
+
+sth:OPCUANode a owl:Class ;
+    rdfs:subClassOf sth:CommunicationAsset .
+
+sth:QualityMetric a owl:Class ;
+    rdfs:subClassOf mis:Part .
+
+mis:ChamberFilter a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T01:14:11+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:Chamber .
+
+mis:GunNozzle a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-23T01:14:00+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf mis:Chamber .
+
+mis:SprayArm a owl:Class ;
+    rdfs:subClassOf mis:Chamber .
+
+mis:hasChamber a owl:DatatypeProperty ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T13:33:59+00:00"^^xsd:dateTime .
+
+sth:CyberAsset a owl:Class ;
+    rdfs:subClassOf sth:Entity .
+
+sth:w0413001 a sth:MultiSensorWindow,
+        owl:NamedIndividual ;
+    sth:hasEndTime "2026-04-13T10:00:00.200000"^^xsd:dateTime ;
+    sth:hasName "w0413001" ;
+    sth:hasStartTime "2026-04-13T10:00:00.100000"^^xsd:dateTime ;
+    sth:mapsToJSONField sth:Field_window ;
+    sth:mapsToMQTTTopic sth:Topic_Window ;
+    sth:mapsToOPCUANode sth:OPCUA_Window .
+
+mis:Chamber a owl:Class ;
+    dc:creator "hao" ;
+    dc:date "2026-04-25T02:24:07+00:00"^^xsd:dateTime ;
+    rdfs:subClassOf sth:PhysicalAsset .
+

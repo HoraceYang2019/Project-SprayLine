@@ -1,0 +1,32 @@
+PREFIX spray: <http://nkust.edu.tw/mislab/spray/ontology#>
+PREFIX mis: <http://nkust.edu.tw/mislab#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT {
+  ?window spray:indicatesProcessState ?state .
+  ?diag spray:diagnosesWindow ?window ;
+        spray:indicatesProcessState ?state ;
+        spray:hasConfidence ?conf ;
+        spray:hasStateLabel ?label .
+}
+WHERE {
+  ?window rdf:type spray:SprayWindow ;
+          spray:hasWindowId ?wid ;
+          mis:thicknessErrorRatio ?thickErr .
+  OPTIONAL { ?window spray:indicatesFilterCondition ?fc . ?fc mis:severityRank ?frank . }
+  OPTIONAL { ?window spray:indicatesNozzleCondition ?nc . ?nc mis:severityRank ?nrank . }
+  BIND(COALESCE(?frank, 0) AS ?fsev)
+  BIND(COALESCE(?nrank, 0) AS ?nsev)
+  BIND(IF(?fsev > ?nsev, ?fsev, ?nsev) AS ?severity)
+  ?state rdf:type mis:BatchKnowledge ;
+         mis:hasKnowledgeCategory "process_state" ;
+         mis:minThicknessErrorRatio ?tmin ;
+         mis:maxThicknessErrorRatio ?tmax ;
+         mis:minSeverityRank ?smin ;
+         mis:maxSeverityRank ?smax ;
+         mis:confidence ?conf .
+  FILTER(?thickErr >= ?tmin && ?thickErr < ?tmax)
+  FILTER(?severity >= ?smin && ?severity <= ?smax)
+  BIND(IRI(CONCAT(STR(mis:), "Diagnosis_", STR(?wid), "_process")) AS ?diag)
+  BIND(STRAFTER(STR(?state), STR(mis:)) AS ?label)
+}

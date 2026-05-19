@@ -1,0 +1,27 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spray/ontology#> .
+@prefix mis: <http://nkust.edu.tw/mislab#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spray:RuntimeWindowShape a sh:NodeShape ;
+    sh:targetClass spray:SprayWindow ;
+    sh:property [ sh:path spray:hasWindowId ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path spray:hasLineId ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path spray:hasBatchId ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path spray:hasStartTime ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] ;
+    sh:property [ sh:path spray:hasEndTime ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] ;
+    sh:property [ sh:path mis:pressureErrorRatio ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:double ] ;
+    sh:property [ sh:path mis:flowLossRatio ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:double ] ;
+    sh:property [ sh:path mis:sprayWidthErrorRatio ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:double ] ;
+    sh:property [ sh:path mis:thicknessErrorRatio ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:double ] .
+
+spray:BatchKnowledgeShape a sh:NodeShape ;
+    sh:targetClass mis:BatchKnowledge ;
+    sh:property [
+        sh:path mis:hasKnowledgeCategory ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("filter_condition" "nozzle_condition" "process_state") ;
+    ] ;
+    sh:property [ sh:path mis:confidence ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:double ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ] ;
+    sh:property [ sh:path mis:derivedFromDataset ; sh:minCount 1 ; sh:datatype xsd:string ] .

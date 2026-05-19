@@ -1,0 +1,601 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix mis: <http://nkust.edu.tw/mislab#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spray/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mis:Diagnosis_w0001_filter spray:diagnosesWindow mis:RuntimeWindow_w0001 ;
+    spray:hasConfidence 9.4e-01 ;
+    spray:hasStateLabel "FilterModerateBlock" ;
+    spray:indicatesFilterCondition mis:FilterModerateBlock .
+
+mis:Diagnosis_w0001_process spray:diagnosesWindow mis:RuntimeWindow_w0001 ;
+    spray:hasConfidence 9.4e-01 ;
+    spray:hasStateLabel "IssuedProcess" ;
+    spray:indicatesProcessState mis:IssuedProcess .
+
+mis:Diagnosis_w0002_filter spray:diagnosesWindow mis:RuntimeWindow_w0002 ;
+    spray:hasConfidence 9.4e-01 ;
+    spray:hasStateLabel "FilterSevereBlock" ;
+    spray:indicatesFilterCondition mis:FilterSevereBlock .
+
+mis:Diagnosis_w0002_nozzle spray:diagnosesWindow mis:RuntimeWindow_w0002 ;
+    spray:hasConfidence 9.4e-01 ;
+    spray:hasStateLabel "NozzleBlock" ;
+    spray:indicatesNozzleCondition mis:NozzleBlock .
+
+mis:Diagnosis_w0002_process spray:diagnosesWindow mis:RuntimeWindow_w0002 ;
+    spray:hasConfidence 9.4e-01 ;
+    spray:hasStateLabel "UnstableProcess" ;
+    spray:indicatesProcessState mis:UnstableProcess .
+
+mis:FilterEarly a mis:BatchKnowledge,
+        spray:FilterEarly ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "filter_condition" ;
+    mis:maxFlowLossRatio 1.5e-01 ;
+    mis:minFlowLossRatio 0e+00 ;
+    mis:severityRank 0 .
+
+mis:NozzleEarly a mis:BatchKnowledge,
+        spray:NozzleEarly ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "nozzle_condition" ;
+    mis:maxPressureErrorRatio 1e-01 ;
+    mis:maxSprayWidthErrorRatio 1e-01 ;
+    mis:minPressureErrorRatio 0e+00 ;
+    mis:minSprayWidthErrorRatio 0e+00 ;
+    mis:severityRank 0 .
+
+mis:NozzleWear a mis:BatchKnowledge,
+        spray:NozzleWear ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "nozzle_condition" ;
+    mis:maxPressureErrorRatio 2.5e-01 ;
+    mis:maxSprayWidthErrorRatio 2.5e-01 ;
+    mis:minPressureErrorRatio 1e-01 ;
+    mis:minSprayWidthErrorRatio 1e-01 ;
+    mis:severityRank 1 .
+
+mis:Signal_w0001_flow_ml_min a spray:FlowSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "ml/min" ;
+    spray:hasValue 1.8e+02 ;
+    spray:mapsToJSONField spray:Field_flow .
+
+mis:Signal_w0001_pressure_bar a spray:PressureSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "bar" ;
+    spray:hasValue 1.84e+00 ;
+    spray:mapsToJSONField spray:Field_pressure .
+
+mis:Signal_w0001_spray_width_mm a spray:SprayWidthSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "mm" ;
+    spray:hasValue 1.06e+02 ;
+    spray:mapsToJSONField spray:Field_spray_width .
+
+mis:Signal_w0001_temperature_c a spray:TemperatureSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "degC" ;
+    spray:hasValue 2.65e+01 .
+
+mis:Signal_w0001_thickness_um a spray:ThicknessSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "um" ;
+    spray:hasValue 3.1e+01 ;
+    spray:mapsToJSONField spray:Field_thickness .
+
+mis:Signal_w0001_viscosity_cp a spray:ViscositySignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "cP" ;
+    spray:hasValue 1.2e+02 .
+
+mis:Signal_w0002_flow_ml_min a spray:FlowSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "ml/min" ;
+    spray:hasValue 1.28e+02 ;
+    spray:mapsToJSONField spray:Field_flow .
+
+mis:Signal_w0002_pressure_bar a spray:PressureSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "bar" ;
+    spray:hasValue 1.42e+00 ;
+    spray:mapsToJSONField spray:Field_pressure .
+
+mis:Signal_w0002_spray_width_mm a spray:SprayWidthSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "mm" ;
+    spray:hasValue 8.6e+01 ;
+    spray:mapsToJSONField spray:Field_spray_width .
+
+mis:Signal_w0002_temperature_c a spray:TemperatureSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "degC" ;
+    spray:hasValue 2.67e+01 .
+
+mis:Signal_w0002_thickness_um a spray:ThicknessSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "um" ;
+    spray:hasValue 2.5e+01 ;
+    spray:mapsToJSONField spray:Field_thickness .
+
+mis:Signal_w0002_viscosity_cp a spray:ViscositySignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "cP" ;
+    spray:hasValue 1.22e+02 .
+
+mis:StableProcess a mis:BatchKnowledge,
+        spray:StableProcess ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "process_state" ;
+    mis:maxSeverityRank 0 ;
+    mis:maxThicknessErrorRatio 6e-02 ;
+    mis:minSeverityRank 0 ;
+    mis:minThicknessErrorRatio 0e+00 .
+
+mis:confidence a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+mis:derivedFromDataset a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+mis:hasKnowledgeCategory a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+mis:maxFlowLossRatio a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+mis:maxPressureErrorRatio a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+mis:maxSeverityRank a owl:DatatypeProperty ;
+    rdfs:range xsd:integer .
+
+mis:maxSprayWidthErrorRatio a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+mis:maxThicknessErrorRatio a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+mis:minFlowLossRatio a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+mis:minPressureErrorRatio a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+mis:minSeverityRank a owl:DatatypeProperty ;
+    rdfs:range xsd:integer .
+
+mis:minSprayWidthErrorRatio a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+mis:minThicknessErrorRatio a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+mis:severityRank a owl:DatatypeProperty ;
+    rdfs:range xsd:integer .
+
+<http://nkust.edu.tw/mislab/spray/knowledge/batch-A> a owl:Ontology ;
+    rdfs:label "SprayLine learned threshold knowledge - generated from CSV"@en ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" .
+
+<http://nkust.edu.tw/mislab/spray/ontology> a owl:Ontology ;
+    rdfs:label "Spraying Line Ontology"@en ;
+    dct:creator "NKUST MISLab" ;
+    dct:description "Spraying line ontology adapted from the updated CNC TMV720 hybrid semantic stack. It keeps the TMV720-style separation of ontology, knowledge, runtime observations, rules, SHACL shapes, schemas, samples, scripts, and validation reports."@en .
+
+spray:CoatingUniformity a owl:Class ;
+    rdfs:subClassOf spray:QualityMetric .
+
+spray:Diagnosis a owl:Class ;
+    rdfs:subClassOf spray:CyberAsset .
+
+spray:DiagnosisSequence a owl:Class ;
+    rdfs:subClassOf spray:CyberAsset .
+
+spray:Field_batch a spray:JSONField,
+        owl:NamedIndividual ;
+    spray:hasJSONKey "batch_id" .
+
+spray:Field_filter_condition a spray:JSONField,
+        owl:NamedIndividual ;
+    spray:hasJSONKey "filter_condition" .
+
+spray:Field_nozzle_condition a spray:JSONField,
+        owl:NamedIndividual ;
+    spray:hasJSONKey "nozzle_condition" .
+
+spray:Field_process_state a spray:JSONField,
+        owl:NamedIndividual ;
+    spray:hasJSONKey "process_state" .
+
+spray:Field_segment a spray:JSONField,
+        owl:NamedIndividual ;
+    spray:hasJSONKey "segment_id" .
+
+spray:FilmThickness a owl:Class ;
+    rdfs:subClassOf spray:QualityMetric .
+
+spray:OPCUA_Diagnosis a spray:OPCUANode,
+        owl:NamedIndividual ;
+    spray:hasNodeId "ns=2;s=SprayLine01.Diagnosis" .
+
+spray:Paint_A a spray:PaintMaterial,
+        owl:NamedIndividual ;
+    spray:hasName "paint material A" .
+
+spray:Prediction a owl:Class ;
+    rdfs:subClassOf spray:CyberAsset .
+
+spray:ProcessRecipe a owl:Class ;
+    rdfs:subClassOf spray:Workpiece .
+
+spray:RobotPoseSignal a owl:Class ;
+    rdfs:subClassOf spray:Signal .
+
+spray:SprayCell_01 a spray:SprayingCell,
+        owl:NamedIndividual ;
+    spray:hasCellId "sprayline01" ;
+    spray:hasFilter spray:Filter_01 ;
+    spray:hasName "robotic spraying line 01" ;
+    spray:hasPump spray:Pump_01 ;
+    spray:hasRobotArm spray:RobotArm_01 ;
+    spray:hasSprayGun spray:SprayGun_01 .
+
+spray:SprayPath a owl:Class ;
+    rdfs:subClassOf spray:RobotArm .
+
+spray:SpraySegment a owl:Class ;
+    rdfs:subClassOf spray:Workpiece .
+
+spray:Topic_Diagnosis a spray:MQTTTopic,
+        owl:NamedIndividual ;
+    spray:hasMQTTTopicString "sprayline/01/diagnosis" .
+
+spray:alignedWithSpraySegment a owl:ObjectProperty .
+
+spray:belongsToSprayPath a owl:ObjectProperty .
+
+spray:belongsToWindow a owl:ObjectProperty .
+
+spray:diagnosesWindow a owl:ObjectProperty .
+
+spray:hasBatchId a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:hasCellId a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:hasConfidence a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+spray:hasDiagnosis a owl:ObjectProperty .
+
+spray:hasEndTime a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime .
+
+spray:hasFilter a owl:ObjectProperty .
+
+spray:hasJSONKey a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:hasMQTTTopicString a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:hasModelVersion a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:hasName a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:hasNodeId a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:hasNozzle a owl:ObjectProperty .
+
+spray:hasPump a owl:ObjectProperty .
+
+spray:hasRobotArm a owl:ObjectProperty .
+
+spray:hasSegmentId a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:hasSprayGun a owl:ObjectProperty .
+
+spray:hasSpraySegment a owl:ObjectProperty .
+
+spray:hasStartTime a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime .
+
+spray:hasStateLabel a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:hasTimestamp a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime .
+
+spray:hasUnit a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:hasValue a owl:DatatypeProperty ;
+    rdfs:range xsd:double .
+
+spray:hasWindowId a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+spray:indicatesFilterCondition a owl:ObjectProperty .
+
+spray:indicatesNozzleCondition a owl:ObjectProperty .
+
+spray:indicatesProcessState a owl:ObjectProperty .
+
+spray:mapsToJSONField a owl:ObjectProperty .
+
+spray:mapsToMQTTTopic a owl:ObjectProperty .
+
+spray:mapsToOPCUANode a owl:ObjectProperty .
+
+spray:nextDiagnosis a owl:ObjectProperty .
+
+spray:previousDiagnosis a owl:ObjectProperty .
+
+spray:usesMaterial a owl:ObjectProperty .
+
+spray:usesRecipe a owl:ObjectProperty .
+
+dct:creator a owl:AnnotationProperty .
+
+dct:description a owl:AnnotationProperty .
+
+spray:FilterEarly a owl:Class ;
+    rdfs:subClassOf spray:FilterCondition .
+
+spray:FilterModerateBlock a owl:Class ;
+    rdfs:subClassOf spray:FilterCondition .
+
+spray:FilterSevereBlock a owl:Class ;
+    rdfs:subClassOf spray:FilterCondition .
+
+spray:Filter_01 a spray:Filter,
+        owl:NamedIndividual .
+
+spray:IssuedProcess a owl:Class ;
+    rdfs:subClassOf spray:ProcessState .
+
+spray:Material a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:NozzleBlock a owl:Class ;
+    rdfs:subClassOf spray:NozzleCondition .
+
+spray:NozzleEarly a owl:Class ;
+    rdfs:subClassOf spray:NozzleCondition .
+
+spray:NozzleWear a owl:Class ;
+    rdfs:subClassOf spray:NozzleCondition .
+
+spray:Nozzle_01 a spray:Nozzle,
+        owl:NamedIndividual ;
+    spray:hasName "flat fan nozzle" .
+
+spray:PaintMaterial a owl:Class ;
+    rdfs:subClassOf spray:Material .
+
+spray:Pump a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:Pump_01 a spray:Pump,
+        owl:NamedIndividual .
+
+spray:RobotArm_01 a spray:RobotArm,
+        owl:NamedIndividual ;
+    spray:hasName "six-axis spray robot" .
+
+spray:SensingWindow a owl:Class ;
+    rdfs:subClassOf spray:CyberAsset .
+
+spray:SprayGun a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:SprayGun_01 a spray:SprayGun,
+        owl:NamedIndividual ;
+    spray:hasNozzle spray:Nozzle_01 .
+
+spray:StableProcess a owl:Class ;
+    rdfs:subClassOf spray:ProcessState .
+
+spray:UnstableProcess a owl:Class ;
+    rdfs:subClassOf spray:ProcessState .
+
+mis:FilterModerateBlock a mis:BatchKnowledge,
+        spray:FilterModerateBlock ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "filter_condition" ;
+    mis:maxFlowLossRatio 4e-01 ;
+    mis:minFlowLossRatio 1.5e-01 ;
+    mis:severityRank 1 .
+
+mis:FilterSevereBlock a mis:BatchKnowledge,
+        spray:FilterSevereBlock ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "filter_condition" ;
+    mis:maxFlowLossRatio 1e+00 ;
+    mis:minFlowLossRatio 4e-01 ;
+    mis:severityRank 2 .
+
+mis:IssuedProcess a mis:BatchKnowledge,
+        spray:IssuedProcess ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "process_state" ;
+    mis:maxSeverityRank 1 ;
+    mis:maxThicknessErrorRatio 1.2e-01 ;
+    mis:minSeverityRank 1 ;
+    mis:minThicknessErrorRatio 6e-02 .
+
+mis:NozzleBlock a mis:BatchKnowledge,
+        spray:NozzleBlock ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "nozzle_condition" ;
+    mis:maxPressureErrorRatio 1e+00 ;
+    mis:maxSprayWidthErrorRatio 1e+00 ;
+    mis:minPressureErrorRatio 2.5e-01 ;
+    mis:minSprayWidthErrorRatio 2.5e-01 ;
+    mis:severityRank 2 .
+
+mis:UnstableProcess a mis:BatchKnowledge,
+        spray:UnstableProcess ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "process_state" ;
+    mis:maxSeverityRank 9 ;
+    mis:maxThicknessErrorRatio 1e+00 ;
+    mis:minSeverityRank 2 ;
+    mis:minThicknessErrorRatio 1.2e-01 .
+
+spray:Entity a owl:Class .
+
+spray:Field_flow a spray:JSONField,
+        owl:NamedIndividual ;
+    spray:hasJSONKey "flow_ml_min" .
+
+spray:Field_pressure a spray:JSONField,
+        owl:NamedIndividual ;
+    spray:hasJSONKey "pressure_bar" .
+
+spray:Field_spray_width a spray:JSONField,
+        owl:NamedIndividual ;
+    spray:hasJSONKey "spray_width_mm" .
+
+spray:Field_thickness a spray:JSONField,
+        owl:NamedIndividual ;
+    spray:hasJSONKey "thickness_um" .
+
+spray:Field_window a spray:JSONField,
+        owl:NamedIndividual ;
+    spray:hasJSONKey "window_id" .
+
+spray:Filter a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:FlowSignal a owl:Class ;
+    rdfs:subClassOf spray:Signal .
+
+spray:MQTTTopic a owl:Class ;
+    rdfs:subClassOf spray:CommunicationAsset .
+
+spray:Nozzle a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:OPCUANode a owl:Class ;
+    rdfs:subClassOf spray:CommunicationAsset .
+
+spray:OPCUA_Window a spray:OPCUANode,
+        owl:NamedIndividual ;
+    spray:hasNodeId "ns=2;s=SprayLine01.Window" .
+
+spray:PressureSignal a owl:Class ;
+    rdfs:subClassOf spray:Signal .
+
+spray:QualityMetric a owl:Class ;
+    rdfs:subClassOf spray:Workpiece .
+
+spray:RobotArm a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:SprayWidthSignal a owl:Class ;
+    rdfs:subClassOf spray:Signal .
+
+spray:SprayWindow a owl:Class ;
+    rdfs:subClassOf spray:SensingWindow .
+
+spray:SprayingCell a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:TemperatureSignal a owl:Class ;
+    rdfs:subClassOf spray:Signal .
+
+spray:ThicknessSignal a owl:Class ;
+    rdfs:subClassOf spray:Signal .
+
+spray:Topic_Window a spray:MQTTTopic,
+        owl:NamedIndividual ;
+    spray:hasMQTTTopicString "sprayline/01/window" .
+
+spray:ViscositySignal a owl:Class ;
+    rdfs:subClassOf spray:Signal .
+
+spray:CommunicationAsset a owl:Class ;
+    rdfs:subClassOf spray:CyberAsset .
+
+spray:FilterCondition a owl:Class ;
+    rdfs:subClassOf spray:Filter .
+
+spray:NozzleCondition a owl:Class ;
+    rdfs:subClassOf spray:Nozzle .
+
+spray:ProcessState a owl:Class ;
+    rdfs:subClassOf spray:SprayingCell .
+
+spray:Workpiece a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:CyberAsset a owl:Class ;
+    rdfs:subClassOf spray:Entity .
+
+spray:Signal a owl:Class ;
+    rdfs:subClassOf spray:CyberAsset .
+
+mis:RuntimeWindow_w0001 a spray:SprayWindow ;
+    mis:flowLossRatio 1.818182e-01 ;
+    mis:pressureErrorRatio 8e-02 ;
+    mis:sprayWidthErrorRatio 1.166667e-01 ;
+    mis:thicknessErrorRatio 1.142857e-01 ;
+    spray:hasBatchId "batch-A" ;
+    spray:hasEndTime "2026-05-10T09:00:00.200000"^^xsd:dateTime ;
+    spray:hasLineId "sprayline01" ;
+    spray:hasSegmentId "seg-001" ;
+    spray:hasStartTime "2026-05-10T09:00:00"^^xsd:dateTime ;
+    spray:hasWindowId "w0001" ;
+    spray:indicatesFilterCondition mis:FilterModerateBlock ;
+    spray:indicatesProcessState mis:IssuedProcess ;
+    spray:mapsToJSONField spray:Field_window ;
+    spray:mapsToMQTTTopic spray:Topic_Window ;
+    spray:mapsToOPCUANode spray:OPCUA_Window .
+
+spray:PhysicalAsset a owl:Class ;
+    rdfs:subClassOf spray:Entity .
+
+mis:BatchKnowledge a owl:Class ;
+    rdfs:subClassOf spray:CyberAsset .
+
+mis:RuntimeWindow_w0002 a spray:SprayWindow ;
+    mis:flowLossRatio 4.181818e-01 ;
+    mis:pressureErrorRatio 2.9e-01 ;
+    mis:sprayWidthErrorRatio 2.833333e-01 ;
+    mis:thicknessErrorRatio 2.857143e-01 ;
+    spray:hasBatchId "batch-A" ;
+    spray:hasEndTime "2026-05-10T09:00:00.400000"^^xsd:dateTime ;
+    spray:hasLineId "sprayline01" ;
+    spray:hasSegmentId "seg-001" ;
+    spray:hasStartTime "2026-05-10T09:00:00.200000"^^xsd:dateTime ;
+    spray:hasWindowId "w0002" ;
+    spray:indicatesFilterCondition mis:FilterSevereBlock ;
+    spray:indicatesNozzleCondition mis:NozzleBlock ;
+    spray:indicatesProcessState mis:UnstableProcess ;
+    spray:mapsToJSONField spray:Field_window ;
+    spray:mapsToMQTTTopic spray:Topic_Window ;
+    spray:mapsToOPCUANode spray:OPCUA_Window .
+
+spray:JSONField a owl:Class ;
+    rdfs:subClassOf spray:CommunicationAsset .
+

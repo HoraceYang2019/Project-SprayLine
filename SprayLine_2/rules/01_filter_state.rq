@@ -1,0 +1,18 @@
+PREFIX mis: <http://nkust.edu.tw/mislab#>
+PREFIX sth: <http://nkust.edu.tw/mislab/cnc/ontology/sth#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+  ?w mis:flowLossRatio ?lossRatio ;
+     mis:inferredFilterState ?state .
+}
+WHERE {
+  ?w mis:inFlow ?inFlow ;
+     mis:outFlow ?outFlow .
+  ?state rdf:type mis:FilterState ;
+         mis:minFlowLossRatio ?minLoss ;
+         mis:maxFlowLossRatio ?maxLoss .
+  BIND(((xsd:decimal(?inFlow) - xsd:decimal(?outFlow)) / xsd:decimal(?inFlow)) AS ?lossRatio)
+  FILTER(?lossRatio >= xsd:decimal(?minLoss) && ?lossRatio < xsd:decimal(?maxLoss))
+}

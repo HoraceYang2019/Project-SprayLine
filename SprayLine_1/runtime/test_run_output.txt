@@ -1,0 +1,12 @@
+{
+  "window_id": "w0413004",
+  "filter_state": "FilterModerateBlock",
+  "nozzle_state": "NozzleEarly",
+  "process_state": "StableProcess",
+  "flow_loss_ratio": 0.28,
+  "spray_width_error_ratio": 0.025,
+  "pressure_error_ratio": 0.04,
+  "thickness_error_ratio": 0.03,
+  "confidence": 0.72,
+  "diagnosis_uri": "http://nkust.edu.tw/mislab/cnc/ontology/sth#Diagnosis_w0413004_StableProcess"
+}

@@ -1,0 +1,54 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix mis: <http://nkust.edu.tw/mislab#> .
+@prefix sth: <http://nkust.edu.tw/mislab/cnc/ontology/sth#> .
+
+sth:SprayLineWindowShape a sh:NodeShape ;
+  sh:targetClass sth:SensingWindow ;
+  sh:rule [ a sh:SPARQLRule ; sh:construct """
+PREFIX mis: <http://nkust.edu.tw/mislab#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+CONSTRUCT { $this mis:flowLossRatio ?lossRatio ; mis:inferredFilterState ?state . }
+WHERE {
+  $this mis:inFlow ?inFlow ; mis:outFlow ?outFlow .
+  ?state rdf:type mis:FilterState ; mis:minFlowLossRatio ?minLoss ; mis:maxFlowLossRatio ?maxLoss .
+  BIND(((xsd:decimal(?inFlow)-xsd:decimal(?outFlow))/xsd:decimal(?inFlow)) AS ?lossRatio)
+  FILTER(?lossRatio >= xsd:decimal(?minLoss) && ?lossRatio < xsd:decimal(?maxLoss))
+}""" ] ;
+  sh:rule [ a sh:SPARQLRule ; sh:construct """
+PREFIX mis: <http://nkust.edu.tw/mislab#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+CONSTRUCT { $this mis:sprayWidthErrorRatio ?widthError ; mis:pressureErrorRatio ?pressureError ; mis:nozzleErrorRatio ?nozzleError ; mis:inferredNozzleState ?state . }
+WHERE {
+  $this mis:sprayWidth ?sprayWidth ; mis:targetSprayWidth ?targetWidth ; mis:sprayPressure ?pressure ; mis:targetSprayPressure ?targetPressure .
+  ?state rdf:type mis:NozzleState ; mis:minSprayWidthErrorRatio ?minWidth ; mis:maxSprayWidthErrorRatio ?maxWidth ; mis:minPressureErrorRatio ?minPressure ; mis:maxPressureErrorRatio ?maxPressure .
+  BIND(ABS((xsd:decimal(?sprayWidth)-xsd:decimal(?targetWidth))/xsd:decimal(?targetWidth)) AS ?widthError)
+  BIND(ABS((xsd:decimal(?pressure)-xsd:decimal(?targetPressure))/xsd:decimal(?targetPressure)) AS ?pressureError)
+  BIND(IF(?widthError >= ?pressureError, ?widthError, ?pressureError) AS ?nozzleError)
+  FILTER(?widthError >= xsd:decimal(?minWidth) && ?widthError < xsd:decimal(?maxWidth))
+  FILTER(?pressureError >= xsd:decimal(?minPressure) && ?pressureError < xsd:decimal(?maxPressure))
+}""" ] ;
+  sh:rule [ a sh:SPARQLRule ; sh:construct """
+PREFIX mis: <http://nkust.edu.tw/mislab#>
+PREFIX sth: <http://nkust.edu.tw/mislab/cnc/ontology/sth#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+CONSTRUCT { $this mis:thicknessErrorRatio ?thicknessError ; mis:maxComponentSeverityRank ?maxRank ; sth:indicatesProcessState ?processState . }
+WHERE {
+  $this mis:inferredFilterState ?filterState ; mis:inferredNozzleState ?nozzleState ; mis:measuredThickness ?measuredThickness ; mis:targetThickness ?targetThickness .
+  ?filterState mis:severityRank ?filterRank . ?nozzleState mis:severityRank ?nozzleRank .
+  ?processState mis:minSeverityRank ?minRank ; mis:maxSeverityRank ?maxRankLimit ; mis:minThicknessErrorRatio ?minThicknessErr ; mis:maxThicknessErrorRatio ?maxThicknessErr .
+  BIND(ABS((xsd:decimal(?measuredThickness)-xsd:decimal(?targetThickness))/xsd:decimal(?targetThickness)) AS ?thicknessError)
+  BIND(IF(xsd:integer(?filterRank) >= xsd:integer(?nozzleRank), xsd:integer(?filterRank), xsd:integer(?nozzleRank)) AS ?maxRank)
+  FILTER(?maxRank >= xsd:integer(?minRank) && ?maxRank <= xsd:integer(?maxRankLimit))
+  FILTER(?thicknessError >= xsd:decimal(?minThicknessErr) && ?thicknessError < xsd:decimal(?maxThicknessErr))
+}""" ] ;
+  sh:rule [ a sh:SPARQLRule ; sh:construct """
+PREFIX mis: <http://nkust.edu.tw/mislab#>
+PREFIX sth: <http://nkust.edu.tw/mislab/cnc/ontology/sth#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+CONSTRUCT { ?diagnosis rdf:type sth:DiagnosisWindow ; sth:diagnosesWindow $this ; mis:indicatesFilterState ?filterState ; mis:indicatesNozzleState ?nozzleState ; sth:indicatesProcessState ?processState . }
+WHERE {
+  $this mis:hasWindowId ?windowId ; mis:inferredFilterState ?filterState ; mis:inferredNozzleState ?nozzleState ; sth:indicatesProcessState ?processState .
+  BIND(IRI(CONCAT("http://nkust.edu.tw/mislab/cnc/ontology/sth#Diagnosis_", STR(?windowId))) AS ?diagnosis)
+}""" ] .

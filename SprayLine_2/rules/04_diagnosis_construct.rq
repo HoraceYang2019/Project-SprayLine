@@ -1,0 +1,23 @@
+PREFIX mis: <http://nkust.edu.tw/mislab#>
+PREFIX sth: <http://nkust.edu.tw/mislab/cnc/ontology/sth#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+  ?diagnosis rdf:type sth:DiagnosisWindow ;
+             sth:diagnosesWindow ?w ;
+             mis:indicatesFilterState ?filterState ;
+             mis:indicatesNozzleState ?nozzleState ;
+             sth:indicatesProcessState ?processState ;
+             sth:hasConfidence ?confidence ;
+             sth:hasTimestamp ?ts .
+}
+WHERE {
+  ?w mis:hasWindowId ?windowId ;
+     mis:inferredFilterState ?filterState ;
+     mis:inferredNozzleState ?nozzleState ;
+     sth:indicatesProcessState ?processState .
+  OPTIONAL { ?processState mis:confidence ?confidence . }
+  OPTIONAL { ?w mis:observedAt ?ts . }
+  BIND(IRI(CONCAT("http://nkust.edu.tw/mislab/cnc/ontology/sth#Diagnosis_", STR(?windowId))) AS ?diagnosis)
+}

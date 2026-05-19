@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nkust.edu.tw/mislab/schemas/sprayline-runtime-window.schema.json",
+  "title": "SprayLine Runtime Sensing Window",
+  "type": "object",
+  "required": [
+    "window_id",
+    "filter",
+    "nozzle",
+    "quality",
+    "target"
+  ],
+  "properties": {
+    "window_id": {
+      "type": "string"
+    },
+    "machine_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "filter": {
+      "type": "object",
+      "required": [
+        "in_flow",
+        "out_flow"
+      ],
+      "properties": {
+        "in_flow": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "out_flow": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "nozzle": {
+      "type": "object",
+      "required": [
+        "spray_width",
+        "spray_pressure"
+      ],
+      "properties": {
+        "spray_width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "spray_pressure": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "required": [
+        "measured_thickness"
+      ],
+      "properties": {
+        "measured_thickness": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "required": [
+        "spray_width",
+        "spray_pressure",
+        "thickness"
+      ],
+      "properties": {
+        "spray_width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "spray_pressure": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "thickness": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+state_id,state_class,knowledge_category,min_flow_loss_ratio,max_flow_loss_ratio,severity_rank,confidence,dataset
+FilterEarly,FilterEarly,filter_condition,0.0,0.15,0,0.94,sprayline_2026_batch_A
+FilterModerateBlock,FilterModerateBlock,filter_condition,0.15,0.40,1,0.94,sprayline_2026_batch_A
+FilterSevereBlock,FilterSevereBlock,filter_condition,0.40,1.00,2,0.94,sprayline_2026_batch_A

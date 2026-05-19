@@ -1,0 +1,27 @@
+PREFIX mis: <http://nkust.edu.tw/mislab#>
+PREFIX sth: <http://nkust.edu.tw/mislab/cnc/ontology/sth#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+  ?w mis:sprayWidthErrorRatio ?widthError ;
+     mis:pressureErrorRatio ?pressureError ;
+     mis:nozzleErrorRatio ?nozzleError ;
+     mis:inferredNozzleState ?state .
+}
+WHERE {
+  ?w mis:sprayWidth ?sprayWidth ;
+     mis:targetSprayWidth ?targetWidth ;
+     mis:sprayPressure ?pressure ;
+     mis:targetSprayPressure ?targetPressure .
+  ?state rdf:type mis:NozzleState ;
+         mis:minSprayWidthErrorRatio ?minWidth ;
+         mis:maxSprayWidthErrorRatio ?maxWidth ;
+         mis:minPressureErrorRatio ?minPressure ;
+         mis:maxPressureErrorRatio ?maxPressure .
+  BIND(ABS((xsd:decimal(?sprayWidth) - xsd:decimal(?targetWidth)) / xsd:decimal(?targetWidth)) AS ?widthError)
+  BIND(ABS((xsd:decimal(?pressure) - xsd:decimal(?targetPressure)) / xsd:decimal(?targetPressure)) AS ?pressureError)
+  BIND(IF(?widthError >= ?pressureError, ?widthError, ?pressureError) AS ?nozzleError)
+  FILTER(?widthError >= xsd:decimal(?minWidth) && ?widthError < xsd:decimal(?maxWidth))
+  FILTER(?pressureError >= xsd:decimal(?minPressure) && ?pressureError < xsd:decimal(?maxPressure))
+}

@@ -1,0 +1,102 @@
+@prefix mis: <http://nkust.edu.tw/mislab#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spray/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mis:Signal_w0001_flow_ml_min a spray:FlowSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "ml/min" ;
+    spray:hasValue 1.8e+02 ;
+    spray:mapsToJSONField spray:Field_flow .
+
+mis:Signal_w0001_pressure_bar a spray:PressureSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "bar" ;
+    spray:hasValue 1.84e+00 ;
+    spray:mapsToJSONField spray:Field_pressure .
+
+mis:Signal_w0001_spray_width_mm a spray:SprayWidthSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "mm" ;
+    spray:hasValue 1.06e+02 ;
+    spray:mapsToJSONField spray:Field_spray_width .
+
+mis:Signal_w0001_temperature_c a spray:TemperatureSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "degC" ;
+    spray:hasValue 2.65e+01 .
+
+mis:Signal_w0001_thickness_um a spray:ThicknessSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "um" ;
+    spray:hasValue 3.1e+01 ;
+    spray:mapsToJSONField spray:Field_thickness .
+
+mis:Signal_w0001_viscosity_cp a spray:ViscositySignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0001 ;
+    spray:hasUnit "cP" ;
+    spray:hasValue 1.2e+02 .
+
+mis:Signal_w0002_flow_ml_min a spray:FlowSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "ml/min" ;
+    spray:hasValue 1.28e+02 ;
+    spray:mapsToJSONField spray:Field_flow .
+
+mis:Signal_w0002_pressure_bar a spray:PressureSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "bar" ;
+    spray:hasValue 1.42e+00 ;
+    spray:mapsToJSONField spray:Field_pressure .
+
+mis:Signal_w0002_spray_width_mm a spray:SprayWidthSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "mm" ;
+    spray:hasValue 8.6e+01 ;
+    spray:mapsToJSONField spray:Field_spray_width .
+
+mis:Signal_w0002_temperature_c a spray:TemperatureSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "degC" ;
+    spray:hasValue 2.67e+01 .
+
+mis:Signal_w0002_thickness_um a spray:ThicknessSignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "um" ;
+    spray:hasValue 2.5e+01 ;
+    spray:mapsToJSONField spray:Field_thickness .
+
+mis:Signal_w0002_viscosity_cp a spray:ViscositySignal ;
+    spray:belongsToWindow mis:RuntimeWindow_w0002 ;
+    spray:hasUnit "cP" ;
+    spray:hasValue 1.22e+02 .
+
+mis:RuntimeWindow_w0001 a spray:SprayWindow ;
+    mis:flowLossRatio 1.818182e-01 ;
+    mis:pressureErrorRatio 8e-02 ;
+    mis:sprayWidthErrorRatio 1.166667e-01 ;
+    mis:thicknessErrorRatio 1.142857e-01 ;
+    spray:hasBatchId "batch-A" ;
+    spray:hasEndTime "2026-05-10T09:00:00.200000"^^xsd:dateTime ;
+    spray:hasLineId "sprayline01" ;
+    spray:hasSegmentId "seg-001" ;
+    spray:hasStartTime "2026-05-10T09:00:00"^^xsd:dateTime ;
+    spray:hasWindowId "w0001" ;
+    spray:mapsToJSONField spray:Field_window ;
+    spray:mapsToMQTTTopic spray:Topic_Window ;
+    spray:mapsToOPCUANode spray:OPCUA_Window .
+
+mis:RuntimeWindow_w0002 a spray:SprayWindow ;
+    mis:flowLossRatio 4.181818e-01 ;
+    mis:pressureErrorRatio 2.9e-01 ;
+    mis:sprayWidthErrorRatio 2.833333e-01 ;
+    mis:thicknessErrorRatio 2.857143e-01 ;
+    spray:hasBatchId "batch-A" ;
+    spray:hasEndTime "2026-05-10T09:00:00.400000"^^xsd:dateTime ;
+    spray:hasLineId "sprayline01" ;
+    spray:hasSegmentId "seg-001" ;
+    spray:hasStartTime "2026-05-10T09:00:00.200000"^^xsd:dateTime ;
+    spray:hasWindowId "w0002" ;
+    spray:mapsToJSONField spray:Field_window ;
+    spray:mapsToMQTTTopic spray:Topic_Window ;
+    spray:mapsToOPCUANode spray:OPCUA_Window .
+

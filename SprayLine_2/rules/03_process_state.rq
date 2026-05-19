@@ -1,0 +1,24 @@
+PREFIX mis: <http://nkust.edu.tw/mislab#>
+PREFIX sth: <http://nkust.edu.tw/mislab/cnc/ontology/sth#>
+
+CONSTRUCT {
+  ?w mis:thicknessErrorRatio ?thicknessError ;
+     mis:maxComponentSeverityRank ?maxRank ;
+     sth:indicatesProcessState ?processState .
+}
+WHERE {
+  ?w mis:inferredFilterState ?filterState ;
+     mis:inferredNozzleState ?nozzleState ;
+     mis:measuredThickness ?measuredThickness ;
+     mis:targetThickness ?targetThickness .
+  ?filterState mis:severityRank ?filterRank .
+  ?nozzleState mis:severityRank ?nozzleRank .
+  ?processState mis:minSeverityRank ?minRank ;
+                mis:maxSeverityRank ?maxRankLimit ;
+                mis:minThicknessErrorRatio ?minThicknessErr ;
+                mis:maxThicknessErrorRatio ?maxThicknessErr .
+  BIND(ABS((xsd:decimal(?measuredThickness) - xsd:decimal(?targetThickness)) / xsd:decimal(?targetThickness)) AS ?thicknessError)
+  BIND(IF(xsd:integer(?filterRank) >= xsd:integer(?nozzleRank), xsd:integer(?filterRank), xsd:integer(?nozzleRank)) AS ?maxRank)
+  FILTER(?maxRank >= xsd:integer(?minRank) && ?maxRank <= xsd:integer(?maxRankLimit))
+  FILTER(?thicknessError >= xsd:decimal(?minThicknessErr) && ?thicknessError < xsd:decimal(?maxThicknessErr))
+}

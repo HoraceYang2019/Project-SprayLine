@@ -1,0 +1,73 @@
+@prefix mis: <http://nkust.edu.tw/mislab#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mis:FilterEarly mis:confidence 0.94 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:maxFlowLossRatio 0.15 ;
+    mis:minFlowLossRatio 0.0 ;
+    mis:severityRank 0 .
+
+mis:FilterModerateBlock mis:confidence 0.94 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:maxFlowLossRatio 0.387 ;
+    mis:minFlowLossRatio 0.132 ;
+    mis:severityRank 1 .
+
+mis:FilterSevereBlock mis:confidence 0.94 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:maxFlowLossRatio 1.0 ;
+    mis:minFlowLossRatio 0.4 ;
+    mis:severityRank 2 .
+
+mis:IssuedProcess mis:confidence 0.94 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:maxSeverityRank 1 ;
+    mis:maxThicknessErrorRatio 0.12 ;
+    mis:minSeverityRank 1 ;
+    mis:minThicknessErrorRatio 0.06 .
+
+mis:NozzleBlock mis:confidence 0.94 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:maxPressureErrorRatio 1.0 ;
+    mis:maxSprayWidthErrorRatio 1.0 ;
+    mis:minPressureErrorRatio 0.25 ;
+    mis:minSprayWidthErrorRatio 0.25 ;
+    mis:severityRank 2 .
+
+mis:NozzleEarly mis:confidence 0.94 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:maxPressureErrorRatio 0.1 ;
+    mis:maxSprayWidthErrorRatio 0.1 ;
+    mis:minPressureErrorRatio 0.0 ;
+    mis:minSprayWidthErrorRatio 0.0 ;
+    mis:severityRank 0 .
+
+mis:NozzleWear mis:confidence 0.94 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:maxPressureErrorRatio 0.25 ;
+    mis:maxSprayWidthErrorRatio 0.25 ;
+    mis:minPressureErrorRatio 0.1 ;
+    mis:minSprayWidthErrorRatio 0.1 ;
+    mis:severityRank 1 .
+
+mis:StableProcess mis:confidence 0.94 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:maxSeverityRank 0 ;
+    mis:maxThicknessErrorRatio 0.06 ;
+    mis:minSeverityRank 0 ;
+    mis:minThicknessErrorRatio 0.0 .
+
+mis:UnstableProcess mis:confidence 0.94 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:maxSeverityRank 9 ;
+    mis:maxThicknessErrorRatio 1.0 ;
+    mis:minSeverityRank 2 ;
+    mis:minThicknessErrorRatio 0.12 .
+
+<http://nkust.edu.tw/mislab/cnc/knowledge/sprayline/batch-A> a owl:Ontology ;
+    rdfs:label "SprayLine learned threshold knowledge - batch A"@en ;
+    mis:confidence 0.94 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" .
+

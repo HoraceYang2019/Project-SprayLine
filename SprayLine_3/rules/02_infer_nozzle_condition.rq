@@ -1,0 +1,28 @@
+PREFIX spray: <http://nkust.edu.tw/mislab/spray/ontology#>
+PREFIX mis: <http://nkust.edu.tw/mislab#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT {
+  ?window spray:indicatesNozzleCondition ?state .
+  ?diag spray:diagnosesWindow ?window ;
+        spray:indicatesNozzleCondition ?state ;
+        spray:hasConfidence ?conf ;
+        spray:hasStateLabel ?label .
+}
+WHERE {
+  ?window rdf:type spray:SprayWindow ;
+          spray:hasWindowId ?wid ;
+          mis:pressureErrorRatio ?pressureErr ;
+          mis:sprayWidthErrorRatio ?widthErr .
+  ?state rdf:type mis:BatchKnowledge ;
+         mis:hasKnowledgeCategory "nozzle_condition" ;
+         mis:minPressureErrorRatio ?pmin ;
+         mis:maxPressureErrorRatio ?pmax ;
+         mis:minSprayWidthErrorRatio ?wmin ;
+         mis:maxSprayWidthErrorRatio ?wmax ;
+         mis:confidence ?conf .
+  FILTER(?pressureErr >= ?pmin && ?pressureErr < ?pmax)
+  FILTER(?widthErr >= ?wmin && ?widthErr < ?wmax)
+  BIND(IRI(CONCAT(STR(mis:), "Diagnosis_", STR(?wid), "_nozzle")) AS ?diag)
+  BIND(STRAFTER(STR(?state), STR(mis:)) AS ?label)
+}

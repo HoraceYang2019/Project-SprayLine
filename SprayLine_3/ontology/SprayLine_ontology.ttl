@@ -1,0 +1,796 @@
+@prefix : <http://nkust.edu.tw/mislab/spray/ontology#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix mis: <http://nkust.edu.tw/mislab#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spray/ontology#> .
+@base <http://nkust.edu.tw/mislab/spray/ontology> .
+
+<http://nkust.edu.tw/mislab/spray/ontology> rdf:type owl:Ontology ;
+                                             dct:creator "NKUST MISLab" ;
+                                             dct:description "Spraying line ontology adapted from the updated CNC TMV720 hybrid semantic stack. It keeps the TMV720-style separation of ontology, knowledge, runtime observations, rules, SHACL shapes, schemas, samples, scripts, and validation reports."@en ;
+                                             rdfs:label "Spraying Line Ontology"@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/creator
+<http://purl.org/dc/elements/1.1/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/date
+<http://purl.org/dc/elements/1.1/date> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/creator
+dct:creator rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/description
+dct:description rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://nkust.edu.tw/mislab/spray/ontology#alignedWithSpraySegment
+spray:alignedWithSpraySegment rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#belongsToSprayPath
+spray:belongsToSprayPath rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#belongsToWindow
+spray:belongsToWindow rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#diagnosesWindow
+spray:diagnosesWindow rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasDiagnosis
+spray:hasDiagnosis rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasFilter
+spray:hasFilter rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasNozzle
+spray:hasNozzle rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasPump
+spray:hasPump rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasRobotArm
+spray:hasRobotArm rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasSprayGun
+spray:hasSprayGun rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasSpraySegment
+spray:hasSpraySegment rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#indicatesFilterCondition
+spray:indicatesFilterCondition rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#indicatesNozzleCondition
+spray:indicatesNozzleCondition rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#indicatesProcessState
+spray:indicatesProcessState rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#mapsToJSONField
+spray:mapsToJSONField rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#mapsToMQTTTopic
+spray:mapsToMQTTTopic rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#mapsToOPCUANode
+spray:mapsToOPCUANode rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#nextDiagnosis
+spray:nextDiagnosis rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#previousDiagnosis
+spray:previousDiagnosis rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#usesMaterial
+spray:usesMaterial rdf:type owl:ObjectProperty .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#usesRecipe
+spray:usesRecipe rdf:type owl:ObjectProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://nkust.edu.tw/mislab#confidence
+mis:confidence rdf:type owl:DatatypeProperty ;
+               rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab#derivedFromDataset
+mis:derivedFromDataset rdf:type owl:DatatypeProperty ;
+                       rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab#hasKnowledgeCategory
+mis:hasKnowledgeCategory rdf:type owl:DatatypeProperty ;
+                         rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab#maxFlowLossRatio
+mis:maxFlowLossRatio rdf:type owl:DatatypeProperty ;
+                     rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab#maxPressureErrorRatio
+mis:maxPressureErrorRatio rdf:type owl:DatatypeProperty ;
+                          rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab#maxSeverityRank
+mis:maxSeverityRank rdf:type owl:DatatypeProperty ;
+                    rdfs:range xsd:integer .
+
+
+###  http://nkust.edu.tw/mislab#maxSprayWidthErrorRatio
+mis:maxSprayWidthErrorRatio rdf:type owl:DatatypeProperty ;
+                            rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab#maxThicknessErrorRatio
+mis:maxThicknessErrorRatio rdf:type owl:DatatypeProperty ;
+                           rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab#minFlowLossRatio
+mis:minFlowLossRatio rdf:type owl:DatatypeProperty ;
+                     rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab#minPressureErrorRatio
+mis:minPressureErrorRatio rdf:type owl:DatatypeProperty ;
+                          rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab#minSeverityRank
+mis:minSeverityRank rdf:type owl:DatatypeProperty ;
+                    rdfs:range xsd:integer .
+
+
+###  http://nkust.edu.tw/mislab#minSprayWidthErrorRatio
+mis:minSprayWidthErrorRatio rdf:type owl:DatatypeProperty ;
+                            rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab#minThicknessErrorRatio
+mis:minThicknessErrorRatio rdf:type owl:DatatypeProperty ;
+                           rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab#severityRank
+mis:severityRank rdf:type owl:DatatypeProperty ;
+                 rdfs:range xsd:integer .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasBatchId
+spray:hasBatchId rdf:type owl:DatatypeProperty ;
+                 rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasCellId
+spray:hasCellId rdf:type owl:DatatypeProperty ;
+                rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasConfidence
+spray:hasConfidence rdf:type owl:DatatypeProperty ;
+                    rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasEndTime
+spray:hasEndTime rdf:type owl:DatatypeProperty ;
+                 rdfs:range xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasJSONKey
+spray:hasJSONKey rdf:type owl:DatatypeProperty ;
+                 rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasMQTTTopicString
+spray:hasMQTTTopicString rdf:type owl:DatatypeProperty ;
+                         rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasModelVersion
+spray:hasModelVersion rdf:type owl:DatatypeProperty ;
+                      rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasName
+spray:hasName rdf:type owl:DatatypeProperty ;
+              rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasNodeId
+spray:hasNodeId rdf:type owl:DatatypeProperty ;
+                rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasSegmentId
+spray:hasSegmentId rdf:type owl:DatatypeProperty ;
+                   rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasStartTime
+spray:hasStartTime rdf:type owl:DatatypeProperty ;
+                   rdfs:range xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasStateLabel
+spray:hasStateLabel rdf:type owl:DatatypeProperty ;
+                    rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasTimestamp
+spray:hasTimestamp rdf:type owl:DatatypeProperty ;
+                   rdfs:range xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasUnit
+spray:hasUnit rdf:type owl:DatatypeProperty ;
+              rdfs:range xsd:string .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasValue
+spray:hasValue rdf:type owl:DatatypeProperty ;
+               rdfs:range xsd:double .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#hasWindowId
+spray:hasWindowId rdf:type owl:DatatypeProperty ;
+                  rdfs:range xsd:string .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://nkust.edu.tw/mislab#BatchKnowledge
+mis:BatchKnowledge rdf:type owl:Class ;
+                   rdfs:subClassOf spray:CyberAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#CoatingUniformity
+spray:CoatingUniformity rdf:type owl:Class ;
+                        rdfs:subClassOf spray:QualityMetric .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#CommunicationAsset
+spray:CommunicationAsset rdf:type owl:Class ;
+                         rdfs:subClassOf spray:CyberAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#CyberAsset
+spray:CyberAsset rdf:type owl:Class ;
+                 rdfs:subClassOf spray:Entity .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Diagnosis
+spray:Diagnosis rdf:type owl:Class ;
+                rdfs:subClassOf spray:CyberAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#DiagnosisSequence
+spray:DiagnosisSequence rdf:type owl:Class ;
+                        rdfs:subClassOf spray:CyberAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Entity
+spray:Entity rdf:type owl:Class .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#FilmThickness
+spray:FilmThickness rdf:type owl:Class ;
+                    rdfs:subClassOf spray:QualityMetric .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Filter
+spray:Filter rdf:type owl:Class ;
+             rdfs:subClassOf spray:PhysicalAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#FilterCondition
+spray:FilterCondition rdf:type owl:Class ;
+                      rdfs:subClassOf spray:Filter .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#FilterEarly
+spray:FilterEarly rdf:type owl:Class ;
+                  rdfs:subClassOf spray:FilterCondition .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#FilterModerateBlock
+spray:FilterModerateBlock rdf:type owl:Class ;
+                          rdfs:subClassOf spray:FilterCondition .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#FilterSevereBlock
+spray:FilterSevereBlock rdf:type owl:Class ;
+                        rdfs:subClassOf spray:FilterCondition .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#FlowSignal
+spray:FlowSignal rdf:type owl:Class ;
+                 rdfs:subClassOf spray:Signal .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#IssuedProcess
+spray:IssuedProcess rdf:type owl:Class ;
+                    rdfs:subClassOf spray:ProcessState .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#JSONField
+spray:JSONField rdf:type owl:Class ;
+                rdfs:subClassOf spray:CommunicationAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#MQTTTopic
+spray:MQTTTopic rdf:type owl:Class ;
+                rdfs:subClassOf spray:CommunicationAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Material
+spray:Material rdf:type owl:Class ;
+               rdfs:subClassOf spray:Project .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Nozzle
+spray:Nozzle rdf:type owl:Class ;
+             rdfs:subClassOf spray:RobotArm .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#NozzleBlock
+spray:NozzleBlock rdf:type owl:Class ;
+                  rdfs:subClassOf spray:NozzleCondition .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#NozzleCondition
+spray:NozzleCondition rdf:type owl:Class ;
+                      rdfs:subClassOf spray:Nozzle .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#NozzleEarly
+spray:NozzleEarly rdf:type owl:Class ;
+                  rdfs:subClassOf spray:NozzleCondition .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#NozzleWear
+spray:NozzleWear rdf:type owl:Class ;
+                 rdfs:subClassOf spray:NozzleCondition .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#OPCUANode
+spray:OPCUANode rdf:type owl:Class ;
+                rdfs:subClassOf spray:CommunicationAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#PhysicalAsset
+spray:PhysicalAsset rdf:type owl:Class ;
+                    rdfs:subClassOf spray:Entity .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Prediction
+spray:Prediction rdf:type owl:Class ;
+                 rdfs:subClassOf spray:CyberAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#PressureSignal
+spray:PressureSignal rdf:type owl:Class ;
+                     rdfs:subClassOf spray:Signal .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#ProcessState
+spray:ProcessState rdf:type owl:Class ;
+                   rdfs:subClassOf spray:SprayingCell .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Project
+spray:Project rdf:type owl:Class ;
+              rdfs:subClassOf spray:PhysicalAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Pump
+spray:Pump rdf:type owl:Class ;
+           rdfs:subClassOf spray:PhysicalAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#QualityMetric
+spray:QualityMetric rdf:type owl:Class ;
+                    rdfs:subClassOf spray:Project .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Recipe
+spray:Recipe rdf:type owl:Class ;
+             rdfs:subClassOf spray:Project .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#RobotArm
+spray:RobotArm rdf:type owl:Class ;
+               rdfs:subClassOf spray:SprayingCell .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#RobotPoseSignal
+spray:RobotPoseSignal rdf:type owl:Class ;
+                      rdfs:subClassOf spray:Signal .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#SensingWindow
+spray:SensingWindow rdf:type owl:Class ;
+                    rdfs:subClassOf spray:CyberAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Signal
+spray:Signal rdf:type owl:Class ;
+             rdfs:subClassOf spray:CyberAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#SprayGun
+spray:SprayGun rdf:type owl:Class ;
+               rdfs:subClassOf spray:RobotArm .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#SprayPath
+spray:SprayPath rdf:type owl:Class ;
+                rdfs:subClassOf spray:RobotArm .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#SpraySegment
+spray:SpraySegment rdf:type owl:Class ;
+                   rdfs:subClassOf spray:Project .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#SprayWidthSignal
+spray:SprayWidthSignal rdf:type owl:Class ;
+                       rdfs:subClassOf spray:Signal .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#SprayWindow
+spray:SprayWindow rdf:type owl:Class ;
+                  rdfs:subClassOf spray:SensingWindow .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#SprayingCell
+spray:SprayingCell rdf:type owl:Class ;
+                   rdfs:subClassOf spray:PhysicalAsset .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#StableProcess
+spray:StableProcess rdf:type owl:Class ;
+                    rdfs:subClassOf spray:ProcessState .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#TemperatureSignal
+spray:TemperatureSignal rdf:type owl:Class ;
+                        rdfs:subClassOf spray:Signal .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#ThicknessSignal
+spray:ThicknessSignal rdf:type owl:Class ;
+                      rdfs:subClassOf spray:Signal .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#UnstableProcess
+spray:UnstableProcess rdf:type owl:Class ;
+                      rdfs:subClassOf spray:ProcessState .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#ViscositySignal
+spray:ViscositySignal rdf:type owl:Class ;
+                      rdfs:subClassOf spray:Signal .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://nkust.edu.tw/mislab#Base_Paint
+mis:Base_Paint rdf:type owl:NamedIndividual ,
+                        spray:Material ;
+               <http://purl.org/dc/elements/1.1/creator> "hao" ;
+               <http://purl.org/dc/elements/1.1/date> "2026-05-10T00:53:28Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#CoatingUniformity_1
+mis:CoatingUniformity_1 rdf:type owl:NamedIndividual ,
+                                 spray:CoatingUniformity ;
+                        <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                        <http://purl.org/dc/elements/1.1/date> "2026-05-10T00:51:54Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Color_piant
+mis:Color_piant rdf:type owl:NamedIndividual ,
+                         spray:Material ;
+                <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                <http://purl.org/dc/elements/1.1/date> "2026-05-10T00:52:48Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Cover_Paint
+mis:Cover_Paint rdf:type owl:NamedIndividual ,
+                         spray:Material ;
+                <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                <http://purl.org/dc/elements/1.1/date> "2026-05-10T00:53:42Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#FilmThickness_1
+mis:FilmThickness_1 rdf:type owl:NamedIndividual ,
+                             spray:FilmThickness ;
+                    <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                    <http://purl.org/dc/elements/1.1/date> "2026-05-10T00:52:06Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Filter_color
+mis:Filter_color rdf:type owl:NamedIndividual ,
+                          spray:Filter ;
+                 <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                 <http://purl.org/dc/elements/1.1/date> "2026-05-10T01:17:59Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Filter_cover
+mis:Filter_cover rdf:type owl:NamedIndividual ,
+                          spray:Filter ;
+                 <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                 <http://purl.org/dc/elements/1.1/date> "2026-05-10T01:18:06Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Nozzle_color
+mis:Nozzle_color rdf:type owl:NamedIndividual ,
+                          spray:Nozzle ;
+                 <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                 <http://purl.org/dc/elements/1.1/date> "2026-05-10T01:19:49Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Nozzle_cover
+mis:Nozzle_cover rdf:type owl:NamedIndividual ,
+                          spray:Nozzle ;
+                 <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                 <http://purl.org/dc/elements/1.1/date> "2026-05-10T01:19:58Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Product_A
+mis:Product_A rdf:type owl:NamedIndividual ,
+                       spray:Project ;
+              spray:usesRecipe mis:Recipe_base ,
+                               mis:Recipe_color ,
+                               mis:Recipe_cover ;
+              <http://purl.org/dc/elements/1.1/creator> "hao" ;
+              <http://purl.org/dc/elements/1.1/date> "2026-05-10T00:51:05Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Product_B
+mis:Product_B rdf:type owl:NamedIndividual ,
+                       spray:Project ;
+              <http://purl.org/dc/elements/1.1/creator> "hao" ;
+              <http://purl.org/dc/elements/1.1/date> "2026-05-10T07:23:28Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Recipe_base
+mis:Recipe_base rdf:type owl:NamedIndividual ,
+                         spray:Recipe ;
+                spray:hasRobotArm spray:RobotArm_base ;
+                <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                <http://purl.org/dc/elements/1.1/date> "2026-05-10T00:51:25Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Recipe_color
+mis:Recipe_color rdf:type owl:NamedIndividual ,
+                          spray:Recipe ;
+                 spray:hasRobotArm mis:RobotArm_color ;
+                 <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                 <http://purl.org/dc/elements/1.1/date> "2026-05-10T01:16:06Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#Recipe_cover
+mis:Recipe_cover rdf:type owl:NamedIndividual ,
+                          spray:Recipe ;
+                 spray:hasRobotArm mis:RobotArm_cover ;
+                 <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                 <http://purl.org/dc/elements/1.1/date> "2026-05-10T01:16:18Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#RobotArm_color
+mis:RobotArm_color rdf:type owl:NamedIndividual ,
+                            spray:RobotArm ;
+                   spray:hasFilter mis:Filter_color ;
+                   spray:hasNozzle mis:Nozzle_color ;
+                   spray:hasSprayGun mis:SprayGun_color ;
+                   <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                   <http://purl.org/dc/elements/1.1/date> "2026-05-10T01:13:59Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#RobotArm_cover
+mis:RobotArm_cover rdf:type owl:NamedIndividual ,
+                            spray:RobotArm ;
+                   spray:hasFilter mis:Filter_cover ;
+                   spray:hasNozzle mis:Nozzle_cover ;
+                   spray:hasSprayGun mis:SprayGun_cover ;
+                   <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                   <http://purl.org/dc/elements/1.1/date> "2026-05-10T01:14:15Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#SprayCell_base
+mis:SprayCell_base rdf:type owl:NamedIndividual ,
+                            spray:SprayingCell ;
+                   spray:hasRobotArm spray:RobotArm_base ;
+                   <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                   <http://purl.org/dc/elements/1.1/date> "2026-05-10T07:37:30Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#SprayCell_color
+mis:SprayCell_color rdf:type owl:NamedIndividual ,
+                             spray:SprayingCell ;
+                    <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                    <http://purl.org/dc/elements/1.1/date> "2026-05-10T07:37:41Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#SprayCell_cover
+mis:SprayCell_cover rdf:type owl:NamedIndividual ,
+                             spray:SprayingCell ;
+                    <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                    <http://purl.org/dc/elements/1.1/date> "2026-05-10T07:37:55Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#SprayGun_color
+mis:SprayGun_color rdf:type owl:NamedIndividual ,
+                            spray:SprayGun ;
+                   <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                   <http://purl.org/dc/elements/1.1/date> "2026-05-10T01:20:27Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab#SprayGun_cover
+mis:SprayGun_cover rdf:type owl:NamedIndividual ,
+                            spray:SprayGun ;
+                   <http://purl.org/dc/elements/1.1/creator> "hao" ;
+                   <http://purl.org/dc/elements/1.1/date> "2026-05-10T01:20:47Z"^^xsd:dateTime .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Field_batch
+spray:Field_batch rdf:type owl:NamedIndividual ,
+                           spray:JSONField ;
+                  spray:hasJSONKey "batch_id" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Field_filter_condition
+spray:Field_filter_condition rdf:type owl:NamedIndividual ,
+                                      spray:JSONField ;
+                             spray:hasJSONKey "filter_condition" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Field_flow
+spray:Field_flow rdf:type owl:NamedIndividual ,
+                          spray:JSONField ;
+                 spray:hasJSONKey "flow_ml_min" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Field_nozzle_condition
+spray:Field_nozzle_condition rdf:type owl:NamedIndividual ,
+                                      spray:JSONField ;
+                             spray:hasJSONKey "nozzle_condition" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Field_pressure
+spray:Field_pressure rdf:type owl:NamedIndividual ,
+                              spray:JSONField ;
+                     spray:hasJSONKey "pressure_bar" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Field_process_state
+spray:Field_process_state rdf:type owl:NamedIndividual ,
+                                   spray:JSONField ;
+                          spray:hasJSONKey "process_state" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Field_segment
+spray:Field_segment rdf:type owl:NamedIndividual ,
+                             spray:JSONField ;
+                    spray:hasJSONKey "segment_id" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Field_spray_width
+spray:Field_spray_width rdf:type owl:NamedIndividual ,
+                                 spray:JSONField ;
+                        spray:hasJSONKey "spray_width_mm" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Field_thickness
+spray:Field_thickness rdf:type owl:NamedIndividual ,
+                               spray:JSONField ;
+                      spray:hasJSONKey "thickness_um" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Field_window
+spray:Field_window rdf:type owl:NamedIndividual ,
+                            spray:JSONField ;
+                   spray:hasJSONKey "window_id" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Filter_base
+spray:Filter_base rdf:type owl:NamedIndividual ,
+                           spray:Filter .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Nozzle_base
+spray:Nozzle_base rdf:type owl:NamedIndividual ,
+                           spray:Nozzle ;
+                  spray:hasName "flat fan nozzle" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#OPCUA_Diagnosis
+spray:OPCUA_Diagnosis rdf:type owl:NamedIndividual ,
+                               spray:OPCUANode ;
+                      spray:hasNodeId "ns=2;s=SprayLine01.Diagnosis" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#OPCUA_Window
+spray:OPCUA_Window rdf:type owl:NamedIndividual ,
+                            spray:OPCUANode ;
+                   spray:hasNodeId "ns=2;s=SprayLine01.Window" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Pump_01
+spray:Pump_01 rdf:type owl:NamedIndividual ,
+                       spray:Pump .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#RobotArm_base
+spray:RobotArm_base rdf:type owl:NamedIndividual ,
+                             spray:RobotArm ;
+                    spray:hasFilter spray:Filter_base ;
+                    spray:hasNozzle spray:Nozzle_base ;
+                    spray:hasSprayGun spray:SprayGun_base ;
+                    spray:hasName "six-axis spray robot" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#SprayGun_base
+spray:SprayGun_base rdf:type owl:NamedIndividual ,
+                             spray:SprayGun ;
+                    spray:hasNozzle spray:Nozzle_base .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Topic_Diagnosis
+spray:Topic_Diagnosis rdf:type owl:NamedIndividual ,
+                               spray:MQTTTopic ;
+                      spray:hasMQTTTopicString "sprayline/01/diagnosis" .
+
+
+###  http://nkust.edu.tw/mislab/spray/ontology#Topic_Window
+spray:Topic_Window rdf:type owl:NamedIndividual ,
+                            spray:MQTTTopic ;
+                   spray:hasMQTTTopicString "sprayline/01/window" .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "http://nkust.edu.tw/mislab/spray/schema/sprayline-runtime-window.schema.json",
+  "title": "SprayLine Runtime Window",
+  "type": "object",
+  "required": ["window_id", "line_id", "batch_id", "segment_id", "start_time", "end_time", "reference", "signals"],
+  "properties": {
+    "window_id": {"type": "string"},
+    "line_id": {"type": "string"},
+    "batch_id": {"type": "string"},
+    "segment_id": {"type": "string"},
+    "start_time": {"type": "string", "format": "date-time"},
+    "end_time": {"type": "string", "format": "date-time"},
+    "reference": {
+      "type": "object",
+      "required": ["nominal_pressure_bar", "nominal_flow_ml_min", "nominal_spray_width_mm", "target_thickness_um"],
+      "properties": {
+        "nominal_pressure_bar": {"type": "number"},
+        "nominal_flow_ml_min": {"type": "number"},
+        "nominal_spray_width_mm": {"type": "number"},
+        "target_thickness_um": {"type": "number"}
+      }
+    },
+    "signals": {
+      "type": "object",
+      "required": ["pressure_bar", "flow_ml_min", "spray_width_mm", "thickness_um"],
+      "properties": {
+        "pressure_bar": {"type": "number"},
+        "flow_ml_min": {"type": "number"},
+        "spray_width_mm": {"type": "number"},
+        "thickness_um": {"type": "number"},
+        "viscosity_cp": {"type": "number"},
+        "temperature_c": {"type": "number"}
+      }
+    },
+    "robot": {
+      "type": "object",
+      "properties": {
+        "tcp_x_mm": {"type": "number"},
+        "tcp_y_mm": {"type": "number"},
+        "tcp_z_mm": {"type": "number"},
+        "speed_mm_s": {"type": "number"},
+        "stand_off_mm": {"type": "number"}
+      }
+    }
+  }
+}

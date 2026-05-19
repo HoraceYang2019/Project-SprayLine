@@ -1,0 +1,101 @@
+@prefix mis: <http://nkust.edu.tw/mislab#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spray/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mis:FilterEarly a mis:BatchKnowledge,
+        spray:FilterEarly ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "filter_condition" ;
+    mis:maxFlowLossRatio 1.5e-01 ;
+    mis:minFlowLossRatio 0e+00 ;
+    mis:severityRank 0 .
+
+mis:FilterModerateBlock a mis:BatchKnowledge,
+        spray:FilterModerateBlock ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "filter_condition" ;
+    mis:maxFlowLossRatio 4e-01 ;
+    mis:minFlowLossRatio 1.5e-01 ;
+    mis:severityRank 1 .
+
+mis:FilterSevereBlock a mis:BatchKnowledge,
+        spray:FilterSevereBlock ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "filter_condition" ;
+    mis:maxFlowLossRatio 1e+00 ;
+    mis:minFlowLossRatio 4e-01 ;
+    mis:severityRank 2 .
+
+mis:IssuedProcess a mis:BatchKnowledge,
+        spray:IssuedProcess ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "process_state" ;
+    mis:maxSeverityRank 1 ;
+    mis:maxThicknessErrorRatio 1.2e-01 ;
+    mis:minSeverityRank 1 ;
+    mis:minThicknessErrorRatio 6e-02 .
+
+mis:NozzleBlock a mis:BatchKnowledge,
+        spray:NozzleBlock ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "nozzle_condition" ;
+    mis:maxPressureErrorRatio 1e+00 ;
+    mis:maxSprayWidthErrorRatio 1e+00 ;
+    mis:minPressureErrorRatio 2.5e-01 ;
+    mis:minSprayWidthErrorRatio 2.5e-01 ;
+    mis:severityRank 2 .
+
+mis:NozzleEarly a mis:BatchKnowledge,
+        spray:NozzleEarly ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "nozzle_condition" ;
+    mis:maxPressureErrorRatio 1e-01 ;
+    mis:maxSprayWidthErrorRatio 1e-01 ;
+    mis:minPressureErrorRatio 0e+00 ;
+    mis:minSprayWidthErrorRatio 0e+00 ;
+    mis:severityRank 0 .
+
+mis:NozzleWear a mis:BatchKnowledge,
+        spray:NozzleWear ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "nozzle_condition" ;
+    mis:maxPressureErrorRatio 2.5e-01 ;
+    mis:maxSprayWidthErrorRatio 2.5e-01 ;
+    mis:minPressureErrorRatio 1e-01 ;
+    mis:minSprayWidthErrorRatio 1e-01 ;
+    mis:severityRank 1 .
+
+mis:StableProcess a mis:BatchKnowledge,
+        spray:StableProcess ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "process_state" ;
+    mis:maxSeverityRank 0 ;
+    mis:maxThicknessErrorRatio 6e-02 ;
+    mis:minSeverityRank 0 ;
+    mis:minThicknessErrorRatio 0e+00 .
+
+mis:UnstableProcess a mis:BatchKnowledge,
+        spray:UnstableProcess ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" ;
+    mis:hasKnowledgeCategory "process_state" ;
+    mis:maxSeverityRank 9 ;
+    mis:maxThicknessErrorRatio 1e+00 ;
+    mis:minSeverityRank 2 ;
+    mis:minThicknessErrorRatio 1.2e-01 .
+
+<http://nkust.edu.tw/mislab/spray/knowledge/batch-A> a owl:Ontology ;
+    rdfs:label "SprayLine learned threshold knowledge - generated from CSV"@en ;
+    mis:confidence 9.4e-01 ;
+    mis:derivedFromDataset "sprayline_2026_batch_A" .
+

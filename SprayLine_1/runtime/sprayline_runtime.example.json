@@ -1,0 +1,21 @@
+{
+  "window_id": "w0413004",
+  "machine_id": "spray_machine_A",
+  "timestamp": "2026-04-26T09:00:00+08:00",
+  "filter": {
+    "in_flow": 100.0,
+    "out_flow": 72.0
+  },
+  "nozzle": {
+    "spray_width": 82.0,
+    "spray_pressure": 2.4
+  },
+  "quality": {
+    "measured_thickness": 51.5
+  },
+  "target": {
+    "spray_width": 80.0,
+    "spray_pressure": 2.5,
+    "thickness": 50.0
+  }
+}

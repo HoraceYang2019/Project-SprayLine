@@ -1,0 +1,10 @@
+state,min_prop,min_value,max_prop,max_value,severity_rank,dataset,confidence
+mis:FilterEarly,mis:minFlowLossRatio,0.000,mis:maxFlowLossRatio,0.132,0,sprayline_2026_batch_A,0.94
+mis:FilterModerateBlock,mis:minFlowLossRatio,0.132,mis:maxFlowLossRatio,0.387,1,sprayline_2026_batch_A,0.94
+mis:FilterSevereBlock,mis:minFlowLossRatio,0.387,mis:maxFlowLossRatio,1.000,2,sprayline_2026_batch_A,0.94
+mis:NozzleEarly,mis:minSprayWidthErrorRatio,0.000,mis:maxSprayWidthErrorRatio,0.100,0,sprayline_2026_batch_A,0.94
+mis:NozzleWear,mis:minSprayWidthErrorRatio,0.100,mis:maxSprayWidthErrorRatio,0.250,1,sprayline_2026_batch_A,0.94
+mis:NozzleBlock,mis:minSprayWidthErrorRatio,0.250,mis:maxSprayWidthErrorRatio,1.000,2,sprayline_2026_batch_A,0.94
+mis:StableProcess,mis:minThicknessErrorRatio,0.000,mis:maxThicknessErrorRatio,0.060,0,sprayline_2026_batch_A,0.94
+mis:IssuedProcess,mis:minThicknessErrorRatio,0.060,mis:maxThicknessErrorRatio,0.120,1,sprayline_2026_batch_A,0.94
+mis:UnstableProcess,mis:minThicknessErrorRatio,0.120,mis:maxThicknessErrorRatio,1.000,2,sprayline_2026_batch_A,0.94

@@ -1,0 +1,4 @@
+state_id,state_class,knowledge_category,min_thickness_error_ratio,max_thickness_error_ratio,min_severity_rank,max_severity_rank,confidence,dataset
+StableProcess,StableProcess,process_state,0.0,0.06,0,0,0.94,sprayline_2026_batch_A
+IssuedProcess,IssuedProcess,process_state,0.06,0.12,1,1,0.94,sprayline_2026_batch_A
+UnstableProcess,UnstableProcess,process_state,0.12,1.00,2,9,0.94,sprayline_2026_batch_A
