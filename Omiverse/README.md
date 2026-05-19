@@ -1,0 +1,1 @@
+Purpose: Omiverse folder for interfacing emulating data communicated with omiverse.
