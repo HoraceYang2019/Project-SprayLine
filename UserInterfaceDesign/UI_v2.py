@@ -1,0 +1,1255 @@
+from pathlib import Path
+
+html_code = r"""
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>噴塗產線監控系統</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Microsoft JhengHei", Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .header {
+            background: #263238;
+            color: white;
+            padding: 20px 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            color: #cfd8dc;
+        }
+
+        .main {
+            padding: 22px;
+            max-width: 1600px;
+            margin: auto;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .summary-card h3 {
+            margin: 0;
+            font-size: 15px;
+            color: #666;
+        }
+
+        .summary-card .number {
+            margin-top: 10px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .station-area {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 22px;
+        }
+
+        .station-card {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 10px solid #aaa;
+            transition: 0.3s;
+        }
+
+        .station-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .station-title h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .station-title p {
+            margin: 6px 0 0;
+            color: #666;
+        }
+
+        .status-badge {
+            padding: 8px 14px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .robot-box {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 150px;
+            padding: 12px;
+            border-radius: 14px;
+            background: #f1f3f4;
+            box-sizing: border-box;
+        }
+
+        .robot {
+            width: 110px;
+            height: 110px;
+        }
+
+        .component-overview {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .component-mini {
+            min-height: 82px;
+            border-radius: 12px;
+            padding: 8px 6px;
+            text-align: center;
+            background: white;
+            border: 1px solid #dfe6e9;
+            border-top: 5px solid #90a4ae;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            box-sizing: border-box;
+        }
+
+        .component-icon {
+            width: 30px;
+            height: 30px;
+            margin: 0 auto 5px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: #eef3f6;
+        }
+
+        .component-name {
+            font-size: 13px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .component-en {
+            font-size: 10px;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        .component-status {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .component-mini.ok {
+            border-top-color: #2e7d32;
+            background: #f1faf3;
+        }
+
+        .component-mini.ok .component-status {
+            background: #2e7d32;
+        }
+
+        .component-mini.warn {
+            border-top-color: #ef6c00;
+            background: #fff8ef;
+        }
+
+        .component-mini.warn .component-status {
+            background: #ef6c00;
+        }
+
+        .component-mini.bad {
+            border-top-color: #c62828;
+            background: #fff2f2;
+        }
+
+        .component-mini.bad .component-status {
+            background: #c62828;
+        }
+
+        .component-mini.neutral {
+            border-top-color: #1976d2;
+            background: #f1f7ff;
+        }
+
+        .component-mini.neutral .component-status {
+            background: #1976d2;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin: 16px 0 10px;
+            color: #37474f;
+        }
+
+        .part-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .part-card {
+            background: #f7f9fa;
+            border-radius: 12px;
+            padding: 12px;
+            border-left: 6px solid #90a4ae;
+        }
+
+        .part-name {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .part-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .part-small {
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .metric {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid #eee;
+        }
+
+        .metric span {
+            display: block;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .metric strong {
+            display: block;
+            margin-top: 5px;
+            font-size: 18px;
+        }
+
+        .spray-image-box {
+            background: #f1f3f4;
+            border-radius: 14px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .spray-svg {
+            width: 100%;
+            height: 230px;
+            display: block;
+        }
+
+        .spray-image-note {
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        .timeline-panel {
+            margin-top: 24px;
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .timeline-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .mode-buttons button {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            background: #eceff1;
+            font-weight: bold;
+        }
+
+        .mode-buttons button.active {
+            background: #263238;
+            color: white;
+        }
+
+        .live-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 5px 10px;
+            border-radius: 16px;
+            background: #2e7d32;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .pause-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 5px 10px;
+            border-radius: 16px;
+            background: #ef6c00;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .slider-area {
+            margin-top: 18px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        .time-labels {
+            position: relative;
+            height: 22px;
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .time-labels span {
+            position: absolute;
+            white-space: nowrap;
+        }
+
+        .time-labels .left-label {
+            left: 0;
+        }
+
+        .time-labels .right-label {
+            right: 0;
+        }
+
+        .time-labels.time-mode .now-label {
+            left: 60%;
+            transform: translateX(-50%);
+        }
+
+        .time-labels.batch-mode .now-label {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .selected-time {
+            margin-top: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #263238;
+        }
+
+        .timeline-result {
+            margin-top: 16px;
+            background: #f7f7f7;
+            padding: 14px;
+            border-radius: 12px;
+            line-height: 1.8;
+        }
+
+        .future-warning {
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        .history-note {
+            color: #1565c0;
+            font-weight: bold;
+        }
+
+        .running {
+            border-top-color: #2e7d32;
+        }
+
+        .running .status-badge {
+            background: #2e7d32;
+        }
+
+        .running .robot path,
+        .running .robot circle,
+        .running .robot rect {
+            stroke: #2e7d32;
+        }
+
+        .standby {
+            border-top-color: #1976d2;
+        }
+
+        .standby .status-badge {
+            background: #1976d2;
+        }
+
+        .standby .robot path,
+        .standby .robot circle,
+        .standby .robot rect {
+            stroke: #1976d2;
+        }
+
+        .stop {
+            border-top-color: #c62828;
+        }
+
+        .stop .status-badge {
+            background: #c62828;
+        }
+
+        .stop .robot path,
+        .stop .robot circle,
+        .stop .robot rect {
+            stroke: #c62828;
+        }
+
+        .maintenance {
+            border-top-color: #ef6c00;
+        }
+
+        .maintenance .status-badge {
+            background: #ef6c00;
+        }
+
+        .maintenance .robot path,
+        .maintenance .robot circle,
+        .maintenance .robot rect {
+            stroke: #ef6c00;
+        }
+
+        .alarm {
+            border-top-color: #b71c1c;
+            animation: alarmFlash 1s infinite;
+        }
+
+        .alarm .status-badge {
+            background: #b71c1c;
+        }
+
+        .alarm .robot path,
+        .alarm .robot circle,
+        .alarm .robot rect {
+            stroke: #b71c1c;
+        }
+
+        .ok {
+            border-left-color: #2e7d32;
+        }
+
+        .warn {
+            border-left-color: #ef6c00;
+        }
+
+        .bad {
+            border-left-color: #c62828;
+        }
+
+        .neutral {
+            border-left-color: #1976d2;
+        }
+
+        @keyframes alarmFlash {
+            0% { box-shadow: 0 0 5px rgba(183,28,28,0.3); }
+            50% { box-shadow: 0 0 25px rgba(183,28,28,0.7); }
+            100% { box-shadow: 0 0 5px rgba(183,28,28,0.3); }
+        }
+
+        @media (max-width: 700px) {
+            .part-grid,
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .component-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>噴塗產線監控系統</h1>
+        <p>Spraying Line Monitoring System</p>
+        <p id="updateTime">最後更新時間：</p>
+    </div>
+
+    <div class="main">
+
+        <div class="summary">
+            <div class="summary-card">
+                <h3>總站數 Total Stations</h3>
+                <div class="number" id="totalCount">3</div>
+            </div>
+
+            <div class="summary-card">
+                <h3>正常 Normal</h3>
+                <div class="number" id="normalCount">0</div>
+            </div>
+
+            <div class="summary-card">
+                <h3>注意 Warning</h3>
+                <div class="number" id="warningCount">0</div>
+            </div>
+
+            <div class="summary-card">
+                <h3>預測風險 Predict Risk</h3>
+                <div class="number" id="riskCount">0</div>
+            </div>
+        </div>
+
+        <div class="station-area" id="stationArea"></div>
+
+        <div class="timeline-panel">
+            <div class="timeline-top">
+                <div>
+                    <h2>
+                        時間序列檢視 Time Series Viewer
+                        <span id="liveStatusBadge" class="live-badge">即時更新中</span>
+                    </h2>
+                    <p>拉到中間為即時監控，往左查看歷史資料，往右查看未來預測。</p>
+                </div>
+
+                <div class="mode-buttons">
+                    <button id="timeModeBtn" class="active" onclick="setMode('time')">時間模式</button>
+                    <button id="batchModeBtn" onclick="setMode('batch')">批次模式</button>
+                    <button onclick="backToLive()">回到即時</button>
+                </div>
+            </div>
+
+            <div class="slider-area">
+                <input type="range" id="timeSlider" min="-6" max="4" step="1" value="0" oninput="handleSliderChange()">
+
+                <div class="time-labels time-mode" id="sliderLabels">
+                    <span class="left-label">過去 6 小時</span>
+                    <span class="now-label">現在</span>
+                    <span class="right-label">未來 2 小時</span>
+                </div>
+
+                <div class="selected-time" id="selectedTimeText">
+                    目前時間點：現在
+                </div>
+            </div>
+
+            <div class="timeline-result" id="timelineResult">
+                資料載入中...
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentMode = "time";
+        let autoUpdate = true;
+
+        const baseStations = [
+            {
+                id: "M1",
+                name: "底漆站",
+                englishName: "Primer Station",
+                recipe: "Primer_A",
+                basePressure: 2.5,
+                baseFlow: 120,
+                baseTemp: 28,
+                baseAvailability: 95,
+                baseMaintainability: 92,
+                baseClog: 12,
+                baseQuality: 96,
+                baseUtilization: 78,
+                baseCycle: 42
+            },
+            {
+                id: "M2",
+                name: "面漆站",
+                englishName: "Topcoat Station",
+                recipe: "Topcoat_B",
+                basePressure: 2.1,
+                baseFlow: 100,
+                baseTemp: 27,
+                baseAvailability: 88,
+                baseMaintainability: 86,
+                baseClog: 25,
+                baseQuality: 91,
+                baseUtilization: 72,
+                baseCycle: 46
+            },
+            {
+                id: "M3",
+                name: "金漆站",
+                englishName: "Gold Paint Station",
+                recipe: "Gold_C",
+                basePressure: 1.7,
+                baseFlow: 82,
+                baseTemp: 26,
+                baseAvailability: 72,
+                baseMaintainability: 65,
+                baseClog: 55,
+                baseQuality: 82,
+                baseUtilization: 60,
+                baseCycle: 55
+            }
+        ];
+
+        const stateMap = {
+            "Running": {
+                text: "運行中",
+                className: "running"
+            },
+            "Standby": {
+                text: "待機",
+                className: "standby"
+            },
+            "Stop": {
+                text: "停止",
+                className: "stop"
+            },
+            "Maintenance": {
+                text: "維護",
+                className: "maintenance"
+            },
+            "Alarm": {
+                text: "異常",
+                className: "alarm"
+            }
+        };
+
+        function robotSvg() {
+            return `
+                <svg class="robot" viewBox="0 0 120 120" fill="none">
+                    <rect x="45" y="88" width="30" height="12" rx="3" stroke-width="6"/>
+                    <circle cx="60" cy="82" r="10" stroke-width="6"/>
+                    <path d="M60 72 L40 45" stroke-width="8" stroke-linecap="round"/>
+                    <circle cx="38" cy="42" r="8" stroke-width="6"/>
+                    <path d="M38 42 L75 25" stroke-width="8" stroke-linecap="round"/>
+                    <circle cx="78" cy="24" r="7" stroke-width="6"/>
+                    <path d="M83 24 L98 35" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M98 35 L105 30" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M98 35 L97 44" stroke-width="5" stroke-linecap="round"/>
+                </svg>
+            `;
+        }
+
+        function clamp(value, min, max) {
+            return Math.max(min, Math.min(max, value));
+        }
+
+        function getSliderValue() {
+            return Number(document.getElementById("timeSlider").value);
+        }
+
+        function buildStationData() {
+            const offset = getSliderValue();
+
+            // 即時模式用這個做連續變化，讓畫面不是靜態的
+            const liveWave = Math.sin(Date.now() / 1500);
+
+            return baseStations.map((s, index) => {
+                let factor;
+
+                if (currentMode === "time") {
+                    if (offset > 0) {
+                        // 右半邊 1~6 對應未來 0~2 小時
+                        factor = offset * 0.5;
+                } else {
+                    // 左半邊 -6~0 對應過去 6 小時到現在
+                    factor = offset;
+                }
+            } else {
+                factor = offset * 0.35;
+            }
+
+                let clog = s.baseClog + factor * (index + 1) * 7;
+                let availability = s.baseAvailability - Math.max(0, factor) * (index + 1) * 4;
+                let maintainability = s.baseMaintainability - Math.max(0, factor) * (index + 1) * 5;
+                let quality = s.baseQuality - Math.max(0, factor) * (index + 1) * 3;
+                let cycle = s.baseCycle + Math.max(0, factor) * (index + 1) * 2;
+
+                // 現在：即時資料會持續變動
+                if (offset === 0) {
+                    clog = s.baseClog + liveWave * 3 + index * 2;
+                    availability = s.baseAvailability + liveWave * 2;
+                    maintainability = s.baseMaintainability + liveWave * 2;
+                    quality = s.baseQuality + liveWave * 1.5;
+                    cycle = s.baseCycle + liveWave * 1.5;
+                }
+
+                // 過去：模擬歷史資料變化
+                if (offset < 0) {
+                    clog = s.baseClog + Math.sin(offset + index) * 6;
+                    availability = s.baseAvailability + Math.sin(offset + index) * 3;
+                    maintainability = s.baseMaintainability + Math.cos(offset + index) * 3;
+                    quality = s.baseQuality + Math.sin(offset + index) * 2;
+                    cycle = s.baseCycle + Math.cos(offset + index) * 2;
+                }
+
+                clog = clamp(Math.round(clog), 0, 100);
+                availability = clamp(Math.round(availability), 0, 100);
+                maintainability = clamp(Math.round(maintainability), 0, 100);
+                quality = clamp(Math.round(quality), 0, 100);
+                cycle = Math.round(cycle);
+
+                let overall = "Running";
+                let nozzleStatus = "正常";
+                let armStatus = "運行正常";
+                let pumpStatus = "正常";
+                let valveStatus = "正常";
+                let filterStatus = "正常";
+                let riskText = "低風險";
+
+                if (clog >= 75 || availability < 55 || quality < 75) {
+                    overall = "Alarm";
+                    nozzleStatus = "可能堵塞";
+                    riskText = "高風險";
+                } else if (clog >= 50 || maintainability < 70) {
+                    overall = "Maintenance";
+                    nozzleStatus = "堵塞風險";
+                    filterStatus = "建議清潔";
+                    riskText = "中風險";
+                } else if (availability < 80) {
+                    overall = "Standby";
+                    riskText = "低至中風險";
+                }
+
+                let pressure = s.basePressure - clog * 0.006;
+                let flow = s.baseFlow - clog * 0.45;
+                let temp = s.baseTemp + Math.max(0, factor) * 0.4;
+
+                if (overall === "Alarm") {
+                    pumpStatus = "壓力偏低";
+                    valveStatus = "需調整";
+                }
+
+                return {
+                    ...s,
+                    overall,
+                    armStatus,
+                    nozzleStatus,
+                    pumpStatus,
+                    valveStatus,
+                    filterStatus,
+                    riskText,
+                    pressure: pressure.toFixed(1),
+                    flow: Math.round(flow),
+                    temperature: temp.toFixed(1),
+                    availability,
+                    maintainability,
+                    clog,
+                    quality,
+                    utilization: clamp(Math.round(s.baseUtilization - Math.max(0, factor) * 2), 0, 100),
+                    cycle
+                };
+            });
+        }
+
+        function partClass(value, type) {
+            if (type === "clog") {
+                if (value >= 75) return "bad";
+                if (value >= 50) return "warn";
+                return "ok";
+            }
+
+            if (type === "percent") {
+                if (value < 60) return "bad";
+                if (value < 80) return "warn";
+                return "ok";
+            }
+
+            return "neutral";
+        }
+
+        function pressureClass(value) {
+            const pressure = Number(value);
+
+            if (pressure < 1.5) return "bad";
+            if (pressure < 2.0) return "warn";
+            return "ok";
+        }
+
+        function sprayWidthClass(value) {
+            const width = Number(value);
+
+            // 噴幅目標值設定：110 ~ 130 mm 為正常
+            // 100 ~ 109 mm 或 131 ~ 140 mm 為注意
+            // 小於 100 mm 或大於 140 mm 為異常
+            if (width < 100 || width > 140) return "bad";
+            if (width < 110 || width > 130) return "warn";
+            return "ok";
+        }
+
+        function statusText(level) {
+            if (level === "ok") return "正常";
+            if (level === "warn") return "注意";
+            if (level === "bad") return "異常";
+            return "監控";
+        }
+
+        function componentOverview(station) {
+            const components = [
+                {
+                    icon: "🦾",
+                    name: "手臂",
+                    en: "Arm",
+                    level: partClass(station.availability, "percent")
+                },
+                {
+                    icon: "💧",
+                    name: "噴嘴",
+                    en: "Nozzle",
+                    level: partClass(station.clog, "clog")
+                },
+                {
+                    icon: "⚙️",
+                    name: "幫浦",
+                    en: "Pump",
+                    level: pressureClass(station.pressure)
+                },
+                {
+                    icon: "↔️",
+                    name: "噴幅",
+                    en: "Spray Width",
+                    level: sprayWidthClass(station.flow)
+                },
+                {
+                    icon: "🧽",
+                    name: "濾網",
+                    en: "Filter Mesh",
+                    level: partClass(station.maintainability, "percent")
+                },
+                {
+                    icon: "📏",
+                    name: "品質",
+                    en: "Quality",
+                    level: partClass(station.quality, "percent")
+                }
+            ];
+
+            return `
+                <div class="component-overview">
+                    ${components.map(component => `
+                        <div class="component-mini ${component.level}">
+                            <div class="component-icon">${component.icon}</div>
+                            <div class="component-name">${component.name}</div>
+                            <div class="component-en">${component.en}</div>
+                            <div class="component-status">${statusText(component.level)}</div>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+        }
+
+
+        function sprayWidthImage(station) {
+            const widthValue = Number(station.flow);
+            const statusClass = sprayWidthClass(widthValue);
+            const statusLabel = statusText(statusClass);
+
+            let statusColor = "#2e7d32";
+            if (statusClass === "warn") {
+                statusColor = "#ef6c00";
+            } else if (statusClass === "bad") {
+                statusColor = "#c62828";
+            }
+
+            // 以 120 mm 作為目標噴幅，將影像示意寬度依數值縮放
+            const minOk = 110;
+            const maxOk = 130;
+            const displayWidth = clamp(widthValue, 70, 145);
+            const halfWidth = displayWidth * 0.65;
+            const leftX = 180 - halfWidth;
+            const rightX = 180 + halfWidth;
+
+            return `
+                <svg viewBox="0 0 360 230" class="spray-svg">
+                    <rect x="0" y="0" width="360" height="230" rx="16" fill="#f7f9fa"/>
+
+                    <!-- 標題區 -->
+                    <text x="20" y="28" font-size="14" font-weight="bold" fill="#263238">
+                        噴幅影像 Spray Width Image
+                    </text>
+
+                    <!-- 狀態標籤 -->
+                    <rect x="286" y="12" width="52" height="24" rx="12" fill="${statusColor}"/>
+                    <text x="312" y="29" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">
+                        ${statusLabel}
+                    </text>
+
+                    <!-- 模擬相機影像區 -->
+                    <rect x="18" y="45" width="324" height="160" rx="12" fill="#ffffff" stroke="#dfe6e9"/>
+
+                    <!-- 噴嘴 -->
+                    <rect x="164" y="60" width="32" height="20" rx="5" fill="#455a64"/>
+                    <polygon points="180,80 170,96 190,96" fill="#455a64"/>
+
+                    <!-- 實際噴霧範圍 -->
+                    <polygon points="180,96 ${leftX},165 ${rightX},165"
+                            fill="rgba(25,118,210,0.18)"
+                            stroke="${statusColor}"
+                            stroke-width="3"/>
+
+                    <!-- 目標噴幅範圍 -->
+                    <rect x="108" y="145" width="144" height="18" rx="8"
+                        fill="rgba(46,125,50,0.10)"
+                        stroke="#2e7d32"
+                        stroke-dasharray="5 4"/>
+                    <text x="180" y="139" text-anchor="middle" font-size="12" fill="#2e7d32">
+                        目標範圍 ${minOk} ~ ${maxOk} mm
+                    </text>
+
+                    <!-- 左右邊界 -->
+                    <line x1="${leftX}" y1="164" x2="${leftX}" y2="180" stroke="${statusColor}" stroke-width="3"/>
+                    <line x1="${rightX}" y1="164" x2="${rightX}" y2="180" stroke="${statusColor}" stroke-width="3"/>
+
+                    <!-- 寬度量測線 -->
+                    <line x1="${leftX}" y1="176" x2="${rightX}" y2="176" stroke="#263238" stroke-width="2"/>
+
+                    <text x="180" y="195" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">
+                        目前噴幅：${widthValue} mm
+                    </text>
+                </svg>
+
+                <div class="spray-image-note">
+                    影像區目前為示意圖，後續可改接相機畫面，顯示噴霧邊界、目標範圍與實際噴幅。
+                </div>
+            `;
+        }
+
+        function renderStations(stationData) {
+            const stationArea = document.getElementById("stationArea");
+            stationArea.innerHTML = "";
+
+            stationData.forEach(station => {
+                const stateInfo = stateMap[station.overall];
+
+                const card = document.createElement("div");
+                card.className = `station-card ${stateInfo.className}`;
+
+                card.innerHTML = `
+                    <div class="station-title">
+                        <div>
+                            <h2>${station.name}</h2>
+                            <p>${station.englishName}</p>
+                        </div>
+                        <div class="status-badge">${stateInfo.text}</div>
+                    </div>
+
+                    <div class="robot-box">
+                        ${componentOverview(station)}
+                    </div>
+
+                    <div class="section-title">零件狀態 Part Status</div>
+
+                    <div class="part-grid">
+                        <div class="part-card ${partClass(station.availability, "percent")}">
+                            <div class="part-name">機械手臂 Robot Arm</div>
+                            <div class="part-value">${statusText(partClass(station.availability, "percent"))}</div>
+                            <div class="part-small">可用度 ${station.availability}%</div>
+                        </div>
+
+                        <div class="part-card ${partClass(station.clog, "clog")}">
+                            <div class="part-name">噴嘴 Nozzle</div>
+                            <div class="part-value">${station.nozzleStatus}</div>
+                            <div class="part-small">堵塞率 ${station.clog}%</div>
+                        </div>
+
+                        <div class="part-card ${pressureClass(station.pressure)}">
+                            <div class="part-name">幫浦 Pump</div>
+                            <div class="part-value">${statusText(pressureClass(station.pressure))}</div>
+                            <div class="part-small">壓力 ${station.pressure} bar</div>
+                        </div>
+
+                        <div class="part-card ${sprayWidthClass(station.flow)}">
+                            <div class="part-name">噴幅 Spray Width</div>
+                            <div class="part-value">${statusText(sprayWidthClass(station.flow))}</div>
+                            <div class="part-small">噴幅 ${station.flow} mm</div>
+                        </div>
+
+                        <div class="part-card ${partClass(station.maintainability, "percent")}">
+                            <div class="part-name">濾網 Filter Mesh</div>
+                            <div class="part-value">${station.filterStatus}</div>
+                            <div class="part-small">維護性 ${station.maintainability}%</div>
+                        </div>
+
+                        <div class="part-card ${partClass(station.quality, "percent")}">
+                            <div class="part-name">品質 Quality</div>
+                            <div class="part-value">${station.quality}%</div>
+                            <div class="part-small">預估膜厚穩定度</div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">製程參數 Process Parameters</div>
+
+                    <div class="metric-grid">
+                        <div class="metric">
+                            <span>配方 Recipe</span>
+                            <strong>${station.recipe}</strong>
+                        </div>
+
+                        <div class="metric">
+                            <span>溫度 Temperature</span>
+                            <strong>${station.temperature} °C</strong>
+                        </div>
+
+                        <div class="metric">
+                            <span>利用率 Utilization</span>
+                            <strong>${station.utilization}%</strong>
+                        </div>
+
+                        <div class="metric">
+                            <span>週期時間 Cycle Time</span>
+                            <strong>${station.cycle} sec</strong>
+                        </div>
+                    </div>
+
+                    <div class="section-title">噴幅影像 Spray Width Image</div>
+
+                    <div class="spray-image-box">
+                        ${sprayWidthImage(station)}
+                    </div>
+                `;
+
+                stationArea.appendChild(card);
+            });
+        }
+
+        function updateSummary(stationData) {
+            let normalCount = 0;
+            let warningCount = 0;
+            let riskCount = 0;
+
+            stationData.forEach(station => {
+                if (station.overall === "Running" || station.overall === "Standby") {
+                    normalCount++;
+                }
+
+                if (station.overall === "Maintenance" || station.overall === "Alarm") {
+                    warningCount++;
+                }
+
+                if (station.clog >= 50 || station.availability < 80) {
+                    riskCount++;
+                }
+            });
+
+            document.getElementById("totalCount").innerText = stationData.length;
+            document.getElementById("normalCount").innerText = normalCount;
+            document.getElementById("warningCount").innerText = warningCount;
+            document.getElementById("riskCount").innerText = riskCount;
+        }
+
+        function updateTime() {
+            const now = new Date();
+
+            const timeText = now.getFullYear() + "/" +
+                String(now.getMonth() + 1).padStart(2, "0") + "/" +
+                String(now.getDate()).padStart(2, "0") + " " +
+                String(now.getHours()).padStart(2, "0") + ":" +
+                String(now.getMinutes()).padStart(2, "0") + ":" +
+                String(now.getSeconds()).padStart(2, "0");
+
+            document.getElementById("updateTime").innerText = "最後更新時間：" + timeText;
+        }
+
+        function updateLiveBadge() {
+            const badge = document.getElementById("liveStatusBadge");
+
+            if (autoUpdate && getSliderValue() === 0) {
+                badge.className = "live-badge";
+                badge.innerText = "即時更新中";
+            } else {
+                badge.className = "pause-badge";
+                badge.innerText = "時間軸檢視中";
+            }
+        }
+
+        function updateTimelineText(stationData) {
+            const offset = getSliderValue();
+            let label = "";
+
+            if (currentMode === "time") {
+                if (offset < 0) {
+                    label = `過去 ${Math.abs(offset)} 小時`;
+                } else if (offset === 0) {
+                    label = "現在";
+                } else {
+                    const futureHour = offset * 0.5;
+
+                    if (futureHour % 1 === 0) {
+                        label = `未來 ${futureHour.toFixed(0)} 小時預測`;
+                    } else {
+                        label = `未來 ${futureHour} 小時預測`;
+                    }
+                }
+            } else {
+                if (offset < 0) {
+                    label = `過去第 ${Math.abs(offset)} 批`;
+                } else if (offset === 0) {
+                    label = "目前批次";
+                } else {
+                    label = `未來第 ${offset} 批預測`;
+                }
+            }
+
+            document.getElementById("selectedTimeText").innerText = "目前時間點：" + label;
+
+            let result = "";
+
+            if (offset < 0) {
+                result += `<span class="history-note">歷史資料檢視：</span><br>`;
+                result += `目前顯示的是 ${label} 的設備狀態，可回看當時噴嘴堵塞率、壓力、可用度與品質變化。<br><br>`;
+            } else if (offset === 0) {
+                result += `<b>目前狀態：</b><br>`;
+                result += `目前顯示的是三站即時狀態，資料會每 1 秒自動更新一次。<br><br>`;
+            } else {
+                result += `<span class="future-warning">未來預測：</span><br>`;
+                result += `目前顯示的是 ${label}。系統根據噴嘴堵塞率、可用度、維護性與品質變化推估可能風險。<br><br>`;
+            }
+
+            stationData.forEach(station => {
+                result += `${station.name}：噴嘴堵塞率 ${station.clog}%，可用度 ${station.availability}%，維護性 ${station.maintainability}%，品質 ${station.quality}%，風險判斷為「${station.riskText}」。<br>`;
+            });
+
+            document.getElementById("timelineResult").innerHTML = result;
+        }
+
+        function handleSliderChange() {
+            const offset = getSliderValue();
+
+            if (offset === 0) {
+                autoUpdate = true;
+            } else {
+                autoUpdate = false;
+            }
+
+            refreshDashboard();
+        }
+
+        function backToLive() {
+            const slider = document.getElementById("timeSlider");
+            slider.value = 0;
+            autoUpdate = true;
+            refreshDashboard();
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+
+            const slider = document.getElementById("timeSlider");
+
+            if (mode === "time") {
+                slider.min = -6;
+                slider.max = 4;
+                slider.step = 1;
+                slider.value = 0;
+
+                document.getElementById("sliderLabels").className = "time-labels time-mode";
+                document.getElementById("sliderLabels").innerHTML = `
+                    <span class="left-label">過去 6 小時</span>
+                    <span class="now-label">現在</span>
+                    <span class="right-label">未來 2 小時</span>
+                `;
+
+                document.getElementById("timeModeBtn").classList.add("active");
+                document.getElementById("batchModeBtn").classList.remove("active");
+            } else {
+                slider.min = -10;
+                slider.max = 10;
+                slider.step = 1;
+                slider.value = 0;
+
+                document.getElementById("sliderLabels").className = "time-labels batch-mode";
+                document.getElementById("sliderLabels").innerHTML = `
+                    <span class="left-label">過去 10 批</span>
+                    <span class="now-label">目前批次</span>
+                    <span class="right-label">未來 10 批</span>
+                `;
+
+                document.getElementById("timeModeBtn").classList.remove("active");
+                document.getElementById("batchModeBtn").classList.add("active");
+            }
+
+            autoUpdate = true;
+            refreshDashboard();
+        }
+
+        function refreshDashboard() {
+            updateTime();
+
+            const stationData = buildStationData();
+
+            renderStations(stationData);
+            updateSummary(stationData);
+            updateTimelineText(stationData);
+            updateLiveBadge();
+        }
+
+        refreshDashboard();
+
+        // 每 1 秒更新一次
+        setInterval(() => {
+            if (autoUpdate && getSliderValue() === 0) {
+                refreshDashboard();
+            } else {
+                updateTime();
+                updateLiveBadge();
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>
+"""
+
+Path("spraying_dashboard.html").write_text(html_code, encoding="utf-8")
+
+print("已更新 spraying_dashboard.html")
