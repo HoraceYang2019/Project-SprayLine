@@ -1,0 +1,24 @@
+@prefix : <http://nkust.edu.tw/mislab/spraying/ontology#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:DashboardSnapshotTemplate a :DashboardSnapshot ;
+    rdfs:label "儀表板快照模板"@zh ;
+    :hasStationSummary :LineSnapshotTemplate ;
+    :hasWindow :StatisticsWindowTemplate ;
+    rdfs:comment "Runtime 佔位節點。未來由 service output 或 database query result 產生時，需用真實識別資訊取代 TEMPLATE。"@zh .
+
+:LineSnapshotTemplate a :StationSnapshot ;
+    rdfs:label "產線快照模板"@zh ;
+    :hasMetric :MetricTemplate ;
+    :hasRiskAssessment :RiskAssessmentTemplate ;
+    rdfs:comment "識別欄位使用 line_id；底漆站、面漆站、金漆站等 station 名稱仍可作為 UI 或製程顯示概念。"@zh .
+
+:MetricTemplate a :Metric ;
+    rdfs:label "指標模板"@zh .
+
+:RiskAssessmentTemplate a :RiskAssessment ;
+    rdfs:label "風險評估模板"@zh .
+
+:StatisticsWindowTemplate a :StatisticsWindow ;
+    rdfs:label "統計視窗模板"@zh .
+
