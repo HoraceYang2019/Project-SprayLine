@@ -1,0 +1,51 @@
+{
+  "service_name": "current_service",
+  "schema_version": "v6-compatible",
+  "window": {
+    "mode": "current",
+    "window_type": "current_window",
+    "window_size": null,
+    "display_label": "current"
+  },
+  "sample_method": {
+    "state": "latest_valid",
+    "metrics": {
+      "pressure_bar": "recent_average",
+      "flow_rate_ml_min": "recent_average",
+      "quality_score_pct": "latest_valid",
+      "availability_pct": "latest_valid",
+      "clog_rate_pct": "latest_valid",
+      "maintainability_pct": "latest_valid",
+      "alarm_count": "count",
+      "defect_count": "count",
+      "risk_text": "latest_valid"
+    },
+    "process_parameters": {
+      "temperature_c": "recent_average",
+      "utilization_pct": "latest_valid",
+      "cycle_time_sec": "latest_valid"
+    }
+  },
+  "target": [
+    "state",
+    "metrics",
+    "process_parameters"
+  ],
+  "stations": [
+    {
+      "station_id": "M1",
+      "station_name_zh": "底漆站",
+      "station_name_en": "Primer Station"
+    },
+    {
+      "station_id": "M2",
+      "station_name_zh": "面漆站",
+      "station_name_en": "Topcoat Station"
+    },
+    {
+      "station_id": "M3",
+      "station_name_zh": "金漆站",
+      "station_name_en": "Gold Paint Station"
+    }
+  ]
+}

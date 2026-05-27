@@ -1,0 +1,106 @@
+{
+  "service_name": "current_service",
+  "schema_version": "v6-compatible",
+  "generated_at": "2026-05-26T15:33:29.197085+00:00",
+  "window": {
+    "window_id": null,
+    "mode": "current",
+    "window_type": "current_window",
+    "window_size": null,
+    "display_label": "current"
+  },
+  "sample_method": {
+    "state": "latest_valid",
+    "metrics": {
+      "pressure_bar": "recent_average",
+      "flow_rate_ml_min": "recent_average",
+      "quality_score_pct": "latest_valid",
+      "availability_pct": "latest_valid",
+      "clog_rate_pct": "latest_valid",
+      "maintainability_pct": "latest_valid",
+      "alarm_count": "count",
+      "defect_count": "count",
+      "risk_text": "latest_valid"
+    },
+    "process_parameters": {
+      "temperature_c": "recent_average",
+      "utilization_pct": "latest_valid",
+      "cycle_time_sec": "latest_valid"
+    }
+  },
+  "stations": [
+    {
+      "station_id": "M1",
+      "station_name_zh": "底漆站",
+      "station_name_en": "Primer Station",
+      "state": null,
+      "metrics": {
+        "pressure_bar": null,
+        "flow_rate_ml_min": null,
+        "quality_score_pct": null,
+        "availability_pct": null,
+        "clog_rate_pct": null,
+        "maintainability_pct": null,
+        "alarm_count": null,
+        "defect_count": null,
+        "risk_text": null
+      },
+      "process_parameters": {
+        "temperature_c": null,
+        "utilization_pct": null,
+        "cycle_time_sec": null
+      }
+    },
+    {
+      "station_id": "M2",
+      "station_name_zh": "面漆站",
+      "station_name_en": "Topcoat Station",
+      "state": null,
+      "metrics": {
+        "pressure_bar": null,
+        "flow_rate_ml_min": null,
+        "quality_score_pct": null,
+        "availability_pct": null,
+        "clog_rate_pct": null,
+        "maintainability_pct": null,
+        "alarm_count": null,
+        "defect_count": null,
+        "risk_text": null
+      },
+      "process_parameters": {
+        "temperature_c": null,
+        "utilization_pct": null,
+        "cycle_time_sec": null
+      }
+    },
+    {
+      "station_id": "M3",
+      "station_name_zh": "金漆站",
+      "station_name_en": "Gold Paint Station",
+      "state": null,
+      "metrics": {
+        "pressure_bar": null,
+        "flow_rate_ml_min": null,
+        "quality_score_pct": null,
+        "availability_pct": null,
+        "clog_rate_pct": null,
+        "maintainability_pct": null,
+        "alarm_count": null,
+        "defect_count": null,
+        "risk_text": null
+      },
+      "process_parameters": {
+        "temperature_c": null,
+        "utilization_pct": null,
+        "cycle_time_sec": null
+      }
+    }
+  ],
+  "notes": [
+    "Current Service 主要提供目前站別狀態、metrics 與 process_parameters。",
+    "Current state 使用 latest_valid 反映目前最新有效狀態。",
+    "alarm_count / defect_count 使用 count 保留目前視窗內的異常次數。",
+    "pressure_bar、flow_rate_ml_min、temperature_c 建議用 recent_average，避免即時值跳動過大。",
+    "目前若未傳入 raw_dataset，數值欄位會維持 null。"
+  ]
+}
