@@ -1,0 +1,15 @@
+{
+  "__file_note": "Time Series Viewer query template：顯示 UI 要送給 service 的查詢欄位長相。",
+  "schema_version": "<string>",
+  "request_id": "<string>",
+  "mode": "<time|batch>",
+  "window_type": "<2hour|10batch>",
+  "slider_value": "<number>",
+  "station_scope": "<string|array>",
+  "return_to_now": "<boolean>",
+  "requested_metrics": [
+    "<string>"
+  ],
+  "__folder_flow_note": "流程 Step 4：建立 JSON template，使用 placeholder 表示欄位位置，不代表真實資料。",
+  "__template_policy": "本檔只使用 placeholder 表示欄位位置與型別，不代表真實資料，也不應作為可驗證的實例資料。"
+}

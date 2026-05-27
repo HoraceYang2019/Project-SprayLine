@@ -1,0 +1,8 @@
+JSON parse errors: None
+ontology/SprayLine_service_extension.ttl: TTL parse passed. Triples: 1549
+runtime/statistics_service_output.template.ttl: TTL parse passed. Triples: 23
+TTL parse errors: None
+
+Note:
+The ontology was built as one bilingual TTL file by combining the existing ontology source content with the service_extension additions.
+The final TTL file itself was parsed successfully.

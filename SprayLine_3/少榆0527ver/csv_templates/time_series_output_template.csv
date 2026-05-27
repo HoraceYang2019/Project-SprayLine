@@ -1,0 +1,27 @@
+﻿json_path,field_key,data_type_or_placeholder,placeholder_value,label_zh,label_en,unit,required,source_or_note
+schema_version,schema_version,placeholder|string,<string>,,,,,generated from JSON template; review manually
+generated_at,generated_at,placeholder|string,<datetime-string>,,,,,generated from JSON template; review manually
+viewer_state.mode,mode,placeholder|string,<time|batch>,,,,,generated from JSON template; review manually
+viewer_state.window_type,window_type,placeholder|string,<2hour|10batch>,,,,,generated from JSON template; review manually
+viewer_state.slider_value,slider_value,placeholder|string,<number>,,,,,generated from JSON template; review manually
+viewer_state.display_label,display_label,placeholder|string,<string>,,,,,generated from JSON template; review manually
+viewer_state.is_history,is_history,placeholder|string,<boolean>,,,,,generated from JSON template; review manually
+viewer_state.is_current,is_current,placeholder|string,<boolean>,,,,,generated from JSON template; review manually
+viewer_state.is_future,is_future,placeholder|string,<boolean>,,,,,generated from JSON template; review manually
+axis_info.left_label,left_label,placeholder|string,<string>,,,,,generated from JSON template; review manually
+axis_info.center_label,center_label,placeholder|string,<string>,,,,,generated from JSON template; review manually
+axis_info.right_label,right_label,placeholder|string,<string>,,,,,generated from JSON template; review manually
+narrative.title,title,placeholder|string,<string>,,,,,generated from JSON template; review manually
+narrative.summary_text,summary_text,placeholder|string,<string>,,,,,generated from JSON template; review manually
+station_summaries[].line_id,line_id,placeholder|string,<string>,,,,,generated from JSON template; review manually
+station_summaries[].station_name_zh,station_name_zh,placeholder|string,<string>,,,,,generated from JSON template; review manually
+station_summaries[].state,state,placeholder|string,<string>,,,,,generated from JSON template; review manually
+station_summaries[].clog_rate_pct,clog_rate_pct,placeholder|string,<number>,,,,,generated from JSON template; review manually
+station_summaries[].availability_pct,availability_pct,placeholder|string,<number>,,,,,generated from JSON template; review manually
+station_summaries[].maintainability_pct,maintainability_pct,placeholder|string,<number>,,,,,generated from JSON template; review manually
+station_summaries[].quality_score_pct,quality_score_pct,placeholder|string,<number>,,,,,generated from JSON template; review manually
+station_summaries[].risk_text,risk_text,placeholder|string,<string>,,,,,generated from JSON template; review manually
+series[].line_id,line_id,placeholder|string,<string>,,,,,generated from JSON template; review manually
+series[].metric_name,metric_name,placeholder|string,<string>,,,,,generated from JSON template; review manually
+series[].x_labels[],x_labels,placeholder|string,<string>,,,,,generated from JSON template; review manually
+series[].values[],values,placeholder|string,<number>,,,,,generated from JSON template; review manually

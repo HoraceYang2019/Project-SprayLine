@@ -1,0 +1,12 @@
+﻿function_class,function_name,input_parameters,output_summary,time_concept,status,notes
+RuntimeWindowFunction,GetLatestRuntimeWindow,line_id,latest runtime window,current,pending,Function names follow PascalCase; parameters keep snake_case.
+RuntimeWindowFunction,GetRuntimeWindow,window_id,runtime window detail,past/current,pending,Function names follow PascalCase; parameters keep snake_case.
+MetricTrendFunction,GetMetricTrend,line_id; metric_name; start_time; end_time,metric time trend,past/current/future,pending,Function names follow PascalCase; parameters keep snake_case.
+DiagnosisFunction,GetLatestDiagnosis,line_id,latest diagnosis,current,pending,Function names follow PascalCase; parameters keep snake_case.
+DiagnosisFunction,GetDiagnosisTimeline,line_id; category; start_time; end_time,diagnosis timeline,past,pending,Function names follow PascalCase; parameters keep snake_case.
+DashboardFunction,GetStationDashboardStatus,line_id,dashboard status summary,current,pending,Function names follow PascalCase; parameters keep snake_case.
+ComponentHealthFunction,GetComponentHealthSummary,line_id,component health summary,current,pending,Function names follow PascalCase; parameters keep snake_case.
+QualityTrendFunction,GetRecentQualityTrend,line_id,recent QC trend,past/current,pending,Function names follow PascalCase; parameters keep snake_case.
+MLFeatureFunction,GetMLFeatureInput,part_uuid,ML model input features,future,pending,Function names follow PascalCase; parameters keep snake_case.
+PredictionFunction,GetLatestPrediction,part_uuid,latest ML prediction,future,pending,Function names follow PascalCase; parameters keep snake_case.
+OmniverseValidationFunction,GetOmniverseValidationResult,part_uuid,Omniverse collision/trajectory validation result,validation,pending,Function names follow PascalCase; parameters keep snake_case.

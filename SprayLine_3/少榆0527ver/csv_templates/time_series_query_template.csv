@@ -1,0 +1,9 @@
+﻿json_path,field_key,data_type_or_placeholder,placeholder_value,label_zh,label_en,unit,required,source_or_note
+schema_version,schema_version,placeholder|string,<string>,,,,,generated from JSON template; review manually
+request_id,request_id,placeholder|string,<string>,,,,,generated from JSON template; review manually
+mode,mode,placeholder|string,<time|batch>,,,,,generated from JSON template; review manually
+window_type,window_type,placeholder|string,<2hour|10batch>,,,,,generated from JSON template; review manually
+slider_value,slider_value,placeholder|string,<number>,,,,,generated from JSON template; review manually
+station_scope,station_scope,placeholder|string,<string|array>,,,,,generated from JSON template; review manually
+return_to_now,return_to_now,placeholder|string,<boolean>,,,,,generated from JSON template; review manually
+requested_metrics[],requested_metrics,placeholder|string,<string>,,,,,generated from JSON template; review manually

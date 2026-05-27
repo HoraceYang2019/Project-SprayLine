@@ -1,0 +1,307 @@
+{
+  "_file_note": "threshold 設定 template。門檻與規則獨立放在此檔案，不混在每筆 statistics output 中。本檔僅定義 threshold config 的資料結構，不代表實際門檻值已定案。",
+  "config_name": "threshold_config",
+  "config_version": "<string>",
+  "policy": {
+    "threshold_values_are_defined_outside_statistics_output": true,
+    "template_uses_placeholders_only": true,
+    "actual_threshold_values_are_not_finalized": true,
+    "description": "此檔案用來描述 threshold / rule config 的欄位結構。實際 warn_rule、alarm_rule、risk level 與門檻值需由 expert knowledge、system configuration、future service 或後續 rule service 確認。"
+  },
+  "owner": {
+    "primary_owner": "<statistics_service|future_service|rule_service|expert_knowledge|system_configuration>",
+    "description": "目前尚未獨立建立 Rule Service，因此 threshold config 先作為 Statistics Service 進行 threshold-based 判斷時的設定參考；後續可擴充為 Rule Service config 或 Future Service / Risk Model setting。"
+  },
+  "source_type_options": [
+    "expert_knowledge",
+    "system_configuration",
+    "rule_service_config",
+    "future_service_risk_model_setting"
+  ],
+  "risk_level_options": [
+    "normal",
+    "warning",
+    "alarm",
+    "low_risk",
+    "medium_risk",
+    "high_risk"
+  ],
+  "applies_to_options": [
+    "line",
+    "station",
+    "component",
+    "metric",
+    "process_parameter",
+    "future_prediction"
+  ],
+  "thresholds": [
+    {
+      "threshold_id": "<string>",
+      "metric_key": "<string>",
+      "metric_label_zh": "<string>",
+      "metric_label_en": "<string>",
+      "applies_to": "<line|station|component|metric|process_parameter|future_prediction>",
+      "line_id": "<string|null>",
+      "station_name_zh": "<string|null>",
+      "component_key": "<string|null>",
+      "component_name_zh": "<string|null>",
+      "unit": "<string|null>",
+      "value_type": "<number|string|boolean|state|category>",
+      "normal_rule": "<condition-expression|null>",
+      "warning_rule": "<condition-expression|null>",
+      "alarm_rule": "<condition-expression|null>",
+      "risk_level_if_warning": "<normal|warning|alarm|low_risk|medium_risk|high_risk|null>",
+      "risk_level_if_alarm": "<normal|warning|alarm|low_risk|medium_risk|high_risk|null>",
+      "output_fields_affected": [
+        "<string>"
+      ],
+      "source": "<expert_knowledge|system_configuration|rule_service_config|future_service_risk_model_setting>",
+      "used_by": [
+        "<statistics_service|future_service|rule_service|ui|ontology>"
+      ],
+      "enabled": true,
+      "is_finalized": false,
+      "note": "<string>"
+    }
+  ],
+  "example_threshold_items": {
+    "_file_note": "以下為欄位用途示意，仍然使用 placeholder，不填入實際門檻值。",
+    "quality_score_threshold": {
+      "threshold_id": "quality_score_threshold_template",
+      "metric_key": "quality_score_pct",
+      "metric_label_zh": "品質分數",
+      "metric_label_en": "Quality Score",
+      "applies_to": "station",
+      "line_id": "<string|null>",
+      "station_name_zh": "<string|null>",
+      "component_key": null,
+      "component_name_zh": null,
+      "unit": "%",
+      "value_type": "number",
+      "normal_rule": "<quality_score_pct >= normal_threshold>",
+      "warning_rule": "<quality_score_pct < warning_threshold>",
+      "alarm_rule": "<quality_score_pct < alarm_threshold>",
+      "risk_level_if_warning": "medium_risk",
+      "risk_level_if_alarm": "high_risk",
+      "output_fields_affected": [
+        "stations[].part_status.quality_score_pct",
+        "stations[].part_status.risk_text",
+        "summary.warning_count",
+        "summary.predict_risk_count"
+      ],
+      "source": "expert_knowledge",
+      "used_by": [
+        "statistics_service",
+        "future_service",
+        "ontology",
+        "ui"
+      ],
+      "enabled": true,
+      "is_finalized": false,
+      "note": "quality_score_pct 的正式計算方式與門檻值尚未定案，目前建議以良品率或上游品質分數作為討論基礎。"
+    },
+    "availability_threshold": {
+      "threshold_id": "availability_threshold_template",
+      "metric_key": "availability_pct",
+      "metric_label_zh": "可用度",
+      "metric_label_en": "Availability",
+      "applies_to": "station",
+      "line_id": "<string|null>",
+      "station_name_zh": "<string|null>",
+      "component_key": null,
+      "component_name_zh": null,
+      "unit": "%",
+      "value_type": "number",
+      "normal_rule": "<availability_pct >= normal_threshold>",
+      "warning_rule": "<availability_pct < warning_threshold>",
+      "alarm_rule": "<availability_pct < alarm_threshold>",
+      "risk_level_if_warning": "medium_risk",
+      "risk_level_if_alarm": "high_risk",
+      "output_fields_affected": [
+        "stations[].part_status.availability_pct",
+        "stations[].overall_state",
+        "stations[].status_badge_text",
+        "summary.warning_count"
+      ],
+      "source": "system_configuration",
+      "used_by": [
+        "statistics_service",
+        "ontology",
+        "ui"
+      ],
+      "enabled": true,
+      "is_finalized": false,
+      "note": "availability_pct 建議方向為 available_time_sec / planned_time_sec × 100，但 planned time、downtime、maintenance 是否納入仍需確認。"
+    },
+    "utilization_threshold": {
+      "threshold_id": "utilization_threshold_template",
+      "metric_key": "utilization_pct",
+      "metric_label_zh": "利用率",
+      "metric_label_en": "Utilization",
+      "applies_to": "station",
+      "line_id": "<string|null>",
+      "station_name_zh": "<string|null>",
+      "component_key": null,
+      "component_name_zh": null,
+      "unit": "%",
+      "value_type": "number",
+      "normal_rule": "<utilization_pct >= normal_threshold>",
+      "warning_rule": "<utilization_pct < warning_threshold>",
+      "alarm_rule": "<utilization_pct < alarm_threshold>",
+      "risk_level_if_warning": "low_risk",
+      "risk_level_if_alarm": "medium_risk",
+      "output_fields_affected": [
+        "stations[].process_parameters.utilization_pct",
+        "stations[].overall_state",
+        "summary.warning_count"
+      ],
+      "source": "system_configuration",
+      "used_by": [
+        "statistics_service",
+        "ontology",
+        "ui"
+      ],
+      "enabled": true,
+      "is_finalized": false,
+      "note": "utilization_pct 建議方向為 productive_time_sec / available_time_sec × 100，但 productive time 的資料來源尚需確認。"
+    },
+    "clog_rate_threshold": {
+      "threshold_id": "clog_rate_threshold_template",
+      "metric_key": "clog_rate_pct",
+      "metric_label_zh": "堵塞率",
+      "metric_label_en": "Clog Rate",
+      "applies_to": "component",
+      "line_id": "<string|null>",
+      "station_name_zh": "<string|null>",
+      "component_key": "<nozzle|filter_mesh|null>",
+      "component_name_zh": "<噴嘴|濾網|null>",
+      "unit": "%",
+      "value_type": "number",
+      "normal_rule": "<clog_rate_pct <= normal_threshold>",
+      "warning_rule": "<clog_rate_pct > warning_threshold>",
+      "alarm_rule": "<clog_rate_pct > alarm_threshold>",
+      "risk_level_if_warning": "medium_risk",
+      "risk_level_if_alarm": "high_risk",
+      "output_fields_affected": [
+        "stations[].part_status.clog_rate_pct",
+        "stations[].part_status.nozzle_status",
+        "stations[].part_status.filter_mesh_status",
+        "stations[].part_status.risk_text",
+        "summary.predict_risk_count"
+      ],
+      "source": "future_service_risk_model_setting",
+      "used_by": [
+        "statistics_service",
+        "future_service",
+        "ontology",
+        "ui"
+      ],
+      "enabled": true,
+      "is_finalized": false,
+      "note": "clog_rate_pct 可能由 flow rate、pressure、噴嘴狀態或未來預測模型推估，目前不建議視為 Past / Current 直接提供的固定原始欄位。"
+    },
+    "pressure_threshold": {
+      "threshold_id": "pressure_threshold_template",
+      "metric_key": "pressure_bar",
+      "metric_label_zh": "壓力",
+      "metric_label_en": "Pressure",
+      "applies_to": "station",
+      "line_id": "<string|null>",
+      "station_name_zh": "<string|null>",
+      "component_key": "<air_compressor|nozzle|null>",
+      "component_name_zh": "<空壓機|噴嘴|null>",
+      "unit": "bar",
+      "value_type": "number",
+      "normal_rule": "<pressure_bar within normal_range>",
+      "warning_rule": "<pressure_bar outside warning_range>",
+      "alarm_rule": "<pressure_bar outside alarm_range>",
+      "risk_level_if_warning": "medium_risk",
+      "risk_level_if_alarm": "high_risk",
+      "output_fields_affected": [
+        "stations[].part_status.pressure_bar",
+        "stations[].part_status.air_compressor_status",
+        "stations[].overall_state",
+        "summary.warning_count"
+      ],
+      "source": "expert_knowledge",
+      "used_by": [
+        "statistics_service",
+        "future_service",
+        "ontology",
+        "ui"
+      ],
+      "enabled": true,
+      "is_finalized": false,
+      "note": "pressure_bar 的來源需確認是空壓機壓力、噴嘴壓力或管路壓力。"
+    },
+    "flow_rate_threshold": {
+      "threshold_id": "flow_rate_threshold_template",
+      "metric_key": "flow_rate_ml_min",
+      "metric_label_zh": "流量",
+      "metric_label_en": "Flow Rate",
+      "applies_to": "station",
+      "line_id": "<string|null>",
+      "station_name_zh": "<string|null>",
+      "component_key": "<nozzle|air_compressor|valve|null>",
+      "component_name_zh": "<噴嘴|空壓機|氣閥|null>",
+      "unit": "ml/min",
+      "value_type": "number",
+      "normal_rule": "<flow_rate_ml_min within normal_range>",
+      "warning_rule": "<flow_rate_ml_min outside warning_range>",
+      "alarm_rule": "<flow_rate_ml_min outside alarm_range>",
+      "risk_level_if_warning": "medium_risk",
+      "risk_level_if_alarm": "high_risk",
+      "output_fields_affected": [
+        "stations[].part_status.flow_rate_ml_min",
+        "stations[].part_status.nozzle_status",
+        "stations[].part_status.air_valve_status",
+        "stations[].part_status.risk_text"
+      ],
+      "source": "expert_knowledge",
+      "used_by": [
+        "statistics_service",
+        "future_service",
+        "ontology",
+        "ui"
+      ],
+      "enabled": true,
+      "is_finalized": false,
+      "note": "flow_rate_ml_min 的實際單位需由上游資料確認；若原始單位不是 ml/min，需先換算後再填入此欄位。"
+    },
+    "spray_width_threshold": {
+      "threshold_id": "spray_width_threshold_template",
+      "metric_key": "spray_width_mm",
+      "metric_label_zh": "噴幅",
+      "metric_label_en": "Spray Width",
+      "applies_to": "component",
+      "line_id": "<string|null>",
+      "station_name_zh": "<string|null>",
+      "component_key": "spray_width",
+      "component_name_zh": "噴幅",
+      "unit": "mm",
+      "value_type": "number",
+      "normal_rule": "<spray_width_mm within normal_range>",
+      "warning_rule": "<spray_width_mm outside warning_range>",
+      "alarm_rule": "<spray_width_mm outside alarm_range>",
+      "risk_level_if_warning": "medium_risk",
+      "risk_level_if_alarm": "high_risk",
+      "output_fields_affected": [
+        "stations[].metrics.spray_width_mm",
+        "stations[].spray_width_image.status",
+        "stations[].fault_detail"
+      ],
+      "source": "expert_knowledge",
+      "used_by": [
+        "statistics_service",
+        "future_service",
+        "ontology",
+        "ui"
+      ],
+      "enabled": true,
+      "is_finalized": false,
+      "note": "SprayWidth / 噴幅為 UI_v3 新增功能；正式目標範圍與 warning/alarm rule 尚未定案。"
+    }
+  },
+  "folder_flow_note": "流程 Step 5：threshold config 作為獨立設定模板，不混入每筆 Statistics Service output。",
+  "template_policy": "本檔只使用 placeholder 表示欄位位置與型別，不代表真實資料，也不應作為可驗證的實例資料。"
+}

@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/spray-line/time-series-output.contract.schema.json",
+  "title": "Time Series Output Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "viewer_state",
+    "axis_info",
+    "narrative",
+    "station_summaries"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "viewer_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "window_type",
+        "slider_value",
+        "display_label",
+        "is_history",
+        "is_current",
+        "is_future"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "window_type": {
+          "type": "string"
+        },
+        "slider_value": {
+          "type": "number"
+        },
+        "display_label": {
+          "type": "string"
+        },
+        "is_history": {
+          "type": "boolean"
+        },
+        "is_current": {
+          "type": "boolean"
+        },
+        "is_future": {
+          "type": "boolean"
+        }
+      }
+    },
+    "axis_info": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "left_label",
+        "center_label",
+        "right_label"
+      ],
+      "properties": {
+        "left_label": {
+          "type": "string"
+        },
+        "center_label": {
+          "type": "string"
+        },
+        "right_label": {
+          "type": "string"
+        }
+      }
+    },
+    "narrative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "summary_text"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "summary_text": {
+          "type": "string"
+        }
+      }
+    },
+    "station_summaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "line_id",
+          "station_name_zh",
+          "state",
+          "clog_rate_pct",
+          "availability_pct",
+          "maintainability_pct",
+          "quality_score_pct",
+          "risk_text"
+        ],
+        "properties": {
+          "line_id": {
+            "type": "string"
+          },
+          "station_name_zh": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "clog_rate_pct": {
+            "type": "number"
+          },
+          "availability_pct": {
+            "type": "number"
+          },
+          "maintainability_pct": {
+            "type": "number"
+          },
+          "quality_score_pct": {
+            "type": "number"
+          },
+          "risk_text": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "series": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/trend_series"
+      }
+    }
+  },
+  "$comment": "檔案備註：Time Series Viewer 輸出 schema：驗證 service 回傳給時間序列檢視區的 viewer_state、axis_info、narrative、station_summaries 與 series。；資料夾流程定位：流程 Step 3：建立 API contract 與 JSON Schema，只驗證結構與型別，不綁定數值。",
+  "$defs": {
+    "trend_series": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "line_id",
+        "metric_name",
+        "x_labels",
+        "values"
+      ],
+      "properties": {
+        "line_id": {
+          "type": "string"
+        },
+        "metric_name": {
+          "type": "string"
+        },
+        "x_labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

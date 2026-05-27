@@ -1,0 +1,49 @@
+{
+  "__file_note": "Time Series Viewer output template：顯示 service 回傳給時間序列檢視區的欄位長相。",
+  "schema_version": "<string>",
+  "generated_at": "<datetime-string>",
+  "viewer_state": {
+    "mode": "<time|batch>",
+    "window_type": "<2hour|10batch>",
+    "slider_value": "<number>",
+    "display_label": "<string>",
+    "is_history": "<boolean>",
+    "is_current": "<boolean>",
+    "is_future": "<boolean>"
+  },
+  "axis_info": {
+    "left_label": "<string>",
+    "center_label": "<string>",
+    "right_label": "<string>"
+  },
+  "narrative": {
+    "title": "<string>",
+    "summary_text": "<string>"
+  },
+  "station_summaries": [
+    {
+      "line_id": "<string>",
+      "station_name_zh": "<string>",
+      "state": "<string>",
+      "clog_rate_pct": "<number>",
+      "availability_pct": "<number>",
+      "maintainability_pct": "<number>",
+      "quality_score_pct": "<number>",
+      "risk_text": "<string>"
+    }
+  ],
+  "series": [
+    {
+      "line_id": "<string>",
+      "metric_name": "<string>",
+      "x_labels": [
+        "<string>"
+      ],
+      "values": [
+        "<number>"
+      ]
+    }
+  ],
+  "__folder_flow_note": "流程 Step 4：建立 JSON template，使用 placeholder 表示欄位位置，不代表真實資料。",
+  "__template_policy": "本檔只使用 placeholder 表示欄位位置與型別，不代表真實資料，也不應作為可驗證的實例資料。"
+}
