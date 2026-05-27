@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spray Line Manager Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Manager header: makes the Actual / Predicted / Pending QC logic explicit -->
+    <header class="dashboard-header">
+      <div class="header-copy">
+        <p class="eyebrow">Spray Line Manager View</p>
+        <h1>Spray Line Manager Dashboard</h1>
+        <p class="header-subtitle">Quality result is confirmed one day later, so today shows predicted quality risk.</p>
+      </div>
+
+      <div class="header-info">
+        <span>Line: Spray Line 1</span>
+        <span>Shift: Day Shift</span>
+        <span>User: Manager</span>
+      </div>
+    </header>
+
+    <section class="semantics-panel">
+      <div class="semantic-item">
+        <span class="state-badge actual-badge">Actual</span>
+        <p>Yesterday and earlier batches are confirmed by actual QC.</p>
+      </div>
+      <div class="semantic-item">
+        <span class="state-badge predicted-badge">Predicted</span>
+        <p>Today quality is shown as predicted quality risk from process data.</p>
+      </div>
+      <div class="semantic-item">
+        <span class="state-badge pending-badge">Pending QC</span>
+        <p>Today produced batches are pending QC and will be validated tomorrow.</p>
+      </div>
+      <div class="semantic-item">
+        <span class="state-badge forecast-badge">Forecast</span>
+        <p>Forecast shows today end-of-day quality risk if the current trend continues.</p>
+      </div>
+    </section>
+
+    <!-- Time control: range mode + hour timeline -->
+    <section class="time-range-panel section-card">
+      <div class="section-header">
+        <div>
+          <h2>Dashboard Time Range</h2>
+          <p id="timeRangeDescription">Current / Predict shows today's predicted quality from DB-style 20-minute process updates.</p>
+        </div>
+        <div class="data-source-status" id="dataSourceStatus">
+          <span id="dataSourceMode">Mock Data Mode</span>
+          <span id="lastDbUpdate">Last DB Update: --</span>
+          <button type="button" class="mode-btn simulate-btn" id="simulateNextUpdateBtn">Simulate Next 20 Min Update</button>
+        </div>
+      </div>
+      <div class="time-control">
+        <div class="time-mode-buttons time-range-buttons" id="timeRangeButtons"></div>
+        <div class="time-bar-panel">
+          <div class="time-bar-header">
+            <strong id="timeBarTitle">Hourly Timeline</strong>
+            <span id="selectedHourSummary">Showing all hours in this mode.</span>
+          </div>
+          <div class="time-bar" id="timeBar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI cards: manager-facing summary -->
+    <section class="kpi-grid" id="kpiGrid">
+      <article class="kpi-card" id="kpiYesterdayOk">
+        <div class="kpi-head">
+          <div class="kpi-title">Yesterday Actual OK Rate</div>
+          <span class="state-badge actual-badge">Actual</span>
+        </div>
+        <div class="kpi-value" id="yesterdayActualOkRate">--</div>
+        <div class="kpi-sub" id="yesterdayActualOkRateSub">Confirmed by QC</div>
+      </article>
+
+      <article class="kpi-card" id="kpiYesterdayNg">
+        <div class="kpi-head">
+          <div class="kpi-title">Yesterday Actual NG pcs</div>
+          <span class="state-badge actual-badge">Actual</span>
+        </div>
+        <div class="kpi-value" id="yesterdayActualNgPcs">--</div>
+        <div class="kpi-sub" id="yesterdayActualNgPcsSub">Confirmed by QC</div>
+      </article>
+
+      <article class="kpi-card" id="kpiTodayPredictedOk">
+        <div class="kpi-head">
+          <div class="kpi-title">Today Predicted OK Rate</div>
+          <span class="state-badge predicted-badge">Predicted</span>
+        </div>
+        <div class="kpi-value" id="todayPredictedOkRate">--</div>
+        <div class="kpi-sub" id="todayPredictedOkRateSub">Based on current process risk</div>
+      </article>
+
+      <article class="kpi-card" id="kpiTodayPredictedNg">
+        <div class="kpi-head">
+          <div class="kpi-title">Today Predicted NG pcs</div>
+          <span class="state-badge pending-badge">Pending QC</span>
+        </div>
+        <div class="kpi-value" id="todayPredictedNgPcs">--</div>
+        <div class="kpi-sub" id="todayPredictedNgPcsSub">Pending QC batches only</div>
+      </article>
+
+      <article class="kpi-card" id="kpiUtilization">
+        <div class="kpi-head">
+          <div class="kpi-title">Line Utilization</div>
+          <span class="state-badge forecast-badge">Live</span>
+        </div>
+        <div class="kpi-value" id="lineUtilization">--</div>
+        <div class="kpi-sub" id="lineUtilizationSub">Target 85%</div>
+      </article>
+
+      <article class="kpi-card" id="kpiCycleTime">
+        <div class="kpi-head">
+          <div class="kpi-title">Avg Cycle Time</div>
+          <span class="state-badge forecast-badge">Live</span>
+        </div>
+        <div class="kpi-value" id="avgCycleTime">--</div>
+        <div class="kpi-sub" id="avgCycleTimeSub">Baseline 40 sec / pcs</div>
+      </article>
+    </section>
+
+    <!-- Manager-level status and test notification -->
+    <section class="status-panel" id="overallStatusPanel">
+      <div>
+        <h2>Manager Focus</h2>
+        <p id="overallReason">Loading manager risk summary...</p>
+        <p class="notify-status notify-idle" id="notifyStatusText">Notification idle</p>
+      </div>
+
+      <div class="status-panel-actions">
+        <div class="status-badge" id="overallStatusBadge">CHECKING</div>
+        <div class="status-buttons">
+          <button type="button" class="mode-btn test-notify-btn" id="testNotifyBtn">Test Notification</button>
+          <a class="mode-btn test-notify-btn debug-link-btn" href="post-debug.html" target="_blank" rel="noopener">POST Debug</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prediction history: every 20-minute predicted result is retained -->
+    <section class="section-card prediction-history">
+      <div class="section-header">
+        <div>
+          <h2>Prediction History</h2>
+          <p>Every 20-minute Current Predicted update is retained. Today batches remain Pending QC until tomorrow.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="batch-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Batch</th>
+              <th>Predicted OK Rate</th>
+              <th>Predicted NG pcs</th>
+              <th>Risk</th>
+              <th>Related Station</th>
+            </tr>
+          </thead>
+          <tbody id="predictionHistoryBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Station overview: which station is driving the line risk -->
+    <section class="section-card">
+      <div class="section-header">
+        <div>
+          <h2>Station Overview</h2>
+          <p>Manager can identify which spray station is reducing throughput or increasing predicted quality risk.</p>
+        </div>
+      </div>
+      <div class="station-grid" id="stationOverview"></div>
+    </section>
+
+    <!-- Trend charts -->
+    <section class="chart-layout">
+      <article class="chart-card">
+        <div class="chart-title">
+          <div>
+            <h2>Quality Risk Trend</h2>
+            <p>Past Actual QC, Today Predicted QC, and End-of-Day Forecast.</p>
+          </div>
+          <div class="legend-box">
+            <span><i class="legend-actual"></i>Past Actual</span>
+            <span><i class="legend-predicted"></i>Today Predicted</span>
+            <span><i class="legend-forecast"></i>Forecast</span>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="okNgTrendChart"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-title">
+          <div>
+            <h2>Utilization Trend by Station</h2>
+            <p>Compare Station 1 / 2 / 3 with target utilization 85%.</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="utilizationTrendChart"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-title">
+          <div>
+            <h2>Cycle Time Trend by Station</h2>
+            <p>Find the station whose cycle time is becoming the bottleneck.</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="cycleTimeTrendChart"></canvas>
+        </div>
+      </article>
+    </section>
+
+    <!-- Batch risk table -->
+    <section class="section-card">
+      <div class="section-header">
+        <div>
+          <h2>Batch Risk Table</h2>
+          <p>Today batches remain Pending QC. The dashboard only shows predicted quality risk, not actual QC result.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="batch-table">
+          <thead>
+            <tr>
+              <th>Batch ID</th>
+              <th>Start Time</th>
+              <th>pcs</th>
+              <th>Status</th>
+              <th id="batchQualityRateHeader">Predicted OK Rate</th>
+              <th id="batchQualityNgHeader">Predicted NG pcs</th>
+              <th>Risk Level</th>
+              <th>Main Cause</th>
+              <th>Related Station</th>
+            </tr>
+          </thead>
+          <tbody id="batchRiskTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Warning messages -->
+    <section class="section-card warning-card">
+      <div class="section-header">
+        <div>
+          <h2>Manager Warning Messages</h2>
+          <p>Readable manager-facing risk messages generated from station and batch impact.</p>
+        </div>
+      </div>
+      <div class="warning-list" id="warningMessageList"></div>
+    </section>
+
+    <!-- Notification history -->
+    <section class="section-card">
+      <div class="section-header">
+        <div>
+          <h2>Notification History</h2>
+          <p>Manager can verify whether the system already sent or skipped a warning notification.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="batch-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Hour</th>
+              <th>Risk Level</th>
+              <th>Station</th>
+              <th>Batch</th>
+              <th>Message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="notificationHistoryBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Validation -->
+    <section class="section-card">
+      <div class="section-header">
+        <div>
+          <h2>Tomorrow Validation</h2>
+          <p>Yesterday predicted quality is compared with today's confirmed QC result to show model trust level.</p>
+        </div>
+      </div>
+      <div class="validation-grid" id="tomorrowValidation"></div>
+    </section>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
