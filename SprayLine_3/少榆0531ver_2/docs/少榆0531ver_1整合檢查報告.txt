@@ -1,0 +1,45 @@
+少榆0531ver_1 整合檢查報告
+============================================================
+
+JSON parse:
+OK
+
+CSV parse:
+- csv_templates/dashboard_snapshot_template.csv: rows=38, columns=15, old_terms=0
+- csv_templates/function_io_template.csv: rows=23, columns=20, old_terms=0
+- csv_templates/template_10batch.csv: rows=56, columns=9, old_terms=0
+- csv_templates/template_2hour.csv: rows=56, columns=9, old_terms=0
+- csv_templates/threshold_config_template.csv: rows=8, columns=17, old_terms=0
+- csv_templates/time_series_output_template.csv: rows=24, columns=15, old_terms=0
+- csv_templates/time_series_query_template.csv: rows=14, columns=15, old_terms=0
+- docs/05_Database_reference/database_query_functions.csv: rows=12, columns=5, old_terms=0
+- docs/06_DataPreprocess_reference/sprayline_sensor.csv: rows=20, columns=5, old_terms=0
+- docs/field_catalog.csv: rows=50, columns=13, old_terms=0
+- docs/service_extension_mapping_table.csv: rows=10, columns=5, old_terms=0
+- docs/ui_region_mapping.csv: rows=14, columns=5, old_terms=0
+
+TTL parse:
+- ontology/SprayLine_service_extension.ttl: parse OK, triples=1872, labels={'en': 391}, old_terms=0
+- ontology/SprayLine_service_extension_chinese.ttl: parse OK, triples=1639, labels={'zh': 199}, old_terms=0
+- ontology/SprayLine_service_extension_english.ttl: parse OK, triples=1872, labels={'en': 391}, old_terms=0
+- runtime/statistics_service_output.template.ttl: parse OK, triples=16, labels={'en': 5}, old_terms=0
+- runtime/statistics_service_output_chinese.template.ttl: parse OK, triples=16, labels={'zh': 5}, old_terms=0
+- runtime/statistics_service_output_english.template.ttl: parse OK, triples=16, labels={'en': 5}, old_terms=0
+
+Python syntax:
+- webservices/time_series_service/time_series_service.py: syntax OK
+- docs/03_UI介面v4_reference/UI_v4.py: syntax OK
+- docs/03_UI介面v4_reference/main.py: syntax OK
+
+Global old-term scan:
+- README_少榆0531ver_1.md: 1 ['機械手臂內部控制模組']
+- docs/完整檢查報告_0528.txt: 18 ['robot_arm_control_module']
+
+Integrated 0531 items:
+- webservices/time_series_service
+- docs/03_UI介面v4_reference
+- docs/04_WebServices_time_series_reference
+- docs/05_Database_reference
+- docs/06_DataPreprocess_reference
+- knowledge/time_series_sample_method_formula.template.json
+- ontology TimeSeriesService / formulas / raw fields / database functions / UI_v4 concepts

@@ -1,0 +1,14 @@
+file_note,folder_flow_note,ui_region,ui_label,service_field
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,summary_card,Total Stations,summary.total_station_count
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,summary_card,Normal,summary.normal_count
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,summary_card,Warning,summary.warning_count
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,summary_card,Predict Risk,summary.predict_risk_count
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,station_card,Station Title,stations[].station_name_zh / station_name_en
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,component_overview,Arm,stations[].component_overview[].component_key = arm
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,component_overview,Nozzle,stations[].component_overview[].component_key = nozzle
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,component_overview,AirCompressor,stations[].component_overview[].component_key = air_compressor
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,component_overview,Air Valve,stations[].component_overview[].component_key = air_valve
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,component_overview,Filter Mesh,stations[].component_overview[].component_key = filter_mesh
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,component_overview,Quality,stations[].component_overview[].component_key = quality
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,time_series_viewer,Slider,time_series_query.slider_value
+UI 對 service 欄位對照 CSV：與 ui_to_service_mapping.md 同概念，方便表格化對接。,流程 Step 1：從 UI 需求反推 service 欄位。,time_series_viewer,Narrative,time_series_output.narrative.summary_text

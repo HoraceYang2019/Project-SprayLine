@@ -1,0 +1,14 @@
+﻿section,json_path,field_key,label_zh,label_en,data_type,unit,required,source_function,source_service,ontology_class,ontology_property,value_policy,ui_v4_region,note
+metadata,schema_version,schema_version,Schema 版本,Schema Version,string,,true,system,TimeSeriesService,DataContractArtifact,,static_contract,hidden,查詢契約版本。
+metadata,service_name,service_name,服務名稱,Service Name,string,,true,UI_v4,TimeSeriesService,Service,service_name,fixed_value,hidden,固定為 TimeSeriesService。
+metadata,request_id,request_id,請求編號,Request ID,string|null,,true,UI_v4,TimeSeriesService,DataContractArtifact,,generated_by_ui_or_service,hidden,一次查詢的識別碼。
+viewer_state,mode,mode,查詢模式,Query Mode,string,,true,UI_v4,TimeSeriesService,TimeSeriesViewerOutput,,enum,TimeMode; BatchMode,建議值：time / batch。
+viewer_state,window_type,window_type,視窗類型,Window Type,string,,true,UI_v4,TimeSeriesService,WindowPolicy,windowType,defined_by_service_or_ui,TimeSeriesViewer,current / 2hour / 10batch。
+viewer_state,slider_value,slider_value,滑桿值,Slider Value,number,,true,UI_v4,TimeSeriesService,TimeSeriesViewerOutput,,time_type_rule,TimeSeriesViewer,<0 past；=0 current；>0 future。
+identity,line_scope,line_scope,產線範圍,Line Scope,string|array,,true,UI_v4,TimeSeriesService,SprayLine,lineId,all_or_line_values,TimeSeriesViewer,all 或 line_1 / line_2 / line_3。
+metric,requested_metrics[],requested_metrics,請求指標,Requested Metrics,array<string>,,true,UI_v4,TimeSeriesService,Metric,,enum_to_confirm,TimeSeriesViewer,可包含 availability_pct、flow_rate_ml_min、spray_width_mm 等。
+time_range,start_time,start_time,開始時間,Start Time,datetime-string|null,,false,UI_v4,Database / TimeSeriesService,TimeWindow,,optional,TimeSeriesViewer,time mode 可使用。
+time_range,end_time,end_time,結束時間,End Time,datetime-string|null,,false,UI_v4,Database / TimeSeriesService,TimeWindow,,optional,TimeSeriesViewer,time mode 可使用。
+batch_range,start_batch_id,start_batch_id,開始批次,Start Batch ID,string|null,,false,UI_v4,Database / TimeSeriesService,BatchWindow,,optional,BatchMode,batch mode 可使用。
+batch_range,end_batch_id,end_batch_id,結束批次,End Batch ID,string|null,,false,UI_v4,Database / TimeSeriesService,BatchWindow,,optional,BatchMode,batch mode 可使用。
+state,back_to_live,back_to_live,回到即時,Back To Live,boolean,,false,UI_v4,TimeSeriesService,TimeSeriesViewerOutput,,ui_action,BackToLive,UI_v4 按鈕。

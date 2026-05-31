@@ -1,0 +1,17 @@
+﻿ui_v4_region,ui_element_or_panel,time_series_output_json_path,source_function,database_function,rule_service_needed,status,note
+SummaryCards,total stations,summary.total_station_count,BuildOutput,get_station_dashboard_status,no,defined,依 stations 數量或 dashboard status。
+SummaryCards,normal,summary.normal_count,BuildOutput,get_station_dashboard_status,yes,pending_rule_service,normal/warning/alarm 需 Rule 或 diagnosis。
+SummaryCards,warning,summary.warning_count,BuildOutput,get_latest_diagnosis,yes,pending_rule_service,warning 判斷不在 TimeSeriesService 內硬算。
+SummaryCards,predict risk,summary.predict_risk_count,BuildOutput,get_latest_prediction,yes,pending_future_service,Future model 尚未定案。
+StationCards,line identity,stations[].line_id,ResolveLineScope,get_runtime_window,no,defined,line_1 / line_2 / line_3。
+StationCards,station name,stations[].station_name_zh; stations[].station_name_en,BuildLineOutput,get_station_dashboard_status,no,defined,UI 顯示名稱。
+StationCards,metrics,stations[].metrics,CalculateLineMetrics,get_runtime_window; get_metric_trend,partial,defined_with_pending_rule,risk_text 仍需 Rule/Future。
+ComponentOverview,component status icons,stations[].component_overview,BuildLineOutput,get_component_health_summary,yes,pending_rule_service,元件狀態可能需 Rule Service。
+StationCardMetrics,availability,stations[].metrics.availability_pct,CalculateLineMetrics,get_runtime_window,no,defined_formula_pending_source,available_time_sec/planned_time_sec 來源需確認。
+StationCardMetrics,flow rate,stations[].metrics.flow_rate_ml_min,CalculateNozzleMetrics,get_runtime_window,no,defined,統一欄位 flow_rate_ml_min。
+StationCardMetrics,pressure,stations[].metrics.pressure_bar,CalculateNozzleMetrics,get_runtime_window,no,defined,統一欄位 pressure_bar。
+ProcessParameters,recipe / temperature / utilization / cycle time,stations[].process_parameters,ApplySampleMethods; CalculateLineMetrics,get_runtime_window,partial,defined_with_pending_source,utilization/cycle time 需要 production log / part history。
+FaultDetail,issue / reason / suggestion,stations[].fault_detail,BuildLineOutput,get_latest_diagnosis,yes,pending_rule_service,不可造假 fault_detail。
+SprayWidthImage,spray width image panel,stations[].spray_width_image,CalculateSprayWidthMetrics,get_runtime_window,partial,defined_with_pending_target,target_spray_width_mm 來源需確認。
+TimeSeriesViewer,viewer state,viewer_state,BuildViewerState,none,no,defined,mode/window_type/slider_value/time_type。
+TimeSeriesViewer,calculation info,calculation_info,BuildOutput,none,no,defined,用於記錄 pipeline、sample_method、formula policy。

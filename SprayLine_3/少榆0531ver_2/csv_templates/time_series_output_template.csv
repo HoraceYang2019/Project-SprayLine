@@ -1,0 +1,24 @@
+﻿section,json_path,field_key,label_zh,label_en,data_type,unit,required,source_function,source_service,ontology_class,ontology_property,value_policy,ui_v4_region,note
+metadata,schema_version,schema_version,Schema 版本,Schema Version,string,,true,BuildOutput,TimeSeriesService,DataContractArtifact,,static_contract,hidden,輸出契約版本。
+metadata,generated_at,generated_at,產生時間,Generated At,datetime-string,,true,BuildOutput,TimeSeriesService,TimeSeriesViewerOutput,generatedAt,generated_at_runtime,hidden,由 service 產生。
+metadata,service_name,service_name,服務名稱,Service Name,string,,true,BuildOutput,TimeSeriesService,Service,service_name,fixed_value,hidden,固定為 TimeSeriesService。
+metadata,request_id,request_id,請求編號,Request ID,string|null,,true,BuildOutput,TimeSeriesService,DataContractArtifact,,echo_from_query,hidden,對應 query request_id。
+viewer_state,viewer_state.mode,mode,模式,Mode,string,,true,BuildViewerState,TimeSeriesService,TimeSeriesViewerOutput,windowMode,runtime_state,TimeSeriesViewer,time / batch。
+viewer_state,viewer_state.window_type,window_type,視窗類型,Window Type,string,,true,BuildViewerState,TimeSeriesService,WindowPolicy,windowType,runtime_state,TimeSeriesViewer,current / 2hour / 10batch。
+viewer_state,viewer_state.slider_value,slider_value,滑桿值,Slider Value,number,,true,DetermineTimeType,TimeSeriesService,TimeSeriesViewerOutput,,time_type_rule,TimeSeriesViewer,<0 past；=0 current；>0 future。
+viewer_state,viewer_state.time_type,time_type,時間類型,Time Type,string,,true,DetermineTimeType,TimeSeriesService,TimeSeriesViewerOutput,,derived,Past; Current; Future,past / current / future。
+summary,summary.total_station_count,total_station_count,總站數,Total Stations,number,count,true,BuildOutput,TimeSeriesService,LineSummary,,dynamic_count,SummaryCards,依 stations 數量產生。
+station,stations[].line_id,line_id,產線編號,Line ID,string,,true,ResolveLineScope,TimeSeriesService,SprayLine,lineId,database_identifier,StationCards,line_1 / line_2 / line_3。
+station,stations[].metrics.availability_pct,availability_pct,可用度,Availability,number|null,%,false,CalculateAvailabilityPct,TimeSeriesService,Metric,,formula,StationCardMetrics,available_time_sec / planned_time_sec * 100。
+station,stations[].metrics.clog_rate_pct,clog_rate_pct,堵塞率,Clog Rate,number|null,%,false,CalculateLineClogRate,TimeSeriesService,Metric,,formula,StationCardMetrics,"max(nozzle_clog_rate_pct, filter_clog_rate_pct)。"
+station,stations[].metrics.pressure_bar,pressure_bar,壓力,Pressure,number|null,bar,false,CalculateNozzleMetrics,TimeSeriesService,Metric,,sampled_value,StationCardMetrics,由 pressure_bar 取樣後產生。
+station,stations[].metrics.flow_rate_ml_min,flow_rate_ml_min,流量,Flow Rate,number|null,ml/min,false,CalculateNozzleMetrics,TimeSeriesService,Metric,,sampled_value,StationCardMetrics,由 flow_rate_ml_min 取樣後產生。
+station,stations[].metrics.maintainability_pct,maintainability_pct,維護性,Maintainability,number|null,%,false,CalculateLineMaintainability,TimeSeriesService,Metric,,formula,StationCardMetrics,"min(nozzle_maintainability_pct, filter_maintainability_pct)。"
+station,stations[].metrics.quality_score_pct,quality_score_pct,品質分數,Quality Score,number|null,%,false,CalculateQualityScorePct,TimeSeriesService,QualityMetric,,formula,StationCardMetrics,優先 ok_count / total_count * 100；fallback coverage_score_pct。
+station,stations[].metrics.spray_width_mm,spray_width_mm,噴幅,Spray Width,number|null,mm,false,CalculateSprayWidthMetrics,TimeSeriesService,SprayWidth,,sampled_value,SprayWidthImage,由 spray_width_mm 取樣後產生。
+station,stations[].process_parameters.recipe_name,recipe_name,配方,Recipe,string|null,,false,ApplySampleMethods,TimeSeriesService,ProcessParameter,,latest_valid,ProcessParameters,recipe_name 使用 latest_valid。
+station,stations[].process_parameters.temperature_c,temperature_c,溫度,Temperature,number|null,°C,false,ApplySampleMethods,TimeSeriesService,TemperatureParameter,,sample_method,ProcessParameters,依 past/current/future sample_method。
+station,stations[].process_parameters.utilization_pct,utilization_pct,利用率,Utilization,number|null,%,false,CalculateUtilizationPct,TimeSeriesService,UtilizationParameter,,formula,ProcessParameters,running_time_sec / total_window_time_sec * 100。
+station,stations[].process_parameters.cycle_time_sec,cycle_time_sec,週期時間,Cycle Time,number|null,sec,false,CalculateCycleTimeSec,TimeSeriesService,CycleTimeParameter,,formula,ProcessParameters,part_end_time - part_start_time。
+calculation,calculation_info.pipeline[],pipeline,計算流程,Pipeline,array<string>,,true,BuildOutput,TimeSeriesService,ServiceFunction,,trace,hidden,列出 HandleTimeSeriesQuery 到 BuildOutput 流程。
+calculation,calculation_info.rule_stage,rule_stage,規則階段,Rule Stage,string,,true,BuildOutput,RuleService,RuleService,,external_pending,hidden,Rule Service 外部處理；本 service 不判斷 state/risk。

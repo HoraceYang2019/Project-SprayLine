@@ -1,0 +1,49 @@
+少榆0531ver_2 整合檢查報告
+============================================================
+
+JSON parse:
+OK
+
+CSV parse:
+- csv_templates/dashboard_snapshot_template.csv: rows=38, columns=15, old_terms=0
+- csv_templates/function_io_template.csv: rows=23, columns=20, old_terms=0
+- csv_templates/template_10batch.csv: rows=56, columns=9, old_terms=0
+- csv_templates/template_2hour.csv: rows=56, columns=9, old_terms=0
+- csv_templates/threshold_config_template.csv: rows=8, columns=17, old_terms=0
+- csv_templates/time_series_output_template.csv: rows=24, columns=15, old_terms=0
+- csv_templates/time_series_query_template.csv: rows=14, columns=15, old_terms=0
+- docs/05_Database_reference/database_query_functions.csv: rows=12, columns=5, old_terms=0
+- docs/06_DataPreprocess_reference/sprayline_sensor.csv: rows=20, columns=5, old_terms=0
+- docs/field_catalog.csv: rows=50, columns=13, old_terms=0
+- docs/formula_required_field_source.csv: rows=19, columns=8, old_terms=0
+- docs/function_service_database_mapping.csv: rows=13, columns=13, old_terms=0
+- docs/querydata_database_mapping.csv: rows=11, columns=10, old_terms=0
+- docs/service_extension_mapping_table.csv: rows=10, columns=5, old_terms=0
+- docs/ui_region_mapping.csv: rows=14, columns=5, old_terms=0
+- docs/ui_v4_to_time_series_output_mapping.csv: rows=17, columns=8, old_terms=0
+
+TTL parse:
+- ontology/SprayLine_service_extension.ttl: parse OK, triples=1920, labels={'en': 396}, old_terms=0
+- ontology/SprayLine_service_extension_chinese.ttl: parse OK, triples=1687, labels={'zh': 204}, old_terms=0
+- ontology/SprayLine_service_extension_english.ttl: parse OK, triples=1920, labels={'en': 396}, old_terms=0
+- runtime/statistics_service_output.template.ttl: parse OK, triples=16, labels={'en': 5}, old_terms=0
+- runtime/statistics_service_output_chinese.template.ttl: parse OK, triples=16, labels={'zh': 5}, old_terms=0
+- runtime/statistics_service_output_english.template.ttl: parse OK, triples=16, labels={'en': 5}, old_terms=0
+
+Python syntax:
+- webservices/time_series_service/time_series_service.py: syntax OK
+- docs/03_UI介面v4_reference/UI_v4.py: syntax OK
+- docs/03_UI介面v4_reference/main.py: syntax OK
+
+Global old-term scan:
+OK: no old naming terms found in text-like files.
+
+0531ver_2 added/fixed files:
+- docs/querydata_database_mapping.csv
+- docs/function_service_database_mapping.csv
+- docs/formula_required_field_source.csv
+- docs/ui_v4_to_time_series_output_mapping.csv
+- docs/01_Past_Current_Service_reference/README_0531_status.md
+- 相對0528ver_4更改.md
+- README_少榆0531ver_2.md
+- ontology function flow edges

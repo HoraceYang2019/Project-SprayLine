@@ -1,0 +1,81 @@
+{
+  "__file_note": "2 hour 模式 template：顯示時間模式 service output 的欄位位置與型別；裡面的 placeholder 不是真實資料。",
+  "schema_version": "<string>",
+  "service_name": "statistics_service",
+  "generated_at": "<datetime-string>",
+  "window": {
+    "mode": "<time>",
+    "window_type": "<2hour>",
+    "slider_value": "<number>",
+    "display_label": "<string>"
+  },
+  "summary": {
+    "total_station_count": "<number>",
+    "normal_count": "<number>",
+    "warning_count": "<number>",
+    "predict_risk_count": "<number>"
+  },
+  "stations": [
+    {
+      "line_id": "<string>",
+      "station_name_zh": "<string>",
+      "station_name_en": "<string>",
+      "state": "<string>",
+      "component_overview": [
+        {
+          "component_key": "<string>",
+          "label_zh": "<string>",
+          "label_en": "<string>",
+          "level": "<string>",
+          "level_text": "<string>"
+        }
+      ],
+      "metrics": {
+        "availability_pct": "<number>",
+        "clog_rate_pct": "<number>",
+        "pressure_bar": "<number>",
+        "flow_rate_ml_min": "<number>",
+        "maintainability_pct": "<number>",
+        "quality_score_pct": "<number>",
+        "risk_text": "<string>",
+        "spray_width_mm": "<number>"
+      },
+      "process_parameters": {
+        "recipe_name": "<string>",
+        "temperature_c": "<number>",
+        "utilization_pct": "<number>",
+        "cycle_time_sec": "<number>"
+      },
+      "fault_detail": [
+        {
+          "component_key": "<string>",
+          "issue_text": "<string>",
+          "reason_text": "<string>",
+          "suggestion_text": "<string>"
+        }
+      ],
+      "spray_width_image": {
+        "spray_width_mm": "<number>",
+        "target_min_mm": "<number|null>",
+        "target_max_mm": "<number|null>",
+        "status": "<string>",
+        "image_ref": "<string|null>",
+        "note": "<string|null>"
+      }
+    }
+  ],
+  "trend_series": [
+    {
+      "metric_name": "<string>",
+      "x_labels": [
+        "<string>"
+      ],
+      "values": [
+        "<number>"
+      ],
+      "line_id": "<string>"
+    }
+  ],
+  "__folder_flow_note": "流程 Step 4：建立 JSON template，使用 placeholder 表示欄位位置，不代表真實資料。",
+  "__template_policy": "本檔只使用 placeholder 表示欄位位置與型別，不代表真實資料，也不應作為可驗證的實例資料。"
+}

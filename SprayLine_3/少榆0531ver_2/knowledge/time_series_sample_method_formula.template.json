@@ -1,0 +1,34 @@
+{
+  "schema_version": "v1.0",
+  "source": "Project-SprayLine-main_0531 WebServices/time_series_service",
+  "naming_policy": {
+    "line_id_values": [
+      "line_1",
+      "line_2",
+      "line_3"
+    ],
+    "flow_field": "flow_rate_ml_min",
+    "pressure_field": "pressure_bar"
+  },
+  "sample_method_by_time_type": {
+    "past": "mean",
+    "current": "recent_average",
+    "future": "latest_valid"
+  },
+  "formulas": {
+    "nozzle_clog_rate_pct": "max(0, (nominal_flow_rate_ml_min - flow_rate_ml_min) / nominal_flow_rate_ml_min * 100)",
+    "flow_loss_pct": "max(0, (in_flow_ml_min - out_flow_ml_min) / in_flow_ml_min * 100)",
+    "maintainability_pct": "rul_hr / (rul_hr + usage_time_hr) * 100",
+    "line_clog_rate_pct": "max(nozzle_clog_rate_pct, filter_clog_rate_pct)",
+    "line_maintainability_pct": "min(nozzle_maintainability_pct, filter_maintainability_pct)",
+    "quality_score_pct": "ok_count / total_count * 100; fallback coverage_score_pct; if defect_count > 0 and no other source then 0",
+    "utilization_pct": "running_time_sec / total_window_time_sec * 100",
+    "availability_pct": "available_time_sec / planned_time_sec * 100",
+    "cycle_time_sec": "part_end_time - part_start_time",
+    "width_error_mm": "spray_width_mm - target_spray_width_mm",
+    "width_error_pct": "abs(spray_width_mm - target_spray_width_mm) / target_spray_width_mm * 100",
+    "coverage_score_pct": "max(0, 100 - width_error_pct)"
+  },
+  "rule_stage": "external",
+  "note": "This file records TimeSeriesService calculation rules. Threshold/warning/alarm rules remain pending."
+}
