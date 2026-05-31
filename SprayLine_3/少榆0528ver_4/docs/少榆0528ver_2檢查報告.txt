@@ -1,0 +1,32 @@
+少榆0528ver_2 檢查報告
+========================================
+
+Replacement missing files:
+None
+
+TTL check:
+- ontology/SprayLine_service_extension.ttl: parse OK, triples=1557, label_langs={'en': 322}, old_line_naming_remnants=0
+- ontology/SprayLine_service_extension_chinese.ttl: parse OK, triples=1323, label_langs={'zh': 129}, old_line_naming_remnants=0
+- ontology/SprayLine_service_extension_english.ttl: parse OK, triples=1557, label_langs={'en': 322}, old_line_naming_remnants=0
+- runtime/statistics_service_output.template.ttl: parse OK, triples=16, label_langs={'en': 5}, old_line_naming_remnants=0
+- runtime/statistics_service_output_chinese.template.ttl: parse OK, triples=16, label_langs={'zh': 5}, old_line_naming_remnants=0
+- runtime/statistics_service_output_english.template.ttl: parse OK, triples=16, label_langs={'en': 5}, old_line_naming_remnants=0
+
+JSON check:
+No JSON errors.
+
+CSV check:
+CSV checked: 12 files.
+
+Replaced file old naming scan:
+- ontology/SprayLine_service_extension.ttl: old_line_naming_remnants=0
+- ontology/SprayLine_service_extension_chinese.ttl: old_line_naming_remnants=0
+- ontology/SprayLine_service_extension_english.ttl: old_line_naming_remnants=0
+- README_0527ver新增更改.md: old_line_naming_remnants=0
+- docs/01_Past_Current_Service_reference/README.md: old_line_naming_remnants=0
+- docs/01_Past_Current_Service_reference/past_current_service_io.ipynb: old_line_naming_remnants=0
+- docs/01-1_paint_enhancement_reference/past_current_service_io_full_naming_paint_enhanced.ipynb: old_line_naming_remnants=0
+- docs/03_UI介面v3_reference/UI_v3..html: old_line_naming_remnants=0
+- docs/03_UI介面v3_reference/UI_v3.py: old_line_naming_remnants=0
+- docs/03_UI介面v3_reference/spraying_dashboard_updated.html: old_line_naming_remnants=0
+- docs/line_1_line_2_line_3修改清單.txt: old_line_naming_remnants=0

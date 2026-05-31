@@ -1,0 +1,10 @@
+﻿target_folder,purpose,source_files,conversion_needed,current_status
+ontology/,service/function/UI/database/source mapping extension ontology,04_Spraying_Service_Ontology/*threshold_source.ttl,merge bilingual TTL; field rename; add Function/AirCompressor/SprayWidth/Baking/Oven concepts,created as SprayLine_service_extension.ttl
+knowledge/,threshold and expert-knowledge templates,02_統計Service/05_threshold-config/*,transform AirCompressor to AirCompressor; add SprayWidth placeholder; keep as template,pending official values
+runtime/,runtime TTL template / future runtime observation,02_統計Service/07_runtime-ttl-template/statistics_service_output.template.ttl,replace invalid placeholder IRI with TEMPLATE nodes,template only
+rules/,future inference rules,none,create pending README only,rules not finalized
+output/,future inferred output,none,create pending README only,no fake output
+schema/,JSON schemas / service contracts,02_統計Service/03_api-contract/*,station_id→line_id; add missing trend_series; add UI_v3 optional panel fields,draft updated
+templates/,JSON templates,02_統計Service/04_templates/*,station_id→line_id; add UI_v3 placeholders,draft updated
+csv_templates/,CSV templates as human-maintained source,generated from JSON templates / threshold / function list,new CSV files,created
+docs/,"reference docs, UI v3, field catalog, pending notes","01, 01-1, 03_UI介面v3, field catalog, mapping docs",copy/transformed reference only,created

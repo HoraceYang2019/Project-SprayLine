@@ -1,0 +1,16 @@
+﻿section,json_path,field_key,label_zh,label_en,data_type,unit,required,source_function,source_service,ontology_class,ontology_property,value_policy,ui_v3_region,note
+metadata,schema_version,schema_version,Schema 版本,Schema Version,string,,true,system,StatisticsService,DataContractArtifact,,static_contract,hidden,查詢契約版本。
+metadata,request_id,request_id,請求編號,Request ID,string,,true,UI,UserInterface,DataContractArtifact,,generated_by_ui_or_service,hidden,一次查詢的識別碼。
+identity,line_id,line_id,產線編號,Line ID,string,,true,UI,Database / Services,SprayLine,lineId,database_identifier,TimeSeriesViewer,正式值建議為 line_1、line_2、line_3。
+mode,mode,mode,查詢模式,Query Mode,string,,true,UI,StatisticsService,TimeSeriesViewerOutput,,enum,TimeMode; BatchMode,建議值：time_mode / batch_mode。
+mode,time_mode,time_mode,時間模式,Time Mode,boolean,,false,UI,StatisticsService,TimeSeriesViewerOutput,,ui_state,TimeMode,UI_v3 切換狀態。
+mode,batch_mode,batch_mode,批次模式,Batch Mode,boolean,,false,UI,StatisticsService,TimeSeriesViewerOutput,,ui_state,BatchMode,UI_v3 切換狀態。
+metric,metric_name,metric_name,指標名稱,Metric Name,string,,true,UI,StatisticsService,Metric,,enum_to_confirm,TimeSeriesViewer,例如 quality_score_pct、pressure_bar、spray_width_mm；正式列表待確認。
+time_range,start_time,start_time,開始時間,Start Time,datetime-string,,conditional,UI,Database / Services,TimeWindow,,required_when_time_mode,TimeSeriesViewer,time_mode 使用。
+time_range,end_time,end_time,結束時間,End Time,datetime-string,,conditional,UI,Database / Services,TimeWindow,,required_when_time_mode,TimeSeriesViewer,time_mode 使用。
+batch_range,start_batch_id,start_batch_id,開始批次,Start Batch ID,string,,conditional,UI,Database / Services,BatchWindow,,required_when_batch_mode,TimeSeriesViewer,batch_mode 使用，實際 batch id 格式待 Database 確認。
+batch_range,end_batch_id,end_batch_id,結束批次,End Batch ID,string,,conditional,UI,Database / Services,BatchWindow,,required_when_batch_mode,TimeSeriesViewer,batch_mode 使用。
+window,window_id,window_id,視窗編號,Window ID,string,,false,UI / Database,Database / Services,StatisticsWindow,,optional_lookup,TimeSeriesViewer,可搭配 GetRuntimeWindow(window_id)。
+window,window_type,window_type,視窗類型,Window Type,string,,false,UI / Service,StatisticsService,WindowPolicy,,pending,TimeSeriesViewer,例如 2hour / 10batch，但 Current window_size 尚未定案。
+state,selected_time_point,selected_time_point,目前時間點,Selected Time Point,datetime-string|string,,false,UI,StatisticsService,TimeSeriesViewerOutput,,ui_slider_state,slider,UI slider 目前選取的位置。
+state,back_to_live,back_to_live,回到即時,Back To Live,boolean,,false,UI,StatisticsService,TimeSeriesViewerOutput,,ui_action,BackToLive,UI_v3 按鈕。

@@ -1,0 +1,19 @@
+{
+  "__template_policy": "Template only. Placeholder values are not real data.",
+  "__folder_flow_note": "UI_v3 TimeSeriesViewer query -> service function -> database query.",
+  "schema_version": "<string>",
+  "request_id": "<string>",
+  "line_id": "<line_1|line_2|line_3>",
+  "mode": "<time_mode|batch_mode>",
+  "time_mode": "<boolean>",
+  "batch_mode": "<boolean>",
+  "metric_name": "<string>",
+  "start_time": "<datetime-string|null>",
+  "end_time": "<datetime-string|null>",
+  "start_batch_id": "<string|null>",
+  "end_batch_id": "<string|null>",
+  "window_id": "<string|null>",
+  "window_type": "<2hour|10batch|defined_by_service|null>",
+  "selected_time_point": "<datetime-string|string|null>",
+  "back_to_live": "<boolean>"
+}

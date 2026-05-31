@@ -1,0 +1,349 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/spray-line/stat-service.contract.schema.json",
+  "title": "Spray Line Statistics Service Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "service_name",
+    "generated_at",
+    "window",
+    "summary",
+    "stations",
+    "trend_series"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "欄位契約版本"
+    },
+    "service_name": {
+      "type": "string",
+      "description": "服務名稱"
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "輸出生成時間"
+    },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "window_type",
+        "slider_value"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "description": "time 或 batch 等查詢模式"
+        },
+        "window_type": {
+          "type": "string",
+          "description": "時間或批次統計視窗類型"
+        },
+        "slider_value": {
+          "type": "number",
+          "description": "UI slider 位置"
+        },
+        "display_label": {
+          "type": "string",
+          "description": "UI 顯示文字"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_station_count",
+        "normal_count",
+        "warning_count",
+        "predict_risk_count"
+      ],
+      "properties": {
+        "total_station_count": {
+          "type": "number",
+          "description": "總站數，動態產生"
+        },
+        "normal_count": {
+          "type": "number",
+          "description": "正常站數，動態產生"
+        },
+        "warning_count": {
+          "type": "number",
+          "description": "注意站數，動態產生"
+        },
+        "predict_risk_count": {
+          "type": "number",
+          "description": "預測風險站數，動態產生"
+        }
+      }
+    },
+    "stations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/station"
+      }
+    },
+    "trend_series": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/trend_series"
+      }
+    }
+  },
+  "$defs": {
+    "station": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "line_id",
+        "station_name_zh",
+        "station_name_en",
+        "state",
+        "component_overview",
+        "metrics",
+        "process_parameters"
+      ],
+      "properties": {
+        "line_id": {
+          "type": "string"
+        },
+        "station_name_zh": {
+          "type": "string"
+        },
+        "station_name_en": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "description": "站別狀態"
+        },
+        "component_overview": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/component"
+          }
+        },
+        "metrics": {
+          "$ref": "#/$defs/metrics"
+        },
+        "process_parameters": {
+          "$ref": "#/$defs/process_parameters"
+        },
+        "fault_detail": {
+          "type": "array",
+          "description": "UI_v3 FaultDetail panel; optional list of issue/reason/suggestion records.",
+          "items": {
+            "$ref": "#/$defs/fault_detail_item"
+          }
+        },
+        "spray_width_image": {
+          "$ref": "#/$defs/spray_width_image",
+          "description": "UI_v3 SprayWidthImage panel; optional spray width visualization data."
+        }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_key",
+        "label_zh",
+        "label_en",
+        "level",
+        "level_text"
+      ],
+      "properties": {
+        "component_key": {
+          "type": "string"
+        },
+        "label_zh": {
+          "type": "string"
+        },
+        "label_en": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "level_text": {
+          "type": "string"
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "availability_pct",
+        "clog_rate_pct",
+        "pressure_bar",
+        "flow_rate_ml_min",
+        "maintainability_pct",
+        "quality_score_pct",
+        "risk_text",
+        "spray_width_mm"
+      ],
+      "properties": {
+        "availability_pct": {
+          "type": "number",
+          "description": "可用度"
+        },
+        "clog_rate_pct": {
+          "type": "number",
+          "description": "堵塞率"
+        },
+        "pressure_bar": {
+          "type": "number",
+          "description": "壓力"
+        },
+        "flow_rate_ml_min": {
+          "type": "number",
+          "description": "流量"
+        },
+        "maintainability_pct": {
+          "type": "number",
+          "description": "維護性"
+        },
+        "quality_score_pct": {
+          "type": "number",
+          "description": "品質分數"
+        },
+        "risk_text": {
+          "type": "string",
+          "description": "風險文字"
+        },
+        "spray_width_mm": {
+          "type": "number",
+          "description": "噴幅，單位 mm，來自 UI_v3 新增欄位。"
+        }
+      }
+    },
+    "process_parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recipe_name",
+        "temperature_c",
+        "utilization_pct",
+        "cycle_time_sec"
+      ],
+      "properties": {
+        "recipe_name": {
+          "type": "string"
+        },
+        "temperature_c": {
+          "type": "number"
+        },
+        "utilization_pct": {
+          "type": "number"
+        },
+        "cycle_time_sec": {
+          "type": "number"
+        }
+      }
+    },
+    "trend_series": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "line_id",
+        "metric_name",
+        "x_labels",
+        "values"
+      ],
+      "properties": {
+        "line_id": {
+          "type": "string"
+        },
+        "metric_name": {
+          "type": "string"
+        },
+        "x_labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "fault_detail_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_key",
+        "issue_text",
+        "reason_text",
+        "suggestion_text"
+      ],
+      "properties": {
+        "component_key": {
+          "type": "string"
+        },
+        "issue_text": {
+          "type": "string"
+        },
+        "reason_text": {
+          "type": "string"
+        },
+        "suggestion_text": {
+          "type": "string"
+        }
+      }
+    },
+    "spray_width_image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spray_width_mm",
+        "status"
+      ],
+      "properties": {
+        "spray_width_mm": {
+          "type": "number",
+          "description": "目前噴幅，單位 mm。"
+        },
+        "target_min_mm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "噴幅目標下限，尚未定案可為 null。"
+        },
+        "target_max_mm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "噴幅目標上限，尚未定案可為 null。"
+        },
+        "status": {
+          "type": "string"
+        },
+        "image_ref": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "噴幅影像或示意圖參照。"
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "$comment": "檔案備註：統計 service 總 schema：驗證完整 service output 的大結構，包括 window、summary、stations、trend_series；只驗證結構與型別，不綁任何數值。；資料夾流程定位：流程 Step 3：建立 API contract 與 JSON Schema，只驗證結構與型別，不綁定數值。"
+}
