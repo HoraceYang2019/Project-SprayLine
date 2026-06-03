@@ -1,0 +1,11 @@
+{
+  "line_id": "<string>",
+  "window_id": "<string>",
+  "signal": "<object>",
+  "reference": "<object>",
+  "metric": "<object>",
+  "pose": "<object>",
+  "components": "<array>",
+  "cache_ttl_s": "<integer>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

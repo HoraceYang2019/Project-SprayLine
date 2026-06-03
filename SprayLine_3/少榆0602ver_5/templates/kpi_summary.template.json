@@ -1,0 +1,11 @@
+{
+  "line_id": "<string>",
+  "date": "<string>",
+  "predicted_ok_rate": "<['number', 'null']>",
+  "predicted_ng_pcs": "<['number', 'null']>",
+  "line_utilization": "<['number', 'null']>",
+  "avg_cycle_time_s": "<['number', 'null']>",
+  "delta": "<object>",
+  "cache_ttl_s": "<integer>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

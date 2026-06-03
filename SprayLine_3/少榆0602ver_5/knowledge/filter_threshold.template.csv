@@ -1,0 +1,4 @@
+﻿metric_key,unit,purpose,normal_min,normal_max,warning_rule,alarm_rule,is_finalized,note
+filter_diff_pressure_bar,bar,filter differential pressure baseline,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,false,pending_value
+flow_loss_pct,%,flow loss baseline,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,false,pending_value
+filter_clog_rate_pct,%,filter clog baseline,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,false,pending_value

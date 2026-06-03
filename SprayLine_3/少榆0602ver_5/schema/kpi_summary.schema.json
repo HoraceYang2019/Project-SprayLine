@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KPI Summary Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "line_id",
+    "date",
+    "predicted_ok_rate",
+    "predicted_ng_pcs",
+    "line_utilization",
+    "avg_cycle_time_s",
+    "delta",
+    "cache_ttl_s"
+  ],
+  "properties": {
+    "line_id": {
+      "type": "string",
+      "enum": [
+        "line_1",
+        "line_2",
+        "line_3"
+      ]
+    },
+    "date": {
+      "type": "string"
+    },
+    "predicted_ok_rate": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "predicted_ng_pcs": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "line_utilization": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "avg_cycle_time_s": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "delta": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "cache_ttl_s": {
+      "type": "integer"
+    }
+  }
+}

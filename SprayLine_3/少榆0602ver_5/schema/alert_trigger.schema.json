@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Alert Trigger Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "alert_id",
+    "line_id",
+    "source_type",
+    "source_id",
+    "triggered_at",
+    "status"
+  ],
+  "properties": {
+    "alert_id": {
+      "type": "string"
+    },
+    "line_id": {
+      "type": "string",
+      "enum": [
+        "line_1",
+        "line_2",
+        "line_3"
+      ]
+    },
+    "source_type": {
+      "type": "string"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "triggered_at": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  }
+}

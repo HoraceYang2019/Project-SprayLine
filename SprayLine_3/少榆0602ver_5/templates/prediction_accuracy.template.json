@@ -1,0 +1,9 @@
+{
+  "line_id": "<string>",
+  "date": "<string>",
+  "yesterday_predicted_ok": "<['number', 'null']>",
+  "yesterday_actual_ok": "<['number', 'null']>",
+  "prediction_error_pts": "<['number', 'null']>",
+  "model_accuracy": "<['number', 'null']>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

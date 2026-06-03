@@ -1,0 +1,38 @@
+少榆0602ver_5 完整檢查報告
+============================================================
+
+Top-level files:
+README.md, 相對0602ver_4更改.md
+
+JSON parse:
+OK
+
+CSV parse:
+- csv_templates/function_io_template.csv: rows=26, columns=13, old_terms=0
+- docs/api_v1_routes.csv: rows=21, columns=12, old_terms=0
+- docs/dashboard_v15_frontend_contract_check.csv: rows=17, columns=9, old_terms=0
+- docs/dashboard_v15_ui_workflow.csv: rows=12, columns=6, old_terms=0
+- docs/database_schema_v2_table_catalog.csv: rows=25, columns=4, old_terms=0
+- docs/database_schema_v2_zone_catalog.csv: rows=7, columns=4, old_terms=0
+- docs/service_function_db_binding_check.csv: rows=21, columns=10, old_terms=0
+- knowledge/filter_threshold.template.csv: rows=4, columns=9, old_terms=0
+- knowledge/nozzle_threshold.template.csv: rows=4, columns=9, old_terms=0
+- knowledge/process_threshold.template.csv: rows=6, columns=9, old_terms=0
+
+TTL parse / class expansion / graph relation:
+- ontology/SprayLine_service_extension.ttl: parse OK, triples=2382, classes=205, classes_without_parent_except_root=0, labels={'en': 260}, old_terms=0
+  class expansion subclass checks: OK
+  OntoGraf relation checks: OK
+- ontology/SprayLine_service_extension_chinese.ttl: parse OK, triples=2382, classes=205, classes_without_parent_except_root=0, labels={'zh': 260}, old_terms=0
+  class expansion subclass checks: OK
+  OntoGraf relation checks: OK
+- ontology/SprayLine_service_extension_english.ttl: parse OK, triples=2382, classes=205, classes_without_parent_except_root=0, labels={'en': 260}, old_terms=0
+  class expansion subclass checks: OK
+  OntoGraf relation checks: OK
+
+Python syntax:
+- webservices/dashboard_v15_service/dashboard_v15_service_contract.py: syntax OK
+
+Old workflow / old naming scan:
+OK
+

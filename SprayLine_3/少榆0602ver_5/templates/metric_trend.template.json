@@ -1,0 +1,8 @@
+{
+  "line_id": "<string>",
+  "metric_name": "<string>",
+  "points": "<array>",
+  "time_range": "<object>",
+  "cache_ttl_s": "<integer>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

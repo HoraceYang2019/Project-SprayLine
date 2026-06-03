@@ -1,0 +1,9 @@
+{
+  "line_id": "<template_placeholder>",
+  "category": "<template_placeholder>",
+  "start_time": "<template_placeholder>",
+  "end_time": "<template_placeholder>",
+  "events": "<template_placeholder>",
+  "cache_ttl_s": "<template_placeholder>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

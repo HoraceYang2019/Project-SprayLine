@@ -1,0 +1,7 @@
+{
+  "line_id": "<string>",
+  "diagnoses": "<array>",
+  "threshold_sources": "<array>",
+  "cache_ttl_s": "<integer>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

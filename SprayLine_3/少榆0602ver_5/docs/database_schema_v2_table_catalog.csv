@@ -1,0 +1,25 @@
+﻿table_name,db_zone,key_columns,dashboard_v15_usage
+production_line,Zone1ConfigMaster,"line_id, name, status",line FK and status
+recipe_master,Zone1ConfigMaster,"recipe_id, recipe_name, target_cycle_time_s",recipe and OEE baseline
+component_master,Zone1ConfigMaster,"component_type, line_id",component definition
+production_line_config,Zone1ConfigMaster,"line_id, weight_key, weight_value",threshold weights and line config
+batch_run,Zone2ProductionQuality,"batch_id, line_id, start_time, end_time",batch table / filters
+part_history,Zone2ProductionQuality,"part_uuid, batch_id, cycle_time_ms",cycle time and part records
+qc_result,Zone2ProductionQuality,"part_uuid, ok_ng, qc_score",actual quality
+component_health_snapshot,Zone2ProductionQuality,"line_id, component_id, health_status, snapshot_time",station summary and component health
+runtime_window,Zone3RuntimeSensing,"window_id, line_id, start_time, end_time",TimescaleDB hypertable window
+runtime_signal,Zone3RuntimeSensing,"window_id, pressure_bar, flow_rate_ml_min, spray_width_mm",live sensor signal
+runtime_reference,Zone3RuntimeSensing,"window_id, nominal_pressure_bar, nominal_flow_rate_ml_min, nominal_spray_width_mm",reference / normal range
+runtime_metric,Zone3RuntimeSensing,"window_id, composite_anomaly_score, pressure_error_ratio, utilization_pct",derived runtime metrics
+robot_pose,Zone3RuntimeSensing,"window_id, tcp_x_mm, tcp_y_mm, tcp_z_mm, nozzle_roll",robot pose
+arm_telemetry_raw,Zone3RuntimeSensing,"sim_timestamp, telemetry fields",TimescaleDB hypertable raw telemetry
+filter_threshold,Zone4KnowledgeDiagnosis,filter thresholds,filter baseline / diff
+nozzle_threshold,Zone4KnowledgeDiagnosis,nozzle thresholds,nozzle baseline / diff
+process_threshold,Zone4KnowledgeDiagnosis,process thresholds,process baseline / diff
+diagnosis_result,Zone4KnowledgeDiagnosis,"line_id, category, severity_rank, confidence, baseline, diff",diagnosis latest / timeline
+ml_feature_snapshot,Zone5MLPrediction,"part_uuid, feature payload",ML input
+ml_prediction_result,Zone5MLPrediction,"part_uuid, predicted_ok_rate, predicted_ng_pcs, prediction_type",forecast / prediction
+ml_inference_log,Zone5MLPrediction,"model_id, inference_time, status",ML trace
+omniverse_sync_log,Zone6AlertTwin,"sync_id, status, timestamp",Omniverse sync
+trajectory_result,Zone6AlertTwin,"trajectory_id, validation_result",trajectory validation
+alert_log,Zone6AlertTwin,"alert_id, line_id, source_type, source_id, acknowledged_at",pending alert drawer

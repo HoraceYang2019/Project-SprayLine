@@ -1,0 +1,17 @@
+﻿ui_tab,ui_component,api_route,service_function,response_schema,schema_exists,db_tables,status,note
+EngineerMonitoringTab,StationSummaryCards,/api/v1/lines/{line_id}/summary,get_station_dashboard_status,line_summary.schema.json,True,production_line; component_master; component_health_snapshot,OK,Dashboard v15 component contract
+EngineerMonitoringTab,StationCards6Components,/api/v1/lines/{line_id}/stations/latest,get_latest_runtime_window,station_latest.schema.json,True,runtime_window; runtime_signal; runtime_reference; runtime_metric; robot_pose,OK,Dashboard v15 component contract
+EngineerMonitoringTab,ComponentDiagnosisDrawer,/api/v1/lines/{line_id}/diagnosis/latest,get_latest_diagnosis,diagnosis_latest.schema.json,True,diagnosis_result; filter_threshold; nozzle_threshold; process_threshold,OK,Dashboard v15 component contract
+EngineerMonitoringTab,TimeSeriesSlider,/api/v1/lines/{line_id}/metrics/{metric_name}/trend,get_metric_trend,metric_trend.schema.json,True,runtime_window; runtime_metric,OK,Dashboard v15 component contract
+EngineerMonitoringTab,TimeSeriesSlider,/api/v1/lines/{line_id}/diagnosis/timeline,get_diagnosis_timeline,diagnosis_timeline.schema.json,True,diagnosis_result; filter_threshold; nozzle_threshold; process_threshold,OK,Dashboard v15 component contract
+ProductionManagementTab,StatusBanner,/api/v1/lines/{line_id}/status,get_overall_status,overall_status.schema.json,True,component_health_snapshot; ml_prediction_result; alert_log,OK,Dashboard v15 component contract
+ProductionManagementTab,KPICards,/api/v1/lines/{line_id}/kpi,get_kpi_summary,kpi_summary.schema.json,True,ml_prediction_result; runtime_metric; part_history; qc_result,OK,Dashboard v15 component contract
+ProductionManagementTab,YieldComparisonChart,/api/v1/lines/{line_id}/charts/yield-comparison,get_yield_comparison,yield_comparison.schema.json,True,qc_result; part_history; batch_run; ml_prediction_result,OK,Dashboard v15 component contract
+ProductionManagementTab,QualityUtilizationCycleCharts,/api/v1/lines/{line_id}/charts/quality-trend,get_quality_trend,quality_trend.schema.json,True,qc_result; ml_prediction_result,OK,Dashboard v15 component contract
+ProductionManagementTab,QualityUtilizationCycleCharts,/api/v1/lines/{line_id}/charts/utilization-trend,get_utilization_trend,utilization_trend.schema.json,True,runtime_metric,OK,Dashboard v15 component contract
+ProductionManagementTab,QualityUtilizationCycleCharts,/api/v1/lines/{line_id}/charts/cycle-time-trend,get_cycle_time_trend,cycle_time_trend.schema.json,True,part_history,OK,Dashboard v15 component contract
+ProductionManagementTab,BatchTable,/api/v1/lines/{line_id}/batches,list_batches_filtered,batches_filtered.schema.json,True,batch_run; qc_result; ml_prediction_result,OK,Dashboard v15 component contract
+Drawer,PendingAlertsDrawer,/api/v1/lines/{line_id}/alerts/pending,list_pending_alerts,pending_alerts.schema.json,True,alert_log; diagnosis_result; ml_prediction_result; qc_result,OK,Dashboard v15 component contract
+Drawer,PendingAlertsDrawer,/api/v1/alerts/{alert_id}/acknowledge,acknowledge_alert,alert_acknowledge.schema.json,True,alert_log,OK,Dashboard v15 component contract
+Drawer,PendingAlertsDrawer,/api/v1/alerts/trigger,trigger_alert,alert_trigger.schema.json,True,alert_log; diagnosis_result; ml_prediction_result; qc_result,OK,Dashboard v15 component contract
+Drawer,PredictionAccuracyDrawer,/api/v1/lines/{line_id}/prediction-accuracy,get_prediction_accuracy,prediction_accuracy.schema.json,True,qc_result; ml_prediction_result,OK,Dashboard v15 component contract

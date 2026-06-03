@@ -1,0 +1,11 @@
+{
+  "line_id": "<template_placeholder>",
+  "timestep": "<template_placeholder>",
+  "labels": "<template_placeholder>",
+  "series": "<template_placeholder>",
+  "target": "<template_placeholder>",
+  "now_index": "<template_placeholder>",
+  "forecast_start_index": "<template_placeholder>",
+  "cache_ttl_s": "<template_placeholder>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

@@ -1,0 +1,4 @@
+﻿metric_key,unit,purpose,normal_min,normal_max,warning_rule,alarm_rule,is_finalized,note
+pressure_bar,bar,nozzle/air pressure baseline,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,false,pending_value
+flow_rate_ml_min,ml/min,flow rate baseline,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,false,pending_value
+nozzle_clog_rate_pct,%,nozzle clog baseline,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,<to_be_confirmed>,false,pending_value

@@ -1,0 +1,21 @@
+﻿service_function,api_route,response_schema,schema_exists,db_tables,all_tables_in_catalog,missing_tables,ui_component,status,note
+get_station_dashboard_status,/api/v1/lines/{line_id}/summary,line_summary.schema.json,True,production_line; component_master; component_health_snapshot,True,,StationSummaryCards,OK,Stage 3 DB binding check
+get_latest_runtime_window,/api/v1/lines/{line_id}/stations/latest,station_latest.schema.json,True,runtime_window; runtime_signal; runtime_reference; runtime_metric; robot_pose,True,,StationCards6Components,OK,Stage 3 DB binding check
+get_latest_diagnosis,/api/v1/lines/{line_id}/diagnosis/latest,diagnosis_latest.schema.json,True,diagnosis_result; filter_threshold; nozzle_threshold; process_threshold,True,,ComponentDiagnosisDrawer,OK,Stage 3 DB binding check
+get_metric_trend,/api/v1/lines/{line_id}/metrics/{metric_name}/trend,metric_trend.schema.json,True,runtime_window; runtime_metric,True,,TimeSeriesSlider,OK,Stage 3 DB binding check
+get_overall_status,/api/v1/lines/{line_id}/status,overall_status.schema.json,True,component_health_snapshot; ml_prediction_result; alert_log,True,,StatusBanner,OK,Stage 3 DB binding check
+get_kpi_summary,/api/v1/lines/{line_id}/kpi,kpi_summary.schema.json,True,ml_prediction_result; runtime_metric; part_history; qc_result,True,,KPICards,OK,Stage 3 DB binding check
+get_yield_comparison,/api/v1/lines/{line_id}/charts/yield-comparison,yield_comparison.schema.json,True,qc_result; part_history; batch_run; ml_prediction_result,True,,YieldComparisonChart,OK,Stage 3 DB binding check
+get_quality_trend,/api/v1/lines/{line_id}/charts/quality-trend,quality_trend.schema.json,True,qc_result; ml_prediction_result,True,,QualityTrendChart,OK,Stage 3 DB binding check
+get_utilization_trend,/api/v1/lines/{line_id}/charts/utilization-trend,utilization_trend.schema.json,True,runtime_metric,True,,UtilizationTrendChart,OK,Stage 3 DB binding check
+get_cycle_time_trend,/api/v1/lines/{line_id}/charts/cycle-time-trend,cycle_time_trend.schema.json,True,part_history,True,,CycleTimeTrendChart,OK,Stage 3 DB binding check
+list_batches_filtered,/api/v1/lines/{line_id}/batches,batches_filtered.schema.json,True,batch_run; qc_result; ml_prediction_result,True,,BatchTable,OK,Stage 3 DB binding check
+list_pending_alerts,/api/v1/lines/{line_id}/alerts/pending,pending_alerts.schema.json,True,alert_log; diagnosis_result; ml_prediction_result; qc_result,True,,PendingAlertsDrawer,OK,Stage 3 DB binding check
+acknowledge_alert,/api/v1/alerts/{alert_id}/acknowledge,alert_acknowledge.schema.json,True,alert_log,True,,PendingAlertsDrawer,OK,Stage 3 DB binding check
+trigger_alert,/api/v1/alerts/trigger,alert_trigger.schema.json,True,alert_log; diagnosis_result; ml_prediction_result; qc_result,True,,PendingAlertsDrawer,OK,Stage 3 DB binding check
+get_prediction_accuracy,/api/v1/lines/{line_id}/prediction-accuracy,prediction_accuracy.schema.json,True,qc_result; ml_prediction_result,True,,PredictionAccuracyDrawer,OK,Stage 3 DB binding check
+get_diagnosis_timeline,/api/v1/lines/{line_id}/diagnosis/timeline,diagnosis_timeline.schema.json,True,diagnosis_result; filter_threshold; nozzle_threshold; process_threshold,True,,TimeSeriesSlider,OK,Stage 3 DB binding check
+get_station_risk_detail,/api/v1/lines/{line_id}/risk-detail,station_risk_detail.schema.json,True,diagnosis_result; ml_prediction_result; alert_log,True,,StationRiskDetail,OK,Stage 3 DB binding check
+get_ml_feature_input,/api/v1/parts/{part_uuid}/ml-features,ml_feature_input.schema.json,True,ml_feature_snapshot,True,,FutureService,OK,Stage 3 DB binding check
+get_latest_prediction,/api/v1/parts/{part_uuid}/prediction/latest,latest_prediction.schema.json,True,ml_prediction_result,True,,PredictionService,OK,Stage 3 DB binding check
+get_omniverse_validation_result,/api/v1/parts/{part_uuid}/omniverse/validation,omniverse_validation.schema.json,True,omniverse_sync_log; trajectory_result,True,,OmniverseValidation,OK,Stage 3 DB binding check

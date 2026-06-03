@@ -1,0 +1,40 @@
+{
+  "schema_version": "v1.0",
+  "table_name": "nozzle_threshold",
+  "template_policy": "Template only. No finalized threshold values are provided.",
+  "rows": [
+    {
+      "metric_key": "pressure_bar",
+      "unit": "bar",
+      "purpose": "nozzle/air pressure baseline",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    },
+    {
+      "metric_key": "flow_rate_ml_min",
+      "unit": "ml/min",
+      "purpose": "flow rate baseline",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    },
+    {
+      "metric_key": "nozzle_clog_rate_pct",
+      "unit": "%",
+      "purpose": "nozzle clog baseline",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    }
+  ]
+}

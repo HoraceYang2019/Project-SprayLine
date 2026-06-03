@@ -1,0 +1,7 @@
+﻿zone_id,zone_name_zh,tables,dashboard_usage
+Zone1ConfigMaster,設定主資料,production_line; recipe_master; component_master; production_line_config,所有 query FK 驗證、OEE 基準、元件定義、權重
+Zone2ProductionQuality,生產品質,batch_run; part_history; qc_result; component_health_snapshot,Batch 表、KPI、Cycle Time、良率、健康摘要卡
+Zone3RuntimeSensing,即時感測,runtime_window; runtime_signal; runtime_reference; runtime_metric; robot_pose; arm_telemetry_raw,站點卡片、時序 slider、元件 level、composite_anomaly_score、噴幅 SVG
+Zone4KnowledgeDiagnosis,知識診斷,filter_threshold; nozzle_threshold; process_threshold; diagnosis_result,元件詳情 baseline/diff、診斷 timeline、threshold import
+Zone5MLPrediction,ML 預測,ml_feature_snapshot; ml_prediction_result; ml_inference_log,KPI predicted_ok_rate、forecast、預測準確度
+Zone6AlertTwin,Alert / Twin,omniverse_sync_log; trajectory_result; alert_log,待處理警示、acknowledge_alert、trigger_alert、多型引用

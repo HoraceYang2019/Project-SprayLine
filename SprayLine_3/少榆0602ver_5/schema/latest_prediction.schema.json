@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Latest Prediction Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "part_uuid",
+    "prediction_result",
+    "source_table",
+    "cache_ttl_s"
+  ],
+  "properties": {
+    "part_uuid": {
+      "type": "string"
+    },
+    "prediction_result": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "source_table": {
+      "type": "string",
+      "const": "ml_prediction_result"
+    },
+    "cache_ttl_s": {
+      "type": "integer"
+    }
+  }
+}

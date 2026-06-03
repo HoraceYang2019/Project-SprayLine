@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Prediction Accuracy Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "line_id",
+    "date",
+    "yesterday_predicted_ok",
+    "yesterday_actual_ok",
+    "prediction_error_pts",
+    "model_accuracy"
+  ],
+  "properties": {
+    "line_id": {
+      "type": "string",
+      "enum": [
+        "line_1",
+        "line_2",
+        "line_3"
+      ]
+    },
+    "date": {
+      "type": "string"
+    },
+    "yesterday_predicted_ok": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "yesterday_actual_ok": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "prediction_error_pts": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "model_accuracy": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  }
+}

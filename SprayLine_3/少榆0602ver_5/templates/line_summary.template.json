@@ -1,0 +1,10 @@
+{
+  "line_id": "<string>",
+  "timestamp": "<string>",
+  "total": "<integer>",
+  "normal": "<integer>",
+  "warning": "<integer>",
+  "predict_risk": "<integer>",
+  "cache_ttl_s": "<integer>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

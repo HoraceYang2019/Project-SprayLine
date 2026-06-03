@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Overall Status Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "line_id",
+    "date",
+    "worst_station",
+    "severity",
+    "message",
+    "predicted_ok_rate",
+    "predicted_ng_pcs",
+    "cache_ttl_s"
+  ],
+  "properties": {
+    "line_id": {
+      "type": "string",
+      "enum": [
+        "line_1",
+        "line_2",
+        "line_3"
+      ]
+    },
+    "date": {
+      "type": "string"
+    },
+    "worst_station": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "severity": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "message": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "predicted_ok_rate": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "predicted_ng_pcs": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "cache_ttl_s": {
+      "type": "integer"
+    }
+  }
+}

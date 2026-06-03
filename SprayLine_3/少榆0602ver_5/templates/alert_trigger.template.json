@@ -1,0 +1,9 @@
+{
+  "alert_id": "<template_placeholder>",
+  "line_id": "<template_placeholder>",
+  "source_type": "<template_placeholder>",
+  "source_id": "<template_placeholder>",
+  "triggered_at": "<template_placeholder>",
+  "status": "<template_placeholder>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

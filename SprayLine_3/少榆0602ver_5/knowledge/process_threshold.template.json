@@ -1,0 +1,62 @@
+{
+  "schema_version": "v1.0",
+  "table_name": "process_threshold",
+  "template_policy": "Template only. No finalized threshold values are provided.",
+  "rows": [
+    {
+      "metric_key": "spray_width_mm",
+      "unit": "mm",
+      "purpose": "spray width normal range",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    },
+    {
+      "metric_key": "film_thickness_um",
+      "unit": "um",
+      "purpose": "film thickness target",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    },
+    {
+      "metric_key": "quality_score_pct",
+      "unit": "%",
+      "purpose": "quality score target",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    },
+    {
+      "metric_key": "utilization_pct",
+      "unit": "%",
+      "purpose": "utilization target",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    },
+    {
+      "metric_key": "cycle_time_s",
+      "unit": "s",
+      "purpose": "cycle time baseline",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    }
+  ]
+}

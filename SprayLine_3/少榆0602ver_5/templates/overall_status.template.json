@@ -1,0 +1,11 @@
+{
+  "line_id": "<string>",
+  "date": "<string>",
+  "worst_station": "<['string', 'null']>",
+  "severity": "<['string', 'null']>",
+  "message": "<['string', 'null']>",
+  "predicted_ok_rate": "<['number', 'null']>",
+  "predicted_ng_pcs": "<['number', 'null']>",
+  "cache_ttl_s": "<integer>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

@@ -1,0 +1,9 @@
+{
+  "line_id": "<string>",
+  "date": "<string>",
+  "hours": "<array>",
+  "yesterday": "<array>",
+  "today": "<array>",
+  "target": "<number>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

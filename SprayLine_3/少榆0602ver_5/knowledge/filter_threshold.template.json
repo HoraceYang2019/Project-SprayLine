@@ -1,0 +1,40 @@
+{
+  "schema_version": "v1.0",
+  "table_name": "filter_threshold",
+  "template_policy": "Template only. No finalized threshold values are provided.",
+  "rows": [
+    {
+      "metric_key": "filter_diff_pressure_bar",
+      "unit": "bar",
+      "purpose": "filter differential pressure baseline",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    },
+    {
+      "metric_key": "flow_loss_pct",
+      "unit": "%",
+      "purpose": "flow loss baseline",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    },
+    {
+      "metric_key": "filter_clog_rate_pct",
+      "unit": "%",
+      "purpose": "filter clog baseline",
+      "normal_min": "<to_be_confirmed>",
+      "normal_max": "<to_be_confirmed>",
+      "warning_rule": "<to_be_confirmed>",
+      "alarm_rule": "<to_be_confirmed>",
+      "is_finalized": false,
+      "note": "pending_value"
+    }
+  ]
+}

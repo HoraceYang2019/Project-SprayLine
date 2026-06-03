@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Trend Chart Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "line_id",
+    "metric_name",
+    "labels",
+    "series",
+    "now_index",
+    "forecast_start_index"
+  ],
+  "properties": {
+    "line_id": {
+      "type": "string",
+      "enum": [
+        "line_1",
+        "line_2",
+        "line_3"
+      ]
+    },
+    "metric_name": {
+      "type": "string"
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "series": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "now_index": {
+      "type": "integer"
+    },
+    "forecast_start_index": {
+      "type": "integer"
+    }
+  }
+}

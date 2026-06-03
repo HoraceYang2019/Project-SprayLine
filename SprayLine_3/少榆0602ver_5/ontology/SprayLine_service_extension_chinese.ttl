@@ -1,0 +1,2648 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spray:APIGateway a owl:Class ;
+    rdfs:label "API Gateway"@zh ;
+    rdfs:subClassOf spray:Infrastructure .
+
+spray:DashboardV15 a spray:DashboardV15Interface,
+        owl:NamedIndividual ;
+    rdfs:label "Dashboard v15 介面"@zh ;
+    spray:hasUIComponent spray:BatchTable,
+        spray:ComponentDiagnosisDrawer,
+        spray:KPICards,
+        spray:PendingAlertsDrawer,
+        spray:PredictionAccuracyDrawer,
+        spray:QualityUtilizationCycleCharts,
+        spray:StationCards6Components,
+        spray:StationSummaryCards,
+        spray:StatusBanner,
+        spray:TimeSeriesSlider,
+        spray:YieldComparisonChart .
+
+spray:EngineerMonitoringTab a owl:Class ;
+    rdfs:label "即時監控頁籤"@zh ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:MLPredictionResult a owl:Class ;
+    rdfs:label "機器學習預測結果"@zh ;
+    rdfs:subClassOf spray:DataResource .
+
+spray:PendingDatabaseBinding a owl:NamedIndividual ;
+    rdfs:label "DB implementation pending"@zh .
+
+spray:ProductionManagementTab a owl:Class ;
+    rdfs:label "生產管理頁籤"@zh ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:RedisCache a owl:Class ;
+    rdfs:label "Redis Cache"@zh ;
+    rdfs:subClassOf spray:Infrastructure .
+
+spray:RuntimeMetric a owl:Class ;
+    rdfs:label "即時計算指標"@zh ;
+    rdfs:subClassOf spray:Metric .
+
+spray:RuntimeReference a owl:Class ;
+    rdfs:label "即時參考值"@zh ;
+    rdfs:subClassOf spray:DataResource .
+
+spray:RuntimeSignal a owl:Class ;
+    rdfs:label "即時訊號"@zh ;
+    rdfs:subClassOf spray:DataResource .
+
+spray:SprayLineSystem a spray:SprayLine,
+        owl:NamedIndividual ;
+    spray:hasLine spray:Line1,
+        spray:Line2,
+        spray:Line3 .
+
+spray:affectedBy a owl:ObjectProperty ;
+    rdfs:label "受到影響"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:affectsDownstream a owl:ObjectProperty ;
+    rdfs:label "影響下游"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:apiRoute a owl:DatatypeProperty ;
+    rdfs:label "API 路由"@zh .
+
+spray:assetKey a owl:DatatypeProperty ;
+    rdfs:label "資產鍵"@zh .
+
+spray:belongsToLine a owl:ObjectProperty ;
+    rdfs:label "屬於產線"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:ProductionLine .
+
+spray:belongsToZone a owl:ObjectProperty ;
+    rdfs:label "屬於資料庫區域"@zh .
+
+spray:callsEndpoint a owl:ObjectProperty ;
+    rdfs:label "呼叫 API 端點"@zh .
+
+spray:containsAssetClass a owl:ObjectProperty ;
+    rdfs:label "包含資產類別"@zh .
+
+spray:diagnosedByFunction a owl:ObjectProperty ;
+    rdfs:label "由功能診斷"@zh .
+
+spray:functionName a owl:DatatypeProperty ;
+    rdfs:label "功能名稱"@zh .
+
+spray:hasAlertTable a owl:ObjectProperty ;
+    rdfs:label "具有警示資料表"@zh .
+
+spray:hasAsset a owl:ObjectProperty ;
+    rdfs:label "具有資產"@zh ;
+    rdfs:domain spray:ProductionLine ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:hasAssetClass a owl:ObjectProperty ;
+    rdfs:label "具有資產類別"@zh .
+
+spray:hasConceptCategory a owl:ObjectProperty ;
+    rdfs:label "具有概念分類"@zh .
+
+spray:hasDiagnosisTable a owl:ObjectProperty ;
+    rdfs:label "具有診斷資料表"@zh .
+
+spray:hasLine a owl:ObjectProperty ;
+    rdfs:label "具有產線"@zh .
+
+spray:hasLineClass a owl:ObjectProperty ;
+    rdfs:label "具有產線類別"@zh .
+
+spray:hasMetricTable a owl:ObjectProperty ;
+    rdfs:label "具有指標資料表"@zh .
+
+spray:hasPendingDependency a owl:ObjectProperty ;
+    rdfs:label "具有待確認依賴"@zh .
+
+spray:hasPossibleIssue a owl:ObjectProperty ;
+    rdfs:label "具有可能異常"@zh .
+
+spray:hasProcessOrder a owl:ObjectProperty ;
+    rdfs:label "具有流程順序"@zh .
+
+spray:hasResponseSchema a owl:ObjectProperty ;
+    rdfs:label "具有回應 Schema"@zh .
+
+spray:hasRuntimeTable a owl:ObjectProperty ;
+    rdfs:label "具有即時資料表"@zh .
+
+spray:hasSpecificAssetClass a owl:ObjectProperty ;
+    rdfs:label "具有特定資產類別"@zh .
+
+spray:hasSpecificDatabaseTableClass a owl:ObjectProperty ;
+    rdfs:label "具有特定資料表類別"@zh .
+
+spray:hasSpecificEndpointClass a owl:ObjectProperty ;
+    rdfs:label "具有特定 API 端點類別"@zh .
+
+spray:hasSpecificIssueClass a owl:ObjectProperty ;
+    rdfs:label "具有特定異常類別"@zh .
+
+spray:hasSpecificResponseSchemaClass a owl:ObjectProperty ;
+    rdfs:label "具有特定回應 Schema 類別"@zh .
+
+spray:hasSpecificServiceFunctionClass a owl:ObjectProperty ;
+    rdfs:label "具有特定服務功能類別"@zh .
+
+spray:hasSpecificUIComponentClass a owl:ObjectProperty ;
+    rdfs:label "具有特定 UI 元件類別"@zh .
+
+spray:hasUIComponent a owl:ObjectProperty ;
+    rdfs:label "具有 UI 元件"@zh .
+
+spray:implementedBy a owl:ObjectProperty ;
+    rdfs:label "由功能實作"@zh .
+
+spray:implementedByFunction a owl:ObjectProperty ;
+    rdfs:label "由功能實作"@zh .
+
+spray:issueKey a owl:DatatypeProperty ;
+    rdfs:label "異常鍵"@zh .
+
+spray:lineId a owl:DatatypeProperty ;
+    rdfs:label "line_id"@zh .
+
+spray:linkedToDashboardComponent a owl:ObjectProperty ;
+    rdfs:label "連到儀表板元件"@zh .
+
+spray:mayTriggerAlert a owl:ObjectProperty ;
+    rdfs:label "可能觸發警示"@zh ;
+    rdfs:range spray:AlertLog .
+
+spray:monitorsAsset a owl:ObjectProperty ;
+    rdfs:label "監控資產"@zh .
+
+spray:monitorsMetric a owl:ObjectProperty ;
+    rdfs:label "監控指標"@zh .
+
+spray:processOrder a owl:DatatypeProperty ;
+    rdfs:label "流程順序"@zh .
+
+spray:producesDiagnosis a owl:ObjectProperty ;
+    rdfs:label "產生診斷"@zh ;
+    rdfs:range spray:DiagnosisResult .
+
+spray:queriesTable a owl:ObjectProperty ;
+    rdfs:label "查詢資料表"@zh .
+
+spray:rendersComponent a owl:ObjectProperty ;
+    rdfs:label "渲染元件"@zh .
+
+spray:schemaFile a owl:DatatypeProperty ;
+    rdfs:label "schema 檔案"@zh .
+
+spray:servedByEndpoint a owl:ObjectProperty ;
+    rdfs:label "由 API 端點服務"@zh .
+
+spray:status a owl:DatatypeProperty ;
+    rdfs:label "狀態"@zh .
+
+spray:tableName a owl:DatatypeProperty ;
+    rdfs:label "資料表名稱"@zh .
+
+spray:upstreamOf a owl:ObjectProperty ;
+    rdfs:label "位於上游"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:usesFunction a owl:ObjectProperty ;
+    rdfs:label "使用功能"@zh .
+
+spray:usesThresholdTable a owl:ObjectProperty ;
+    rdfs:label "使用閾值表"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:ThresholdTable .
+
+spray:visualizesTable a owl:ObjectProperty ;
+    rdfs:label "視覺化資料表"@zh .
+
+spray:CycleTimeTrendChart a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "CycleTimeTrendChart"@zh ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:DashboardV15Interface a owl:Class ;
+    rdfs:label "Dashboard v15 介面"@zh ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:FutureService a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "FutureService"@zh ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:MlInferenceLogTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "ml_inference_log"@zh ;
+    spray:belongsToZone spray:Zone5MLPrediction ;
+    spray:tableName "ml_inference_log" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:OmniverseValidation a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "OmniverseValidation"@zh ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:ProductionLineConfigTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "production_line_config"@zh ;
+    spray:belongsToZone spray:Zone1ConfigMaster ;
+    spray:tableName "production_line_config" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:QualityTrendChart a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "QualityTrendChart"@zh ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:RecipeMasterTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "recipe_master"@zh ;
+    spray:belongsToZone spray:Zone1ConfigMaster ;
+    spray:tableName "recipe_master" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:TrendChartSchema a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "trend_chart.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:UtilizationTrendChart a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "UtilizationTrendChart"@zh ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:AlertAcknowledgeSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "alert_acknowledge.schema.json"@zh ;
+    spray:schemaFile "alert_acknowledge.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:AlertTriggerSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "alert_trigger.schema.json"@zh ;
+    spray:schemaFile "alert_trigger.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:ApiV1AlertsAlertIdAcknowledgeEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/alerts/{alert_id}/acknowledge"@zh ;
+    spray:apiRoute "/api/v1/alerts/{alert_id}/acknowledge" ;
+    spray:hasResponseSchema spray:AlertAcknowledgeSchema ;
+    spray:implementedBy spray:AcknowledgeAlertFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1AlertsTriggerEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/alerts/trigger"@zh ;
+    spray:apiRoute "/api/v1/alerts/trigger" ;
+    spray:hasResponseSchema spray:AlertTriggerSchema ;
+    spray:implementedBy spray:TriggerAlertFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdChartsCycleTimeTrendEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/charts/cycle-time-trend"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/charts/cycle-time-trend" ;
+    spray:hasResponseSchema spray:CycleTimeTrendSchema ;
+    spray:implementedBy spray:GetCycleTimeTrendFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdChartsQualityTrendEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/charts/quality-trend"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/charts/quality-trend" ;
+    spray:hasResponseSchema spray:QualityTrendSchema ;
+    spray:implementedBy spray:GetQualityTrendFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdChartsUtilizationTrendEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/charts/utilization-trend"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/charts/utilization-trend" ;
+    spray:hasResponseSchema spray:UtilizationTrendSchema ;
+    spray:implementedBy spray:GetUtilizationTrendFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdDiagnosisTimelineEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/diagnosis/timeline"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/diagnosis/timeline" ;
+    spray:hasResponseSchema spray:DiagnosisTimelineSchema ;
+    spray:implementedBy spray:GetDiagnosisTimelineFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdRiskDetailEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/risk-detail"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/risk-detail" ;
+    spray:hasResponseSchema spray:StationRiskDetailSchema ;
+    spray:implementedBy spray:GetStationRiskDetailFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1PartsPartUuidMlFeaturesEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/parts/{part_uuid}/ml-features"@zh ;
+    spray:apiRoute "/api/v1/parts/{part_uuid}/ml-features" ;
+    spray:hasResponseSchema spray:MlFeatureInputSchema ;
+    spray:implementedBy spray:GetMlFeatureInputFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1PartsPartUuidOmniverseValidationEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/parts/{part_uuid}/omniverse/validation"@zh ;
+    spray:apiRoute "/api/v1/parts/{part_uuid}/omniverse/validation" ;
+    spray:hasResponseSchema spray:OmniverseValidationSchema ;
+    spray:implementedBy spray:GetOmniverseValidationResultFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1PartsPartUuidPredictionLatestEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/parts/{part_uuid}/prediction/latest"@zh ;
+    spray:apiRoute "/api/v1/parts/{part_uuid}/prediction/latest" ;
+    spray:hasResponseSchema spray:LatestPredictionSchema ;
+    spray:implementedBy spray:GetLatestPredictionFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:BatchService a owl:Class ;
+    rdfs:label "批次服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:ListBatchesFilteredFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:BatchTable a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "BatchTable"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdBatchesEndpoint ;
+    spray:usesFunction spray:ListBatchesFilteredFunction ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:BatchesFilteredSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "batches_filtered.schema.json"@zh ;
+    spray:schemaFile "batches_filtered.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:ComponentMasterTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "component_master"@zh ;
+    spray:belongsToZone spray:Zone1ConfigMaster ;
+    spray:tableName "component_master" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:CycleTimeTrendSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "cycle_time_trend.schema.json"@zh ;
+    spray:schemaFile "cycle_time_trend.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:DashboardService a owl:Class ;
+    rdfs:label "Dashboard 服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetStationDashboardStatusFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:DataImportService a owl:Class ;
+    rdfs:label "資料匯入服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:ImportRuntimeJsonFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:DiagnosisLatestSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "diagnosis_latest.schema.json"@zh ;
+    spray:schemaFile "diagnosis_latest.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:DiagnosisTimelineSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "diagnosis_timeline.schema.json"@zh ;
+    spray:schemaFile "diagnosis_timeline.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:FeatureService a owl:Class ;
+    rdfs:label "特徵資料服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetMlFeatureInputFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:ImportInferredTtlFunction a spray:ServiceFunction,
+        spray:TTLImportService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "import_inferred_ttl"@zh ;
+    spray:functionName "import_inferred_ttl" ;
+    spray:status "pending_runtime_rule_output" ;
+    rdfs:subClassOf spray:ServiceFunction,
+        spray:TTLImportService .
+
+spray:ImportRuntimeJsonFunction a spray:DataImportService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "import_runtime_json"@zh ;
+    spray:functionName "import_runtime_json" ;
+    spray:status "pending_import_contract" ;
+    rdfs:subClassOf spray:DataImportService,
+        spray:ServiceFunction .
+
+spray:ImportThresholdCsvsFunction a spray:ServiceFunction,
+        spray:ThresholdImportService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "import_threshold_csvs"@zh ;
+    spray:functionName "import_threshold_csvs" ;
+    spray:status "pending_threshold_files" ;
+    rdfs:subClassOf spray:ServiceFunction,
+        spray:ThresholdImportService .
+
+spray:InsertPartHistoryFunction a spray:ProductionHistoryService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "insert_part_history"@zh ;
+    spray:functionName "insert_part_history" ;
+    spray:status "pending_db_binding" ;
+    rdfs:subClassOf spray:ProductionHistoryService,
+        spray:ServiceFunction .
+
+spray:InsertQcResultFunction a spray:QCService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "insert_qc_result"@zh ;
+    spray:functionName "insert_qc_result" ;
+    spray:status "pending_db_binding" ;
+    rdfs:subClassOf spray:QCService,
+        spray:ServiceFunction .
+
+spray:KPICards a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "KPICards"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdKpiEndpoint ;
+    spray:usesFunction spray:GetKpiSummaryFunction ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:KpiSummarySchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "kpi_summary.schema.json"@zh ;
+    spray:schemaFile "kpi_summary.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:LatestPredictionSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "latest_prediction.schema.json"@zh ;
+    spray:schemaFile "latest_prediction.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:LineSummarySchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_summary.schema.json"@zh ;
+    spray:schemaFile "line_summary.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:Metric a owl:Class ;
+    rdfs:label "指標"@zh ;
+    rdfs:subClassOf spray:DataResource .
+
+spray:MetricTrendSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "metric_trend.schema.json"@zh ;
+    spray:schemaFile "metric_trend.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:MlFeatureInputSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "ml_feature_input.schema.json"@zh ;
+    spray:schemaFile "ml_feature_input.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:MlFeatureSnapshotTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "ml_feature_snapshot"@zh ;
+    spray:belongsToZone spray:Zone5MLPrediction ;
+    spray:tableName "ml_feature_snapshot" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:OmniverseService a owl:Class ;
+    rdfs:label "Omniverse 服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetOmniverseValidationResultFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:OmniverseSyncLogTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "omniverse_sync_log"@zh ;
+    spray:belongsToZone spray:Zone6AlertTwin ;
+    spray:tableName "omniverse_sync_log" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:OmniverseValidationSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "omniverse_validation.schema.json"@zh ;
+    spray:schemaFile "omniverse_validation.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:OverallStatusSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "overall_status.schema.json"@zh ;
+    spray:schemaFile "overall_status.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:PendingAlertsSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "pending_alerts.schema.json"@zh ;
+    spray:schemaFile "pending_alerts.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:PredictionAccuracySchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "prediction_accuracy.schema.json"@zh ;
+    spray:schemaFile "prediction_accuracy.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:PredictionAccuracyService a owl:Class ;
+    rdfs:label "預測準確度服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetPredictionAccuracyFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:ProductionHistoryService a owl:Class ;
+    rdfs:label "生產歷程服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:InsertPartHistoryFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:ProductionLineTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "production_line"@zh ;
+    spray:belongsToZone spray:Zone1ConfigMaster ;
+    spray:tableName "production_line" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:QCService a owl:Class ;
+    rdfs:label "品質檢測服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:InsertQcResultFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:QualityTrendSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "quality_trend.schema.json"@zh ;
+    spray:schemaFile "quality_trend.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:RiskService a owl:Class ;
+    rdfs:label "風險服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetStationRiskDetailFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:RuntimeService a owl:Class ;
+    rdfs:label "即時資料服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetLatestRuntimeWindowFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:StationLatestSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "station_latest.schema.json"@zh ;
+    spray:schemaFile "station_latest.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:StationRiskDetailSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "station_risk_detail.schema.json"@zh ;
+    spray:schemaFile "station_risk_detail.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:StatusBanner a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "StatusBanner"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdStatusEndpoint ;
+    spray:usesFunction spray:GetOverallStatusFunction ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:TTLImportService a owl:Class ;
+    rdfs:label "TTL 匯入服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:ImportInferredTtlFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:ThresholdImportService a owl:Class ;
+    rdfs:label "閾值匯入服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:ImportThresholdCsvsFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:TrajectoryResultTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "trajectory_result"@zh ;
+    spray:belongsToZone spray:Zone6AlertTwin ;
+    spray:tableName "trajectory_result" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:TrendService a owl:Class ;
+    rdfs:label "趨勢服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetMetricTrendFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:UtilizationTrendSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "utilization_trend.schema.json"@zh ;
+    spray:schemaFile "utilization_trend.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:YieldComparisonSchema a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "yield_comparison.schema.json"@zh ;
+    spray:schemaFile "yield_comparison.schema.json" ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:ApiV1LinesLineIdAlertsPendingEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/alerts/pending"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/alerts/pending" ;
+    spray:hasResponseSchema spray:PendingAlertsSchema ;
+    spray:implementedBy spray:ListPendingAlertsFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdBatchesEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/batches"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/batches" ;
+    spray:hasResponseSchema spray:BatchesFilteredSchema ;
+    spray:implementedBy spray:ListBatchesFilteredFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdChartsYieldComparisonEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/charts/yield-comparison"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/charts/yield-comparison" ;
+    spray:hasResponseSchema spray:YieldComparisonSchema ;
+    spray:implementedBy spray:GetYieldComparisonFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdDiagnosisLatestEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/diagnosis/latest"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/diagnosis/latest" ;
+    spray:hasResponseSchema spray:DiagnosisLatestSchema ;
+    spray:implementedBy spray:GetLatestDiagnosisFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdKpiEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/kpi"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/kpi" ;
+    spray:hasResponseSchema spray:KpiSummarySchema ;
+    spray:implementedBy spray:GetKpiSummaryFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdMetricsMetricNameTrendEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/metrics/{metric_name}/trend"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/metrics/{metric_name}/trend" ;
+    spray:hasResponseSchema spray:MetricTrendSchema ;
+    spray:implementedBy spray:GetMetricTrendFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdPredictionAccuracyEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/prediction-accuracy"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/prediction-accuracy" ;
+    spray:hasResponseSchema spray:PredictionAccuracySchema ;
+    spray:implementedBy spray:GetPredictionAccuracyFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdStationsLatestEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/stations/latest"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/stations/latest" ;
+    spray:hasResponseSchema spray:StationLatestSchema ;
+    spray:implementedBy spray:GetLatestRuntimeWindowFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdStatusEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/status"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/status" ;
+    spray:hasResponseSchema spray:OverallStatusSchema ;
+    spray:implementedBy spray:GetOverallStatusFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:ApiV1LinesLineIdSummaryEndpoint a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "/api/v1/lines/{line_id}/summary"@zh ;
+    spray:apiRoute "/api/v1/lines/{line_id}/summary" ;
+    spray:hasResponseSchema spray:LineSummarySchema ;
+    spray:implementedBy spray:GetStationDashboardStatusFunction ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:BatchRunTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "batch_run"@zh ;
+    spray:belongsToZone spray:Zone2ProductionQuality ;
+    spray:tableName "batch_run" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:DatabaseConcept a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫概念"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:Drawer a owl:Class ;
+    rdfs:label "抽屜面板"@zh ;
+    spray:hasSpecificUIComponentClass spray:ComponentDiagnosisDrawer,
+        spray:PendingAlertsDrawer,
+        spray:PredictionAccuracyDrawer ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:GetLatestPredictionFunction a spray:PredictionService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_latest_prediction"@zh ;
+    spray:callsEndpoint spray:ApiV1PartsPartUuidPredictionLatestEndpoint ;
+    spray:functionName "get_latest_prediction" ;
+    spray:hasPendingDependency spray:PendingFutureModel ;
+    spray:queriesTable spray:MlPredictionResultTable ;
+    spray:status "pending_future_model" ;
+    rdfs:subClassOf spray:PredictionService,
+        spray:ServiceFunction .
+
+spray:GetMlFeatureInputFunction a spray:FeatureService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_ml_feature_input"@zh ;
+    spray:callsEndpoint spray:ApiV1PartsPartUuidMlFeaturesEndpoint ;
+    spray:functionName "get_ml_feature_input" ;
+    spray:hasPendingDependency spray:PendingFutureModel ;
+    spray:queriesTable spray:MlFeatureSnapshotTable ;
+    spray:status "pending_future_model" ;
+    rdfs:subClassOf spray:FeatureService,
+        spray:ServiceFunction .
+
+spray:GetOmniverseValidationResultFunction a spray:OmniverseService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_omniverse_validation_result"@zh ;
+    spray:callsEndpoint spray:ApiV1PartsPartUuidOmniverseValidationEndpoint ;
+    spray:functionName "get_omniverse_validation_result" ;
+    spray:queriesTable spray:OmniverseSyncLogTable,
+        spray:TrajectoryResultTable ;
+    spray:status "pending_omniverse_binding" ;
+    rdfs:subClassOf spray:OmniverseService,
+        spray:ServiceFunction .
+
+spray:PendingFutureModel a owl:NamedIndividual ;
+    rdfs:label "Future ML model pending"@zh .
+
+spray:PendingRuleService a owl:NamedIndividual ;
+    rdfs:label "Rule / diagnosis engine pending"@zh .
+
+spray:PredictionAccuracyDrawer a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "PredictionAccuracyDrawer"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdPredictionAccuracyEndpoint ;
+    spray:usesFunction spray:GetPredictionAccuracyFunction ;
+    rdfs:subClassOf spray:Drawer .
+
+spray:PredictionService a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "PredictionService"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetLatestPredictionFunction ;
+    rdfs:subClassOf spray:ServiceFunction,
+        spray:UIComponent .
+
+spray:SprayLine a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "噴塗產線系統"@zh ;
+    spray:containsAssetClass spray:ProductionLine ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:AcknowledgeAlertFunction a spray:AlertService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "acknowledge_alert"@zh ;
+    spray:callsEndpoint spray:ApiV1AlertsAlertIdAcknowledgeEndpoint ;
+    spray:functionName "acknowledge_alert" ;
+    spray:queriesTable spray:AlertLogTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:AlertService,
+        spray:ServiceFunction .
+
+spray:AirSupplyInstabilityIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "供氣不穩"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:CoverageRiskIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "覆蓋風險"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:DiagnosisService a owl:Class ;
+    rdfs:label "診斷服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetDiagnosisTimelineFunction,
+        spray:GetLatestDiagnosisFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:DownstreamQualityRiskIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "下游品質風險"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:FilterCloggingIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "濾網堵塞"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:FilterFlowLossIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "濾網流量損失"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:GetDiagnosisTimelineFunction a spray:DiagnosisService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_diagnosis_timeline"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdDiagnosisTimelineEndpoint ;
+    spray:functionName "get_diagnosis_timeline" ;
+    spray:queriesTable spray:DiagnosisResultTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:DiagnosisService,
+        spray:ServiceFunction .
+
+spray:GetKpiSummaryFunction a spray:KPIService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_kpi_summary"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdKpiEndpoint ;
+    spray:functionName "get_kpi_summary" ;
+    spray:queriesTable spray:MlPredictionResultTable,
+        spray:PartHistoryTable,
+        spray:QcResultTable,
+        spray:RuntimeMetricTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:KPIService,
+        spray:ServiceFunction .
+
+spray:GetOverallStatusFunction a spray:KPIService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_overall_status"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdStatusEndpoint ;
+    spray:functionName "get_overall_status" ;
+    spray:queriesTable spray:AlertLogTable,
+        spray:ComponentHealthSnapshotTable,
+        spray:MlPredictionResultTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:KPIService,
+        spray:ServiceFunction .
+
+spray:GetPredictionAccuracyFunction a spray:PredictionAccuracyService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_prediction_accuracy"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdPredictionAccuracyEndpoint ;
+    spray:functionName "get_prediction_accuracy" ;
+    spray:hasPendingDependency spray:PendingFutureModel ;
+    spray:queriesTable spray:MlPredictionResultTable,
+        spray:QcResultTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:PredictionAccuracyService,
+        spray:ServiceFunction .
+
+spray:GetUtilizationTrendFunction a spray:ChartService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_utilization_trend"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdChartsUtilizationTrendEndpoint ;
+    spray:functionName "get_utilization_trend" ;
+    spray:queriesTable spray:RuntimeMetricTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:ChartService,
+        spray:ServiceFunction .
+
+spray:Hypertable a owl:Class ;
+    rdfs:label "TimescaleDB Hypertable"@zh ;
+    spray:hasSpecificDatabaseTableClass spray:ArmTelemetryRawTable,
+        spray:RuntimeWindowTable ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:Infrastructure a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "系統基礎設施"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:KPIService a owl:Class ;
+    rdfs:label "KPI 服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetKpiSummaryFunction,
+        spray:GetOverallStatusFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:ListBatchesFilteredFunction a spray:BatchService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "list_batches_filtered"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdBatchesEndpoint ;
+    spray:functionName "list_batches_filtered" ;
+    spray:queriesTable spray:BatchRunTable,
+        spray:MlPredictionResultTable,
+        spray:QcResultTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:BatchService,
+        spray:ServiceFunction .
+
+spray:NozzleCloggingIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "噴嘴堵塞"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:NozzlePressureAbnormalIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "噴嘴壓力異常"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:OvenResultRiskIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "烤箱結果風險"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:PressureAbnormalIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "壓力異常"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:QualityRiskIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "品質風險"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:RobotArmLoadIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "機械手臂負載異常"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:RobotPoseDeviationIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "機械手臂姿態偏差"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:RuntimeWindowTable a spray:Hypertable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "runtime_window"@zh ;
+    spray:belongsToZone spray:Zone3RuntimeSensing ;
+    spray:tableName "runtime_window" ;
+    rdfs:subClassOf spray:DatabaseTable,
+        spray:Hypertable .
+
+spray:SprayWidthOutOfRangeIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "噴幅超出範圍"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:TriggerAlertFunction a spray:AlertService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "trigger_alert"@zh ;
+    spray:callsEndpoint spray:ApiV1AlertsTriggerEndpoint ;
+    spray:functionName "trigger_alert" ;
+    spray:hasPendingDependency spray:PendingRuleService ;
+    spray:queriesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:MlPredictionResultTable,
+        spray:QcResultTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:AlertService,
+        spray:ServiceFunction .
+
+spray:YieldDropIssue a spray:PossibleIssue,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "良率下降"@zh ;
+    rdfs:subClassOf spray:PossibleIssue .
+
+spray:Zone5MLPrediction a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "ML 預測"@zh ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:Zone6AlertTwin a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Alert / Twin"@zh ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:StationSummaryCards a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "StationSummaryCards"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdSummaryEndpoint ;
+    spray:usesFunction spray:GetStationDashboardStatusFunction ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:YieldComparisonChart a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "YieldComparisonChart"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdChartsYieldComparisonEndpoint ;
+    spray:monitorsAsset spray:Line1QualityModule,
+        spray:Line2QualityModule,
+        spray:Line3QualityModule ;
+    spray:usesFunction spray:GetYieldComparisonFunction ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:Zone1ConfigMaster a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "設定主資料"@zh ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:Zone2ProductionQuality a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "生產品質"@zh ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:Zone4KnowledgeDiagnosis a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "知識診斷"@zh ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:AlertService a owl:Class ;
+    rdfs:label "警示服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:AcknowledgeAlertFunction,
+        spray:ListPendingAlertsFunction,
+        spray:TriggerAlertFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:ComponentHealthSnapshotTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "component_health_snapshot"@zh ;
+    spray:belongsToZone spray:Zone2ProductionQuality ;
+    spray:tableName "component_health_snapshot" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:PendingAlertsDrawer a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "PendingAlertsDrawer"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdAlertsPendingEndpoint ;
+    spray:monitorsAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1Oven,
+        spray:Line1QualityModule,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2Oven,
+        spray:Line2QualityModule,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3Oven,
+        spray:Line3QualityModule ;
+    spray:usesFunction spray:AcknowledgeAlertFunction,
+        spray:ListPendingAlertsFunction,
+        spray:TriggerAlertFunction ;
+    rdfs:subClassOf spray:Drawer .
+
+spray:AlertLog a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "警示紀錄"@zh ;
+    rdfs:subClassOf spray:DataResource .
+
+spray:GetCycleTimeTrendFunction a spray:ChartService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_cycle_time_trend"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdChartsCycleTimeTrendEndpoint ;
+    spray:functionName "get_cycle_time_trend" ;
+    spray:monitorsAsset spray:Line1Oven,
+        spray:Line2Oven,
+        spray:Line3Oven ;
+    spray:queriesTable spray:PartHistoryTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:ChartService,
+        spray:ServiceFunction .
+
+spray:GetQualityTrendFunction a spray:ChartService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_quality_trend"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdChartsQualityTrendEndpoint ;
+    spray:functionName "get_quality_trend" ;
+    spray:monitorsAsset spray:Line1QualityModule,
+        spray:Line1SprayWidth,
+        spray:Line2QualityModule,
+        spray:Line2SprayWidth,
+        spray:Line3QualityModule,
+        spray:Line3SprayWidth ;
+    spray:queriesTable spray:MlPredictionResultTable,
+        spray:QcResultTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:ChartService,
+        spray:ServiceFunction .
+
+spray:GetStationDashboardStatusFunction a spray:DashboardService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_station_dashboard_status"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdSummaryEndpoint ;
+    spray:functionName "get_station_dashboard_status" ;
+    spray:queriesTable spray:ComponentHealthSnapshotTable,
+        spray:ComponentMasterTable,
+        spray:ProductionLineTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:DashboardService,
+        spray:ServiceFunction .
+
+spray:GetYieldComparisonFunction a spray:ChartService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_yield_comparison"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdChartsYieldComparisonEndpoint ;
+    spray:functionName "get_yield_comparison" ;
+    spray:monitorsAsset spray:Line1QualityModule,
+        spray:Line2QualityModule,
+        spray:Line3QualityModule ;
+    spray:queriesTable spray:BatchRunTable,
+        spray:MlPredictionResultTable,
+        spray:PartHistoryTable,
+        spray:QcResultTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:ChartService,
+        spray:ServiceFunction .
+
+spray:Line1RobotArm a spray:RobotArm,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／機械手臂"@zh ;
+    spray:assetKey "robot_arm" ;
+    spray:belongsToLine spray:Line1 ;
+    spray:diagnosedByFunction spray:GetStationRiskDetailFunction ;
+    spray:hasPossibleIssue spray:RobotArmLoadIssue,
+        spray:RobotPoseDeviationIssue ;
+    spray:hasRuntimeTable spray:ArmTelemetryRawTable,
+        spray:RobotPoseTable,
+        spray:RuntimeMetricTable ;
+    spray:implementedByFunction spray:GetLatestRuntimeWindowFunction,
+        spray:GetStationRiskDetailFunction ;
+    spray:lineId "line_1" ;
+    spray:linkedToDashboardComponent spray:StationCards6Components,
+        spray:StationRiskDetail ;
+    spray:processOrder 1 ;
+    spray:visualizesTable spray:ArmTelemetryRawTable,
+        spray:RobotPoseTable,
+        spray:RuntimeMetricTable ;
+    rdfs:subClassOf spray:RobotArm .
+
+spray:Line2RobotArm a spray:RobotArm,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／機械手臂"@zh ;
+    spray:assetKey "robot_arm" ;
+    spray:belongsToLine spray:Line2 ;
+    spray:diagnosedByFunction spray:GetStationRiskDetailFunction ;
+    spray:hasPossibleIssue spray:RobotArmLoadIssue,
+        spray:RobotPoseDeviationIssue ;
+    spray:hasRuntimeTable spray:ArmTelemetryRawTable,
+        spray:RobotPoseTable,
+        spray:RuntimeMetricTable ;
+    spray:implementedByFunction spray:GetLatestRuntimeWindowFunction,
+        spray:GetStationRiskDetailFunction ;
+    spray:lineId "line_2" ;
+    spray:linkedToDashboardComponent spray:StationCards6Components,
+        spray:StationRiskDetail ;
+    spray:processOrder 1 ;
+    spray:visualizesTable spray:ArmTelemetryRawTable,
+        spray:RobotPoseTable,
+        spray:RuntimeMetricTable ;
+    rdfs:subClassOf spray:RobotArm .
+
+spray:Line3RobotArm a spray:RobotArm,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／機械手臂"@zh ;
+    spray:assetKey "robot_arm" ;
+    spray:belongsToLine spray:Line3 ;
+    spray:diagnosedByFunction spray:GetStationRiskDetailFunction ;
+    spray:hasPossibleIssue spray:RobotArmLoadIssue,
+        spray:RobotPoseDeviationIssue ;
+    spray:hasRuntimeTable spray:ArmTelemetryRawTable,
+        spray:RobotPoseTable,
+        spray:RuntimeMetricTable ;
+    spray:implementedByFunction spray:GetLatestRuntimeWindowFunction,
+        spray:GetStationRiskDetailFunction ;
+    spray:lineId "line_3" ;
+    spray:linkedToDashboardComponent spray:StationCards6Components,
+        spray:StationRiskDetail ;
+    spray:processOrder 1 ;
+    spray:visualizesTable spray:ArmTelemetryRawTable,
+        spray:RobotPoseTable,
+        spray:RuntimeMetricTable ;
+    rdfs:subClassOf spray:RobotArm .
+
+spray:ListPendingAlertsFunction a spray:AlertService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "list_pending_alerts"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdAlertsPendingEndpoint ;
+    spray:functionName "list_pending_alerts" ;
+    spray:hasPendingDependency spray:PendingRuleService ;
+    spray:monitorsAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1Oven,
+        spray:Line1QualityModule,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2Oven,
+        spray:Line2QualityModule,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3Oven,
+        spray:Line3QualityModule ;
+    spray:queriesTable spray:AlertLogTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:AlertService,
+        spray:ServiceFunction .
+
+spray:RobotArm a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "機械手臂"@zh ;
+    spray:hasRuntimeTable spray:ArmTelemetryRawTable,
+        spray:RobotPoseTable ;
+    spray:hasSpecificAssetClass spray:Line1RobotArm,
+        spray:Line2RobotArm,
+        spray:Line3RobotArm ;
+    spray:mayTriggerAlert spray:AlertLog ;
+    spray:producesDiagnosis spray:DiagnosisResult ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:SprayLineProjectConcept a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "噴塗系統專案概念"@zh ;
+    spray:hasConceptCategory spray:DataResource,
+        spray:DatabaseConcept,
+        spray:Infrastructure,
+        spray:PhysicalAsset,
+        spray:ServiceFunction,
+        spray:SprayLine,
+        spray:UIComponent .
+
+spray:StationRiskDetail a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "StationRiskDetail"@zh ;
+    spray:monitorsAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1Oven,
+        spray:Line1QualityModule,
+        spray:Line1SprayWidth,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2Oven,
+        spray:Line2QualityModule,
+        spray:Line2SprayWidth,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3Oven,
+        spray:Line3QualityModule,
+        spray:Line3SprayWidth ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:ThresholdTable a owl:Class ;
+    rdfs:label "閾值表"@zh ;
+    spray:hasSpecificDatabaseTableClass spray:FilterThresholdTable,
+        spray:NozzleThresholdTable,
+        spray:ProcessThresholdTable ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:Zone3RuntimeSensing a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "即時感測"@zh ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:AirCompressor a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "空壓機"@zh ;
+    spray:affectsDownstream spray:Oven ;
+    spray:hasRuntimeTable spray:RuntimeSignalTable ;
+    spray:hasSpecificAssetClass spray:Line1AirCompressor,
+        spray:Line2AirCompressor,
+        spray:Line3AirCompressor ;
+    spray:mayTriggerAlert spray:AlertLog ;
+    spray:producesDiagnosis spray:DiagnosisResult ;
+    spray:upstreamOf spray:Nozzle ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:ChartService a owl:Class ;
+    rdfs:label "圖表服務"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:GetCycleTimeTrendFunction,
+        spray:GetQualityTrendFunction,
+        spray:GetUtilizationTrendFunction,
+        spray:GetYieldComparisonFunction ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:DiagnosisResult a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "診斷結果"@zh ;
+    rdfs:subClassOf spray:DataResource .
+
+spray:FilterMesh a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "濾網"@zh ;
+    spray:affectsDownstream spray:Oven ;
+    spray:hasMetricTable spray:RuntimeMetricTable ;
+    spray:hasRuntimeTable spray:RuntimeSignalTable ;
+    spray:hasSpecificAssetClass spray:Line1FilterMesh,
+        spray:Line2FilterMesh,
+        spray:Line3FilterMesh ;
+    spray:mayTriggerAlert spray:AlertLog ;
+    spray:producesDiagnosis spray:DiagnosisResult ;
+    spray:upstreamOf spray:Nozzle ;
+    spray:usesThresholdTable spray:FilterThresholdTable ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:PartHistoryTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "part_history"@zh ;
+    spray:belongsToZone spray:Zone2ProductionQuality ;
+    spray:tableName "part_history" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:QualityModule a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "品質模組"@zh ;
+    spray:hasRuntimeTable spray:QcResultTable ;
+    spray:hasSpecificAssetClass spray:Line1QualityModule,
+        spray:Line2QualityModule,
+        spray:Line3QualityModule ;
+    spray:mayTriggerAlert spray:AlertLog ;
+    spray:producesDiagnosis spray:DiagnosisResult ;
+    spray:upstreamOf spray:Oven ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:QualityUtilizationCycleCharts a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "QualityUtilizationCycleCharts"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdChartsEndpoint ;
+    spray:monitorsAsset spray:Line1Oven,
+        spray:Line1QualityModule,
+        spray:Line1SprayWidth,
+        spray:Line2Oven,
+        spray:Line2QualityModule,
+        spray:Line2SprayWidth,
+        spray:Line3Oven,
+        spray:Line3QualityModule,
+        spray:Line3SprayWidth ;
+    spray:usesFunction spray:GetCycleTimeTrendFunction,
+        spray:GetQualityTrendFunction,
+        spray:GetUtilizationTrendFunction ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:TimeSeriesSlider a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "TimeSeriesSlider"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdMetricsMetricNameTrendEndpoint ;
+    spray:monitorsAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1SprayWidth,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2SprayWidth,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3SprayWidth ;
+    spray:usesFunction spray:GetDiagnosisTimelineFunction,
+        spray:GetMetricTrendFunction ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:ArmTelemetryRawTable a spray:Hypertable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "arm_telemetry_raw"@zh ;
+    spray:belongsToZone spray:Zone3RuntimeSensing ;
+    spray:tableName "arm_telemetry_raw" ;
+    rdfs:subClassOf spray:DatabaseTable,
+        spray:Hypertable .
+
+spray:DataResource a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "資料資源"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:Line1 a spray:ProductionLine,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "底漆站"@zh ;
+    spray:hasAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1Oven,
+        spray:Line1QualityModule,
+        spray:Line1RobotArm,
+        spray:Line1SprayWidth ;
+    spray:lineId "line_1" ;
+    rdfs:subClassOf spray:ProductionLine .
+
+spray:Line2 a spray:ProductionLine,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "面漆站"@zh ;
+    spray:hasAsset spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2Oven,
+        spray:Line2QualityModule,
+        spray:Line2RobotArm,
+        spray:Line2SprayWidth ;
+    spray:lineId "line_2" ;
+    rdfs:subClassOf spray:ProductionLine .
+
+spray:Line3 a spray:ProductionLine,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "金漆站"@zh ;
+    spray:hasAsset spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3Oven,
+        spray:Line3QualityModule,
+        spray:Line3RobotArm,
+        spray:Line3SprayWidth ;
+    spray:lineId "line_3" ;
+    rdfs:subClassOf spray:ProductionLine .
+
+spray:ProductionLine a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "生產線"@zh ;
+    spray:containsAssetClass spray:PhysicalAsset ;
+    spray:hasLineClass spray:Line1,
+        spray:Line2,
+        spray:Line3 ;
+    rdfs:subClassOf spray:SprayLine .
+
+spray:RobotPoseTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "robot_pose"@zh ;
+    spray:belongsToZone spray:Zone3RuntimeSensing ;
+    spray:tableName "robot_pose" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:SprayWidth a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "噴幅指標"@zh ;
+    spray:affectsDownstream spray:Oven ;
+    spray:hasMetricTable spray:RuntimeMetricTable ;
+    spray:hasRuntimeTable spray:RuntimeSignalTable ;
+    spray:hasSpecificAssetClass spray:Line1SprayWidth,
+        spray:Line2SprayWidth,
+        spray:Line3SprayWidth ;
+    spray:producesDiagnosis spray:DiagnosisResult ;
+    spray:upstreamOf spray:QualityModule ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    rdfs:subClassOf spray:Metric .
+
+spray:GetMetricTrendFunction a spray:ServiceFunction,
+        spray:TrendService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_metric_trend"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdMetricsMetricNameTrendEndpoint ;
+    spray:functionName "get_metric_trend" ;
+    spray:monitorsAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1SprayWidth,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2SprayWidth,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3SprayWidth ;
+    spray:queriesTable spray:RuntimeMetricTable,
+        spray:RuntimeWindowTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:ServiceFunction,
+        spray:TrendService .
+
+spray:MlPredictionResultTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "ml_prediction_result"@zh ;
+    spray:belongsToZone spray:Zone5MLPrediction ;
+    spray:tableName "ml_prediction_result" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:Nozzle a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "噴嘴"@zh ;
+    spray:affectsDownstream spray:Oven ;
+    spray:hasMetricTable spray:RuntimeMetricTable ;
+    spray:hasRuntimeTable spray:RuntimeSignalTable ;
+    spray:hasSpecificAssetClass spray:Line1Nozzle,
+        spray:Line2Nozzle,
+        spray:Line3Nozzle ;
+    spray:mayTriggerAlert spray:AlertLog ;
+    spray:producesDiagnosis spray:DiagnosisResult ;
+    spray:upstreamOf spray:SprayWidth ;
+    spray:usesThresholdTable spray:NozzleThresholdTable ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:FilterThresholdTable a spray:ThresholdTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "filter_threshold"@zh ;
+    spray:belongsToZone spray:Zone4KnowledgeDiagnosis ;
+    spray:tableName "filter_threshold" ;
+    rdfs:subClassOf spray:DatabaseTable,
+        spray:ThresholdTable .
+
+spray:NozzleThresholdTable a spray:ThresholdTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "nozzle_threshold"@zh ;
+    spray:belongsToZone spray:Zone4KnowledgeDiagnosis ;
+    spray:tableName "nozzle_threshold" ;
+    rdfs:subClassOf spray:DatabaseTable,
+        spray:ThresholdTable .
+
+spray:QcResultTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "qc_result"@zh ;
+    spray:belongsToZone spray:Zone2ProductionQuality ;
+    spray:tableName "qc_result" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:DatabaseZone a owl:Class ;
+    rdfs:label "資料庫區域"@zh ;
+    spray:hasSpecificDatabaseTableClass spray:Zone1ConfigMaster,
+        spray:Zone2ProductionQuality,
+        spray:Zone3RuntimeSensing,
+        spray:Zone4KnowledgeDiagnosis,
+        spray:Zone5MLPrediction,
+        spray:Zone6AlertTwin ;
+    rdfs:subClassOf spray:DatabaseConcept .
+
+spray:Oven a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "烤箱"@zh ;
+    spray:affectedBy spray:AirCompressor,
+        spray:FilterMesh,
+        spray:Nozzle,
+        spray:SprayWidth ;
+    spray:hasRuntimeTable spray:PartHistoryTable ;
+    spray:hasSpecificAssetClass spray:Line1Oven,
+        spray:Line2Oven,
+        spray:Line3Oven ;
+    spray:mayTriggerAlert spray:AlertLog ;
+    spray:producesDiagnosis spray:DiagnosisResult ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:Line1AirCompressor a spray:AirCompressor,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／空壓機"@zh ;
+    spray:affectsDownstream spray:Line1Oven ;
+    spray:assetKey "air_compressor" ;
+    spray:belongsToLine spray:Line1 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasPossibleIssue spray:AirSupplyInstabilityIssue,
+        spray:PressureAbnormalIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction ;
+    spray:lineId "line_1" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:StationCards6Components ;
+    spray:processOrder 2 ;
+    spray:upstreamOf spray:Line1Nozzle ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    spray:visualizesTable spray:ProcessThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:AirCompressor .
+
+spray:Line1FilterMesh a spray:FilterMesh,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／濾網"@zh ;
+    spray:affectsDownstream spray:Line1Oven ;
+    spray:assetKey "filter_mesh" ;
+    spray:belongsToLine spray:Line1 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:FilterCloggingIssue,
+        spray:FilterFlowLossIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction,
+        spray:ListPendingAlertsFunction ;
+    spray:lineId "line_1" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:PendingAlertsDrawer,
+        spray:StationCards6Components ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 3 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line1Nozzle ;
+    spray:usesThresholdTable spray:FilterThresholdTable ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:FilterThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:FilterMesh .
+
+spray:Line2AirCompressor a spray:AirCompressor,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／空壓機"@zh ;
+    spray:affectsDownstream spray:Line2Oven ;
+    spray:assetKey "air_compressor" ;
+    spray:belongsToLine spray:Line2 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasPossibleIssue spray:AirSupplyInstabilityIssue,
+        spray:PressureAbnormalIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction ;
+    spray:lineId "line_2" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:StationCards6Components ;
+    spray:processOrder 2 ;
+    spray:upstreamOf spray:Line2Nozzle ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    spray:visualizesTable spray:ProcessThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:AirCompressor .
+
+spray:Line2FilterMesh a spray:FilterMesh,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／濾網"@zh ;
+    spray:affectsDownstream spray:Line2Oven ;
+    spray:assetKey "filter_mesh" ;
+    spray:belongsToLine spray:Line2 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:FilterCloggingIssue,
+        spray:FilterFlowLossIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction,
+        spray:ListPendingAlertsFunction ;
+    spray:lineId "line_2" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:PendingAlertsDrawer,
+        spray:StationCards6Components ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 3 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line2Nozzle ;
+    spray:usesThresholdTable spray:FilterThresholdTable ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:FilterThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:FilterMesh .
+
+spray:Line3AirCompressor a spray:AirCompressor,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／空壓機"@zh ;
+    spray:affectsDownstream spray:Line3Oven ;
+    spray:assetKey "air_compressor" ;
+    spray:belongsToLine spray:Line3 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasPossibleIssue spray:AirSupplyInstabilityIssue,
+        spray:PressureAbnormalIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction ;
+    spray:lineId "line_3" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:StationCards6Components ;
+    spray:processOrder 2 ;
+    spray:upstreamOf spray:Line3Nozzle ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    spray:visualizesTable spray:ProcessThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:AirCompressor .
+
+spray:Line3FilterMesh a spray:FilterMesh,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／濾網"@zh ;
+    spray:affectsDownstream spray:Line3Oven ;
+    spray:assetKey "filter_mesh" ;
+    spray:belongsToLine spray:Line3 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:FilterCloggingIssue,
+        spray:FilterFlowLossIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction,
+        spray:ListPendingAlertsFunction ;
+    spray:lineId "line_3" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:PendingAlertsDrawer,
+        spray:StationCards6Components ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 3 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line3Nozzle ;
+    spray:usesThresholdTable spray:FilterThresholdTable ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:FilterThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:FilterMesh .
+
+spray:RuntimeReferenceTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "runtime_reference"@zh ;
+    spray:belongsToZone spray:Zone3RuntimeSensing ;
+    spray:tableName "runtime_reference" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:GetStationRiskDetailFunction a spray:RiskService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_station_risk_detail"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdRiskDetailEndpoint ;
+    spray:functionName "get_station_risk_detail" ;
+    spray:monitorsAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1Oven,
+        spray:Line1QualityModule,
+        spray:Line1SprayWidth,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2Oven,
+        spray:Line2QualityModule,
+        spray:Line2SprayWidth,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3Oven,
+        spray:Line3QualityModule,
+        spray:Line3SprayWidth ;
+    spray:queriesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:MlPredictionResultTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:RiskService,
+        spray:ServiceFunction .
+
+spray:Line1QualityModule a spray:QualityModule,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／品質模組"@zh ;
+    spray:assetKey "quality_module" ;
+    spray:belongsToLine spray:Line1 ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:QualityRiskIssue,
+        spray:YieldDropIssue ;
+    spray:implementedByFunction spray:GetQualityTrendFunction,
+        spray:GetStationDashboardStatusFunction,
+        spray:GetYieldComparisonFunction ;
+    spray:lineId "line_1" ;
+    spray:linkedToDashboardComponent spray:QualityUtilizationCycleCharts,
+        spray:StationSummaryCards,
+        spray:YieldComparisonChart ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 6 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line1Oven ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:ComponentHealthSnapshotTable,
+        spray:DiagnosisResultTable,
+        spray:QcResultTable ;
+    rdfs:subClassOf spray:QualityModule .
+
+spray:Line1SprayWidth a spray:SprayWidth,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／噴幅"@zh ;
+    spray:affectsDownstream spray:Line1Oven ;
+    spray:assetKey "spray_width" ;
+    spray:belongsToLine spray:Line1 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:CoverageRiskIssue,
+        spray:SprayWidthOutOfRangeIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction,
+        spray:GetMetricTrendFunction ;
+    spray:lineId "line_1" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:StationCards6Components,
+        spray:TimeSeriesSlider ;
+    spray:processOrder 5 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line1QualityModule ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    spray:visualizesTable spray:DiagnosisResultTable,
+        spray:ProcessThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:SprayWidth .
+
+spray:Line2QualityModule a spray:QualityModule,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／品質模組"@zh ;
+    spray:assetKey "quality_module" ;
+    spray:belongsToLine spray:Line2 ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:QualityRiskIssue,
+        spray:YieldDropIssue ;
+    spray:implementedByFunction spray:GetQualityTrendFunction,
+        spray:GetStationDashboardStatusFunction,
+        spray:GetYieldComparisonFunction ;
+    spray:lineId "line_2" ;
+    spray:linkedToDashboardComponent spray:QualityUtilizationCycleCharts,
+        spray:StationSummaryCards,
+        spray:YieldComparisonChart ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 6 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line2Oven ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:ComponentHealthSnapshotTable,
+        spray:DiagnosisResultTable,
+        spray:QcResultTable ;
+    rdfs:subClassOf spray:QualityModule .
+
+spray:Line2SprayWidth a spray:SprayWidth,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／噴幅"@zh ;
+    spray:affectsDownstream spray:Line2Oven ;
+    spray:assetKey "spray_width" ;
+    spray:belongsToLine spray:Line2 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:CoverageRiskIssue,
+        spray:SprayWidthOutOfRangeIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction,
+        spray:GetMetricTrendFunction ;
+    spray:lineId "line_2" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:StationCards6Components,
+        spray:TimeSeriesSlider ;
+    spray:processOrder 5 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line2QualityModule ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    spray:visualizesTable spray:DiagnosisResultTable,
+        spray:ProcessThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:SprayWidth .
+
+spray:Line3QualityModule a spray:QualityModule,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／品質模組"@zh ;
+    spray:assetKey "quality_module" ;
+    spray:belongsToLine spray:Line3 ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:QualityRiskIssue,
+        spray:YieldDropIssue ;
+    spray:implementedByFunction spray:GetQualityTrendFunction,
+        spray:GetStationDashboardStatusFunction,
+        spray:GetYieldComparisonFunction ;
+    spray:lineId "line_3" ;
+    spray:linkedToDashboardComponent spray:QualityUtilizationCycleCharts,
+        spray:StationSummaryCards,
+        spray:YieldComparisonChart ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 6 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line3Oven ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:ComponentHealthSnapshotTable,
+        spray:DiagnosisResultTable,
+        spray:QcResultTable ;
+    rdfs:subClassOf spray:QualityModule .
+
+spray:Line3SprayWidth a spray:SprayWidth,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／噴幅"@zh ;
+    spray:affectsDownstream spray:Line3Oven ;
+    spray:assetKey "spray_width" ;
+    spray:belongsToLine spray:Line3 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:CoverageRiskIssue,
+        spray:SprayWidthOutOfRangeIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction,
+        spray:GetMetricTrendFunction ;
+    spray:lineId "line_3" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:StationCards6Components,
+        spray:TimeSeriesSlider ;
+    spray:processOrder 5 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line3QualityModule ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    spray:visualizesTable spray:DiagnosisResultTable,
+        spray:ProcessThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:SprayWidth .
+
+spray:Line1Nozzle a spray:Nozzle,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／噴嘴"@zh ;
+    spray:affectsDownstream spray:Line1Oven ;
+    spray:assetKey "nozzle" ;
+    spray:belongsToLine spray:Line1 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:NozzleCloggingIssue,
+        spray:NozzlePressureAbnormalIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction,
+        spray:GetMetricTrendFunction ;
+    spray:lineId "line_1" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:StationCards6Components,
+        spray:TimeSeriesSlider ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 4 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line1SprayWidth ;
+    spray:usesThresholdTable spray:NozzleThresholdTable ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:NozzleThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:Nozzle .
+
+spray:Line1Oven a spray:Oven,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／烤箱"@zh ;
+    spray:affectedBy spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1SprayWidth ;
+    spray:assetKey "oven" ;
+    spray:belongsToLine spray:Line1 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetStationRiskDetailFunction ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:DownstreamQualityRiskIssue,
+        spray:OvenResultRiskIssue ;
+    spray:implementedByFunction spray:GetCycleTimeTrendFunction,
+        spray:GetLatestDiagnosisFunction,
+        spray:GetStationRiskDetailFunction ;
+    spray:lineId "line_1" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:QualityUtilizationCycleCharts,
+        spray:StationRiskDetail ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 7 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:PartHistoryTable,
+        spray:ProcessThresholdTable ;
+    rdfs:subClassOf spray:Oven .
+
+spray:Line2Nozzle a spray:Nozzle,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／噴嘴"@zh ;
+    spray:affectsDownstream spray:Line2Oven ;
+    spray:assetKey "nozzle" ;
+    spray:belongsToLine spray:Line2 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:NozzleCloggingIssue,
+        spray:NozzlePressureAbnormalIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction,
+        spray:GetMetricTrendFunction ;
+    spray:lineId "line_2" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:StationCards6Components,
+        spray:TimeSeriesSlider ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 4 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line2SprayWidth ;
+    spray:usesThresholdTable spray:NozzleThresholdTable ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:NozzleThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:Nozzle .
+
+spray:Line2Oven a spray:Oven,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／烤箱"@zh ;
+    spray:affectedBy spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2SprayWidth ;
+    spray:assetKey "oven" ;
+    spray:belongsToLine spray:Line2 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetStationRiskDetailFunction ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:DownstreamQualityRiskIssue,
+        spray:OvenResultRiskIssue ;
+    spray:implementedByFunction spray:GetCycleTimeTrendFunction,
+        spray:GetLatestDiagnosisFunction,
+        spray:GetStationRiskDetailFunction ;
+    spray:lineId "line_2" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:QualityUtilizationCycleCharts,
+        spray:StationRiskDetail ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 7 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:PartHistoryTable,
+        spray:ProcessThresholdTable ;
+    rdfs:subClassOf spray:Oven .
+
+spray:Line3Nozzle a spray:Nozzle,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／噴嘴"@zh ;
+    spray:affectsDownstream spray:Line3Oven ;
+    spray:assetKey "nozzle" ;
+    spray:belongsToLine spray:Line3 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:NozzleCloggingIssue,
+        spray:NozzlePressureAbnormalIssue ;
+    spray:hasRuntimeTable spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    spray:implementedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetLatestRuntimeWindowFunction,
+        spray:GetMetricTrendFunction ;
+    spray:lineId "line_3" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:StationCards6Components,
+        spray:TimeSeriesSlider ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 4 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:upstreamOf spray:Line3SprayWidth ;
+    spray:usesThresholdTable spray:NozzleThresholdTable ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:NozzleThresholdTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable ;
+    rdfs:subClassOf spray:Nozzle .
+
+spray:Line3Oven a spray:Oven,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／烤箱"@zh ;
+    spray:affectedBy spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3SprayWidth ;
+    spray:assetKey "oven" ;
+    spray:belongsToLine spray:Line3 ;
+    spray:diagnosedByFunction spray:GetLatestDiagnosisFunction,
+        spray:GetStationRiskDetailFunction ;
+    spray:hasAlertTable spray:AlertLogTable ;
+    spray:hasDiagnosisTable spray:DiagnosisResultTable ;
+    spray:hasPossibleIssue spray:DownstreamQualityRiskIssue,
+        spray:OvenResultRiskIssue ;
+    spray:implementedByFunction spray:GetCycleTimeTrendFunction,
+        spray:GetLatestDiagnosisFunction,
+        spray:GetStationRiskDetailFunction ;
+    spray:lineId "line_3" ;
+    spray:linkedToDashboardComponent spray:ComponentDiagnosisDrawer,
+        spray:QualityUtilizationCycleCharts,
+        spray:StationRiskDetail ;
+    spray:mayTriggerAlert spray:AlertLogTable ;
+    spray:processOrder 7 ;
+    spray:producesDiagnosis spray:DiagnosisResultTable ;
+    spray:usesThresholdTable spray:ProcessThresholdTable ;
+    spray:visualizesTable spray:AlertLogTable,
+        spray:DiagnosisResultTable,
+        spray:PartHistoryTable,
+        spray:ProcessThresholdTable ;
+    rdfs:subClassOf spray:Oven .
+
+spray:PhysicalAsset a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "實體資產"@zh ;
+    spray:hasAssetClass spray:AirCompressor,
+        spray:FilterMesh,
+        spray:Nozzle,
+        spray:Oven,
+        spray:QualityModule,
+        spray:RobotArm ;
+    spray:hasSpecificAssetClass spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1Oven,
+        spray:Line1QualityModule,
+        spray:Line1RobotArm,
+        spray:Line1SprayWidth,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2Oven,
+        spray:Line2QualityModule,
+        spray:Line2RobotArm,
+        spray:Line2SprayWidth,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3Oven,
+        spray:Line3QualityModule,
+        spray:Line3RobotArm,
+        spray:Line3SprayWidth ;
+    spray:monitorsMetric spray:SprayWidth ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:StationCards6Components a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "StationCards6Components"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdStationsLatestEndpoint ;
+    spray:monitorsAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1QualityModule,
+        spray:Line1RobotArm,
+        spray:Line1SprayWidth,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2QualityModule,
+        spray:Line2RobotArm,
+        spray:Line2SprayWidth,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3QualityModule,
+        spray:Line3RobotArm,
+        spray:Line3SprayWidth ;
+    spray:usesFunction spray:GetLatestRuntimeWindowFunction ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:ComponentDiagnosisDrawer a spray:UIComponent,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "ComponentDiagnosisDrawer"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdDiagnosisLatestEndpoint ;
+    spray:monitorsAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1Oven,
+        spray:Line1QualityModule,
+        spray:Line1RobotArm,
+        spray:Line1SprayWidth,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2Oven,
+        spray:Line2QualityModule,
+        spray:Line2RobotArm,
+        spray:Line2SprayWidth,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3Oven,
+        spray:Line3QualityModule,
+        spray:Line3RobotArm,
+        spray:Line3SprayWidth ;
+    spray:usesFunction spray:GetLatestDiagnosisFunction ;
+    rdfs:subClassOf spray:Drawer .
+
+spray:GetLatestRuntimeWindowFunction a spray:RuntimeService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_latest_runtime_window"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdStationsLatestEndpoint ;
+    spray:functionName "get_latest_runtime_window" ;
+    spray:monitorsAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1RobotArm,
+        spray:Line1SprayWidth,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2RobotArm,
+        spray:Line2SprayWidth,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3RobotArm,
+        spray:Line3SprayWidth ;
+    spray:queriesTable spray:RobotPoseTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable,
+        spray:RuntimeWindowTable ;
+    spray:status "defined_contract" ;
+    rdfs:subClassOf spray:RuntimeService,
+        spray:ServiceFunction .
+
+spray:ProcessThresholdTable a spray:ThresholdTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "process_threshold"@zh ;
+    spray:belongsToZone spray:Zone4KnowledgeDiagnosis ;
+    spray:tableName "process_threshold" ;
+    rdfs:subClassOf spray:DatabaseTable,
+        spray:ThresholdTable .
+
+spray:PossibleIssue a owl:Class ;
+    rdfs:label "可能異常"@zh ;
+    spray:hasSpecificIssueClass spray:AirSupplyInstabilityIssue,
+        spray:CoverageRiskIssue,
+        spray:DownstreamQualityRiskIssue,
+        spray:FilterCloggingIssue,
+        spray:FilterFlowLossIssue,
+        spray:NozzleCloggingIssue,
+        spray:NozzlePressureAbnormalIssue,
+        spray:OvenResultRiskIssue,
+        spray:PressureAbnormalIssue,
+        spray:QualityRiskIssue,
+        spray:RobotArmLoadIssue,
+        spray:RobotPoseDeviationIssue,
+        spray:SprayWidthOutOfRangeIssue,
+        spray:YieldDropIssue ;
+    rdfs:subClassOf spray:DataResource .
+
+spray:RuntimeSignalTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "runtime_signal"@zh ;
+    spray:belongsToZone spray:Zone3RuntimeSensing ;
+    spray:tableName "runtime_signal" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:UIComponent a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "UI 元件"@zh ;
+    spray:hasSpecificUIComponentClass spray:BatchTable,
+        spray:ComponentDiagnosisDrawer,
+        spray:CycleTimeTrendChart,
+        spray:FutureService,
+        spray:KPICards,
+        spray:OmniverseValidation,
+        spray:PendingAlertsDrawer,
+        spray:PredictionAccuracyDrawer,
+        spray:PredictionService,
+        spray:QualityTrendChart,
+        spray:QualityUtilizationCycleCharts,
+        spray:StationCards6Components,
+        spray:StationRiskDetail,
+        spray:StationSummaryCards,
+        spray:StatusBanner,
+        spray:TimeSeriesSlider,
+        spray:UtilizationTrendChart,
+        spray:YieldComparisonChart ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:GetLatestDiagnosisFunction a spray:DiagnosisService,
+        spray:ServiceFunction,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_latest_diagnosis"@zh ;
+    spray:callsEndpoint spray:ApiV1LinesLineIdDiagnosisLatestEndpoint ;
+    spray:functionName "get_latest_diagnosis" ;
+    spray:hasPendingDependency spray:PendingRuleService ;
+    spray:monitorsAsset spray:Line1AirCompressor,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1Oven,
+        spray:Line1QualityModule,
+        spray:Line1RobotArm,
+        spray:Line1SprayWidth,
+        spray:Line2AirCompressor,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2Oven,
+        spray:Line2QualityModule,
+        spray:Line2RobotArm,
+        spray:Line2SprayWidth,
+        spray:Line3AirCompressor,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3Oven,
+        spray:Line3QualityModule,
+        spray:Line3RobotArm,
+        spray:Line3SprayWidth ;
+    spray:queriesTable spray:DiagnosisResultTable,
+        spray:FilterThresholdTable,
+        spray:NozzleThresholdTable,
+        spray:ProcessThresholdTable ;
+    spray:status "defined_contract" ;
+    spray:usesThresholdTable spray:FilterThresholdTable,
+        spray:NozzleThresholdTable,
+        spray:ProcessThresholdTable ;
+    rdfs:subClassOf spray:DiagnosisService,
+        spray:ServiceFunction .
+
+spray:RuntimeMetricTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "runtime_metric"@zh ;
+    spray:belongsToZone spray:Zone3RuntimeSensing ;
+    spray:tableName "runtime_metric" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:RESTEndpoint a owl:Class ;
+    rdfs:label "REST API 端點"@zh ;
+    spray:hasSpecificEndpointClass spray:ApiV1AlertsAlertIdAcknowledgeEndpoint,
+        spray:ApiV1AlertsTriggerEndpoint,
+        spray:ApiV1LinesLineIdAlertsPendingEndpoint,
+        spray:ApiV1LinesLineIdBatchesEndpoint,
+        spray:ApiV1LinesLineIdChartsCycleTimeTrendEndpoint,
+        spray:ApiV1LinesLineIdChartsQualityTrendEndpoint,
+        spray:ApiV1LinesLineIdChartsUtilizationTrendEndpoint,
+        spray:ApiV1LinesLineIdChartsYieldComparisonEndpoint,
+        spray:ApiV1LinesLineIdDiagnosisLatestEndpoint,
+        spray:ApiV1LinesLineIdDiagnosisTimelineEndpoint,
+        spray:ApiV1LinesLineIdKpiEndpoint,
+        spray:ApiV1LinesLineIdMetricsMetricNameTrendEndpoint,
+        spray:ApiV1LinesLineIdPredictionAccuracyEndpoint,
+        spray:ApiV1LinesLineIdRiskDetailEndpoint,
+        spray:ApiV1LinesLineIdStationsLatestEndpoint,
+        spray:ApiV1LinesLineIdStatusEndpoint,
+        spray:ApiV1LinesLineIdSummaryEndpoint,
+        spray:ApiV1PartsPartUuidMlFeaturesEndpoint,
+        spray:ApiV1PartsPartUuidOmniverseValidationEndpoint,
+        spray:ApiV1PartsPartUuidPredictionLatestEndpoint ;
+    rdfs:subClassOf spray:Infrastructure .
+
+spray:ResponseSchema a owl:Class ;
+    rdfs:label "回應 Schema"@zh ;
+    spray:hasSpecificResponseSchemaClass spray:AlertAcknowledgeSchema,
+        spray:AlertTriggerSchema,
+        spray:BatchesFilteredSchema,
+        spray:CycleTimeTrendSchema,
+        spray:DiagnosisLatestSchema,
+        spray:DiagnosisTimelineSchema,
+        spray:KpiSummarySchema,
+        spray:LatestPredictionSchema,
+        spray:LineSummarySchema,
+        spray:MetricTrendSchema,
+        spray:MlFeatureInputSchema,
+        spray:OmniverseValidationSchema,
+        spray:OverallStatusSchema,
+        spray:PendingAlertsSchema,
+        spray:PredictionAccuracySchema,
+        spray:QualityTrendSchema,
+        spray:StationLatestSchema,
+        spray:StationRiskDetailSchema,
+        spray:TrendChartSchema,
+        spray:UtilizationTrendSchema,
+        spray:YieldComparisonSchema ;
+    rdfs:subClassOf spray:DataResource .
+
+spray:AlertLogTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "alert_log"@zh ;
+    spray:belongsToZone spray:Zone6AlertTwin ;
+    spray:tableName "alert_log" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:DatabaseTable a owl:Class ;
+    rdfs:label "資料表"@zh ;
+    spray:hasSpecificDatabaseTableClass spray:AlertLogTable,
+        spray:ArmTelemetryRawTable,
+        spray:BatchRunTable,
+        spray:ComponentHealthSnapshotTable,
+        spray:ComponentMasterTable,
+        spray:DiagnosisResultTable,
+        spray:FilterThresholdTable,
+        spray:MlFeatureSnapshotTable,
+        spray:MlInferenceLogTable,
+        spray:MlPredictionResultTable,
+        spray:NozzleThresholdTable,
+        spray:OmniverseSyncLogTable,
+        spray:PartHistoryTable,
+        spray:ProcessThresholdTable,
+        spray:ProductionLineConfigTable,
+        spray:ProductionLineTable,
+        spray:QcResultTable,
+        spray:RecipeMasterTable,
+        spray:RobotPoseTable,
+        spray:RuntimeMetricTable,
+        spray:RuntimeReferenceTable,
+        spray:RuntimeSignalTable,
+        spray:RuntimeWindowTable,
+        spray:TrajectoryResultTable ;
+    rdfs:subClassOf spray:DatabaseConcept .
+
+spray:DiagnosisResultTable a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "diagnosis_result"@zh ;
+    spray:belongsToZone spray:Zone4KnowledgeDiagnosis ;
+    spray:tableName "diagnosis_result" ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:ServiceFunction a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "服務功能"@zh ;
+    spray:hasSpecificServiceFunctionClass spray:AcknowledgeAlertFunction,
+        spray:GetCycleTimeTrendFunction,
+        spray:GetDiagnosisTimelineFunction,
+        spray:GetKpiSummaryFunction,
+        spray:GetLatestDiagnosisFunction,
+        spray:GetLatestPredictionFunction,
+        spray:GetLatestRuntimeWindowFunction,
+        spray:GetMetricTrendFunction,
+        spray:GetMlFeatureInputFunction,
+        spray:GetOmniverseValidationResultFunction,
+        spray:GetOverallStatusFunction,
+        spray:GetPredictionAccuracyFunction,
+        spray:GetQualityTrendFunction,
+        spray:GetStationDashboardStatusFunction,
+        spray:GetStationRiskDetailFunction,
+        spray:GetUtilizationTrendFunction,
+        spray:GetYieldComparisonFunction,
+        spray:ImportInferredTtlFunction,
+        spray:ImportRuntimeJsonFunction,
+        spray:ImportThresholdCsvsFunction,
+        spray:InsertPartHistoryFunction,
+        spray:InsertQcResultFunction,
+        spray:ListBatchesFilteredFunction,
+        spray:ListPendingAlertsFunction,
+        spray:TriggerAlertFunction ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+

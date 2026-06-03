@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Batches Filtered Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "line_id",
+    "date",
+    "total",
+    "rows"
+  ],
+  "properties": {
+    "line_id": {
+      "type": "string",
+      "enum": [
+        "line_1",
+        "line_2",
+        "line_3"
+      ]
+    },
+    "date": {
+      "type": "string"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  }
+}

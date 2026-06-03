@@ -1,0 +1,9 @@
+{
+  "line_id": "<string>",
+  "metric_name": "<string>",
+  "labels": "<array>",
+  "series": "<array>",
+  "now_index": "<integer>",
+  "forecast_start_index": "<integer>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

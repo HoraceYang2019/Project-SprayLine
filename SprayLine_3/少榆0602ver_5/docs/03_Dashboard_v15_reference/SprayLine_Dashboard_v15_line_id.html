@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SprayLine 生產監控 v15</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f7fa;--surface:#ffffff;--surface2:#f0f2f5;--surface3:#e8eaed;
+  --border:#d0d7e0;--border-sub:#e4e8ed;
+  --text:#1a2030;--text-muted:#5a6478;--text-dim:#9ba3b0;
+  --blue:#1a6ef5;--blue-dim:rgba(26,110,245,.10);
+  --green:#1a9e3a;--green-dim:rgba(26,158,58,.09);
+  --amber:#b8860b;--amber-dim:rgba(184,134,11,.09);
+  --red:#d42b22;--red-dim:rgba(212,43,34,.08);
+  --purple:#7c52d0;--purple-dim:rgba(124,82,208,.09);
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --r:8px;--rl:12px;
+}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+
+/* ── Header ── */
+.app-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:52px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-weight:600;font-size:14px}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(26,158,58,.45);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hdr-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted)}
+.hdr-meta span{padding:3px 10px;border-radius:20px;background:var(--surface2);border:1px solid var(--border)}
+#hdrClock{font-family:var(--font-mono);font-size:13px;color:var(--text-muted)}
+
+/* ── Tabs ── */
+.tab-nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px}
+.tab-btn{
+  padding:11px 18px;font-size:13px;font-weight:600;
+  color:var(--text-muted);border:none;background:none;cursor:pointer;
+  border-bottom:2px solid transparent;transition:color .15s;font-family:var(--font-sans);
+}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:17px;height:17px;border-radius:9px;
+  font-size:10px;font-weight:700;padding:0 4px;
+  background:var(--red);color:#fff;margin-left:5px;
+}
+
+/* ── Tab panels ── */
+.tab-panel{display:none}.tab-panel.active{display:block}
+.content{padding:20px 28px;max-width:none;width:100%;margin:0}
+
+/* ── Cards ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card+.card,.card+.row,.row+.card{margin-top:14px}
+.card-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.card-title{font-weight:600;font-size:14px}
+.card-sub{font-size:12px;color:var(--text-muted);margin-top:3px}
+
+/* ── Grid helpers ── */
+.row{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.span2{grid-column:span 2}
+.span3{grid-column:span 3}
+.spanfull{grid-column:1/-1}
+
+/* ── Engineer station cards ── */
+.station-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rl);padding:16px;border-top:3px solid var(--border);
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.station-card.running{border-top-color:var(--green)}
+.station-card.alarm{border-top-color:var(--red);animation:glow-red 1.8s infinite}
+.station-card.maintenance{border-top-color:var(--amber)}
+.station-card.standby{border-top-color:var(--blue)}
+@keyframes glow-red{0%,100%{box-shadow:0 0 0 0 rgba(212,43,34,.08)}50%{box-shadow:0 0 0 6px rgba(212,43,34,.04)}}
+.station-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.station-name{font-size:15px;font-weight:700}
+.station-en{font-size:12px;color:var(--text-muted);margin-top:2px}
+.st-status{padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700}
+.st-status.running{background:var(--green-dim);color:var(--green)}
+.st-status.alarm{background:var(--red-dim);color:var(--red)}
+.st-status.maintenance{background:var(--amber-dim);color:var(--amber)}
+.st-status.standby{background:var(--blue-dim);color:var(--blue)}
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}
+.comp{
+  border-radius:7px;padding:9px 7px;text-align:center;
+  border:1px solid var(--border);background:var(--surface2);
+  cursor:pointer;transition:all .14s;border-top:3px solid var(--border);
+}
+.comp:hover{border-color:var(--blue);transform:translateY(-1px)}
+.comp.ok{border-top-color:var(--green);background:rgba(26,158,58,.04)}
+.comp.warn{border-top-color:var(--amber);background:rgba(184,134,11,.05)}
+.comp.bad{border-top-color:var(--red);background:rgba(212,43,34,.04)}
+.comp.neutral{border-top-color:var(--blue);background:rgba(26,110,245,.04)}
+.comp-icon{font-size:17px;margin-bottom:3px}
+.comp-name{font-size:11px;font-weight:600}
+.comp-en{font-size:10px;color:var(--text-muted)}
+.comp-val{font-size:10px;color:var(--text-muted);margin:3px 0}
+.comp-st{display:inline-block;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;margin-top:3px}
+.comp.ok .comp-st{background:var(--green-dim);color:var(--green)}
+.comp.warn .comp-st{background:var(--amber-dim);color:var(--amber)}
+.comp.bad .comp-st{background:var(--red-dim);color:var(--red)}
+.comp.neutral .comp-st{background:var(--blue-dim);color:var(--blue)}
+.act-row{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.act{
+  padding:5px 13px;border-radius:5px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text-muted);
+  font-size:12px;font-weight:600;cursor:pointer;transition:all .13s;font-family:var(--font-sans);
+}
+.act:hover{border-color:var(--blue);color:var(--text)}
+.act.active{border-color:var(--blue);color:var(--blue);background:var(--blue-dim)}
+.act.danger{border-color:rgba(212,43,34,.3);color:var(--red);background:var(--red-dim)}
+.act.warn{border-color:rgba(184,134,11,.3);color:var(--amber);background:var(--amber-dim)}
+.act.ok{border-color:rgba(26,158,58,.3);color:var(--green);background:var(--green-dim)}
+.fault-panel{display:none;margin-top:9px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);padding:13px;box-shadow:inset 0 1px 3px rgba(0,0,0,.04)}
+.fault-panel h4{font-size:13px;font-weight:700;margin-bottom:9px}
+.f-item{padding:9px;border-radius:5px;margin-bottom:7px;border:1px solid var(--border-sub)}
+.f-item.ok-item{background:rgba(26,158,58,.05);border-color:rgba(26,158,58,.22)}
+.f-item.warn-item{background:rgba(184,134,11,.06);border-color:rgba(184,134,11,.25)}
+.f-item.bad-item{background:rgba(212,43,34,.05);border-color:rgba(212,43,34,.22)}
+.f-line{margin:3px 0;font-size:12px;line-height:1.6}
+.f-label{font-weight:700;display:inline-block;min-width:74px;color:var(--text-muted)}
+.proc-panel{display:none;margin-top:9px;background:rgba(26,110,245,.04);border:1px solid rgba(26,110,245,.18);border-radius:7px;padding:13px}
+.mm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.mm{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:9px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.mm span{display:block;font-size:10px;color:var(--text-muted)}
+.mm strong{display:block;margin-top:3px;font-size:15px;font-weight:700;font-family:var(--font-mono)}
+.img-panel{display:none;margin-top:9px}
+.live-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;margin-left:7px;background:var(--green-dim);color:var(--green)}
+.pause-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;margin-left:7px;background:var(--amber-dim);color:var(--amber)}
+.chip{padding:3px 12px;border-radius:20px;font-size:12px;border:1px solid var(--border);color:var(--text-muted);background:var(--surface2)}
+.chip.active{background:var(--blue-dim);border-color:var(--blue);color:var(--blue);font-weight:600}
+.mbg{display:flex;gap:5px}
+.mbg button{padding:5px 11px;border-radius:5px;border:1px solid var(--border);background:var(--surface2);color:var(--text-muted);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-sans)}
+.mbg button.active{background:var(--blue-dim);border-color:var(--blue);color:var(--blue)}
+.tl-result{margin-top:9px;padding:11px;border-radius:5px;background:var(--surface2);font-size:12px;line-height:1.8;border:1px solid var(--border)}
+.hist-note{color:var(--blue);font-weight:600}
+.fut-warn{color:var(--red);font-weight:600}
+
+/* ── Summary cards (engineer) ── */
+.sum-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.sum-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.sum-label{font-size:11px;color:var(--text-muted);font-weight:500;margin-bottom:5px}
+.sum-val{font-family:var(--font-mono);font-size:24px;font-weight:700}
+
+/* ── KPI cards (manager) ── */
+.kpi-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rl);padding:16px 18px;
+  border-top:3px solid var(--border);transition:border-top-color .2s;
+  position:relative;box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+.kpi-card.is-low{border-top-color:var(--green)}
+.kpi-card.is-medium{border-top-color:var(--amber)}
+.kpi-card.is-high{border-top-color:var(--red)}
+.kpi-label{font-size:11px;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+.kpi-val{font-family:var(--font-mono);font-size:30px;font-weight:600;margin:8px 0 4px;color:var(--text)}
+.kpi-delta{font-size:12px;color:var(--text-muted)}
+.kpi-delta.up{color:var(--green)}
+.kpi-delta.down{color:var(--red)}
+.kpi-badge{
+  display:inline-flex;padding:2px 7px;border-radius:4px;
+  font-size:10px;font-weight:700;margin-bottom:6px;
+}
+.b-actual{background:rgba(26,110,245,.10);color:#1a6ef5}
+.b-predicted{background:var(--green-dim);color:var(--green)}
+.b-pending{background:var(--amber-dim);color:var(--amber)}
+.b-live{background:rgba(63,185,80,.15);color:var(--green)}
+.b-forecast{background:var(--purple-dim);color:var(--purple)}
+
+/* ── Date selector (manager) ── */
+.date-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.date-btn{
+  padding:6px 16px;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text-muted);
+  font-size:13px;font-weight:600;cursor:pointer;transition:all .13s;font-family:var(--font-sans);
+}
+.date-btn:hover{border-color:var(--blue);color:var(--text)}
+.date-btn.active{background:var(--blue-dim);border-color:var(--blue);color:var(--blue);font-weight:700}
+.shift-toggle{
+  display:flex;border-radius:6px;overflow:hidden;
+  border:1px solid var(--border);
+}
+.shift-toggle button{
+  padding:6px 14px;border:none;background:var(--surface2);
+  color:var(--text-muted);font-size:12px;font-weight:600;cursor:pointer;
+  font-family:var(--font-sans);transition:all .13s;
+}
+.shift-toggle button.active{background:var(--blue-dim);color:var(--blue);font-weight:700}
+.ds-status{display:flex;align-items:center;gap:6px;margin-left:auto;font-size:11px;color:var(--text-muted)}
+.ds-status span{padding:3px 8px;border-radius:4px;background:var(--surface);border:1px solid var(--border);font-family:var(--font-mono);font-size:11px}
+.sim-btn{padding:5px 10px;border-radius:4px;border:1px solid rgba(26,158,58,.3);background:var(--green-dim);color:var(--green);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-sans)}
+
+/* ── Status banner (manager) ── */
+.m-banner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-radius:var(--r);
+  border:1px solid var(--border);background:var(--surface);margin-bottom:14px;
+}
+.m-banner.b-ok{border-color:rgba(26,158,58,.3);background:rgba(26,158,58,.05)}
+.m-banner.b-warn{border-color:rgba(184,134,11,.3);background:rgba(184,134,11,.06)}
+.m-banner.b-high{border-color:rgba(212,43,34,.3);background:rgba(212,43,34,.05)}
+.b-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.b-dot.ok{background:var(--green);box-shadow:0 0 5px rgba(26,158,58,.5)}
+.b-dot.warn{background:var(--amber);box-shadow:0 0 5px rgba(184,134,11,.5)}
+.b-dot.high{background:var(--red);box-shadow:0 0 5px rgba(212,43,34,.5)}
+.b-heading{font-size:13px;font-weight:600}
+.b-sub{font-size:12px;color:var(--text-muted);margin-top:2px}
+.b-badge{font-family:var(--font-mono);font-size:13px;font-weight:700;padding:5px 14px;border-radius:5px}
+.b-badge.ok{background:var(--green-dim);color:var(--green)}
+.b-badge.warn{background:var(--amber-dim);color:var(--amber)}
+.b-badge.high{background:var(--red-dim);color:var(--red)}
+
+/* ── Yield trend sparkline ── */
+.yield-bar{display:flex;align-items:flex-end;gap:3px;height:48px;margin:10px 0}
+.yield-col{flex:1;border-radius:3px 3px 0 0;min-width:6px;transition:opacity .15s;cursor:default;position:relative}
+.yield-col:hover{opacity:.75}
+.yield-col .yt{
+  position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);
+  background:var(--surface);border:1px solid var(--border);
+  padding:2px 6px;border-radius:3px;font-size:10px;white-space:nowrap;
+  pointer-events:none;opacity:0;transition:opacity .12s;font-family:var(--font-mono);
+  box-shadow:0 2px 8px rgba(0,0,0,.1);color:var(--text);
+}
+.yield-col:hover .yt{opacity:1}
+
+/* ── Pill ── */
+.pill{display:inline-flex;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;font-family:var(--font-mono)}
+.pill.high{background:var(--red-dim);color:var(--red)}
+.pill.medium{background:var(--amber-dim);color:var(--amber)}
+.pill.low{background:var(--green-dim);color:var(--green)}
+
+/* ── Table ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{padding:7px 12px;text-align:left;color:var(--text-muted);font-size:11px;font-weight:600;border-bottom:1px solid var(--border);background:var(--surface2);letter-spacing:.02em}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border-sub);color:var(--text)}
+.tbl tbody tr:hover{background:var(--surface2)}
+.tbl tbody tr.r-high{box-shadow:inset 3px 0 0 var(--red)}
+.tbl tbody tr.r-medium{box-shadow:inset 3px 0 0 var(--amber)}
+.tbl tbody tr.r-low{box-shadow:inset 3px 0 0 var(--green)}
+.scroll-x{overflow-x:auto}
+
+/* ── Alert list ── */
+.alert-list{display:grid;gap:9px}
+.alert-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 14px;border-radius:var(--r);
+  border:1px solid var(--border);background:var(--surface);
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
+}
+.alert-item.a-high{border-color:rgba(212,43,34,.22);background:rgba(212,43,34,.04)}
+.alert-item.a-medium{border-color:rgba(184,134,11,.22);background:rgba(184,134,11,.05)}
+.alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.alert-dot.high{background:var(--red);box-shadow:0 0 4px rgba(212,43,34,.5)}
+.alert-dot.medium{background:var(--amber);box-shadow:0 0 4px rgba(184,134,11,.5)}
+.alert-dot.low{background:var(--green)}
+.alert-body{flex:1;min-width:0}
+.alert-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.alert-msg{font-size:12px;color:var(--text-muted);line-height:1.5}
+.alert-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--text-dim);margin-top:6px}
+.alert-ack{
+  padding:4px 10px;border-radius:4px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text-muted);
+  font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;
+  flex-shrink:0;font-family:var(--font-sans);transition:all .13s;
+}
+.alert-ack:hover{border-color:var(--green);color:var(--green)}
+.alert-ack.done{border-color:rgba(63,185,80,.3);color:var(--green);background:var(--green-dim);cursor:default}
+.alert-count{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;border-radius:9px;
+  background:var(--red);color:#fff;font-size:10px;font-weight:700;
+  padding:0 4px;margin-left:6px;
+}
+.alert-count.zero{background:var(--surface2);color:var(--text-muted);border:1px solid var(--border)}
+
+/* ── Station risk strip (manager) ── */
+.station-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+}
+.s-strip-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:12px 14px;
+  border-left:4px solid var(--border);
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
+}
+.s-strip-card.risk-high{border-left-color:var(--red)}
+.s-strip-card.risk-medium{border-left-color:var(--amber)}
+.s-strip-card.risk-low{border-left-color:var(--green)}
+.s-strip-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.s-strip-name{font-weight:700;font-size:13px}
+.s-strip-step{font-size:11px;color:var(--text-muted);margin-top:2px}
+.s-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.s-metric{background:var(--surface2);border-radius:5px;padding:7px 9px;border:1px solid var(--border)}
+.s-metric-label{font-size:10px;color:var(--text-muted)}
+.s-metric-val{font-family:var(--font-mono);font-size:14px;font-weight:600;margin-top:2px}
+.s-cause{font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5;padding-top:8px;border-top:1px solid var(--border-sub)}
+
+/* ── Validation cards (manager) ── */
+.val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.val-card{padding:13px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.val-label{font-size:11px;color:var(--text-muted)}
+.val-val{font-family:var(--font-mono);font-size:22px;font-weight:600;margin:5px 0 3px}
+.val-sub{font-size:11px;color:var(--text-muted)}
+.text-low{color:var(--green)}.text-medium{color:var(--amber)}.text-high{color:var(--red)}
+
+/* ── Notify ── */
+.notify-idle{color:var(--text-muted)}.notify-success{color:var(--green)}.notify-error{color:var(--red)}
+.notify-txt{font-size:11px;margin-top:4px}
+.test-btn{padding:5px 11px;border-radius:4px;border:1px solid rgba(184,134,11,.3);background:var(--amber-dim);color:var(--amber);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-sans)}
+.debug-a{padding:5px 11px;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);font-size:11px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;font-family:var(--font-sans)}
+
+/* ── Chart ── */
+.ch-wrap{position:relative}.ch-wrap.h260{height:260px}.ch-wrap.h300{height:300px}.ch-wrap.h200{height:200px}
+
+/* ── Toast ── */
+.toast-stack{position:fixed;right:14px;bottom:14px;z-index:999;display:grid;gap:7px;width:300px}
+.toast{padding:11px 13px;border-radius:7px;border:1px solid var(--border);background:var(--surface);font-size:13px;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,.14);color:var(--text)}
+.toast.high{border-color:rgba(212,43,34,.3);background:rgba(212,43,34,.07)}
+.toast.medium{border-color:rgba(184,134,11,.3);background:rgba(184,134,11,.06)}
+
+/* ── Section label ── */
+.sec-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px}
+
+/* ── Responsive ── */
+@media(max-width:1400px){
+  .content{padding:16px 20px}
+  .g4{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:1100px){
+  .content{padding:14px}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(2,1fr)}
+  .station-strip{grid-template-columns:repeat(2,1fr)}
+  .val-grid{grid-template-columns:repeat(2,1fr)}
+  .span2{grid-column:span 2}
+  .drawer{width:480px}
+  .kpi-val{font-size:26px}
+}
+@media(max-width:780px){
+  .app-header{padding:0 14px;height:48px;flex-wrap:wrap;gap:8px}
+  .hdr-meta{display:none}
+  .tab-nav{padding:0 14px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tab-btn{flex-shrink:0;padding:10px 14px}
+  .content{padding:12px}
+  .g4,.g3,.g2,.sum-row,.val-grid,.station-strip{grid-template-columns:1fr}
+  .span2{grid-column:span 1}
+  .comp-grid{grid-template-columns:repeat(2,1fr)}
+  .mm-grid{grid-template-columns:1fr}
+  .kpi-val{font-size:24px}
+  .drawer{width:100%;max-width:100%}
+  .date-bar{flex-direction:column;align-items:stretch;gap:8px}
+  .date-bar > *{width:100%}
+  .ds-status{flex-wrap:wrap;margin-left:0}
+  .ch-wrap.h260{height:220px}.ch-wrap.h300{height:240px}.ch-wrap.h200{height:170px}
+  .batch-filter{flex-direction:column;align-items:stretch}
+  .batch-filter > *{width:100%}
+  .m-banner{flex-direction:column;align-items:stretch;gap:10px}
+  .m-banner > div:last-child{justify-content:flex-end}
+  table.tbl th,table.tbl td{padding:6px 8px;font-size:12px}
+}
+@media(max-width:480px){
+  .sum-row{grid-template-columns:repeat(2,1fr)}
+  .comp-grid{grid-template-columns:repeat(2,1fr)}
+  .station-card{padding:12px}
+  .kpi-card{padding:12px 14px}
+  .kpi-val{font-size:22px}
+}
+
+/* ── Drawer overlay ── */
+.drawer-overlay{
+  position:fixed;inset:0;background:rgba(26,32,48,.35);
+  z-index:200;opacity:0;pointer-events:none;transition:opacity .22s;
+}
+.drawer-overlay.open{opacity:1;pointer-events:all}
+
+/* ── Drawer panel ── */
+.drawer{
+  position:fixed;top:0;right:0;height:100%;width:560px;max-width:94vw;
+  background:var(--surface);border-left:1px solid var(--border);
+  z-index:201;transform:translateX(100%);
+  transition:transform .25s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+  box-shadow:-4px 0 24px rgba(0,0,0,.10);
+}
+.drawer.open{transform:translateX(0)}
+.drawer-hd{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 20px;border-bottom:1px solid var(--border);
+  flex-shrink:0;background:var(--surface);
+}
+.drawer-title{font-size:15px;font-weight:700}
+.drawer-close{
+  width:30px;height:30px;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface2);cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:16px;color:var(--text-muted);
+  transition:all .13s;line-height:1;
+}
+.drawer-close:hover{background:var(--red-dim);border-color:rgba(212,43,34,.3);color:var(--red)}
+.drawer-body{flex:1;overflow-y:auto;padding:18px 20px}
+
+/* ── Drawer trigger button ── */
+.drawer-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:5px;
+  border:1px solid var(--border);background:var(--surface2);
+  color:var(--text-muted);font-size:12px;font-weight:600;cursor:pointer;
+  transition:all .13s;font-family:var(--font-sans);
+}
+.drawer-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-dim)}
+.drawer-btn .dbadge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:16px;height:16px;border-radius:8px;padding:0 4px;
+  background:var(--red);color:#fff;font-size:10px;font-weight:700;
+}
+.drawer-btn .dbadge.zero{background:var(--surface3);color:var(--text-muted)}
+
+
+/* ── Batch filter toolbar ── */
+.batch-filter{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:10px 0;margin-bottom:8px;
+  border-bottom:1px solid var(--border-sub);
+}
+.filter-label{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.filter-pills{display:flex;gap:5px}
+.fp{
+  padding:4px 11px;border-radius:14px;font-size:11px;font-weight:600;cursor:pointer;
+  border:1px solid var(--border);background:var(--surface2);color:var(--text-muted);
+  font-family:var(--font-sans);transition:all .14s;
+  position:relative;
+}
+.fp:hover{border-color:var(--text-muted);color:var(--text)}
+.fp::before{
+  content:'';width:8px;height:8px;border-radius:50%;display:inline-block;
+  margin-right:5px;background:var(--border);
+  transition:background .14s;
+}
+.fp.high::before{background:var(--red)}
+.fp.medium::before{background:var(--amber)}
+.fp.low::before{background:var(--green)}
+.fp.on{
+  background:var(--surface);border-color:var(--text-muted);color:var(--text);
+  box-shadow:0 0 0 2px var(--surface2),0 0 0 3px var(--border);
+}
+.fp.high.on{background:var(--red-dim);border-color:var(--red);color:var(--red);box-shadow:0 0 0 1px var(--red)}
+.fp.medium.on{background:var(--amber-dim);border-color:var(--amber);color:var(--amber);box-shadow:0 0 0 1px var(--amber)}
+.fp.low.on{background:var(--green-dim);border-color:var(--green);color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.filter-time{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)}
+.filter-time input[type=time]{
+  padding:4px 8px;border-radius:5px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:12px;font-family:var(--font-mono);
+  cursor:pointer;
+}
+.filter-reset{
+  padding:4px 10px;border-radius:5px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text-muted);
+  font-size:11px;cursor:pointer;font-family:var(--font-sans);
+}
+.filter-reset:hover{color:var(--text);border-color:var(--text-muted)}
+
+
+/* ── Simulate button feedback ── */
+.sim-btn{position:relative;transition:all .18s}
+.sim-btn:disabled{opacity:.55;cursor:not-allowed}
+.sim-btn.loading{padding-left:26px}
+.sim-btn.loading::before{
+  content:'';position:absolute;left:8px;top:50%;margin-top:-6px;
+  width:11px;height:11px;border-radius:50%;
+  border:2px solid currentColor;border-top-color:transparent;
+  animation:spin .6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sim-btn.done{border-color:rgba(26,158,58,.4);color:var(--green);background:var(--green-dim)}
+.sim-toast{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 12px;border-radius:14px;
+  font-size:11px;font-weight:600;
+  background:var(--green-dim);color:var(--green);
+  border:1px solid rgba(26,158,58,.3);
+  margin-left:6px;
+  animation:fadeInOut 2.5s ease forwards;
+}
+.sim-toast.warn{background:var(--amber-dim);color:var(--amber);border-color:rgba(184,134,11,.3)}
+@keyframes fadeInOut{
+  0%{opacity:0;transform:translateY(4px)}
+  15%{opacity:1;transform:translateY(0)}
+  70%{opacity:1}
+  100%{opacity:0;transform:translateY(-4px)}
+}
+/* 資料更新時間 badge */
+#lastDbUpdate{
+  display:inline-flex;align-items:center;gap:4px;
+  transition:all .2s;
+}
+#lastDbUpdate.updated{color:var(--green);font-weight:600}
+
+
+/* ── Simulated clock cluster ── */
+.sim-clock{
+  display:inline-flex;align-items:stretch;gap:0;
+  border:1px solid var(--border);border-radius:8px;
+  background:var(--surface);overflow:hidden;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+  font-family:var(--font-mono);
+}
+.sim-step{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:5px 9px;border:none;
+  background:var(--surface2);color:var(--text-muted);
+  cursor:pointer;font-family:var(--font-sans);
+  transition:all .15s;min-width:46px;
+}
+.sim-step:hover:not(:disabled){background:var(--blue-dim);color:var(--blue)}
+.sim-step:disabled{opacity:.4;cursor:not-allowed}
+.sim-step .sign{font-size:14px;font-weight:700;line-height:1}
+.sim-step .lbl{font-size:9px;margin-top:1px;line-height:1;color:inherit;font-weight:600}
+.sim-step.left{border-right:1px solid var(--border)}
+.sim-step.right{border-left:1px solid var(--border)}
+.sim-clock-display{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:4px 12px;min-width:96px;
+  background:var(--surface);
+}
+.sim-clock-time{
+  font-family:var(--font-mono);font-size:15px;font-weight:600;
+  color:var(--text);letter-spacing:.02em;line-height:1;
+}
+.sim-clock-time.flash{animation:flashUpdate 1.2s ease}
+@keyframes flashUpdate{
+  0%{color:var(--green);text-shadow:0 0 5px rgba(26,158,58,.4)}
+  100%{color:var(--text);text-shadow:none}
+}
+.sim-clock-sub{font-size:9px;color:var(--text-muted);margin-top:2px;line-height:1}
+
+
+/* ── Toolbar selectors ── */
+.sel-group{display:inline-flex;align-items:center;gap:5px}
+.sel-label{
+  font-size:10px;color:var(--text-muted);font-weight:600;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.sel-ctrl{
+  padding:5px 9px;border:1px solid var(--border);border-radius:6px;
+  background:var(--surface);color:var(--text);
+  font-size:12px;font-weight:500;cursor:pointer;
+  font-family:var(--font-sans);
+  transition:border-color .14s;
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%235a6478' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 7px center;background-size:10px;
+  padding-right:24px;
+}
+.sel-ctrl:hover{border-color:var(--blue)}
+.sel-ctrl:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 2px var(--blue-dim)}
+
+/* ── 全域字級縮放：使用 CSS variable，body font-size 即可影響所有 em 單位
+       對 px-hardcoded 元素另外用 :root scale 變數調 ── */
+:root{--app-font-scale:1}
+html[data-fs="0"]{--app-font-scale:1}      /* 標準 */
+html[data-fs="1"]{--app-font-scale:1.18}   /* 小 → 約 16~17px */
+html[data-fs="2"]{--app-font-scale:1.32}   /* 中 → 約 18~19px */
+html[data-fs="3"]{--app-font-scale:1.48}   /* 大 → 約 20~21px */
+
+/* body 基底 + 全域 line-height */
+body{font-size:calc(14px * var(--app-font-scale))}
+
+/* 重新校準所有 px-hardcoded 文字（用 calc 隨 scale 變動） */
+.logo{font-size:calc(14px * var(--app-font-scale))}
+.hdr-realclock{font-size:calc(13px * var(--app-font-scale))}
+.tab-btn{font-size:calc(13px * var(--app-font-scale))}
+.kpi-val{font-size:calc(30px * var(--app-font-scale))}
+.kpi-label{font-size:calc(11px * var(--app-font-scale))}
+.kpi-delta{font-size:calc(12px * var(--app-font-scale))}
+.kpi-badge{font-size:calc(10px * var(--app-font-scale))}
+.card-title{font-size:calc(14px * var(--app-font-scale))}
+.card-sub{font-size:calc(12px * var(--app-font-scale))}
+.sum-val{font-size:calc(24px * var(--app-font-scale))}
+.sum-label{font-size:calc(11px * var(--app-font-scale))}
+.b-heading{font-size:calc(13px * var(--app-font-scale))}
+.b-sub{font-size:calc(12px * var(--app-font-scale))}
+.b-badge{font-size:calc(13px * var(--app-font-scale))}
+.tbl th{font-size:calc(11px * var(--app-font-scale))}
+.tbl td{font-size:calc(13px * var(--app-font-scale))}
+.pill{font-size:calc(11px * var(--app-font-scale))}
+.fp{font-size:calc(11px * var(--app-font-scale))}
+.filter-label{font-size:calc(11px * var(--app-font-scale))}
+.alert-title{font-size:calc(13px * var(--app-font-scale))}
+.alert-msg{font-size:calc(12px * var(--app-font-scale))}
+.alert-meta{font-size:calc(11px * var(--app-font-scale))}
+.alert-ack{font-size:calc(11px * var(--app-font-scale))}
+.station-name{font-size:calc(15px * var(--app-font-scale))}
+.station-en{font-size:calc(12px * var(--app-font-scale))}
+.st-status{font-size:calc(11px * var(--app-font-scale))}
+.comp-name{font-size:calc(11px * var(--app-font-scale))}
+.comp-en{font-size:calc(10px * var(--app-font-scale))}
+.comp-val{font-size:calc(10px * var(--app-font-scale))}
+.comp-st{font-size:calc(10px * var(--app-font-scale))}
+.s-strip-name{font-size:calc(13px * var(--app-font-scale))}
+.s-strip-step{font-size:calc(11px * var(--app-font-scale))}
+.s-metric-label{font-size:calc(10px * var(--app-font-scale))}
+.s-metric-val{font-size:calc(14px * var(--app-font-scale))}
+.s-cause{font-size:calc(11px * var(--app-font-scale))}
+.val-label{font-size:calc(11px * var(--app-font-scale))}
+.val-val{font-size:calc(22px * var(--app-font-scale))}
+.val-sub{font-size:calc(11px * var(--app-font-scale))}
+.sel-label{font-size:calc(10px * var(--app-font-scale))}
+.sel-ctrl{font-size:calc(12px * var(--app-font-scale))}
+.date-btn{font-size:calc(13px * var(--app-font-scale))}
+.act{font-size:calc(12px * var(--app-font-scale))}
+.drawer-title{font-size:calc(15px * var(--app-font-scale))}
+.drawer-btn{font-size:calc(12px * var(--app-font-scale))}
+.tab-badge{font-size:calc(10px * var(--app-font-scale))}
+.alert-count{font-size:calc(10px * var(--app-font-scale))}
+.sim-toast{font-size:calc(11px * var(--app-font-scale))}
+.sim-clock-time{font-size:calc(15px * var(--app-font-scale))}
+.sim-clock-sub{font-size:calc(9px * var(--app-font-scale))}
+.sim-step .sign{font-size:calc(14px * var(--app-font-scale))}
+.sim-step .lbl{font-size:calc(9px * var(--app-font-scale))}
+#headerTime,#hdrClock{font-size:calc(13px * var(--app-font-scale))}
+.hdr-meta span{font-size:calc(12px * var(--app-font-scale))}
+.banner-text,.banner-sub,.banner-badge{font-size:inherit}
+
+/* 大字級時，table padding 微調避免溢出 */
+html[data-fs="2"] .tbl th,html[data-fs="2"] .tbl td{padding:9px 10px}
+html[data-fs="3"] .tbl th,html[data-fs="3"] .tbl td{padding:10px 8px}
+html[data-fs="3"] .pill{padding:3px 8px}
+
+/* Chart 內字級無法用 CSS 控，由 JS 動態調整 */
+
+
+/* ── Header tools (global controls) ── */
+.app-header{
+  flex-wrap:wrap;gap:10px 14px;
+  padding:8px 20px;height:auto;min-height:52px;
+}
+.header-tools{
+  display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;margin-left:auto;
+}
+.hdr-realclock{
+  font-family:var(--font-mono);font-size:13px;color:var(--text-muted);
+  padding:4px 10px;border:1px solid var(--border);border-radius:5px;
+  background:var(--surface2);
+}
+.hdr-sel{padding:0}
+.hdr-sel .sel-ctrl{padding:5px 24px 5px 9px;font-size:12px}
+.hdr-feedback{display:inline-flex;align-items:center;min-height:24px}
+
+@media(max-width:1100px){
+  .header-tools{margin-left:0;width:100%;justify-content:flex-end}
+}
+@media(max-width:780px){
+  .app-header{padding:8px 12px}
+  .logo{font-size:13px}
+  .header-tools{gap:6px}
+  .sim-clock{transform:scale(.92);transform-origin:right center}
+  .hdr-sel .sel-ctrl{padding:4px 22px 4px 7px;font-size:11px}
+  .hdr-realclock{font-size:11px;padding:3px 7px}
+}
+
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="logo"><div class="logo-dot"></div>SprayLine 生產監控</div>
+  <div class="header-tools">
+    <div class="sim-clock" role="group" aria-label="模擬時間控制">
+      <button class="sim-step left" id="stepBack20" title="回退 20 分鐘">
+        <span class="sign">−</span><span class="lbl">20m</span>
+      </button>
+      <button class="sim-step left" id="stepBackBatch" title="回退一批次">
+        <span class="sign">−</span><span class="lbl">batch</span>
+      </button>
+      <div class="sim-clock-display">
+        <div class="sim-clock-time" id="simClockTime">--:--</div>
+        <div class="sim-clock-sub" id="simClockSub">模擬資料</div>
+      </div>
+      <button class="sim-step right" id="stepFwdBatch" title="前進一批次">
+        <span class="sign">+</span><span class="lbl">batch</span>
+      </button>
+      <button class="sim-step right" id="stepFwd20" title="前進 20 分鐘">
+        <span class="sign">+</span><span class="lbl">20m</span>
+      </button>
+    </div>
+    <div class="sel-group hdr-sel" title="資料更新間隔">
+      <span class="sel-label">更新</span>
+      <select id="updateIntervalSel" class="sel-ctrl">
+        <option value="30">30 分鐘</option>
+        <option value="60" selected>1 小時</option>
+        <option value="120">2 小時</option>
+      </select>
+    </div>
+    <div class="sel-group hdr-sel" title="全域字級設定">
+      <span class="sel-label">字級</span>
+      <select id="fontSizeSel" class="sel-ctrl">
+        <option value="0" selected>標準</option>
+        <option value="1">小</option>
+        <option value="2">中</option>
+        <option value="3">大</option>
+      </select>
+    </div>
+    <span id="simFeedback" class="hdr-feedback"></span>
+    <div id="hdrClock" class="hdr-realclock">--:--:--</div>
+  </div>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="engineer">即時監控</button>
+  <button class="tab-btn" data-tab="manager">
+    生產管理
+    <span class="tab-badge" id="mgrBadge" style="display:none">0</span>
+  </button>
+</nav>
+
+<!-- ═══════════ ENGINEER TAB ═══════════ -->
+<div class="tab-panel active" id="tab-engineer">
+<div class="content">
+
+  <div class="sum-row">
+    <div class="sum-card"><div class="sum-label">總站數</div><div class="sum-val" id="e-total">3</div></div>
+    <div class="sum-card"><div class="sum-label">正常</div><div class="sum-val" id="e-normal" style="color:var(--green)">0</div></div>
+    <div class="sum-card"><div class="sum-label">警示</div><div class="sum-val" id="e-warn" style="color:var(--amber)">0</div></div>
+    <div class="sum-card"><div class="sum-label">預測風險</div><div class="sum-val" id="e-risk" style="color:var(--red)">0</div></div>
+  </div>
+
+  <div class="row g3" id="stationArea"></div>
+
+  <div class="card" style="margin-top:14px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:10px">
+      <div>
+        <h2 style="font-size:14px;font-weight:700">
+          時序檢視器
+          <span id="liveStatusBadge" class="live-badge">● Live</span>
+        </h2>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:3px">拖動滑桿查看歷史資料或預覽未來風險。</p>
+      </div>
+      <div class="mbg">
+        <button id="timeModeBtn" class="active" onclick="setMode('time')">時間模式</button>
+        <button id="batchModeBtn" onclick="setMode('batch')">批次模式</button>
+        <button onclick="backToLive()">回到即時</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:7px;margin-bottom:10px">
+      <div class="chip" id="pastChip">過去</div>
+      <div class="chip active" id="nowChip">現在</div>
+      <div class="chip" id="futureChip">未來</div>
+    </div>
+    <div style="margin:8px 0">
+      <input type="range" id="timeSlider" min="-6" max="4" step="1" value="0"
+        style="width:100%;accent-color:var(--blue);cursor:pointer;height:4px" oninput="handleSliderChange()"/>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-top:3px" id="sliderLabels">
+        <span>過去 6 小時</span><span>現在</span><span>未來 2 小時</span>
+      </div>
+    </div>
+    <div style="font-size:12px;font-weight:600;margin-bottom:5px" id="selectedTimeText">Viewing: Now</div>
+    <div class="tl-result" id="timelineResult">Loading...</div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════ MANAGER TAB ═══════════ -->
+<div class="tab-panel" id="tab-manager">
+<div class="content">
+
+  <!-- ① 日期 / 班別選擇器 -->
+  <div class="card">
+    <div class="card-hd" style="margin-bottom:10px">
+      <div>
+        <div class="card-title">生產總覽</div>
+        <div class="card-sub">選擇要查看的日期與班別</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button class="test-btn" id="testNotifyBtn">測試通知</button>
+        <a class="debug-a" href="post-debug.html" target="_blank" rel="noopener">POST Debug ↗</a>
+      </div>
+    </div>
+    <div class="date-bar">
+      <button class="date-btn active" data-date="today">今天</button>
+      <button class="date-btn" data-date="yesterday">昨天</button>
+      <button class="date-btn" data-date="week">本週</button>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--text-muted)" id="viewScopeLabel">
+      顯示範圍：今天
+    </div>
+  </div>
+
+  <!-- ② 狀態 Banner -->
+  <div class="m-banner b-ok" id="mBanner" style="margin-top:14px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="b-dot ok" id="bDot"></div>
+      <div>
+        <div class="b-heading" id="bHeading">載入中...</div>
+        <div class="b-sub">
+          <span class="notify-txt notify-idle" id="notifyStatusText">通知待機</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="drawer-btn" onclick="openDrawer('station')">
+        站點風險詳情 <span style="font-size:11px;opacity:.6">›</span>
+      </button>
+      <button class="drawer-btn" onclick="openDrawer('alert')">
+        待處理警示 <span class="dbadge zero" id="alertBadgeBtn">0</span>
+      </button>
+      <div class="b-badge ok" id="bBadge">—</div>
+    </div>
+  </div>
+
+  <!-- ③ KPI 卡片列 -->
+  <div class="row g4" style="margin-top:14px">
+    <div class="kpi-card" id="kpiYield">
+      <div class="kpi-badge b-predicted">Predicted</div>
+      <div class="kpi-label">今日預測 OK Rate</div>
+      <div class="kpi-val" id="kYield">--</div>
+      <div class="kpi-delta" id="kYieldDelta">vs 昨天 --</div>
+    </div>
+    <div class="kpi-card" id="kpiNg">
+      <div class="kpi-badge b-pending">Pending QC</div>
+      <div class="kpi-label">今日預測 NG 件數</div>
+      <div class="kpi-val" id="kNg">--</div>
+      <div class="kpi-delta" id="kNgDelta">目標 ≤ 35 件</div>
+    </div>
+    <div class="kpi-card" id="kpiUtil">
+      <div class="kpi-badge b-live">Live</div>
+      <div class="kpi-label">產線稼動率</div>
+      <div class="kpi-val" id="kUtil">--</div>
+      <div class="kpi-delta" id="kUtilDelta">目標 85%</div>
+    </div>
+    <div class="kpi-card" id="kpiCycle">
+      <div class="kpi-badge b-live">Live</div>
+      <div class="kpi-label">平均 Cycle Time</div>
+      <div class="kpi-val" id="kCycle">--</div>
+      <div class="kpi-delta" id="kCycleDelta">基準 40 秒/件</div>
+    </div>
+  </div>
+
+  <!-- ④ 圖表主區：品質趨勢（全寬） -->
+  <div class="row g2" style="margin-top:14px">
+    <div class="card span2">
+      <div class="card-hd">
+        <div>
+          <div class="card-title">品質風險趨勢</div>
+          <div class="card-sub">昨日 Actual → 今日 Predicted → Forecast（未來 2 小時）</div>
+        </div>
+        <div style="display:flex;gap:10px;font-size:11px;color:var(--text-muted)">
+          <span><span style="width:12px;height:3px;background:#1a6ef5;display:inline-block;vertical-align:middle;border-radius:2px;margin-right:4px"></span>Actual</span>
+          <span><span style="width:12px;height:3px;background:var(--green);display:inline-block;vertical-align:middle;border-radius:2px;margin-right:4px"></span>Predicted</span>
+          <span><span style="width:12px;height:3px;background:var(--purple);display:inline-block;vertical-align:middle;border-radius:2px;margin-right:4px"></span>Forecast</span>
+        </div>
+      </div>
+      <div class="ch-wrap h260"><canvas id="qTrendChart"></canvas></div>
+    </div>
+
+    <!-- 良率趨勢 -->
+    <div class="card span2">
+      <div class="card-hd">
+        <div>
+          <div class="card-title">良率趨勢（昨日 + 今日）</div>
+          <div class="card-sub">藍 = 昨日 Actual、綠 = 今日 Predicted、紅框 = 未達標 90%</div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted);margin-top:4px;display:flex;gap:12px;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(26,110,245,.65);border:1px solid #1a6ef5;border-radius:2px;display:inline-block"></span>昨日 Actual</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(26,158,58,.65);border:1px solid #1a9e3a;border-radius:2px;display:inline-block"></span>今日 Predicted</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(26,158,58,.18);border:1.8px solid #d42b22;border-radius:2px;display:inline-block"></span>未達標</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:2px;background:#d42b22;border-top:1.5px dashed #d42b22;display:inline-block"></span>目標 90%</span>
+      </div>
+      <div class="ch-wrap h200" style="margin-top:12px">
+        <canvas id="yieldTrendChart"></canvas>
+      </div>
+    </div>
+
+    <!-- 稼動率 by Station -->
+    <div class="card span2">
+      <div class="card-hd">
+        <div><div class="card-title">各站稼動率</div><div class="card-sub">目標線 85%，含未來 2 小時 Forecast</div></div>
+        <button class="drawer-btn" onclick="openDrawer('station')" style="font-size:11px">詳情 ›</button>
+      </div>
+      <div class="ch-wrap h260"><canvas id="uTrendChart"></canvas></div>
+    </div>
+
+    <!-- Cycle Time by Station -->
+    <div class="card span2">
+      <div class="card-hd">
+        <div><div class="card-title">各站 Cycle Time</div><div class="card-sub">基準線 40 秒，含未來 2 小時 Forecast</div></div>
+      </div>
+      <div class="ch-wrap h260"><canvas id="cTrendChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ⑤ Batch 清單 + 預測準確度（並排，次要資訊） -->
+  <div class="row g2" style="margin-top:14px">
+    <div class="card">
+      <div class="card-hd">
+        <div>
+          <div class="card-title">Batch 彙整</div>
+          <div class="card-sub">今日批次，Pending QC</div>
+        </div>
+        <button class="drawer-btn" onclick="openDrawer('batch')" style="font-size:11px">展開全部 ›</button>
+      </div>
+      <div class="batch-filter" id="batchFilterMain">
+        <div class="filter-label" title="未選 = 全部顯示；選擇分類 = 只顯示該分類">風險</div>
+        <div class="filter-pills">
+          <button class="fp high" data-risk="High">高</button>
+          <button class="fp medium" data-risk="Medium">中</button>
+          <button class="fp low" data-risk="Low">低</button>
+        </div>
+        <div class="filter-time">
+          <span>時段</span>
+          <input type="time" id="filterStartMain" value="00:00"/>
+          <span>~</span>
+          <input type="time" id="filterEndMain" value="23:59"/>
+        </div>
+        <button class="filter-reset" id="filterResetMain">重設</button>
+      </div>
+      <div class="scroll-x">
+        <table class="tbl">
+          <thead><tr>
+            <th>Batch</th><th>開始</th><th>件數</th>
+            <th>預測 OK</th><th>預測 NG</th><th>風險</th>
+          </tr></thead>
+          <tbody id="batchBodyCompact"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd">
+        <div><div class="card-title">預測準確度</div><div class="card-sub">昨日預測 vs 今日 Actual QC</div></div>
+        <button class="drawer-btn" onclick="openDrawer('validation')" style="font-size:11px">詳情 ›</button>
+      </div>
+      <div class="val-grid" id="valGridCompact" style="grid-template-columns:repeat(2,1fr)"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════ DRAWERS ═══════════ -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- Drawer: 站點風險 -->
+<div class="drawer" id="drawerStation">
+  <div class="drawer-hd">
+    <span class="drawer-title">站點風險詳情</span>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">依風險等級排序，最高風險站點置頂。</p>
+    <div class="station-strip" id="stationStrip" style="grid-template-columns:1fr"></div>
+  </div>
+</div>
+
+<!-- Drawer: 待處理警示 -->
+<div class="drawer" id="drawerAlert">
+  <div class="drawer-hd">
+    <span class="drawer-title">待處理警示 <span class="alert-count" id="pendingAlertCount">0</span></span>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">尚未 Acknowledge 的警示，請逐一確認後標記處理。</p>
+    <div class="alert-list" id="alertList"></div>
+  </div>
+</div>
+
+<!-- Drawer: Batch 詳細 -->
+<div class="drawer" id="drawerBatch">
+  <div class="drawer-hd">
+    <span class="drawer-title">Batch 詳細清單</span>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">今日所有 Batch，含主因與站點資訊。</p>
+    <div class="batch-filter" id="batchFilterDrawer">
+      <div class="filter-label">風險</div>
+      <div class="filter-pills">
+        <button class="fp high" data-risk="High">高</button>
+        <button class="fp medium" data-risk="Medium">中</button>
+        <button class="fp low" data-risk="Low">低</button>
+      </div>
+      <div class="filter-time">
+        <span>時段</span>
+        <input type="time" id="filterStartDrawer" value="00:00"/>
+        <span>~</span>
+        <input type="time" id="filterEndDrawer" value="23:59"/>
+      </div>
+      <button class="filter-reset" id="filterResetDrawer">重設</button>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr>
+          <th>Batch</th><th>開始</th><th>件數</th>
+          <th>預測 OK</th><th>預測 NG</th><th>風險</th><th>主因</th>
+        </tr></thead>
+        <tbody id="batchBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Drawer: 預測準確度 -->
+<div class="drawer" id="drawerValidation">
+  <div class="drawer-hd">
+    <span class="drawer-title">預測準確度驗證</span>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px">昨日預測結果 vs 今日實際 QC，作為模型信賴度參考。</p>
+    <div class="val-grid" id="valGrid"></div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+/* ─── Clock ─── */
+function tickClock(){
+  const n=new Date();
+  document.getElementById('hdrClock').textContent=
+    String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');
+}
+tickClock();setInterval(tickClock,1000);
+
+/* ─── Tab switching ─── */
+document.querySelectorAll('.tab-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const t=b.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('tab-'+t).classList.add('active');
+  });
+});
+
+/* ──────────────────────────────────────
+   ENGINEER TAB
+────────────────────────────────────── */
+let eMode='time',eAuto=true,faultMap=new Map(),procSet=new Set(),imgSet=new Set(),diag={};
+const BASE=[
+  {id:'line_1',name:'底漆站',en:'Primer Station',recipe:'Primer_A',basePressure:2.5,baseWidth:120,baseTemp:28,baseAvail:95,baseMaint:92,baseClog:12,baseQuality:96,baseUtil:78,baseCycle:42},
+  {id:'line_2',name:'面漆站',en:'Topcoat Station',recipe:'Topcoat_B',basePressure:2.1,baseWidth:100,baseTemp:27,baseAvail:88,baseMaint:86,baseClog:25,baseQuality:91,baseUtil:72,baseCycle:46},
+  {id:'line_3',name:'金漆站',en:'Gold Paint Station',recipe:'Gold_C',basePressure:1.7,baseWidth:82,baseTemp:26,baseAvail:72,baseMaint:65,baseClog:55,baseQuality:82,baseUtil:60,baseCycle:55}
+];
+const STATE_MAP={Running:{t:'運作中',c:'running'},Standby:{t:'待機',c:'standby'},Stop:{t:'停機',c:'stop'},Maintenance:{t:'維護中',c:'maintenance'},Alarm:{t:'警報',c:'alarm'}};
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function getSl(){return Number(document.getElementById('timeSlider').value)}
+function buildSData(){
+  const off=getSl(),wave=Math.sin(Date.now()/1500);
+  return BASE.map((s,i)=>{
+    let factor=eMode==='time'?(off>0?off*.5:off):off*.35;
+    let clog=s.baseClog,avail=s.baseAvail,maint=s.baseMaint,quality=s.baseQuality,cycle=s.baseCycle;
+    if(off===0){clog=s.baseClog+wave*3+i*2;avail=s.baseAvail+wave*2;maint=s.baseMaint+wave*2;quality=s.baseQuality+wave*1.5;cycle=s.baseCycle+wave*1.5;}
+    else if(off<0){clog=s.baseClog+Math.sin(off+i)*6;avail=s.baseAvail+Math.sin(off+i)*3;maint=s.baseMaint+Math.cos(off+i)*3;quality=s.baseQuality+Math.sin(off+i)*2;cycle=s.baseCycle+Math.cos(off+i)*2;}
+    else{clog=s.baseClog+factor*(i+1)*7;avail=s.baseAvail-Math.max(0,factor)*(i+1)*4;maint=s.baseMaint-Math.max(0,factor)*(i+1)*5;quality=s.baseQuality-Math.max(0,factor)*(i+1)*3;cycle=s.baseCycle+Math.max(0,factor)*(i+1)*2;}
+    clog=clamp(Math.round(clog),0,100);avail=clamp(Math.round(avail),0,100);maint=clamp(Math.round(maint),0,100);quality=clamp(Math.round(quality),0,100);cycle=Math.round(cycle);
+    const pressure=Number((s.basePressure-clog*0.006).toFixed(1));
+    const sprayWidth=Math.round(s.baseWidth-clog*0.45);
+    const util=clamp(Math.round(s.baseUtil-Math.max(0,factor)*2),0,100);
+    const comps=getComps({...s,pressure,sprayWidth,avail,maint,clog,quality,util,cycle});
+    const badC=comps.filter(c=>c.level==='bad').length,warnC=comps.filter(c=>c.level==='warn').length;
+    let overall='Running';
+    if(badC>0)overall='Alarm';else if(warnC>0)overall='Maintenance';else if(avail<80)overall='Standby';
+    return{...s,overall,pressure:pressure.toFixed(1),sprayWidth,avail,maint,clog,quality,util,cycle};
+  });
+}
+function pc(v,t){if(t==='clog')return v>=75?'bad':v>=50?'warn':'ok';if(t==='pct')return v<60?'bad':v<80?'warn':'ok';return'neutral'}
+function pressC(v){const p=Number(v);return p<1.5?'bad':p<2.0?'warn':'ok'}
+function widthC(v){const w=Number(v);return(w<100||w>140)?'bad':(w<110||w>130)?'warn':'ok'}
+function stTxt(l){return l==='ok'?'正常':l==='warn'?'注意':l==='bad'?'異常':'監控'}
+function getComps(s){
+  const w=Number(s.sprayWidth);
+  const widthDiff=w<110?`低於正常區間下緣 ${(110-w)} mm`:w>130?`高於正常區間上緣 ${(w-130)} mm`:'';
+  return[
+    {key:'arm',icon:'🦾',name:'機械手臂',en:'Robot Arm',
+      level:pc(s.avail,'pct'),value:`可用度 ${s.avail}%`,
+      baseline:'≥ 80%',diff:s.avail<80?`低於正常值 ${(80-s.avail)} 個百分點`:''},
+    {key:'nozzle',icon:'💧',name:'噴嘴',en:'Nozzle',
+      level:pc(s.clog,'clog'),value:`堵塞率 ${s.clog}%`,
+      baseline:'≤ 50%',diff:s.clog>=50?`高於正常值 ${(s.clog-50)} 個百分點`:''},
+    {key:'air',icon:'⚙️',name:'空壓機',en:'Air Compressor',
+      level:pressC(s.pressure),value:`壓力 ${s.pressure} bar`,
+      baseline:'≥ 2.0 bar',diff:Number(s.pressure)<2.0?`低於正常值 ${(2.0-Number(s.pressure)).toFixed(1)} bar`:''},
+    {key:'width',icon:'↔️',name:'噴幅',en:'Spray Width',
+      level:widthC(s.sprayWidth),value:`噴幅 ${s.sprayWidth} mm`,
+      baseline:'110 ~ 130 mm',diff:widthDiff},
+    {key:'filter',icon:'🧽',name:'濾網',en:'Filter Mesh',
+      level:pc(s.maint,'pct'),value:`維護性 ${s.maint}%`,
+      baseline:'≥ 80%',diff:s.maint<80?`低於正常值 ${(80-s.maint)} 個百分點`:''},
+    {key:'quality',icon:'📏',name:'品質',en:'Quality',
+      level:pc(s.quality,'pct'),value:`膜厚穩定度 ${s.quality}%`,
+      baseline:'≥ 80%',diff:s.quality<80?`低於正常值 ${(80-s.quality)} 個百分點`:''}
+  ];
+}
+function renderStations(data){
+  const area=document.getElementById('stationArea');area.innerHTML='';diag={};
+  data.forEach(s=>{
+    const si=STATE_MAP[s.overall],comps=getComps(s),issues=comps.filter(c=>c.level!=='ok'),hasBad=issues.some(c=>c.level==='bad');
+    diag[s.id]={station:s,components:comps,issues};
+    const card=document.createElement('div');card.className=`station-card ${si.c}`;
+    card.innerHTML=`
+      <div class="station-hd"><div><div class="station-name">${s.name}</div><div class="station-en">${s.en}</div></div><div class="st-status ${si.c}">${si.t}</div></div>
+      <div class="comp-grid">${comps.map(c=>`
+        <div class="comp ${c.level}" onclick="openComp('${s.id}','${c.key}')">
+          <div class="comp-icon">${c.icon}</div>
+          <div class="comp-name">${c.name}</div><div class="comp-en">${c.en}</div>
+          <div class="comp-val">${c.value}</div>
+          <div class="comp-st">${stTxt(c.level)}</div>
+        </div>`).join('')}</div>
+      <div class="act-row">
+        <button id="fb-${s.id}" class="act ${hasBad?'danger':issues.length?'warn':'ok'}" onclick="toggleAllIssues('${s.id}')">${issues.length?'查看問題':'無問題'}</button>
+        <button id="pb-${s.id}" class="act" onclick="toggleProc('${s.id}')">Process Params</button>
+        <button id="ib-${s.id}" class="act" onclick="toggleImg('${s.id}')">Spray Image</button>
+      </div>
+      <div class="fault-panel" id="fp-${s.id}"></div>
+      <div class="proc-panel" id="pp-${s.id}">
+        <div class="mm-grid">
+          <div class="mm"><span>Recipe</span><strong>${s.recipe}</strong></div>
+          <div class="mm"><span>Temperature</span><strong>${(s.baseTemp+Math.max(0,(getSl()>0?getSl()*.5:0))*.4).toFixed(1)}°C</strong></div>
+          <div class="mm"><span>Utilization</span><strong>${s.util}%</strong></div>
+          <div class="mm"><span>Cycle Time</span><strong>${s.cycle}s</strong></div>
+        </div>
+      </div>
+      <div class="img-panel" id="ip-${s.id}">${sprayWidthSVG(s)}</div>`;
+    area.appendChild(card);
+  });
+  restorePanels();
+}
+function sprayWidthSVG(s){
+  const w=Number(s.sprayWidth),sc=widthC(w);
+  const col=sc==='bad'?'var(--red)':sc==='warn'?'var(--amber)':'var(--green)';
+  const half=clamp(w,70,145)*.6,lx=170-half,rx=170+half;
+  return`<div style="border-radius:7px;padding:10px;background:var(--surface2);border:1px solid var(--border)">
+    <svg viewBox="0 0 340 175" width="100%" style="display:block;height:150px">
+      <text x="14" y="20" font-size="10" fill="var(--text-muted)">Spray Width</text>
+      <rect x="148" y="30" width="44" height="14" rx="4" fill="#9ba3b0"/>
+      <polygon points="170,44 160,58 180,58" fill="#9ba3b0"/>
+      <polygon points="170,58 ${lx},132 ${rx},132" fill="rgba(26,110,245,0.08)" stroke="${col}" stroke-width="1.5"/>
+      <rect x="100" y="115" width="140" height="12" rx="5" fill="rgba(26,158,58,0.07)" stroke="rgba(26,158,58,0.4)" stroke-dasharray="4 3"/>
+      <text x="170" y="111" text-anchor="middle" font-size="9" fill="#1a9e3a">Target 110~130mm</text>
+      <line x1="${lx}" y1="132" x2="${lx}" y2="146" stroke="${col}" stroke-width="1.5"/>
+      <line x1="${rx}" y1="132" x2="${rx}" y2="146" stroke="${col}" stroke-width="1.5"/>
+      <line x1="${lx}" y1="143" x2="${rx}" y2="143" stroke="var(--text)" stroke-width="1.2"/>
+      <text x="170" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text)">Current: ${w}mm</text>
+    </svg>
+  </div>`;
+}
+function restorePanels(){
+  procSet.forEach(id=>{const p=document.getElementById('pp-'+id),b=document.getElementById('pb-'+id);if(p)p.style.display='block';if(b)b.classList.add('active')});
+  imgSet.forEach(id=>{const p=document.getElementById('ip-'+id),b=document.getElementById('ib-'+id);if(p)p.style.display='block';if(b)b.classList.add('active')});
+  faultMap.forEach((k,id)=>{if(k==='ALL')renderAllFaults(id);else renderOneFault(id,k)});
+}
+function toggleProc(id){const p=document.getElementById('pp-'+id),b=document.getElementById('pb-'+id);if(!p)return;const s=p.style.display!=='block';p.style.display=s?'block':'none';if(s){procSet.add(id);b&&b.classList.add('active')}else{procSet.delete(id);b&&b.classList.remove('active')}}
+function toggleImg(id){const p=document.getElementById('ip-'+id),b=document.getElementById('ib-'+id);if(!p)return;const s=p.style.display!=='block';p.style.display=s?'block':'none';if(s){imgSet.add(id);b&&b.classList.add('active')}else{imgSet.delete(id);b&&b.classList.remove('active')}}
+function openComp(id,key){faultMap.set(id,key);renderOneFault(id,key)}
+function toggleAllIssues(id){if(faultMap.get(id)==='ALL'){closeFault(id);return}faultMap.set(id,'ALL');renderAllFaults(id)}
+function closeFault(id){const p=document.getElementById('fp-'+id);if(p){p.style.display='none';p.innerHTML=''}const b=document.getElementById('fb-'+id);if(b)b.classList.remove('active');faultMap.delete(id)}
+function renderOneFault(id,key){
+  const d=diag[id],p=document.getElementById('fp-'+id);if(!d||!p)return;
+  const c=d.components.find(x=>x.key===key);if(!c)return;
+  p.style.display='block';
+  let body;
+  if(c.level==='ok'){
+    body=`<div class="f-item ok-item">
+      <div class="f-line"><span class="f-label">數值：</span>${c.value}</div>
+      <div class="f-line"><span class="f-label">正常範圍：</span>${c.baseline}</div>
+    </div>`;
+  } else {
+    body=`<div class="f-item ${c.level}-item">
+      <div class="f-line"><span class="f-label">數值：</span>${c.value}</div>
+      <div class="f-line"><span class="f-label">正常範圍：</span>${c.baseline}</div>
+      <div class="f-line"><span class="f-label">差異：</span><span class="${c.level==='bad'?'text-high':'text-medium'}">${c.diff||'—'}</span></div>
+    </div>`;
+  }
+  p.innerHTML=`<h4>${c.name} ${c.en} — ${stTxt(c.level)}</h4>${body}
+    <button class="act" style="margin-top:5px" onclick="closeFault('${id}')">關閉</button>`;
+  const b=document.getElementById('fb-'+id);if(b)b.classList.add('active');
+}
+function renderAllFaults(id){
+  const d=diag[id],p=document.getElementById('fp-'+id);if(!d||!p)return;
+  p.style.display='block';
+  if(!d.issues.length){p.innerHTML=`<h4>所有元件正常</h4><button class="act" style="margin-top:5px" onclick="closeFault('${id}')">關閉</button>`;return}
+  p.innerHTML=`<h4>${d.station.name} — 異常元件</h4>
+    ${d.issues.map(c=>`<div class="f-item ${c.level}-item">
+      <div class="f-line"><span class="f-label">元件：</span><span class="${c.level==='bad'?'text-high':'text-medium'}">${c.name} (${c.en}) — ${stTxt(c.level)}</span></div>
+      <div class="f-line"><span class="f-label">數值：</span>${c.value}</div>
+      <div class="f-line"><span class="f-label">正常範圍：</span>${c.baseline}</div>
+      <div class="f-line"><span class="f-label">差異：</span><span class="${c.level==='bad'?'text-high':'text-medium'}">${c.diff||'—'}</span></div>
+    </div>`).join('')}
+    <button class="act" style="margin-top:5px" onclick="closeFault('${id}')">關閉</button>`;
+  const b=document.getElementById('fb-'+id);if(b)b.classList.add('active');
+}
+function updateEngineerSummary(data){
+  let n=0,w=0,r=0;
+  data.forEach(s=>{
+    if(s.overall==='Running'||s.overall==='Standby')n++;
+    if(s.overall==='Maintenance'||s.overall==='Alarm')w++;
+    if(s.overall==='Maintenance'||s.overall==='Alarm'||s.clog>=50||s.avail<80)r++;
+  });
+  document.getElementById('e-normal').textContent=n;
+  document.getElementById('e-warn').textContent=w;
+  document.getElementById('e-risk').textContent=r;
+  const badge=document.getElementById('mgrBadge');
+  badge.style.display=r>0?'inline-flex':'none';
+  badge.textContent=r;
+}
+function updateTimeChips(){
+  const o=getSl();
+  ['past','now','future'].forEach(id=>document.getElementById(id+'Chip').classList.remove('active'));
+  if(o<0)document.getElementById('pastChip').classList.add('active');
+  else if(o>0)document.getElementById('futureChip').classList.add('active');
+  else document.getElementById('nowChip').classList.add('active');
+}
+function updateTimelineText(data){
+  const o=getSl();let label='Now';
+  if(eMode==='time'){if(o<0)label=`Past ${Math.abs(o)}h`;else if(o>0)label=`Future ${(o*.5).toFixed(1)}h forecast`;}
+  else{if(o<0)label=`Past batch ${Math.abs(o)}`;else if(o>0)label=`Future batch ${o}`;}
+  document.getElementById('selectedTimeText').textContent='檢視：'+label;
+  let html='';
+  if(o<0)html=`<span class="hist-note">Historical:</span> `;
+  else if(o===0)html=`<b>Live Status</b> — auto-updating.<br><br>`;
+  else html=`<span class="fut-warn">Forecast:</span> `;
+  data.forEach(s=>{html+=`<b>${s.name}</b>: 堵塞率 ${s.clog}%，壓力 ${s.pressure} bar，噴幅 ${s.sprayWidth} mm，可用率 ${s.avail}%，品質 ${s.quality}%<br>`});
+  document.getElementById('timelineResult').innerHTML=html;updateTimeChips();
+}
+function updateLiveBadge(){
+  const b=document.getElementById('liveStatusBadge');
+  if(eAuto&&getSl()===0){b.className='live-badge';b.textContent='● Live'}
+  else{b.className='pause-badge';b.textContent='⏸ Paused'}
+}
+function refreshEngineer(){const data=buildSData();renderStations(data);updateEngineerSummary(data);updateTimelineText(data);updateLiveBadge()}
+function handleSliderChange(){eAuto=getSl()===0;refreshEngineer()}
+function backToLive(){document.getElementById('timeSlider').value=0;eAuto=true;refreshEngineer()}
+function setMode(m){
+  eMode=m;const sl=document.getElementById('timeSlider');
+  if(m==='time'){sl.min=-6;sl.max=4;sl.step=1;sl.value=0;
+    document.getElementById('sliderLabels').innerHTML='<span>過去 6 小時</span><span>現在</span><span>未來 2 小時</span>';
+    document.getElementById('timeModeBtn').classList.add('active');document.getElementById('batchModeBtn').classList.remove('active');}
+  else{sl.min=-10;sl.max=10;sl.step=1;sl.value=0;
+    document.getElementById('sliderLabels').innerHTML='<span>過去 10 批次</span><span>目前</span><span>未來 10 批次</span>';
+    document.getElementById('timeModeBtn').classList.remove('active');document.getElementById('batchModeBtn').classList.add('active');}
+  eAuto=true;refreshEngineer();
+}
+refreshEngineer();
+setInterval(()=>{if(eAuto&&getSl()===0)refreshEngineer();else{updateLiveBadge();updateTimeChips();}},1000);
+
+/* ──────────────────────────────────────
+   MANAGER TAB
+────────────────────────────────────── */
+const TARGETS={util:85,cycleTime:40,okRate:90,ngPcs:35};
+const MSTATIONS=[
+  {key:'s1',label:'line_1',robot:'Robot 1',step:'Base Coat',baseCycle:39,issue:'噴嘴輕微堵塞，造成短暫微停機。'},
+  {key:'s2',label:'line_2',robot:'Robot 2',step:'Top Coat',baseCycle:40,issue:'噴塗壓力不穩定，路徑偏移。'},
+  {key:'s3',label:'line_3',robot:'Robot 3',step:'Edge Touch-up',baseCycle:39.5,issue:'邊緣補漆時塗料供應量不穩定。'}
+];
+
+let mCursor=44,mTimer=null;
+/* 由 mCursor 換算「虛擬現在小時」，永遠保有 +2h forecast */
+function nowHour(){return Math.floor(mCursor/3)}
+let todayRecs=[],histRecs=[],forecastRecs=[];
+let predHistory=[],notifHistory=[];
+const notifKeys=new Set();
+let mDate='today';
+let qChart=null,uChart=null,cChart=null,yChart=null;
+let alertsData=[];
+
+function fmtPct(v,d=1){return Number(v||0).toFixed(d)+'%'}
+function esc(v){return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function riskOrd(l){return l==='High'?3:l==='Medium'?2:1}
+function highestRisk(arr){return arr.slice().sort((a,b)=>riskOrd(b)-riskOrd(a))[0]||'Low'}
+function avg(arr){if(!arr.length)return 0;return arr.reduce((s,v)=>s+v,0)/arr.length}
+function sum(arr){return arr.reduce((s,v)=>s+v,0)}
+function ts(){return new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei'})}
+
+/* ── Chart.js plugins: 垂直「現在」線 + 「Forecast」背景帶 ── */
+const nowLinePlugin={
+  id:'nowLine',
+  afterDatasetsDraw(chart,args,opts){
+    const nowKey=opts.nowKey;if(!nowKey)return;
+    const labels=chart.data.labels||[];
+    const idx=labels.indexOf(nowKey);if(idx<0)return;
+    const xScale=chart.scales.x,yScale=chart.scales.y;
+    const x=xScale.getPixelForValue(nowKey);
+    const ctx=chart.ctx;
+    ctx.save();
+    ctx.strokeStyle='#d42b22';
+    ctx.lineWidth=1.5;
+    ctx.setLineDash([5,4]);
+    ctx.beginPath();
+    ctx.moveTo(x,yScale.top);
+    ctx.lineTo(x,yScale.bottom);
+    ctx.stroke();
+    // 標籤
+    ctx.setLineDash([]);
+    ctx.fillStyle='#d42b22';
+    ctx.font='600 11px "IBM Plex Sans",sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='top';
+    const label='現在';
+    const w=ctx.measureText(label).width+10;
+    const lx=x-w/2,ly=yScale.top+2;
+    // 標籤背景
+    ctx.fillStyle='rgba(255,255,255,0.95)';
+    ctx.strokeStyle='#d42b22';
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(lx,ly,w,16,3) : ctx.rect(lx,ly,w,16);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle='#d42b22';
+    ctx.fillText(label,x,ly+3);
+    ctx.restore();
+  }
+};
+const forecastZonePlugin={
+  id:'forecastZone',
+  beforeDatasetsDraw(chart,args,opts){
+    const fcStart=opts.fcStart;if(!fcStart)return;
+    const labels=chart.data.labels||[];
+    const idx=labels.indexOf(fcStart);if(idx<0)return;
+    const xScale=chart.scales.x,yScale=chart.scales.y;
+    const x1=xScale.getPixelForValue(fcStart);
+    const x2=xScale.right;
+    const ctx=chart.ctx;
+    ctx.save();
+    // 半透明紫色背景帶
+    ctx.fillStyle='rgba(124,82,208,.07)';
+    ctx.fillRect(x1,yScale.top,x2-x1,yScale.bottom-yScale.top);
+    // 上方標籤
+    ctx.fillStyle='#7c52d0';
+    ctx.font='600 10px "IBM Plex Sans",sans-serif';
+    ctx.textAlign='left';
+    ctx.textBaseline='top';
+    ctx.fillText('Forecast 2h',x1+6,yScale.top+4);
+    ctx.restore();
+  }
+};
+if(typeof Chart!=='undefined'){
+  Chart.register(nowLinePlugin,forecastZonePlugin);
+}
+
+
+function showToast(msg,lvl='high'){
+  const s=document.getElementById('toastStack');
+  const t=document.createElement('div');t.className=`toast ${lvl}`;t.textContent=msg;
+  s.appendChild(t);setTimeout(()=>t.remove(),4500);
+}
+function setNotify(txt,cls='notify-idle'){
+  const e=document.getElementById('notifyStatusText');
+  if(e){e.textContent=txt;e.className=`notify-txt ${cls}`}
+}
+
+/* ── Mock data generators ── */
+function genHistorical(){
+  const recs=[];
+  for(let h=0;h<24;h++){
+    const issue=(h>=9&&h<=14);
+    recs.push({
+      timestamp:String(h).padStart(2,'0')+':00',hourKey:String(h).padStart(2,'0')+':00',
+      actualOkRate:issue?88+Math.random()*3:93+Math.random()*3,
+      actualNgPcs:issue?Math.round(35+Math.random()*10):Math.round(15+Math.random()*10),
+      producedPcs:Math.round(68+Math.random()*10),
+      s1Util:86+Math.random()*6,s2Util:issue?62+Math.random()*8:87+Math.random()*5,s3Util:85+Math.random()*7,
+      s1Cycle:39+Math.random(),s2Cycle:issue?44+Math.random()*3:40+Math.random(),s3Cycle:39.5+Math.random(),
+      riskLevel:issue?'Medium':'Low',mainCause:issue?'line_2 pressure instability':'正常',relatedStation:issue?'line_2':'Line',status:'Actual QC'
+    });
+  }
+  return recs;
+}
+
+function genRealtime(){
+  const recs=[];
+  for(let slot=0;slot<=mCursor;slot++){
+    const h=Math.floor(slot/3),issue=(h>=9&&h<=14),severe=(h>=11&&h<=13);
+    const min=(slot%3)*20;
+    recs.push({
+      timestamp:String(h).padStart(2,'0')+':'+String(min).padStart(2,'0'),
+      hourKey:String(h).padStart(2,'0')+':00',
+      s1Util:87+Math.random()*5,
+      s2Util:severe?55+Math.random()*8:issue?68+Math.random()*8:88+Math.random()*5,
+      s3Util:86+Math.random()*6,
+      s1Cycle:39+Math.random()*.8,
+      s2Cycle:severe?47+Math.random()*3:issue?43+Math.random()*2:40+Math.random(),
+      s3Cycle:39.5+Math.random(),
+      s1Alarm:0,s2Alarm:severe?2:issue?1:0,s3Alarm:0,
+      producedPcs:Math.max(58,76-(issue?h-9:0)-(slot%3)),
+      batchId:`B-${String(Math.floor(slot/6)).padStart(3,'0')}`,
+      isPendingQC:true
+    });
+  }
+  return recs;
+}
+
+function enrichRealtime(recs){
+  return recs.map(r=>{
+    const dom=getDominant(r);
+    const at=r.s1Alarm+r.s2Alarm+r.s3Alarm;
+    const s2ci=((r.s2Cycle-MSTATIONS[1].baseCycle)/MSTATIONS[1].baseCycle)*100;
+    const s3ci=((r.s3Cycle-MSTATIONS[2].baseCycle)/MSTATIONS[2].baseCycle)*100;
+    const up=Math.max(0,TARGETS.util-r.s1Util)*.08+Math.max(0,TARGETS.util-r.s2Util)*.28+Math.max(0,TARGETS.util-r.s3Util)*.16;
+    const cp=Math.max(0,s2ci)*.2+Math.max(0,s3ci)*.12;
+    const pOk=Math.max(75,Number((94.5-up-cp-at*.75).toFixed(1)));
+    const pNgPcs=Math.max(1,Math.round(r.producedPcs*(100-pOk)/100));
+    const enriched={...r,predictedOkRate:pOk,predictedNgPcs:pNgPcs,relatedStation:dom.label,mainCause:dom.issue,alarmCount:at};
+    return{...enriched,riskLevel:calcRisk(enriched)};
+  });
+}
+
+function getDominant(r){
+  return MSTATIONS.map((s,i)=>{
+    const n=i+1,u=r[`s${n}Util`],c=r[`s${n}Cycle`],a=r[`s${n}Alarm`];
+    const ci=((c-s.baseCycle)/s.baseCycle)*100;
+    return{...s,score:Math.max(0,TARGETS.util-u)*1.2+Math.max(0,ci)*1.5+a*4};
+  }).sort((a,b)=>b.score-a.score)[0];
+}
+
+function calcRisk(r){
+  const srs=MSTATIONS.map((s,i)=>{
+    const n=i+1,u=r[`s${n}Util`],c=r[`s${n}Cycle`],a=r[`s${n}Alarm`];
+    const ci=((c-s.baseCycle)/s.baseCycle)*100;
+    if(u<70||ci>15||a>=3)return'High';
+    if((u>=70&&u<=80)||ci>=8||a>=1)return'Medium';
+    return'Low';
+  });
+  if(r.predictedOkRate<TARGETS.okRate)srs.push('Medium');
+  if(r.predictedNgPcs>=TARGETS.ngPcs)srs.push('High');
+  return highestRisk(srs);
+}
+
+function genForecast(){
+  const lat=todayRecs[todayRecs.length-1];if(!lat)return[];
+  const lh=Number(lat.hourKey.slice(0,2)),res=[];
+  // 2 小時預測，未來 2 個 hourKey
+  for(let h=Math.min(23,lh+1);h<=Math.min(23,lh+2);h++){
+    const rc=lat.riskLevel==='High'?1.7:lat.riskLevel==='Medium'?.9:.2;
+    const pOk=Math.max(72,Number((lat.predictedOkRate-(h-lh)*rc).toFixed(1)));
+    const pNgPcs=Math.max(1,Math.round(lat.producedPcs*(100-pOk)/100));
+    const rl=pOk<84||lat.riskLevel==='High'?'High':pOk<90?'Medium':'Low';
+    res.push({timestamp:String(h).padStart(2,'0')+':00',hourKey:String(h).padStart(2,'0')+':00',predictedOkRate:pOk,predictedNgPcs:pNgPcs,producedPcs:lat.producedPcs,riskLevel:rl,mainCause:lat.mainCause,relatedStation:lat.relatedStation,batchId:`F-${String(h).padStart(2,'0')}`,isForecast:true,s1Util:Math.max(78,lat.s1Util-(h-lh)*.4),s2Util:Math.max(52,lat.s2Util-(h-lh)*1.2),s3Util:Math.max(76,lat.s3Util-(h-lh)*.5),s1Cycle:Number((lat.s1Cycle+(h-lh)*.2).toFixed(1)),s2Cycle:Number((lat.s2Cycle+(h-lh)*.7).toFixed(1)),s3Cycle:Number((lat.s3Cycle+(h-lh)*.3).toFixed(1))});
+  }
+  return res;
+}
+
+function refreshMgrData(){
+  histRecs=genHistorical();
+  const raw=genRealtime();
+  todayRecs=enrichRealtime(raw);
+  forecastRecs=genForecast();
+  // 電子鐘由 updateSimClock() 統一更新；不再寫 dataSourceMode / lastDbUpdate
+  if(typeof updateSimClock==='function') updateSimClock();
+}
+
+/* ── Aggregate ── */
+function aggByHour(recs){
+  const grp=new Map();
+  recs.forEach(r=>{if(!grp.has(r.hourKey))grp.set(r.hourKey,[]);grp.get(r.hourKey).push(r)});
+  return Array.from(grp.entries()).map(([hk,hrs])=>{
+    const hi=highestRisk(hrs.map(r=>r.riskLevel));
+    const batches=[...new Set(hrs.map(r=>r.batchId))];
+    const main=hrs.slice().sort((a,b)=>riskOrd(b.riskLevel)-riskOrd(a.riskLevel))[0];
+    return{hourKey:hk,avgOk:Number(avg(hrs.map(r=>r.predictedOkRate)).toFixed(1)),totalNg:sum(hrs.map(r=>r.predictedNgPcs)),totalPcs:sum(hrs.map(r=>r.producedPcs)),avgline_1Util:Number(avg(hrs.map(r=>r.s1Util)).toFixed(1)),avgline_2Util:Number(avg(hrs.map(r=>r.s2Util)).toFixed(1)),avgline_3Util:Number(avg(hrs.map(r=>r.s3Util)).toFixed(1)),avgline_1Cycle:Number(avg(hrs.map(r=>r.s1Cycle)).toFixed(1)),avgline_2Cycle:Number(avg(hrs.map(r=>r.s2Cycle)).toFixed(1)),avgline_3Cycle:Number(avg(hrs.map(r=>r.s3Cycle)).toFixed(1)),alarmTotal:sum(hrs.map(r=>r.alarmCount||0)),riskLevel:hi,mainCause:main.mainCause,relatedStation:main.relatedStation,batchIds:batches};
+  });
+}
+
+function normStations(recs){
+  if(!recs.length)return MSTATIONS.map(s=>({label:s.label,step:s.step,util:TARGETS.util,cycle:s.baseCycle,alarms:0,riskLevel:'Low',issue:s.issue}));
+  return MSTATIONS.map((s,i)=>{
+    const n=i+1;
+    const u=avg(recs.map(r=>r[`avgS${n}Util`]??r[`s${n}Util`]));
+    const c=avg(recs.map(r=>r[`avgS${n}Cycle`]??r[`s${n}Cycle`]));
+    const a=sum(recs.map(r=>r[`s${n}Alarm`]??0));
+    const mock={s1Util:n===1?u:85,s2Util:n===2?u:85,s3Util:n===3?u:85,s1Cycle:n===1?c:39,s2Cycle:n===2?c:40,s3Cycle:n===3?c:39.5,s1Alarm:n===1?a:0,s2Alarm:n===2?a:0,s3Alarm:n===3?a:0,predictedOkRate:95,predictedNgPcs:0};
+    return{label:s.label,step:s.step,util:Number(u.toFixed(1)),cycle:Number(c.toFixed(1)),alarms:a,riskLevel:calcRisk(mock),issue:s.issue};
+  });
+}
+
+/* ── Generate mock alerts ── */
+function genAlerts(stationData){
+  const alerts=[];
+  stationData.forEach((s,i)=>{
+    if(riskOrd(s.riskLevel)>=2){
+      alerts.push({
+        id:`ALT-${i}-${Date.now()}`,
+        severity:s.riskLevel,
+        station:s.label,
+        message:`${s.label} (${s.step}): ${s.issue} Utilization ${s.util}%, cycle ${s.cycle}s.`,
+        time:ts(),
+        acked:false
+      });
+    }
+  });
+  return alerts;
+}
+
+/* ── Render KPI cards ── */
+function renderKPI(recs,hist){
+  const predicted=recs.filter(r=>r.avgOk!==undefined||r.predictedOkRate!==undefined);
+  const pOk=predicted.length?avg(predicted.map(r=>r.avgOk??r.predictedOkRate)):null;
+  const pNg=predicted.length?sum(predicted.map(r=>r.totalNg??r.predictedNgPcs??0)):null;
+  const svs=normStations(recs);
+  const util=avg(svs.map(s=>s.util)),cycle=avg(svs.map(s=>s.cycle));
+  const yOk=hist.length?avg(hist.map(r=>r.actualOkRate)):null;
+  const delta=pOk!==null&&yOk!==null?Number((pOk-yOk).toFixed(1)):null;
+
+  document.getElementById('kYield').textContent=pOk===null?'--':fmtPct(pOk);
+  document.getElementById('kNg').textContent=pNg===null?'--':String(pNg);
+  document.getElementById('kUtil').textContent=fmtPct(util);
+  document.getElementById('kCycle').textContent=cycle.toFixed(1)+' s';
+
+  const dEl=document.getElementById('kYieldDelta');
+  if(delta!==null){
+    dEl.textContent=(delta>=0?'▲ ':'▼ ')+Math.abs(delta)+' pts（vs 昨天）';
+    dEl.className='kpi-delta '+(delta>=0?'up':'down');
+  } else {dEl.textContent='vs 昨天 --';dEl.className='kpi-delta'}
+  document.getElementById('kNgDelta').textContent=`目標 ≤ ${TARGETS.ngPcs} 件`;
+
+  const utilOff=util<70?'high':util<TARGETS.util?'medium':'low';
+  const cycleOff=cycle>44?'high':cycle>42?'medium':'low';
+  document.getElementById('kpiYield').className=`kpi-card is-${pOk===null?'low':pOk<85?'high':pOk<TARGETS.okRate?'medium':'low'}`;
+  document.getElementById('kpiNg').className=`kpi-card is-${pNg===null?'low':pNg>=TARGETS.ngPcs?'high':pNg>=20?'medium':'low'}`;
+  document.getElementById('kpiUtil').className=`kpi-card is-${utilOff}`;
+  document.getElementById('kpiCycle').className=`kpi-card is-${cycleOff}`;
+}
+
+/* ── Render status banner ── */
+function renderBanner(recs){
+  const hi=highestRisk([...recs.map(r=>r.riskLevel),...histRecs.map(r=>r.riskLevel||'Low')]);
+  const banner=document.getElementById('mBanner'),dot=document.getElementById('bDot'),badge=document.getElementById('bBadge'),heading=document.getElementById('bHeading');
+  const lvl=hi.toLowerCase();
+  banner.className=`m-banner b-${lvl==='high'?'high':lvl==='medium'?'warn':'ok'}`;
+  dot.className=`b-dot ${lvl==='high'?'high':lvl==='medium'?'warn':'ok'}`;
+  badge.className=`b-badge ${lvl==='high'?'high':lvl==='medium'?'warn':'ok'}`;
+  badge.textContent=hi.toUpperCase();
+  const hourly=aggByHour(recs);
+  const worst=hourly.slice().sort((a,b)=>riskOrd(b.riskLevel)-riskOrd(a.riskLevel))[0];
+  if(worst&&riskOrd(worst.riskLevel)>1){
+    heading.textContent=`${worst.relatedStation}：${worst.mainCause} — 預測 OK ${fmtPct(worst.avgOk)}，NG ${worst.totalNg} 件`;
+  } else {
+    const pOk=recs.length?avg(recs.map(r=>r.predictedOkRate)):null;
+    heading.textContent=pOk?`今日進度正常 — 預測 OK Rate ${fmtPct(pOk)}`:'目前無高風險，產線運作正常';
+  }
+}
+
+/* ── Render station strips ── */
+function renderStationStrip(recs){
+  const svs=normStations(recs).sort((a,b)=>riskOrd(b.riskLevel)-riskOrd(a.riskLevel));
+  document.getElementById('stationStrip').innerHTML=svs.map(s=>`
+    <div class="s-strip-card risk-${s.riskLevel.toLowerCase()}">
+      <div class="s-strip-hd">
+        <div><div class="s-strip-name">${esc(s.label)}</div><div class="s-strip-step">${esc(s.step)}</div></div>
+        <span class="pill ${s.riskLevel.toLowerCase()}">${esc(s.riskLevel)}</span>
+      </div>
+      <div class="s-metrics">
+        <div class="s-metric"><div class="s-metric-label">Utilization</div><div class="s-metric-val">${fmtPct(s.util)}</div></div>
+        <div class="s-metric"><div class="s-metric-label">Cycle time</div><div class="s-metric-val">${s.cycle.toFixed(1)}s</div></div>
+        <div class="s-metric"><div class="s-metric-label">Alarms</div><div class="s-metric-val">${s.alarms}</div></div>
+      </div>
+      <div class="s-cause">${esc(s.issue)}</div>
+    </div>`).join('');
+  return svs;
+}
+
+/* ── Render alerts ── */
+function renderAlerts(svs){
+  alertsData=genAlerts(svs);
+  const pending=alertsData.filter(a=>!a.acked);
+  const cnt=document.getElementById('pendingAlertCount');
+  cnt.textContent=pending.length;
+  cnt.className=`alert-count${pending.length===0?' zero':''}`;
+  const mgrBadge=document.getElementById('mgrBadge');
+  mgrBadge.style.display=pending.length>0?'inline-flex':'none';
+  mgrBadge.textContent=pending.length;
+  const el=document.getElementById('alertList');
+  if(!alertsData.length){
+    el.innerHTML=`<div class="alert-item"><div class="alert-dot low"></div><div class="alert-body"><div class="alert-title">No active alerts</div><div class="alert-msg">Line is running within normal parameters.</div></div></div>`;
+    return;
+  }
+  el.innerHTML=alertsData.map((a,i)=>`
+    <div class="alert-item a-${a.severity.toLowerCase()}" id="al-${i}">
+      <div class="alert-dot ${a.severity.toLowerCase()}"></div>
+      <div class="alert-body">
+        <div class="alert-title">${esc(a.station)} — ${esc(a.severity)} Risk</div>
+        <div class="alert-msg">${esc(a.message)}</div>
+        <div class="alert-meta"><span>${esc(a.time)}</span></div>
+      </div>
+      <button class="alert-ack${a.acked?' done':''}" onclick="ackAlert(${i})">${a.acked?'✓ 已確認':'標記已處理'}</button>
+    </div>`).join('');
+}
+function ackAlert(i){
+  alertsData[i].acked=true;
+  const btn=document.querySelector(`#al-${i} .alert-ack`);
+  if(btn){btn.textContent='✓ 已確認';btn.classList.add('done')}
+  const pending=alertsData.filter(a=>!a.acked).length;
+  const cnt=document.getElementById('pendingAlertCount');
+  cnt.textContent=pending;cnt.className=`alert-count${pending===0?' zero':''}`;
+  const mgrBadge=document.getElementById('mgrBadge');
+  mgrBadge.style.display=pending>0?'inline-flex':'none';
+  mgrBadge.textContent=pending;
+  const abtn=document.getElementById('alertBadgeBtn');
+  if(abtn){abtn.textContent=pending;abtn.className=`dbadge${pending===0?' zero':''}`;}
+}
+
+/* ── Render yield bar ── */
+function renderYieldBar(recs){
+  const hourly=aggByHour(recs);
+  const bars=document.getElementById('yieldBar');
+  if(!hourly.length){bars.innerHTML='<span style="font-size:11px;color:var(--text-muted)">No data yet</span>';return}
+  const maxOk=100,minOk=75,range=maxOk-minOk;
+  bars.innerHTML=hourly.slice(-14).map(h=>{
+    const pct=(h.avgOk-minOk)/range*100;
+    const clr=h.avgOk>=TARGETS.okRate?'var(--green)':'var(--red)';
+    const op=h.avgOk>=TARGETS.okRate?.65:.8;
+    return`<div class="yield-col" style="height:${Math.max(8,pct)}%;background:${clr};opacity:${op}">
+      <span class="yt">${h.hourKey} ${fmtPct(h.avgOk)}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ── Batch filter state ── */
+const batchFilter={risks:new Set(),startMin:0,endMin:23*60+59};  // 空 = 全部顯示，非空 = 加法篩選
+let allBatchRows=[];  // 暫存原始 batch rows
+window.batchFilter=batchFilter;
+
+function hhmmToMin(s){if(!s)return 0;const [h,m]=s.split(':').map(Number);return h*60+(m||0)}
+function rowStartMin(r){
+  const t=r.start;if(!t)return 0;
+  const [h,m]=t.split(':').map(Number);return h*60+(m||0);
+}
+
+function applyBatchFilter(rows){
+  return rows.filter(r=>{
+    // 空 set = 不篩風險（全部通過）；非空 = 只保留 set 內的
+    if(batchFilter.risks.size>0 && !batchFilter.risks.has(r.riskLevel))return false;
+    const m=rowStartMin(r);
+    return m>=batchFilter.startMin&&m<=batchFilter.endMin;
+  });
+}
+
+/* ── Render batch table ── */
+function renderBatchTable(recs){
+  const rows=[];
+  const batchMap=new Map();
+  recs.forEach(r=>{
+    if(!batchMap.has(r.batchId))batchMap.set(r.batchId,[]);
+    batchMap.get(r.batchId).push(r);
+  });
+  batchMap.forEach((bRecs,bid)=>{
+    const main=bRecs.slice().sort((a,b)=>riskOrd(b.riskLevel)-riskOrd(a.riskLevel))[0];
+    rows.push({batchId:bid,start:bRecs[0].hourKey,pcs:sum(bRecs.map(r=>r.producedPcs)),okRate:avg(bRecs.map(r=>r.predictedOkRate)),ngPcs:sum(bRecs.map(r=>r.predictedNgPcs)),riskLevel:highestRisk(bRecs.map(r=>r.riskLevel)),mainCause:main.mainCause,station:main.relatedStation});
+  });
+  rows.sort((a,b)=>riskOrd(b.riskLevel)-riskOrd(a.riskLevel));
+  allBatchRows=rows;
+  applyBatchRender();
+}
+
+window.applyBatchRender=applyBatchRender;
+function applyBatchRender(){
+  const filtered=applyBatchFilter(allBatchRows);
+  const tb=document.getElementById('batchBody');
+  if(!filtered.length){
+    tb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--text-muted)">無符合條件的 Batch。</td></tr>`;
+  } else {
+    tb.innerHTML=filtered.slice(0,30).map(r=>`
+      <tr class="r-${r.riskLevel.toLowerCase()}">
+        <td style="font-family:var(--font-mono);font-size:12px">${esc(r.batchId)}</td>
+        <td>${esc(r.start)}</td>
+        <td>${r.pcs}</td>
+        <td>${fmtPct(r.okRate)}</td>
+        <td>${r.ngPcs}</td>
+        <td><span class="pill ${r.riskLevel.toLowerCase()}">${r.riskLevel==='High'?'高':r.riskLevel==='Medium'?'中':'低'}</span></td>
+        <td style="font-size:11px;color:var(--text-muted);max-width:200px">${esc(r.mainCause)}</td>
+      </tr>`).join('');
+  }
+  renderBatchBodyCompact(filtered);
+}
+
+/* ── Bind filter listeners (both main + drawer) ── */
+function bindBatchFilters(){
+  const groups=[
+    {pills:'#batchFilterMain .fp',start:'#filterStartMain',end:'#filterEndMain',reset:'#filterResetMain'},
+    {pills:'#batchFilterDrawer .fp',start:'#filterStartDrawer',end:'#filterEndDrawer',reset:'#filterResetDrawer'}
+  ];
+  groups.forEach(g=>{
+    document.querySelectorAll(g.pills).forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const r=btn.dataset.risk;
+        if(batchFilter.risks.has(r)){
+          batchFilter.risks.delete(r);
+        } else {
+          batchFilter.risks.add(r);
+        }
+        syncFilterUI();applyBatchRender();
+      });
+    });
+    const sEl=document.querySelector(g.start),eEl=document.querySelector(g.end);
+    if(sEl) sEl.addEventListener('change',()=>{batchFilter.startMin=hhmmToMin(sEl.value);syncFilterUI();applyBatchRender();});
+    if(eEl) eEl.addEventListener('change',()=>{batchFilter.endMin=hhmmToMin(eEl.value);syncFilterUI();applyBatchRender();});
+    const rEl=document.querySelector(g.reset);
+    if(rEl) rEl.addEventListener('click',()=>{
+      batchFilter.risks=new Set();  // 清空 = 全部顯示
+      batchFilter.startMin=0;batchFilter.endMin=23*60+59;
+      syncFilterUI();applyBatchRender();
+    });
+  });
+}
+function syncFilterUI(){
+  document.querySelectorAll('.batch-filter .fp').forEach(p=>{
+    if(batchFilter.risks.has(p.dataset.risk))p.classList.add('on');else p.classList.remove('on');
+  });
+  const sMM=String(Math.floor(batchFilter.startMin/60)).padStart(2,'0')+':'+String(batchFilter.startMin%60).padStart(2,'0');
+  const eMM=String(Math.floor(batchFilter.endMin/60)).padStart(2,'0')+':'+String(batchFilter.endMin%60).padStart(2,'0');
+  ['filterStartMain','filterStartDrawer'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=sMM;});
+  ['filterEndMain','filterEndDrawer'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=eMM;});
+}
+
+/* ── Render charts ── */
+/* 固定視窗：過去 6 小時 + 現在 + 未來 2 小時，共 9 個小時 */
+function makeChartLabels(){
+  const nh=nowHour(),res=[];
+  for(let h=nh-6;h<=nh;h++) res.push(((h%24)+24)%24 === ((h)%24) && h>=0 ? String(h).padStart(2,'0')+':00' : `-${nh-h}h`);
+  for(let i=1;i<=2;i++){const h=nh+i;res.push(h%24===h?String(h).padStart(2,'0')+':00':`+${i}h`);}
+  return res;
+}
+function renderQChart(){
+  if(typeof Chart==='undefined')return;
+  const hist=histRecs.slice(0,24);
+  const pred=aggByHour(todayRecs);
+  const fc=forecastRecs;
+  const allLabels=makeChartLabels();
+  const aMap=Object.fromEntries(hist.map(r=>[r.hourKey,r.actualOkRate]));
+  const pMap=Object.fromEntries(pred.map(r=>[r.hourKey,r.avgOk]));
+  const fMap=Object.fromEntries(fc.map(r=>[r.hourKey,r.predictedOkRate]));
+  const aData=allLabels.map(l=>aMap[l]??null);
+  const pData=allLabels.map(l=>pMap[l]??null);
+  const fData=allLabels.map(l=>fMap[l]??null);
+  const nowKey=pred.length?pred[pred.length-1].hourKey:null;
+  const fcStart=fc.length?fc[0].hourKey:null;
+  if(qChart)qChart.destroy();
+  qChart=new Chart(document.getElementById('qTrendChart').getContext('2d'),{
+    type:'line',
+    data:{labels:allLabels,datasets:[
+      {label:'昨日 Actual',data:aData,borderColor:'#1a6ef5',backgroundColor:'rgba(26,110,245,.06)',fill:true,borderWidth:2,pointRadius:2,tension:.35,spanGaps:false},
+      {label:'今日 Predicted',data:pData,borderColor:'#1a9e3a',backgroundColor:'rgba(26,158,58,.06)',fill:true,borderDash:[6,4],borderWidth:2,pointRadius:2,tension:.35,spanGaps:false},
+      {label:'Forecast',data:fData,borderColor:'#7c52d0',backgroundColor:'rgba(124,82,208,.05)',fill:true,borderDash:[8,5],borderWidth:2,pointRadius:3,tension:.35,spanGaps:false},
+      {label:'目標 90%',data:allLabels.map(()=>TARGETS.okRate),borderColor:'rgba(212,43,34,.4)',borderDash:[4,4],borderWidth:1,pointRadius:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{labels:{color:'#5a6478',boxWidth:10,font:{size:11}}},
+        tooltip:{callbacks:{title:(items)=>items[0].label+(items[0].label===nowKey?' （現在）':items[0].label===fcStart?' （Forecast 起點）':'')}},
+        nowLine:{nowKey},
+        forecastZone:{fcStart}
+      },
+      scales:{x:{ticks:{color:'#5a6478',font:{size:10}},grid:{color:'#e4e8ed'}},y:{min:70,max:100,ticks:{color:'#5a6478'},grid:{color:'#e4e8ed'},title:{display:true,text:'OK Rate（%）',color:'#5a6478',font:{size:11}}}}}
+  });
+}
+
+function renderUChart(){
+  if(typeof Chart==='undefined')return;
+  const pred=aggByHour(todayRecs);
+  const fc=forecastRecs;
+  const allLabels=makeChartLabels();
+  const pMapline_1=Object.fromEntries(pred.map(r=>[r.hourKey,r.avgline_1Util]));
+  const pMapline_2=Object.fromEntries(pred.map(r=>[r.hourKey,r.avgline_2Util]));
+  const pMapline_3=Object.fromEntries(pred.map(r=>[r.hourKey,r.avgline_3Util]));
+  const fMapline_1=Object.fromEntries(fc.map(r=>[r.hourKey,r.s1Util]));
+  const fMapline_2=Object.fromEntries(fc.map(r=>[r.hourKey,r.s2Util]));
+  const fMapline_3=Object.fromEntries(fc.map(r=>[r.hourKey,r.s3Util]));
+  const s1P=allLabels.map(l=>pMapline_1[l]??null);
+  const s2P=allLabels.map(l=>pMapline_2[l]??null);
+  const s3P=allLabels.map(l=>pMapline_3[l]??null);
+  const s1F=allLabels.map(l=>fMapline_1[l]??null);
+  const s2F=allLabels.map(l=>fMapline_2[l]??null);
+  const s3F=allLabels.map(l=>fMapline_3[l]??null);
+  const nowKey=pred.length?pred[pred.length-1].hourKey:null;
+  const fcStart=fc.length?fc[0].hourKey:null;
+  if(uChart)uChart.destroy();
+  uChart=new Chart(document.getElementById('uTrendChart').getContext('2d'),{
+    type:'line',data:{labels:allLabels,datasets:[
+      {label:'line_1',data:s1P,borderColor:'#1a6ef5',borderWidth:2,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'line_2',data:s2P,borderColor:'#d42b22',borderWidth:2,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'line_3',data:s3P,borderColor:'#b8860b',borderWidth:2,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'line_1 Forecast',data:s1F,borderColor:'#1a6ef5',borderDash:[6,4],borderWidth:1.5,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'line_2 Forecast',data:s2F,borderColor:'#d42b22',borderDash:[6,4],borderWidth:1.5,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'line_3 Forecast',data:s3F,borderColor:'#b8860b',borderDash:[6,4],borderWidth:1.5,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'目標 85%',data:allLabels.map(()=>TARGETS.util),borderColor:'#9ba3b0',borderDash:[5,5],borderWidth:1,pointRadius:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{labels:{color:'#5a6478',boxWidth:8,font:{size:11},
+          filter:(item)=>!item.text.endsWith('Forecast')||item.text==='line_2 Forecast'}},
+        nowLine:{nowKey},
+        forecastZone:{fcStart}
+      },
+      scales:{x:{ticks:{color:'#5a6478',font:{size:10}},grid:{color:'#e4e8ed'}},y:{min:45,max:95,ticks:{color:'#5a6478'},grid:{color:'#e4e8ed'}}}}
+  });
+}
+
+function renderCChart(){
+  if(typeof Chart==='undefined')return;
+  const pred=aggByHour(todayRecs);
+  const fc=forecastRecs;
+  const allLabels=makeChartLabels();
+  const pMapC1=Object.fromEntries(pred.map(r=>[r.hourKey,r.avgline_1Cycle]));
+  const pMapC2=Object.fromEntries(pred.map(r=>[r.hourKey,r.avgline_2Cycle]));
+  const pMapC3=Object.fromEntries(pred.map(r=>[r.hourKey,r.avgline_3Cycle]));
+  const fMapC1=Object.fromEntries(fc.map(r=>[r.hourKey,r.s1Cycle]));
+  const fMapC2=Object.fromEntries(fc.map(r=>[r.hourKey,r.s2Cycle]));
+  const fMapC3=Object.fromEntries(fc.map(r=>[r.hourKey,r.s3Cycle]));
+  const s1P=allLabels.map(l=>pMapC1[l]??null);
+  const s2P=allLabels.map(l=>pMapC2[l]??null);
+  const s3P=allLabels.map(l=>pMapC3[l]??null);
+  const s1F=allLabels.map(l=>fMapC1[l]??null);
+  const s2F=allLabels.map(l=>fMapC2[l]??null);
+  const s3F=allLabels.map(l=>fMapC3[l]??null);
+  const nowKey=pred.length?pred[pred.length-1].hourKey:null;
+  const fcStart=fc.length?fc[0].hourKey:null;
+  if(cChart)cChart.destroy();
+  cChart=new Chart(document.getElementById('cTrendChart').getContext('2d'),{
+    type:'line',data:{labels:allLabels,datasets:[
+      {label:'line_1',data:s1P,borderColor:'#1a6ef5',borderWidth:2,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'line_2',data:s2P,borderColor:'#d42b22',borderWidth:2,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'line_3',data:s3P,borderColor:'#b8860b',borderWidth:2,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'line_1 Forecast',data:s1F,borderColor:'#1a6ef5',borderDash:[6,4],borderWidth:1.5,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'line_2 Forecast',data:s2F,borderColor:'#d42b22',borderDash:[6,4],borderWidth:1.5,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'line_3 Forecast',data:s3F,borderColor:'#b8860b',borderDash:[6,4],borderWidth:1.5,pointRadius:2,tension:.3,spanGaps:false},
+      {label:'基準 40 秒',data:allLabels.map(()=>TARGETS.cycleTime),borderColor:'#9ba3b0',borderDash:[5,5],borderWidth:1,pointRadius:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{labels:{color:'#5a6478',boxWidth:8,font:{size:11},
+          filter:(item)=>!item.text.endsWith('Forecast')||item.text==='line_2 Forecast'}},
+        nowLine:{nowKey},
+        forecastZone:{fcStart}
+      },
+      scales:{x:{ticks:{color:'#5a6478',font:{size:10}},grid:{color:'#e4e8ed'}},y:{min:35,max:58,ticks:{color:'#5a6478'},grid:{color:'#e4e8ed'}}}}
+  });
+}
+
+function renderYieldTrend(){
+  if(typeof Chart==='undefined')return;
+  const pred=aggByHour(todayRecs);
+
+  /* ── 同一時間並排對比 ─────────────────────────────────────
+     X 軸 = 24 小時（00:00 ~ 23:00）
+     每個小時兩根 bar：左藍（昨日）右綠（今日）
+     未達標(<90%) 套紅色描邊警示
+  ── */
+  const HOURS=Array.from({length:24},(_,h)=>String(h).padStart(2,'0')+':00');
+  const yMap=Object.fromEntries(histRecs.map(r=>[r.hourKey,r.actualOkRate]));
+  const yBatchMap=Object.fromEntries(histRecs.map(r=>[r.hourKey,`Y-${r.hourKey.replace(':','')}`]));
+  const tMap=Object.fromEntries(pred.map(r=>[r.hourKey,r.avgOk]));
+  const tBatchMap=Object.fromEntries(pred.map(r=>[r.hourKey,r.batchIds&&r.batchIds[0]?r.batchIds[0]:'—']));
+
+  const yData=HOURS.map(h=>yMap[h]??null);
+  const tData=HOURS.map(h=>tMap[h]??null);
+  const yBatches=HOURS.map(h=>yBatchMap[h]||'—');
+  const tBatches=HOURS.map(h=>tBatchMap[h]||'—');
+
+  /* ── 顏色策略 ─────────────────────────────────────────────
+     - 藍系 = 昨日 Actual：達標飽和 / 未達標半透明
+     - 綠系 = 今日 Predicted：達標飽和 / 未達標半透明
+     - 未達標：以紅色描邊強調（無論顏色族）
+  ── */
+  const yBg=yData.map(v=>v==null?'rgba(0,0,0,0)':v>=TARGETS.okRate?'rgba(26,110,245,.7)':'rgba(26,110,245,.25)');
+  const tBg=tData.map(v=>v==null?'rgba(0,0,0,0)':v>=TARGETS.okRate?'rgba(26,158,58,.7)':'rgba(26,158,58,.25)');
+  const yBd=yData.map(v=>v==null?'rgba(0,0,0,0)':v<TARGETS.okRate?'#d42b22':'#1a6ef5');
+  const tBd=tData.map(v=>v==null?'rgba(0,0,0,0)':v<TARGETS.okRate?'#d42b22':'#1a9e3a');
+  const yBw=yData.map(v=>v!=null&&v<TARGETS.okRate?1.8:1);
+  const tBw=tData.map(v=>v!=null&&v<TARGETS.okRate?1.8:1);
+
+  if(yChart)yChart.destroy();
+  yChart=new Chart(document.getElementById('yieldTrendChart').getContext('2d'),{
+    type:'bar',
+    data:{labels:HOURS,datasets:[
+      {label:'昨日 Actual',data:yData,
+        backgroundColor:yBg,borderColor:yBd,borderWidth:yBw,
+        categoryPercentage:.8,barPercentage:.95,
+        skipNull:true},
+      {label:'今日 Predicted',data:tData,
+        backgroundColor:tBg,borderColor:tBd,borderWidth:tBw,
+        categoryPercentage:.8,barPercentage:.95,
+        skipNull:true},
+      {label:'目標 90%',data:HOURS.map(()=>TARGETS.okRate),
+        type:'line',borderColor:'rgba(212,43,34,.55)',
+        borderDash:[5,4],borderWidth:1.5,pointRadius:0,fill:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      interaction:{intersect:false,mode:'index'},
+      plugins:{
+        legend:{labels:{
+          color:'#5a6478',boxWidth:10,font:{size:11},
+          generateLabels:()=>[
+            {text:'昨日 Actual',fillStyle:'rgba(26,110,245,.7)',strokeStyle:'#1a6ef5',lineWidth:1,fontColor:'#5a6478'},
+            {text:'今日 Predicted',fillStyle:'rgba(26,158,58,.7)',strokeStyle:'#1a9e3a',lineWidth:1,fontColor:'#5a6478'},
+            {text:'未達標（紅框）',fillStyle:'rgba(212,43,34,.12)',strokeStyle:'#d42b22',lineWidth:2,fontColor:'#5a6478'},
+            {text:'目標 90%',fillStyle:'transparent',strokeStyle:'#d42b22',lineDash:[5,4],lineWidth:1.5,fontColor:'#5a6478'}
+          ]
+        }},
+        tooltip:{
+          callbacks:{
+            title:(items)=>{
+              const h=HOURS[items[0]?.dataIndex];
+              return `時間 ${h}`;
+            },
+            label:(item)=>{
+              const i=item.dataIndex;
+              const dsLabel=item.dataset.label;
+              if(dsLabel==='目標 90%') return null;
+              if(item.raw==null) return null;
+              const v=Number(item.raw).toFixed(1);
+              const pass=Number(item.raw)>=TARGETS.okRate?'達標':'未達標';
+              const batch=dsLabel==='昨日 Actual'?yBatches[i]:tBatches[i];
+              return `${dsLabel}：${v}%（${pass}） · Batch ${batch}`;
+            },
+            afterBody:(items)=>{
+              const i=items[0]?.dataIndex;
+              if(yData[i]!=null&&tData[i]!=null){
+                const diff=(tData[i]-yData[i]).toFixed(1);
+                const sign=Number(diff)>=0?'+':'';
+                return ['',`對比昨日：${sign}${diff} pts`];
+              }
+              return [];
+            }
+          }
+        }
+      },
+      scales:{
+        x:{ticks:{color:'#5a6478',font:{size:10}},grid:{color:'#e4e8ed'}},
+        y:{min:70,max:100,ticks:{color:'#5a6478'},grid:{color:'#e4e8ed'},
+          title:{display:true,text:'OK Rate（%）',color:'#5a6478',font:{size:11}}}
+      }}
+  });
+}
+
+/* ── Render validation ── */
+function renderValidation(){
+  const d={predOk:91.4,actOk:92.6,err:-1.2,acc:94.8,predNg:41,actNg:35};
+  const cards=[
+    {l:'昨日 Predicted OK',v:fmtPct(d.predOk),r:'low',s:'QC 確認前'},
+    {l:'昨日 Actual OK',v:fmtPct(d.actOk),r:'low',s:'今日 QC 已確認'},
+    {l:'預測誤差',v:`${d.err>0?'+':''}${d.err.toFixed(1)} pts`,r:Math.abs(d.err)>2?'high':'low',s:'預測值 - 實際值'},
+    {l:'模型準確度',v:fmtPct(d.acc),r:d.acc>=94?'low':'medium',s:'主管信賴度指標'},
+    {l:'昨日 Predicted NG',v:`${d.predNg} pcs`,r:'medium',s:'QC 確認前'},
+    {l:'昨日 Actual NG',v:`${d.actNg} pcs`,r:'medium',s:'Confirmed by QC'}
+  ];
+  document.getElementById('valGrid').innerHTML=cards.map(c=>`
+    <div class="val-card">
+      <div class="val-label">${esc(c.l)}</div>
+      <div class="val-val text-${c.r}">${esc(c.v)}</div>
+      <div class="val-sub">${esc(c.s)}</div>
+    </div>`).join('');
+}
+
+/* ── Date/Shift controls ── */
+document.querySelectorAll('.date-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.date-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');mDate=b.dataset.date;updateViewScope();refreshAndRender();
+  });
+});
+function updateViewScope(){
+  const dateLabel=mDate==='today'?'今天':mDate==='yesterday'?'昨天':'本週';
+  document.getElementById('viewScopeLabel').textContent=`顯示範圍：${dateLabel}`;
+}
+
+/* ── Main render pipeline ── */
+function refreshAndRender(){
+  refreshMgrData();
+  const hourly=aggByHour(todayRecs);
+  renderKPI(hourly,histRecs);
+  renderBanner(hourly);
+  const svs=renderStationStrip(hourly);
+  renderAlerts(svs);
+  renderBatchTable(todayRecs);
+  renderQChart();renderUChart();renderCChart();renderYieldTrend();
+  renderValidation();
+  renderValGridCompact();
+}
+
+const SIM_MAX=23*3+2;  // 最大 cursor index (23:40)
+const SLOT_PER_BATCH=6;  // 1 batch = 6 個 20-min slot = 2 小時
+
+function updateSimClock(){
+  const slot=mCursor;
+  const h=Math.floor(slot/3),m=(slot%3)*20;
+  const t=document.getElementById('simClockTime');
+  const s=document.getElementById('simClockSub');
+  if(t){
+    t.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+    t.classList.add('flash');
+    setTimeout(()=>t.classList.remove('flash'),1200);
+  }
+  if(s) s.textContent='模擬資料';
+  // 邊界鎖定
+  const bk20=document.getElementById('stepBack20');
+  const bkb=document.getElementById('stepBackBatch');
+  const fw20=document.getElementById('stepFwd20');
+  const fwb=document.getElementById('stepFwdBatch');
+  if(bk20) bk20.disabled=mCursor<=0;
+  if(bkb) bkb.disabled=mCursor<SLOT_PER_BATCH;
+  if(fw20) fw20.disabled=mCursor>=SIM_MAX;
+  if(fwb) fwb.disabled=mCursor>SIM_MAX-SLOT_PER_BATCH;
+}
+
+function simFeedbackMsg(msg,warn){
+  const fb=document.getElementById('simFeedback');
+  if(!fb)return;
+  fb.innerHTML='';
+  const sp=document.createElement('span');
+  sp.className='sim-toast'+(warn?' warn':'');
+  sp.textContent=msg;
+  fb.appendChild(sp);
+  setTimeout(()=>{if(fb.contains(sp))fb.removeChild(sp)},2200);
+}
+
+async function simStep(delta,label){
+  const target=mCursor+delta;
+  if(target<0){simFeedbackMsg('⚠ 已到 00:00',true);return;}
+  if(target>SIM_MAX){simFeedbackMsg('⚠ 已到 23:40',true);return;}
+  mCursor=target;
+  refreshAndRender();
+  updateSimClock();
+  simFeedbackMsg('✓ '+label);
+}
+
+document.getElementById('stepBack20').addEventListener('click',()=>simStep(-1,'回退 20 分鐘'));
+document.getElementById('stepFwd20').addEventListener('click',()=>simStep(+1,'前進 20 分鐘'));
+document.getElementById('stepBackBatch').addEventListener('click',()=>simStep(-SLOT_PER_BATCH,'回退一批次'));
+document.getElementById('stepFwdBatch').addEventListener('click',()=>simStep(+SLOT_PER_BATCH,'前進一批次'));
+
+/* ── Notification ── */
+const APP_SCRIPT_URL='https://script.google.com/macros/s/AKfycbyvPzX3epFpOH9AUFLLlD_-W4EXCOULHInUZKfmnCyJHlrCOY_HYTNSCBLtm3ZVzoWnBQ/exec';
+async function postPayload(payload){
+  if(!APP_SCRIPT_URL)return{mock:true};
+  return new Promise((res,rej)=>{
+    try{
+      const name='appsFrame_'+Date.now();
+      const iframe=document.createElement('iframe');iframe.name=name;iframe.style.display='none';
+      const form=document.createElement('form');form.method='POST';form.action=APP_SCRIPT_URL+'?ts='+Date.now();form.target=name;form.style.display='none';
+      const inp=document.createElement('input');inp.type='hidden';inp.name='payload';inp.value=JSON.stringify(payload);
+      form.appendChild(inp);document.body.appendChild(iframe);document.body.appendChild(form);
+      let done=false;
+      iframe.onload=()=>{if(done)return;done=true;setTimeout(()=>{form.remove();iframe.remove()},1e3);res({ok:true})};
+      form.submit();
+      setTimeout(()=>{if(done)return;done=true;form.remove();iframe.remove();res({ok:true,timeout:true})},5e3);
+    }catch(e){rej(e)}
+  });
+}
+document.getElementById('testNotifyBtn').addEventListener('click',async()=>{
+  setNotify('傳送測試中...','notify-idle');
+  const payload={warningId:'TEST-'+Date.now(),timestamp:ts(),riskLevel:'High',station:'line_2',message:'Direct test from SprayLine 生產監控 v7.',recipientRole:'manager'};
+  try{
+    await postPayload(payload);
+    setNotify('測試已傳送，請確認 Gmail。','notify-success');
+    showToast('測試通知已傳送','medium');
+  }catch(e){setNotify('傳送失敗。','notify-error')}
+});
+
+/* ── Auto-poll mock (every 5s advances one 20-min slot) ── */
+
+/* ── Update interval selector ── */
+let __pollHandle=null;
+function setPollInterval(seconds){
+  if(__pollHandle)clearInterval(__pollHandle);
+  __pollHandle=setInterval(()=>{
+    mCursor=(mCursor+1)%(SIM_MAX+1);
+    refreshAndRender();
+    updateSimClock();
+  },seconds*1000);
+}
+document.getElementById('updateIntervalSel').addEventListener('change',e=>{
+  // 30 分=15 秒、1 小時=30 秒、2 小時=60 秒（demo 速率）
+  const map={'30':15,'60':30,'120':60};
+  const secs=map[e.target.value]||30;
+  setPollInterval(secs);
+  simFeedbackMsg('✓ 更新間隔切換為 '+e.target.selectedOptions[0].text);
+});
+
+/* ── Font size selector (全域字級控制) ── */
+const FONT_SCALE_MAP={'0':1,'1':1.18,'2':1.32,'3':1.48};
+function applyFontSize(level){
+  document.documentElement.setAttribute('data-fs',level);
+  // Chart.js 預設字體大小同步
+  if(typeof Chart!=='undefined'&&Chart.defaults){
+    Chart.defaults.font.size=Math.round(11*(FONT_SCALE_MAP[level]||1));
+  }
+  // 重畫所有 chart 讓 tick / legend 套用新字級
+  [qChart,uChart,cChart,yChart].forEach(c=>{if(c&&c.update)c.update();});
+}
+document.getElementById('fontSizeSel').addEventListener('change',e=>{
+  applyFontSize(e.target.value);
+  simFeedbackMsg('✓ 字級切換為 '+e.target.selectedOptions[0].text);
+});
+// 初始套用標準
+document.documentElement.setAttribute('data-fs','0');
+
+setPollInterval(30);  // 預設 1 小時 (demo: 30 秒)
+
+/* ── Drawer open/close ── */
+function openDrawer(type){
+  document.getElementById('drawerOverlay').classList.add('open');
+  ['station','alert','batch','validation'].forEach(t=>{
+    const el=document.getElementById('drawer'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(el) el.classList.remove('open');
+  });
+  const map={station:'drawerStation',alert:'drawerAlert',batch:'drawerBatch',validation:'drawerValidation'};
+  const el=document.getElementById(map[type]);
+  if(el) el.classList.add('open');
+}
+function closeDrawer(){
+  document.getElementById('drawerOverlay').classList.remove('open');
+  ['drawerStation','drawerAlert','drawerBatch','drawerValidation'].forEach(id=>{
+    const el=document.getElementById(id);if(el) el.classList.remove('open');
+  });
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape') closeDrawer()});
+
+/* ── Render compact batch (main page — 5 rows max) ── */
+function renderBatchBodyCompact(rows){
+  const tb=document.getElementById('batchBodyCompact');
+  if(!tb) return;
+  if(!rows.length){
+    tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-muted)">無 Batch 資料。</td></tr>';
+    return;
+  }
+  tb.innerHTML=rows.slice(0,5).map(r=>`
+    <tr class="r-${r.riskLevel.toLowerCase()}">
+      <td style="font-family:var(--font-mono);font-size:12px">${esc(r.batchId)}</td>
+      <td>${esc(r.start)}</td>
+      <td>${r.pcs}</td>
+      <td>${fmtPct(r.okRate)}</td>
+      <td>${r.ngPcs}</td>
+      <td><span class="pill ${r.riskLevel.toLowerCase()}">${r.riskLevel==='High'?'高':r.riskLevel==='Medium'?'中':'低'}</span></td>
+    </tr>`).join('');
+}
+
+/* ── Render compact validation (main page — 4 cards 2x2) ── */
+function renderValGridCompact(){
+  const d={predOk:91.4,actOk:92.6,err:-1.2,acc:94.8};
+  const cards=[
+    {l:'昨日 Predicted OK',v:fmtPct(d.predOk),r:'low'},
+    {l:'昨日 Actual OK',v:fmtPct(d.actOk),r:'low'},
+    {l:'預測誤差',v:`${d.err>0?'+':''}${d.err.toFixed(1)} pts`,r:Math.abs(d.err)>2?'high':'low'},
+    {l:'模型準確度',v:fmtPct(d.acc),r:d.acc>=94?'low':'medium'},
+  ];
+  const el=document.getElementById('valGridCompact');
+  if(!el) return;
+  el.innerHTML=cards.map(c=>`
+    <div class="val-card">
+      <div class="val-label">${esc(c.l)}</div>
+      <div class="val-val text-${c.r}">${esc(c.v)}</div>
+    </div>`).join('');
+}
+
+/* 暴露給外部 debug / 測試 */
+window.refreshAndRender=refreshAndRender;
+window.getComps=getComps;
+window.buildSData=buildSData;
+window.openComp=openComp;
+// 透過 getter 取最新值（這些 let 變數會在 refreshMgrData 被重新指派）
+Object.defineProperty(window,'forecastRecs',{get:()=>forecastRecs});
+Object.defineProperty(window,'todayRecs',{get:()=>todayRecs});
+Object.defineProperty(window,'histRecs',{get:()=>histRecs});
+window.qChart=null;window.uChart=null;window.cChart=null;window.yChart=null;
+const _origRender=refreshAndRender;
+refreshAndRender=function(){_origRender();window.qChart=qChart;window.uChart=uChart;window.cChart=cChart;window.yChart=yChart;};
+
+/* ── Init ── */
+bindBatchFilters();
+refreshAndRender();
+updateSimClock();
+</script>
+</body>
+</html>

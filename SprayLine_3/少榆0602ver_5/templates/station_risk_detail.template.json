@@ -1,0 +1,10 @@
+{
+  "line_id": "<template_placeholder>",
+  "risk_level": "<template_placeholder>",
+  "risk_sources": "<template_placeholder>",
+  "diagnosis": "<template_placeholder>",
+  "prediction": "<template_placeholder>",
+  "alerts": "<template_placeholder>",
+  "cache_ttl_s": "<template_placeholder>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

@@ -1,0 +1,6 @@
+{
+  "line_id": "<string>",
+  "total": "<integer>",
+  "alerts": "<array>",
+  "__template_policy": "Template only. Placeholder values are not real data."
+}

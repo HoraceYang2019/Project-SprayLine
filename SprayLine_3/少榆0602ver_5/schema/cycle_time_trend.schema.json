@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cycle Time Trend Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "line_id",
+    "timestep",
+    "labels",
+    "series",
+    "baseline_cycle_time_s",
+    "now_index",
+    "forecast_start_index",
+    "cache_ttl_s"
+  ],
+  "properties": {
+    "line_id": {
+      "type": "string",
+      "enum": [
+        "line_1",
+        "line_2",
+        "line_3"
+      ]
+    },
+    "timestep": {
+      "type": "string"
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "series": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "baseline_cycle_time_s": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "now_index": {
+      "type": "integer"
+    },
+    "forecast_start_index": {
+      "type": "integer"
+    },
+    "cache_ttl_s": {
+      "type": "integer"
+    }
+  }
+}

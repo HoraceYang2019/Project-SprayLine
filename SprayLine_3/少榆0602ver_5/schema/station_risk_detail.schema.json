@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Station Risk Detail Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "line_id",
+    "risk_level",
+    "risk_sources",
+    "diagnosis",
+    "prediction",
+    "alerts",
+    "cache_ttl_s"
+  ],
+  "properties": {
+    "line_id": {
+      "type": "string",
+      "enum": [
+        "line_1",
+        "line_2",
+        "line_3"
+      ]
+    },
+    "risk_level": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "risk_sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "diagnosis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "prediction": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "alerts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "cache_ttl_s": {
+      "type": "integer"
+    }
+  }
+}

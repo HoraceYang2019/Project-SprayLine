@@ -1,0 +1,12 @@
+﻿ui_tab,ui_component,service_function,api_route,db_tables,frontend_usage
+EngineerMonitoringTab,StationSummaryCards,get_station_dashboard_status,/api/v1/lines/{line_id}/summary,production_line; component_master; component_health_snapshot,summary cards
+EngineerMonitoringTab,StationCards6Components,get_latest_runtime_window,/api/v1/lines/{line_id}/stations/latest,runtime_window; runtime_signal; runtime_reference; runtime_metric; robot_pose,station cards
+EngineerMonitoringTab,ComponentDiagnosisDrawer,get_latest_diagnosis,/api/v1/lines/{line_id}/diagnosis/latest,diagnosis_result; filter_threshold; nozzle_threshold; process_threshold,diagnosis drawer
+EngineerMonitoringTab,TimeSeriesSlider,get_metric_trend; get_diagnosis_timeline,/api/v1/lines/{line_id}/metrics/{metric_name}/trend,runtime_window; runtime_metric; diagnosis_result,slider and timeline
+ProductionManagementTab,StatusBanner,get_overall_status,/api/v1/lines/{line_id}/status,component_health_snapshot; ml_prediction_result; alert_log,status banner
+ProductionManagementTab,KPICards,get_kpi_summary,/api/v1/lines/{line_id}/kpi,ml_prediction_result; runtime_metric; part_history; qc_result,KPI cards
+ProductionManagementTab,YieldComparisonChart,get_yield_comparison,/api/v1/lines/{line_id}/charts/yield-comparison,qc_result; part_history; batch_run; ml_prediction_result,yield comparison chart
+ProductionManagementTab,QualityUtilizationCycleCharts,get_quality_trend; get_utilization_trend; get_cycle_time_trend,/api/v1/lines/{line_id}/charts/*,runtime_metric; part_history; qc_result,chart group
+ProductionManagementTab,BatchTable,list_batches_filtered,/api/v1/lines/{line_id}/batches,batch_run; qc_result; ml_prediction_result,batch table
+Drawer,PendingAlertsDrawer,list_pending_alerts; acknowledge_alert; trigger_alert,/api/v1/lines/{line_id}/alerts/pending,alert_log; diagnosis_result; ml_prediction_result; qc_result,alert drawer
+Drawer,PredictionAccuracyDrawer,get_prediction_accuracy,/api/v1/lines/{line_id}/prediction-accuracy,qc_result; ml_prediction_result,prediction accuracy drawer

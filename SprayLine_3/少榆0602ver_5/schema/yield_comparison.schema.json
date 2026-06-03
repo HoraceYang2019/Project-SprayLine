@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yield Comparison Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "line_id",
+    "date",
+    "hours",
+    "yesterday",
+    "today",
+    "target"
+  ],
+  "properties": {
+    "line_id": {
+      "type": "string",
+      "enum": [
+        "line_1",
+        "line_2",
+        "line_3"
+      ]
+    },
+    "date": {
+      "type": "string"
+    },
+    "hours": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "yesterday": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "today": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "target": {
+      "type": "number"
+    }
+  }
+}

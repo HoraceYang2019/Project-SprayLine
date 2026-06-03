@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ML Feature Input Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "part_uuid",
+    "feature_snapshot",
+    "source_table"
+  ],
+  "properties": {
+    "part_uuid": {
+      "type": "string"
+    },
+    "feature_snapshot": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "source_table": {
+      "type": "string",
+      "const": "ml_feature_snapshot"
+    }
+  }
+}
