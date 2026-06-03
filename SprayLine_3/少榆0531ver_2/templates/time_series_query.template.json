@@ -1,0 +1,30 @@
+{
+  "__template_policy": "Template only. Placeholder values are not real data.",
+  "__folder_flow_note": "UI_v4 TimeSeriesViewer query -> TimeSeriesService.HandleTimeSeriesQuery -> Database query.",
+  "schema_version": "<string>",
+  "service_name": "TimeSeriesService",
+  "request_id": "<string|null>",
+  "mode": "<time|batch>",
+  "window_type": "<current|2hour|10batch|defined_by_service>",
+  "slider_value": "<number: negative=past, zero=current, positive=future>",
+  "line_scope": "<all|line_1|line_2|line_3|array>",
+  "requested_metrics": [
+    "availability_pct",
+    "clog_rate_pct",
+    "pressure_bar",
+    "flow_rate_ml_min",
+    "maintainability_pct",
+    "quality_score_pct",
+    "risk_text",
+    "spray_width_mm",
+    "recipe_name",
+    "temperature_c",
+    "utilization_pct",
+    "cycle_time_sec"
+  ],
+  "start_time": "<datetime-string|null>",
+  "end_time": "<datetime-string|null>",
+  "start_batch_id": "<string|null>",
+  "end_batch_id": "<string|null>",
+  "back_to_live": "<boolean>"
+}

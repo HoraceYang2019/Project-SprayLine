@@ -1,0 +1,12 @@
+﻿database_function,input_parameters,purpose_en,naming_policy,status
+get_latest_runtime_window,line_id,Get latest runtime window for one line.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531
+get_runtime_window,window_id,Get runtime window by window_id.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531
+get_metric_trend,line_id; metric_name; start_time; end_time,Get metric trend.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531
+get_latest_diagnosis,line_id,Get latest diagnosis.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531
+get_diagnosis_timeline,line_id; category; start_time; end_time,Get diagnosis timeline.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531
+get_station_dashboard_status,line_id,Get dashboard station status.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531
+get_component_health_summary,line_id,Get component health summary.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531
+get_recent_quality_trend,line_id,Get recent quality trend.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531
+get_ml_feature_input,part_uuid,Get ML feature input.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531
+get_latest_prediction,part_uuid,Get latest prediction.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531
+get_omniverse_validation_result,part_uuid,Get Omniverse validation result.,line_id values must use line_1 / line_2 / line_3; flow field uses flow_rate_ml_min.,reference_from_0531

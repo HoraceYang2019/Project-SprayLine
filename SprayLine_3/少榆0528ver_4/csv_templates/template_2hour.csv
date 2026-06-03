@@ -1,0 +1,56 @@
+﻿json_path,field_key,data_type_or_placeholder,placeholder_value,label_zh,label_en,unit,required,source_or_note
+__file_note,__file_note,string,2 hour 模式 template：顯示時間模式 service output 的欄位位置與型別；裡面的 placeholder 不是真實資料。,,,,false,generated from JSON template; review manually
+schema_version,schema_version,placeholder|string,<string>,Schema 版本,Schema Version,,true,generated from JSON template; review manually
+service_name,service_name,string,statistics_service,,,,false,generated from JSON template; review manually
+generated_at,generated_at,placeholder|string,<datetime-string>,產生時間,Generated At,,true,generated from JSON template; review manually
+window.mode,mode,placeholder|string,<time>,,,,false,generated from JSON template; review manually
+window.window_type,window_type,placeholder|string,<2hour>,視窗類型,Window Type,,true,2hour 或 10batch。
+window.slider_value,slider_value,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+window.display_label,display_label,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+summary.total_station_count,total_station_count,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+summary.normal_count,normal_count,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+summary.warning_count,warning_count,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+summary.predict_risk_count,predict_risk_count,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[],stations[],array,,,,,false,generated from JSON template; review manually
+stations[].line_id,line_id,placeholder|string,<string>,產線編號,Line ID,,true,正式值建議為 line_1、line_2、line_3。
+stations[].station_name_zh,station_name_zh,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].station_name_en,station_name_en,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].state,state,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].component_overview[],component_overview[],array,,,,,false,generated from JSON template; review manually
+stations[].component_overview[].component_key,component_key,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].component_overview[].label_zh,label_zh,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].component_overview[].label_en,label_en,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].component_overview[].level,level,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].component_overview[].level_text,level_text,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].metrics.availability_pct,availability_pct,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].metrics.clog_rate_pct,clog_rate_pct,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].metrics.pressure_bar,pressure_bar,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].metrics.flow_rate_ml_min,flow_rate_ml_min,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].metrics.maintainability_pct,maintainability_pct,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].metrics.quality_score_pct,quality_score_pct,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].metrics.risk_text,risk_text,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].metrics.spray_width_mm,spray_width_mm,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].process_parameters.recipe_name,recipe_name,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].process_parameters.temperature_c,temperature_c,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].process_parameters.utilization_pct,utilization_pct,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].process_parameters.cycle_time_sec,cycle_time_sec,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].fault_detail[],fault_detail[],array,,,,,false,generated from JSON template; review manually
+stations[].fault_detail[].component_key,component_key,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].fault_detail[].issue_text,issue_text,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].fault_detail[].reason_text,reason_text,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].fault_detail[].suggestion_text,suggestion_text,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].spray_width_image.spray_width_mm,spray_width_mm,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+stations[].spray_width_image.target_min_mm,target_min_mm,placeholder|string,<number|null>,,,,false,generated from JSON template; review manually
+stations[].spray_width_image.target_max_mm,target_max_mm,placeholder|string,<number|null>,,,,false,generated from JSON template; review manually
+stations[].spray_width_image.status,status,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+stations[].spray_width_image.image_ref,image_ref,placeholder|string,<string|null>,,,,false,generated from JSON template; review manually
+stations[].spray_width_image.note,note,placeholder|string,<string|null>,,,,false,generated from JSON template; review manually
+trend_series[],trend_series[],array,,,,,false,generated from JSON template; review manually
+trend_series[].metric_name,metric_name,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+trend_series[].x_labels[],x_labels[],array,,,,,false,generated from JSON template; review manually
+trend_series[].x_labels[],x_labels,placeholder|string,<string>,,,,false,generated from JSON template; review manually
+trend_series[].values[],values[],array,,,,,false,generated from JSON template; review manually
+trend_series[].values[],values,placeholder|string,<number>,,,,false,generated from JSON template; review manually
+trend_series[].line_id,line_id,placeholder|string,<string>,產線編號,Line ID,,true,正式值建議為 line_1、line_2、line_3。
+__folder_flow_note,__folder_flow_note,string,流程 Step 4：建立 JSON template，使用 placeholder 表示欄位位置，不代表真實資料。,,,,false,generated from JSON template; review manually
+__template_policy,__template_policy,string,本檔只使用 placeholder 表示欄位位置與型別，不代表真實資料，也不應作為可驗證的實例資料。,,,,false,generated from JSON template; review manually

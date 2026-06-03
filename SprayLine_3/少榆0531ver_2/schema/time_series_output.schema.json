@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "http://nkust.edu.tw/mislab/spraying/schema/time_series_output.schema.json",
+  "title": "SprayLine Time Series Output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "service_name",
+    "request_id",
+    "viewer_state",
+    "summary",
+    "stations",
+    "calculation_info"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "service_name": {
+      "type": "string"
+    },
+    "request_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "viewer_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "window_type": {
+          "type": "string"
+        },
+        "slider_value": {
+          "type": "number"
+        },
+        "display_label": {
+          "type": "string"
+        },
+        "time_type": {
+          "type": "string",
+          "enum": [
+            "past",
+            "current",
+            "future"
+          ]
+        },
+        "is_history": {
+          "type": "boolean"
+        },
+        "is_current": {
+          "type": "boolean"
+        },
+        "is_future": {
+          "type": "boolean"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "total_station_count": {
+          "type": "number"
+        },
+        "normal_count": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "warning_count": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "predict_risk_count": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "stations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/station"
+      }
+    },
+    "calculation_info": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "pipeline": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sample_method_policy": {
+          "type": "object"
+        },
+        "formula_policy": {
+          "type": "object"
+        },
+        "rule_stage": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "station": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "line_id",
+        "station_name_zh",
+        "station_name_en",
+        "metrics",
+        "process_parameters"
+      ],
+      "properties": {
+        "line_id": {
+          "type": "string",
+          "enum": [
+            "line_1",
+            "line_2",
+            "line_3"
+          ]
+        },
+        "station_name_zh": {
+          "type": "string"
+        },
+        "station_name_en": {
+          "type": "string"
+        },
+        "state": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "component_overview": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "metrics": {
+          "$ref": "#/$defs/metrics"
+        },
+        "process_parameters": {
+          "$ref": "#/$defs/process_parameters"
+        },
+        "component_metrics": {
+          "$ref": "#/$defs/component_metrics"
+        },
+        "fault_detail": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "spray_width_image": {
+          "$ref": "#/$defs/spray_width_image"
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "availability_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "clog_rate_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "pressure_bar": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "flow_rate_ml_min": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maintainability_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "quality_score_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "risk_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "spray_width_mm": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "process_parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "recipe_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "temperature_c": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "utilization_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "cycle_time_sec": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "component_metrics": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "nozzle": {
+          "type": "object"
+        },
+        "filter_mesh": {
+          "type": "object"
+        },
+        "spray_width": {
+          "type": "object"
+        }
+      }
+    },
+    "spray_width_image": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "spray_width_mm": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "target_min_mm": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "target_max_mm": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "status": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "line_id": "line_1",
+  "station_name_zh": "底漆站",
+  "station_name_en": "PrimerStation",
+  "metrics": {
+    "availability_pct": "<number>",
+    "clog_rate_pct": "<number>",
+    "pressure_bar": "<number>",
+    "flow_rate_ml_min": "<number|null>",
+    "maintainability_pct": "<number>",
+    "quality_score_pct": "<number>",
+    "risk_text": "<string|null>",
+    "spray_width_mm": "<number>"
+  },
+  "process_parameters": {
+    "recipe_name": "<string>",
+    "temperature_c": "<number>",
+    "utilization_pct": "<number>",
+    "cycle_time_sec": "<number>"
+  },
+  "component_metrics": {
+    "nozzle": {},
+    "filter_mesh": {},
+    "spray_width": {}
+  },
+  "spray_width_image": {
+    "spray_width_mm": "<number>",
+    "target_min_mm": "<number|null>",
+    "target_max_mm": "<number|null>",
+    "status": "<string|null>",
+    "image_ref": "<string|null>",
+    "note": "<string|null>"
+  }
+}

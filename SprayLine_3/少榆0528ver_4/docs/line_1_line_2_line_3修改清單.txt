@@ -1,0 +1,32 @@
+line_1 / line_2 / line_3 命名修改清單
+========================================
+
+規則：
+- 舊代號第一條產線 → line_1；ontology IRI local name 使用 Line1
+- 舊代號第二條產線 → line_2；ontology IRI local name 使用 Line2
+- 舊代號第三條產線 → line_3；ontology IRI local name 使用 Line3
+- 其他非 ontology 檔案命名為 V2；ontology 檔案命名為 V3
+
+產出檔案：
+- README_0527ver新增更改_V2.md  ←  README_0527ver新增更改.md  [V2], remaining_old_tokens=0
+- docs/01-1_paint_enhancement_reference/past_current_service_io_full_naming_paint_enhanced_V2.ipynb  ←  docs/01-1_paint_enhancement_reference/past_current_service_io_full_naming_paint_enhanced.ipynb  [V2], remaining_old_tokens=0
+- docs/01_Past_Current_Service_reference/README_V2.md  ←  docs/01_Past_Current_Service_reference/README.md  [V2], remaining_old_tokens=2
+- docs/01_Past_Current_Service_reference/past_current_service_io_V2.ipynb  ←  docs/01_Past_Current_Service_reference/past_current_service_io.ipynb  [V2], remaining_old_tokens=0
+- docs/03_UI介面v3_reference/UI_v3._V2.html  ←  docs/03_UI介面v3_reference/UI_v3..html  [V2], remaining_old_tokens=0
+- docs/03_UI介面v3_reference/UI_v3_V2.py  ←  docs/03_UI介面v3_reference/UI_v3.py  [V2], remaining_old_tokens=0
+- docs/03_UI介面v3_reference/spraying_dashboard_updated_V2.html  ←  docs/03_UI介面v3_reference/spraying_dashboard_updated.html  [V2], remaining_old_tokens=0
+- ontology/SprayLine_service_extension_V3.ttl  ←  ontology/SprayLine_service_extension.ttl  [V3], remaining_old_tokens=0
+- ontology/SprayLine_service_extension_chinese_V3.ttl  ←  ontology/SprayLine_service_extension_chinese.ttl  [V3], remaining_old_tokens=0
+- ontology/SprayLine_service_extension_english_V3.ttl  ←  ontology/SprayLine_service_extension_english.ttl  [V3], remaining_old_tokens=0
+
+TTL 檢查：
+- ontology/SprayLine_service_extension_V3.ttl: TTL parse OK, triples=1557, remaining_old_tokens=0, examples=[]
+- ontology/SprayLine_service_extension_chinese_V3.ttl: TTL parse OK, triples=1323, remaining_old_tokens=0, examples=[]
+- ontology/SprayLine_service_extension_english_V3.ttl: TTL parse OK, triples=1557, remaining_old_tokens=0, examples=[]
+
+最終殘留檢查：
+[('line_1_line_2_line_3修改清單.txt', 3, ['line_1', 'line_2', 'line_3'])]
+TTL 最終檢查：
+- ontology/SprayLine_service_extension_V3.ttl: TTL parse OK, triples=1557, remaining_old_tokens=0
+- ontology/SprayLine_service_extension_chinese_V3.ttl: TTL parse OK, triples=1323, remaining_old_tokens=0
+- ontology/SprayLine_service_extension_english_V3.ttl: TTL parse OK, triples=1557, remaining_old_tokens=0

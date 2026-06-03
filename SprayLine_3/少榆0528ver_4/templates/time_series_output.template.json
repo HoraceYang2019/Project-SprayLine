@@ -1,0 +1,27 @@
+{
+  "__template_policy": "Template only. Placeholder values are not real data.",
+  "__folder_flow_note": "Service output for UI_v3 TimeSeriesViewer.",
+  "schema_version": "<string>",
+  "generated_at": "<datetime-string>",
+  "request_id": "<string>",
+  "line_id": "<line_1|line_2|line_3>",
+  "metric_name": "<string>",
+  "current_time_point": "<datetime-string|string|null>",
+  "summary_text": "<string|null>",
+  "series": [
+    {
+      "x_label": "<string>",
+      "value": "<number|null>",
+      "time_concept": "<past|now|future|null>",
+      "is_prediction": "<boolean>",
+      "risk_level": "<string|null>"
+    }
+  ],
+  "legend": [
+    {
+      "metric_name": "<string>",
+      "label_zh": "<string|null>",
+      "label_en": "<string|null>"
+    }
+  ]
+}

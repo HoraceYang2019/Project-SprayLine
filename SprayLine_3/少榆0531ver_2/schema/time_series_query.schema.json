@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "http://nkust.edu.tw/mislab/spraying/schema/time_series_query.schema.json",
+  "title": "SprayLine Time Series Query",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "service_name",
+    "request_id",
+    "mode",
+    "window_type",
+    "slider_value",
+    "line_scope",
+    "requested_metrics"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "service_name": {
+      "type": "string",
+      "const": "TimeSeriesService"
+    },
+    "request_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "description": "time or batch."
+    },
+    "window_type": {
+      "type": "string",
+      "description": "current, 2hour, 10batch, or defined_by_service."
+    },
+    "slider_value": {
+      "type": "number",
+      "description": "<0 past, =0 current, >0 future."
+    },
+    "line_scope": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "all",
+            "line_1",
+            "line_2",
+            "line_3"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "line_1",
+              "line_2",
+              "line_3"
+            ]
+          }
+        }
+      ]
+    },
+    "requested_metrics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "start_time": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "end_time": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "start_batch_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "end_batch_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "back_to_live": {
+      "type": "boolean"
+    }
+  }
+}

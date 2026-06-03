@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "http://nkust.edu.tw/mislab/spraying/schema/time_series_output.schema.json",
+  "title": "SprayLine Time Series Output",
+  "description": "Output contract aligned with csv_templates/time_series_output_template.csv.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "request_id",
+    "line_id",
+    "metric_name",
+    "series"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "line_id": {
+      "type": "string"
+    },
+    "metric_name": {
+      "type": "string"
+    },
+    "current_time_point": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "summary_text": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional display summary. Source is pending; do not treat as inferred fact."
+    },
+    "series": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/series_point"
+      }
+    },
+    "legend": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/legend_item"
+      }
+    }
+  },
+  "$defs": {
+    "series_point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "x_label",
+        "value"
+      ],
+      "properties": {
+        "x_label": {
+          "type": "string"
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "time_concept": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "past, now, or future when available."
+        },
+        "is_prediction": {
+          "type": "boolean"
+        },
+        "risk_level": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Rule/Future output; remains pending until rules/model are confirmed."
+        }
+      }
+    },
+    "legend_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric_name"
+      ],
+      "properties": {
+        "metric_name": {
+          "type": "string"
+        },
+        "label_zh": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "label_en": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

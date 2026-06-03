@@ -1,0 +1,16 @@
+﻿section,json_path,field_key,label_zh,label_en,data_type,unit,required,source_function,source_service,ontology_class,ontology_property,value_policy,ui_v3_region,note
+metadata,schema_version,schema_version,Schema 版本,Schema Version,string,,true,system,StatisticsService,DataContractArtifact,,static_contract,hidden,輸出契約版本。
+metadata,generated_at,generated_at,產生時間,Generated At,datetime-string,,true,system,StatisticsService,TimeSeriesViewerOutput,,generated_at_runtime,hidden,由 service 產生。
+identity,request_id,request_id,請求編號,Request ID,string,,true,GetMetricTrend,StatisticsService,DataContractArtifact,,echo_from_query,hidden,對應 query request_id。
+identity,line_id,line_id,產線編號,Line ID,string,,true,GetMetricTrend,Database / Services,SprayLine,lineId,database_identifier,TimeSeriesViewer,正式值建議為 line_1、line_2、line_3。
+identity,metric_name,metric_name,指標名稱,Metric Name,string,,true,GetMetricTrend,StatisticsService,Metric,,echo_from_query,TimeSeriesViewer,對應查詢指標。
+state,current_time_point,current_time_point,目前時間點,Current Time Point,datetime-string|string,,false,GetMetricTrend,StatisticsService,TimeSeriesViewerOutput,,runtime_or_ui_state,slider,UI 顯示目前選取時間點。
+state,summary_text,summary_text,摘要文字,Summary Text,string,,false,GetMetricTrend; GetLatestDiagnosis,StatisticsService / Rule,RiskAssessment,,pending_source,TimeSeriesViewer,文字來源需確認，不可造假。
+series,series[].x_label,x_label,X 軸標籤,X Label,string,,true,GetMetricTrend,StatisticsService,TrendSeries,,dynamic_series,TimeSeriesViewer,時間或批次標籤。
+series,series[].value,value,數值,Value,number|null,depends_on_metric,true,GetMetricTrend,Database / StatisticsService,Metric,,runtime_value,TimeSeriesViewer,單位依 metric_name 決定。
+series,series[].time_concept,time_concept,時間概念,Time Concept,string,,false,GetMetricTrend,StatisticsService,TrendSeries,,past_now_future,Past; Now; Future,可標 past / now / future。
+series,series[].is_prediction,is_prediction,是否為預測,Is Prediction,boolean,,false,GetLatestPrediction,FutureService,FutureStationPrediction,,pending_future_model,Future,若為 future 預測，模型尚未定義。
+series,series[].risk_level,risk_level,風險等級,Risk Level,string,,false,GetLatestDiagnosis; GetLatestPrediction,Rule / FutureService,RiskAssessment,,pending_rule_or_model,TimeSeriesViewer,正式規則尚未定案。
+legend,legend[].metric_name,metric_name,圖例指標,Legend Metric,string,,false,GetMetricTrend,StatisticsService,Metric,,ui_display,TimeSeriesViewer,可支援多條線，但目前先不強制。
+legend,legend[].label_zh,label_zh,圖例中文,Legend Zh,string,,false,GetMetricTrend,StatisticsService,Metric,rdfs:label,ui_display,TimeSeriesViewer,UI 顯示用。
+legend,legend[].label_en,label_en,圖例英文,Legend En,string,,false,GetMetricTrend,StatisticsService,Metric,rdfs:label,ui_display,TimeSeriesViewer,UI 顯示用。

@@ -1,0 +1,13 @@
+CSV templates V2 修改清單
+========================================
+
+基準檔案：少榆0528ver_2.zip
+本次目標：將 csv_templates 整理成可維護主檔，並沿用 line_1 / line_2 / line_3 命名規則。
+
+- dashboard_snapshot_template_V2.csv: rows=38, columns=15, old_line_naming_remnants=0, examples=[]
+- function_io_template_V2.csv: rows=12, columns=14, old_line_naming_remnants=0, examples=[]
+- template_10batch_V2.csv: rows=10, columns=14, old_line_naming_remnants=0, examples=[]
+- template_2hour_V2.csv: rows=10, columns=14, old_line_naming_remnants=0, examples=[]
+- threshold_config_template_V2.csv: rows=8, columns=17, old_line_naming_remnants=0, examples=[]
+- time_series_output_template_V2.csv: rows=16, columns=15, old_line_naming_remnants=0, examples=[]
+- time_series_query_template_V2.csv: rows=16, columns=15, old_line_naming_remnants=0, examples=[]

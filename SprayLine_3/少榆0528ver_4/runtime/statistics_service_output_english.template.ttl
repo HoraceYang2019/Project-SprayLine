@@ -1,0 +1,24 @@
+@prefix : <http://nkust.edu.tw/mislab/spraying/ontology#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:DashboardSnapshotTemplate a :DashboardSnapshot ;
+    rdfs:label "Dashboard Snapshot Template"@en ;
+    :hasStationSummary :LineSnapshotTemplate ;
+    :hasWindow :StatisticsWindowTemplate ;
+    rdfs:comment "Runtime placeholder. Replace TEMPLATE with real identifiers when generated from service output or database query result."@en .
+
+:LineSnapshotTemplate a :StationSnapshot ;
+    rdfs:label "Line Snapshot Template"@en ;
+    :hasMetric :MetricTemplate ;
+    :hasRiskAssessment :RiskAssessmentTemplate ;
+    rdfs:comment "The identifier field is line_id. Station names such as PrimerStation, TopcoatStation, and GoldPaintStation may still be used as UI/process labels."@en .
+
+:MetricTemplate a :Metric ;
+    rdfs:label "Metric Template"@en .
+
+:RiskAssessmentTemplate a :RiskAssessment ;
+    rdfs:label "Risk Assessment Template"@en .
+
+:StatisticsWindowTemplate a :StatisticsWindow ;
+    rdfs:label "Statistics Window Template"@en .
+

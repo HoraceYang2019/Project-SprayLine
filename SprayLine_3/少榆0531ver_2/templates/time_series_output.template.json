@@ -1,0 +1,96 @@
+{
+  "__template_policy": "Template only. Placeholder values are not real data.",
+  "__folder_flow_note": "TimeSeriesService output for UI_v4 TimeSeriesViewer.",
+  "schema_version": "<string>",
+  "generated_at": "<datetime-string>",
+  "service_name": "TimeSeriesService",
+  "request_id": "<string|null>",
+  "viewer_state": {
+    "mode": "<time|batch>",
+    "window_type": "<current|2hour|10batch>",
+    "slider_value": "<number>",
+    "display_label": "<string>",
+    "time_type": "<past|current|future>",
+    "is_history": "<boolean>",
+    "is_current": "<boolean>",
+    "is_future": "<boolean>"
+  },
+  "summary": {
+    "total_station_count": "<number>",
+    "normal_count": "<number|null>",
+    "warning_count": "<number|null>",
+    "predict_risk_count": "<number|null>"
+  },
+  "stations": [
+    {
+      "line_id": "<line_1|line_2|line_3>",
+      "station_name_zh": "<string>",
+      "station_name_en": "<string>",
+      "state": "<string|null>",
+      "component_overview": [],
+      "metrics": {
+        "availability_pct": "<number|null>",
+        "clog_rate_pct": "<number|null>",
+        "pressure_bar": "<number|null>",
+        "flow_rate_ml_min": "<number|null>",
+        "maintainability_pct": "<number|null>",
+        "quality_score_pct": "<number|null>",
+        "risk_text": "<string|null>",
+        "spray_width_mm": "<number|null>"
+      },
+      "process_parameters": {
+        "recipe_name": "<string|null>",
+        "temperature_c": "<number|null>",
+        "utilization_pct": "<number|null>",
+        "cycle_time_sec": "<number|null>"
+      },
+      "component_metrics": {
+        "nozzle": {
+          "pressure_bar": "<number|null>",
+          "flow_rate_ml_min": "<number|null>",
+          "nozzle_clog_rate_pct": "<number|null>",
+          "nozzle_maintainability_pct": "<number|null>"
+        },
+        "filter_mesh": {
+          "flow_loss_pct": "<number|null>",
+          "filter_clog_rate_pct": "<number|null>",
+          "filter_maintainability_pct": "<number|null>"
+        },
+        "spray_width": {
+          "spray_width_mm": "<number|null>",
+          "width_error_mm": "<number|null>",
+          "width_error_pct": "<number|null>",
+          "coverage_score_pct": "<number|null>",
+          "target_min_mm": "<number|null>",
+          "target_max_mm": "<number|null>"
+        }
+      },
+      "fault_detail": [],
+      "spray_width_image": {
+        "spray_width_mm": "<number|null>",
+        "target_min_mm": "<number|null>",
+        "target_max_mm": "<number|null>",
+        "status": "<string|null>",
+        "image_ref": "<string|null>",
+        "note": "<string|null>"
+      }
+    }
+  ],
+  "calculation_info": {
+    "pipeline": [
+      "HandleTimeSeriesQuery",
+      "DetermineTimeType",
+      "QueryData",
+      "ApplySampleMethods",
+      "CalculateLineMetrics",
+      "BuildOutput"
+    ],
+    "sample_method_policy": {
+      "past": "mean",
+      "current": "recent_average",
+      "future": "latest_valid"
+    },
+    "rule_stage": "external",
+    "note": "This service calculates metric values only. Rule Service decides state, risk_text, fault_detail, and component_overview."
+  }
+}

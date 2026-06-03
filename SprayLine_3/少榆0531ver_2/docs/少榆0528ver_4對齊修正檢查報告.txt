@@ -1,0 +1,32 @@
+少榆0528ver_4 對齊修正檢查報告
+==================================================
+
+JSON parse:
+OK
+
+CSV parse:
+- csv_templates/dashboard_snapshot_template.csv: rows=38, columns=15, old_terms=0
+- csv_templates/function_io_template.csv: rows=12, columns=14, old_terms=0
+- csv_templates/template_10batch.csv: rows=56, columns=9, old_terms=0
+- csv_templates/template_2hour.csv: rows=56, columns=9, old_terms=0
+- csv_templates/threshold_config_template.csv: rows=8, columns=17, old_terms=0
+- csv_templates/time_series_output_template.csv: rows=16, columns=15, old_terms=0
+- csv_templates/time_series_query_template.csv: rows=16, columns=15, old_terms=0
+- docs/field_catalog.csv: rows=39, columns=13, old_terms=0
+- docs/service_extension_mapping_table.csv: rows=10, columns=5, old_terms=0
+- docs/ui_region_mapping.csv: rows=14, columns=5, old_terms=0
+
+TTL parse:
+- ontology/SprayLine_service_extension.ttl: parse OK, triples=1557, labels={'en': 322}, old_terms=0
+- ontology/SprayLine_service_extension_chinese.ttl: parse OK, triples=1323, labels={'zh': 129}, old_terms=0
+- ontology/SprayLine_service_extension_english.ttl: parse OK, triples=1557, labels={'en': 322}, old_terms=0
+- runtime/statistics_service_output.template.ttl: parse OK, triples=16, labels={'en': 5}, old_terms=0
+- runtime/statistics_service_output_chinese.template.ttl: parse OK, triples=16, labels={'zh': 5}, old_terms=0
+- runtime/statistics_service_output_english.template.ttl: parse OK, triples=16, labels={'en': 5}, old_terms=0
+
+Specific alignment fixes:
+- time_series_query.schema.json/template.json aligned to csv_templates/time_series_query_template.csv
+- time_series_output.schema.json/template.json aligned to csv_templates/time_series_output_template.csv
+- threshold_config.template.json aligned to csv_templates/threshold_config_template.csv
+- template_2hour.csv/template_10batch.csv expanded to full json_path mapping
+- ontology/runtime not structurally changed in this round

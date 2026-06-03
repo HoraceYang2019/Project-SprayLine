@@ -1,0 +1,2084 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://nkust.edu.tw/mislab/spraying/ontology> a owl:Ontology ;
+    owl:versionInfo "v3 English-only corrected hierarchy and instance version" .
+
+spray:Alarm a spray:StationState,
+        owl:NamedIndividual ;
+    spray:stateText "Alarm" .
+
+spray:AvailabilityMetric a owl:Class ;
+    rdfs:subClassOf spray:Metric .
+
+spray:ClogRateMetric a owl:Class ;
+    rdfs:subClassOf spray:Metric .
+
+spray:ComponentMetric a owl:Class ;
+    rdfs:label "元件指標"@zh .
+
+spray:CurrentFunction a owl:Class ;
+    rdfs:label "目前資料功能"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:DashboardFunction a owl:Class ;
+    rdfs:label "儀表板查詢功能"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:DiagnosisFunction a owl:Class ;
+    rdfs:label "診斷查詢功能"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:FieldBatchId a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：batch_id"@zh ;
+    spray:fieldKey "batch_id" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldFilmThicknessUm a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：film_thickness_um"@zh ;
+    spray:fieldKey "film_thickness_um" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldFilterDiffPressureBar a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：filter_diff_pressure_bar"@zh ;
+    spray:fieldKey "filter_diff_pressure_bar" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldFlowRateMlMin a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：flow_rate_ml_min"@zh ;
+    spray:fieldKey "flow_rate_ml_min" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldGearboxTemperatureC a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：gearbox_temperature_c"@zh ;
+    spray:fieldKey "gearbox_temperature_c" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldHumidityRh a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：humidity_rh"@zh ;
+    spray:fieldKey "humidity_rh" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldPathErrorMm a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：path_error_mm"@zh ;
+    spray:fieldKey "path_error_mm" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldPressureBar a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：pressure_bar"@zh ;
+    spray:fieldKey "pressure_bar" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldServoTorqueLoadPct a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：servo_torque_load_pct"@zh ;
+    spray:fieldKey "servo_torque_load_pct" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldSpeedMmS a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：speed_mm_s"@zh ;
+    spray:fieldKey "speed_mm_s" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldSprayWidthMm a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：spray_width_mm"@zh ;
+    spray:fieldKey "spray_width_mm" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldTimestamp a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：timestamp"@zh ;
+    spray:fieldKey "timestamp" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldVibrationG a spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：vibration_g"@zh ;
+    spray:fieldKey "vibration_g" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FileOntologyServiceMappingTableMd a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:OntologyService01 ;
+    spray:sourceFilePath "04_Spraying_Service_Ontology/ontology_service_mapping_table.md" .
+
+spray:FileThresholdConfigNotesMd a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:ThresholdConfigTemplate ;
+    spray:sourceFilePath "02_統計Service/05_threshold-config/threshold_config_notes.md" .
+
+spray:MaintainabilityMetric a owl:Class ;
+    rdfs:subClassOf spray:Metric .
+
+spray:MediumRisk a spray:RiskAssessment,
+        owl:NamedIndividual ;
+    spray:riskText "medium risk" .
+
+spray:MetricTrendFunction a owl:Class ;
+    rdfs:label "指標趨勢查詢功能"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:Oven a owl:Class ;
+    rdfs:label "烤箱"@zh ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:PastFunction a owl:Class ;
+    rdfs:label "過去資料功能"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:PredictionFunction a owl:Class ;
+    rdfs:label "預測功能"@zh ;
+    rdfs:subClassOf spray:FutureFunction .
+
+spray:PrimerProcessStep01 a spray:SprayProcessStep,
+        owl:NamedIndividual ;
+    rdfs:label "底漆製程步驟"@zh ;
+    spray:precedesProcessStep spray:TopcoatProcessStep01 .
+
+spray:RequestedMetric a owl:Class ;
+    rdfs:label "請求指標"@zh .
+
+spray:RuleService01 a spray:RuleService,
+        owl:NamedIndividual ;
+    spray:service_name "rule_service" ;
+    spray:usesThresholdConfig spray:ThresholdConfigTemplate .
+
+spray:RuntimeWindowFunction a owl:Class ;
+    rdfs:label "運行視窗查詢功能"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:Sensor a owl:Class ;
+    rdfs:subClassOf spray:Component .
+
+spray:ServiceCalculationInfo a owl:Class ;
+    rdfs:label "服務計算資訊"@zh .
+
+spray:SprayLine01 a spray:SprayLine,
+        owl:NamedIndividual ;
+    spray:hasStation spray:Line1,
+        spray:Line2,
+        spray:Line3 .
+
+spray:SprayWidth a owl:Class ;
+    rdfs:label "噴幅"@zh ;
+    rdfs:comment "UI_v4 新增 SprayWidth / 噴幅與 SprayWidthImage / 噴幅影像。"@zh ;
+    rdfs:subClassOf spray:Component .
+
+spray:SprayWidthImage a owl:Class ;
+    rdfs:label "噴幅影像"@zh ;
+    rdfs:subClassOf spray:InterfaceAsset .
+
+spray:Standby a spray:StationState,
+        owl:NamedIndividual ;
+    spray:stateText "Standby" .
+
+spray:Stop a spray:StationState,
+        owl:NamedIndividual ;
+    spray:stateText "Stop" .
+
+spray:TenBatchWindow a owl:Class ;
+    rdfs:subClassOf spray:BatchWindow,
+        spray:HistoricalWindow .
+
+spray:TimeSeriesQuery a owl:Class ;
+    rdfs:label "時間序列查詢"@zh .
+
+spray:TimeSeriesViewerOutput a owl:Class ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:TwoHourWindow a owl:Class ;
+    rdfs:subClassOf spray:HistoricalWindow,
+        spray:TimeWindow .
+
+spray:UIv4MonitoringInterface a spray:UIv4Interface,
+        owl:NamedIndividual ;
+    rdfs:label "UI_v4 監控介面"@zh ;
+    spray:usesFunction spray:TimeSeriesService0531 .
+
+spray:ViewerState a owl:Class ;
+    rdfs:label "檢視器狀態"@zh .
+
+spray:affectsDownstreamStep a owl:ObjectProperty ;
+    rdfs:label "影響下游製程步驟"@zh ;
+    rdfs:domain spray:Entity ;
+    rdfs:range spray:ProcessStep .
+
+spray:affectsFinalResult a owl:ObjectProperty ;
+    rdfs:label "影響最終結果"@zh ;
+    rdfs:domain spray:Entity ;
+    rdfs:range spray:RuntimeData .
+
+spray:affectsOutputField a owl:ObjectProperty ;
+    rdfs:domain spray:ThresholdConfig ;
+    rdfs:range spray:JSONField .
+
+spray:aggregatesCurrentSnapshot a owl:ObjectProperty ;
+    rdfs:domain spray:StatisticsService ;
+    rdfs:range spray:CurrentStationSnapshot .
+
+spray:aggregatesPastSnapshot a owl:ObjectProperty ;
+    rdfs:domain spray:StatisticsService ;
+    rdfs:range spray:PastStationSnapshot .
+
+spray:alignedWithOntology a owl:ObjectProperty ;
+    rdfs:domain spray:DataContractArtifact ;
+    rdfs:range spray:OntologyService .
+
+spray:convertedToRuntimeTTL a owl:ObjectProperty ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range spray:RuntimeTTLArtifact .
+
+spray:definedInSourceFile a owl:ObjectProperty ;
+    rdfs:domain spray:Entity ;
+    rdfs:range spray:SourceFile .
+
+spray:describesArtifact a owl:ObjectProperty ;
+    rdfs:domain spray:SourceFile ;
+    rdfs:range spray:Entity .
+
+spray:describesStation a owl:ObjectProperty ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range spray:Station .
+
+spray:displayLabel a owl:DatatypeProperty ;
+    rdfs:domain spray:Entity ;
+    rdfs:range xsd:string .
+
+spray:displayedBy a owl:ObjectProperty ;
+    rdfs:domain spray:DashboardSnapshot ;
+    rdfs:range spray:InterfaceAsset .
+
+spray:fieldKey a owl:DatatypeProperty ;
+    rdfs:label "欄位鍵值"@zh .
+
+spray:formulaExpression a owl:DatatypeProperty ;
+    rdfs:label "公式表示式"@zh .
+
+spray:generatedAt a owl:DatatypeProperty ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range xsd:string .
+
+spray:generatedBy a owl:ObjectProperty ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range spray:Service .
+
+spray:hasAppliesToScope a owl:ObjectProperty ;
+    rdfs:domain spray:ThresholdConfig ;
+    rdfs:range spray:AppliesToScope .
+
+spray:hasComponent a owl:ObjectProperty ;
+    rdfs:domain spray:Station ;
+    rdfs:range spray:Component .
+
+spray:hasDownstreamInterface a owl:ObjectProperty ;
+    rdfs:domain spray:Service ;
+    rdfs:range spray:InterfaceAsset .
+
+spray:hasDownstreamService a owl:ObjectProperty ;
+    rdfs:domain spray:Service ;
+    rdfs:range spray:Service .
+
+spray:hasInput a owl:ObjectProperty ;
+    rdfs:domain spray:Service ;
+    rdfs:range spray:RuntimeData .
+
+spray:hasInputParameter a owl:ObjectProperty ;
+    rdfs:label "具有輸入參數"@zh ;
+    rdfs:domain spray:Function ;
+    rdfs:range spray:FunctionInputParameter .
+
+spray:hasJSONField a owl:ObjectProperty ;
+    rdfs:domain spray:FieldCatalog ;
+    rdfs:range spray:JSONField .
+
+spray:hasLineSummary a owl:ObjectProperty ;
+    rdfs:domain spray:DashboardSnapshot ;
+    rdfs:range spray:LineSummary .
+
+spray:hasMetric a owl:ObjectProperty ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range spray:Metric .
+
+spray:hasNextFunction a owl:ObjectProperty ;
+    rdfs:label "具有下一個功能"@zh .
+
+spray:hasOutput a owl:ObjectProperty ;
+    rdfs:domain spray:Service ;
+    rdfs:range spray:RuntimeData .
+
+spray:hasOutputParameter a owl:ObjectProperty ;
+    rdfs:label "具有輸出參數"@zh ;
+    rdfs:domain spray:Function ;
+    rdfs:range spray:FunctionOutputParameter .
+
+spray:hasPendingDependency a owl:ObjectProperty ;
+    rdfs:label "具有待確認依賴"@zh .
+
+spray:hasProcessParameter a owl:ObjectProperty ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range spray:ProcessParameter .
+
+spray:hasRiskAssessment a owl:ObjectProperty ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range spray:RiskAssessment .
+
+spray:hasSamplingMethod a owl:ObjectProperty ;
+    rdfs:domain spray:Service ;
+    rdfs:range spray:SamplingMethod .
+
+spray:hasState a owl:ObjectProperty ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range spray:StationState .
+
+spray:hasStation a owl:ObjectProperty ;
+    rdfs:domain spray:SprayLine ;
+    rdfs:range spray:Station .
+
+spray:hasStationSummary a owl:ObjectProperty ;
+    rdfs:domain spray:DashboardSnapshot ;
+    rdfs:range spray:StatisticsStationSummary .
+
+spray:hasThresholdRule a owl:ObjectProperty ;
+    rdfs:domain spray:ThresholdConfig ;
+    rdfs:range spray:ThresholdRule .
+
+spray:hasThresholdSourceType a owl:ObjectProperty ;
+    rdfs:domain spray:ThresholdConfig ;
+    rdfs:range spray:ThresholdSourceType .
+
+spray:hasTrendSeries a owl:ObjectProperty ;
+    rdfs:domain spray:DashboardSnapshot ;
+    rdfs:range spray:TrendSeries .
+
+spray:hasUpstreamCause a owl:ObjectProperty ;
+    rdfs:label "具有上游原因"@zh ;
+    rdfs:comment "此關係用於從下游結果回指上游原因，僅作解釋用途，不代表下游結果會反向影響上游元件。"@zh ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range spray:Entity .
+
+spray:hasUpstreamService a owl:ObjectProperty ;
+    rdfs:domain spray:Service ;
+    rdfs:range spray:Service .
+
+spray:hasWindow a owl:ObjectProperty ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range spray:StatisticsWindow .
+
+spray:hasWindowPolicy a owl:ObjectProperty ;
+    rdfs:domain spray:Service ;
+    rdfs:range spray:WindowPolicy .
+
+spray:lineId a owl:DatatypeProperty ;
+    rdfs:label "產線編號"@zh ;
+    rdfs:comment "與 Database function 對接的識別欄位使用 line_id；底漆、面漆、金漆等 station 概念仍可作為製程位置或 UI 顯示標籤。"@zh ;
+    rdfs:domain spray:Entity,
+        spray:Station ;
+    rdfs:range xsd:string .
+
+spray:metricUnit a owl:DatatypeProperty ;
+    rdfs:domain spray:Metric ;
+    rdfs:range xsd:string .
+
+spray:metricValue a owl:DatatypeProperty ;
+    rdfs:domain spray:Metric ;
+    rdfs:range xsd:string .
+
+spray:parameterUnit a owl:DatatypeProperty ;
+    rdfs:domain spray:ProcessParameter ;
+    rdfs:range xsd:string .
+
+spray:parameterValue a owl:DatatypeProperty ;
+    rdfs:domain spray:ProcessParameter ;
+    rdfs:range xsd:string .
+
+spray:precedesProcessStep a owl:ObjectProperty ;
+    rdfs:label "先於製程步驟"@zh ;
+    rdfs:domain spray:ProcessStep ;
+    rdfs:range spray:ProcessStep .
+
+spray:produces a owl:ObjectProperty ;
+    rdfs:domain spray:Service ;
+    rdfs:range spray:RuntimeData .
+
+spray:producesBakingResult a owl:ObjectProperty ;
+    rdfs:label "產生烘烤結果"@zh ;
+    rdfs:domain spray:BakingStep ;
+    rdfs:range spray:BakingResult .
+
+spray:queriesDatabase a owl:ObjectProperty ;
+    rdfs:label "查詢資料庫"@zh ;
+    rdfs:domain spray:Function ;
+    rdfs:range spray:Database .
+
+spray:riskText a owl:DatatypeProperty ;
+    rdfs:domain spray:RiskAssessment ;
+    rdfs:range xsd:string .
+
+spray:sampleMethodValue a owl:DatatypeProperty ;
+    rdfs:label "取樣方法值"@zh .
+
+spray:schemaVersion a owl:DatatypeProperty ;
+    rdfs:domain spray:RuntimeData ;
+    rdfs:range xsd:string .
+
+spray:service_name a owl:DatatypeProperty ;
+    rdfs:domain spray:Service ;
+    rdfs:range xsd:string .
+
+spray:sourceFilePath a owl:DatatypeProperty ;
+    rdfs:domain spray:Entity ;
+    rdfs:range xsd:string .
+
+spray:sourceStatus a owl:DatatypeProperty ;
+    rdfs:label "來源狀態"@zh .
+
+spray:stateText a owl:DatatypeProperty ;
+    rdfs:domain spray:StationState ;
+    rdfs:range xsd:string .
+
+spray:stationInChamber a owl:ObjectProperty ;
+    rdfs:domain spray:Station ;
+    rdfs:range spray:Chamber .
+
+spray:stationNameEn a owl:DatatypeProperty ;
+    rdfs:domain spray:Station ;
+    rdfs:range xsd:string .
+
+spray:stationNameZh a owl:DatatypeProperty ;
+    rdfs:domain spray:Station ;
+    rdfs:range xsd:string .
+
+spray:timeType a owl:DatatypeProperty ;
+    rdfs:label "時間類型"@zh .
+
+spray:usesCurrentSnapshot a owl:ObjectProperty ;
+    rdfs:domain spray:FutureService ;
+    rdfs:range spray:CurrentStationSnapshot .
+
+spray:usesFunction a owl:ObjectProperty ;
+    rdfs:label "使用功能"@zh ;
+    rdfs:domain spray:Service ;
+    rdfs:range spray:Function .
+
+spray:usesFuturePrediction a owl:ObjectProperty ;
+    rdfs:domain spray:StatisticsService ;
+    rdfs:range spray:FutureStationPrediction .
+
+spray:usesInterface a owl:ObjectProperty ;
+    rdfs:domain spray:UIService ;
+    rdfs:range spray:InterfaceAsset .
+
+spray:usesPastSnapshot a owl:ObjectProperty ;
+    rdfs:domain spray:FutureService ;
+    rdfs:range spray:PastStationSnapshot .
+
+spray:usesThresholdConfig a owl:ObjectProperty ;
+    rdfs:domain spray:Service ;
+    rdfs:range spray:ThresholdConfig .
+
+spray:validatesAgainst a owl:ObjectProperty ;
+    rdfs:domain spray:TemplateArtifact ;
+    rdfs:range spray:SchemaArtifact .
+
+spray:windowEnd a owl:DatatypeProperty ;
+    rdfs:domain spray:HistoricalWindow ;
+    rdfs:range xsd:string .
+
+spray:windowId a owl:DatatypeProperty ;
+    rdfs:domain spray:StatisticsWindow ;
+    rdfs:range xsd:string .
+
+spray:windowMode a owl:DatatypeProperty ;
+    rdfs:domain spray:StatisticsWindow ;
+    rdfs:range xsd:string .
+
+spray:windowSize a owl:DatatypeProperty ;
+    rdfs:domain spray:StatisticsWindow ;
+    rdfs:range xsd:string .
+
+spray:windowStart a owl:DatatypeProperty ;
+    rdfs:domain spray:HistoricalWindow ;
+    rdfs:range xsd:string .
+
+spray:windowType a owl:DatatypeProperty ;
+    rdfs:domain spray:StatisticsWindow ;
+    rdfs:range xsd:string .
+
+spray:AlarmRule a owl:Class ;
+    rdfs:label "異常規則"@zh ;
+    rdfs:subClassOf spray:ThresholdRule .
+
+spray:AlarmRuleTemplate a spray:AlarmRule,
+        owl:NamedIndividual ;
+    spray:sourceFilePath "02_統計Service/05_threshold-config/threshold_config.template.json" .
+
+spray:AvailabilityFormula a spray:CalculationFormula,
+        owl:NamedIndividual ;
+    rdfs:label "availability_pct 公式"@zh ;
+    spray:fieldKey "availability_pct" ;
+    spray:formulaExpression "available_time_sec / planned_time_sec * 100" ;
+    spray:sourceStatus "TimeSeriesService0531_calculation_rule" .
+
+spray:BatchWindow a owl:Class ;
+    rdfs:subClassOf spray:StatisticsWindow .
+
+spray:Chamber1 a spray:Chamber,
+        owl:NamedIndividual .
+
+spray:Chamber2 a spray:Chamber,
+        owl:NamedIndividual .
+
+spray:Chamber3 a spray:Chamber,
+        owl:NamedIndividual .
+
+spray:ComponentScope a spray:AppliesToScope,
+        owl:NamedIndividual .
+
+spray:CurrentDefinedBySystemWindow a owl:Class ;
+    rdfs:subClassOf spray:CurrentWindow .
+
+spray:CurrentRecentAverageSampleMethod a spray:SampleMethodPolicy,
+        owl:NamedIndividual ;
+    rdfs:label "current 取樣方法：recent_average"@zh ;
+    spray:sampleMethodValue "recent_average" ;
+    spray:timeType "current" .
+
+spray:CurrentSampleMethodDefinedByService a spray:SamplingMethod,
+        owl:NamedIndividual .
+
+spray:CurrentService a owl:Class ;
+    rdfs:label "目前資料服務"@zh ;
+    rdfs:subClassOf spray:Service .
+
+spray:CurrentWindow a owl:Class ;
+    rdfs:subClassOf spray:StatisticsWindow .
+
+spray:CurrentWindowPolicyDefinedBySystem a spray:WindowPolicy,
+        owl:NamedIndividual .
+
+spray:CycleTimeFormula a spray:CalculationFormula,
+        owl:NamedIndividual ;
+    rdfs:label "cycle_time_sec 公式"@zh ;
+    spray:fieldKey "cycle_time_sec" ;
+    spray:formulaExpression "part_end_time - part_start_time" ;
+    spray:sourceStatus "TimeSeriesService0531_calculation_rule" .
+
+spray:DashboardSnapshotTemplate a spray:TemplateArtifact,
+        owl:NamedIndividual ;
+    spray:alignedWithOntology spray:OntologyService01 ;
+    spray:definedInSourceFile spray:FileDashboardSnapshotTemplateJson ;
+    spray:sourceFilePath "02_統計Service/04_templates/dashboard_snapshot.template.json" ;
+    spray:validatesAgainst spray:DashboardSnapshotSchema .
+
+spray:EngineeringDashboard a owl:Class ;
+    rdfs:subClassOf spray:InterfaceAsset .
+
+spray:ExpertKnowledgeSource a spray:ThresholdSourceType,
+        owl:NamedIndividual .
+
+spray:FaultPropagation a owl:Class ;
+    rdfs:label "異常傳遞關係"@zh ;
+    rdfs:subClassOf spray:KnowledgeAsset .
+
+spray:FieldGeneratedAt a spray:JSONField,
+        owl:NamedIndividual .
+
+spray:FieldLineId a spray:JSONField,
+        spray:RawSensorField,
+        owl:NamedIndividual ;
+    rdfs:label "原始欄位：line_id"@zh ;
+    spray:fieldKey "line_id" ;
+    spray:sourceStatus "DataPreprocess_spray0528" .
+
+spray:FieldStationNameEn a spray:JSONField,
+        owl:NamedIndividual .
+
+spray:FieldStationNameZh a spray:JSONField,
+        owl:NamedIndividual .
+
+spray:FieldWindow a spray:JSONField,
+        owl:NamedIndividual .
+
+spray:FileDashboardSnapshotSchemaJson a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:DashboardSnapshotSchema ;
+    spray:sourceFilePath "02_統計Service/03_api-contract/dashboard_snapshot.schema.json" .
+
+spray:FileDashboardSnapshotTemplateJson a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:DashboardSnapshotTemplate ;
+    spray:sourceFilePath "02_統計Service/04_templates/dashboard_snapshot.template.json" .
+
+spray:FileFieldCatalogCsv a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:FieldCatalog ;
+    spray:sourceFilePath "02_統計Service/02_field-catalog/field_catalog.csv" .
+
+spray:FileFieldCatalogMd a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:FieldCatalog ;
+    spray:sourceFilePath "02_統計Service/02_field-catalog/field_catalog.md" .
+
+spray:FileStatServiceSchemaJson a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:StatisticsServiceSchema ;
+    spray:sourceFilePath "02_統計Service/03_api-contract/stat_service.schema.json" .
+
+spray:FileStatisticsServiceOutputTemplateTtl a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:RuntimeTTLOutputTemplate ;
+    spray:sourceFilePath "02_統計Service/07_runtime-ttl-template/statistics_service_output.template.ttl" .
+
+spray:FileTemplate10batchJson a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:Template10Batch ;
+    spray:sourceFilePath "02_統計Service/04_templates/template_10batch.json" .
+
+spray:FileTemplate2hourJson a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:Template2Hour ;
+    spray:sourceFilePath "02_統計Service/04_templates/template_2hour.json" .
+
+spray:FileThresholdConfigTemplateJson a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:ThresholdConfigTemplate ;
+    spray:sourceFilePath "02_統計Service/05_threshold-config/threshold_config.template.json" .
+
+spray:FileTimeSeriesOutputSchemaJson a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:TimeSeriesOutputSchema ;
+    spray:sourceFilePath "02_統計Service/03_api-contract/time_series_output.schema.json" .
+
+spray:FileTimeSeriesOutputTemplateJson a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:TimeSeriesOutputTemplate ;
+    spray:sourceFilePath "02_統計Service/04_templates/time_series_output.template.json" .
+
+spray:FileTimeSeriesQuerySchemaJson a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:TimeSeriesQuerySchema ;
+    spray:sourceFilePath "02_統計Service/03_api-contract/time_series_query.schema.json" .
+
+spray:FileTimeSeriesQueryTemplateJson a spray:SourceFile,
+        owl:NamedIndividual ;
+    spray:describesArtifact spray:TimeSeriesQueryTemplate ;
+    spray:sourceFilePath "02_統計Service/04_templates/time_series_query.template.json" .
+
+spray:FilterMeshFaultTemplate a spray:FaultPropagation,
+        owl:NamedIndividual ;
+    rdfs:label "濾網異常模板"@zh ;
+    spray:affectsDownstreamStep spray:BakingStep01 ;
+    spray:affectsFinalResult spray:BakingResultTemplate .
+
+spray:FlowLossFormula a spray:CalculationFormula,
+        owl:NamedIndividual ;
+    rdfs:label "flow_loss_pct 公式"@zh ;
+    spray:fieldKey "flow_loss_pct" ;
+    spray:formulaExpression "max(0, (in_flow_ml_min - out_flow_ml_min) / in_flow_ml_min * 100)" ;
+    spray:sourceStatus "TimeSeriesService0531_calculation_rule" .
+
+spray:FunctionInputParameter a owl:Class ;
+    rdfs:label "功能輸入參數"@zh ;
+    rdfs:subClassOf spray:DataContractArtifact .
+
+spray:FunctionOutputParameter a owl:Class ;
+    rdfs:label "功能輸出參數"@zh ;
+    rdfs:subClassOf spray:DataContractArtifact .
+
+spray:FutureFunction a owl:Class ;
+    rdfs:label "未來預測功能"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:FutureLatestValidSampleMethod a spray:SampleMethodPolicy,
+        owl:NamedIndividual ;
+    rdfs:label "future 取樣方法：latest_valid"@zh ;
+    spray:sampleMethodValue "latest_valid" ;
+    spray:timeType "future" .
+
+spray:FuturePredictionScope a spray:AppliesToScope,
+        owl:NamedIndividual .
+
+spray:FutureRiskModelSource a spray:ThresholdSourceType,
+        owl:NamedIndividual .
+
+spray:FutureWindowPolicyDefinedByFutureService a spray:WindowPolicy,
+        owl:NamedIndividual .
+
+spray:GetDiagnosisTimeline a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_diagnosis_timeline"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:GetMlFeatureInput a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_ml_feature_input"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:GetOmniverseValidationResult a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_omniverse_validation_result"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:GetRecentQualityTrend a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_recent_quality_trend"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:GoldPaintProcessStep01 a spray:SprayProcessStep,
+        owl:NamedIndividual ;
+    rdfs:label "金漆製程步驟"@zh ;
+    spray:precedesProcessStep spray:BakingStep01 .
+
+spray:GoldPaintStation a owl:Class ;
+    rdfs:label "金漆站"@zh ;
+    rdfs:subClassOf spray:Station .
+
+spray:HandleTimeSeriesQueryFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "HandleTimeSeriesQuery 功能"@zh ;
+    spray:hasNextFunction spray:DetermineTimeTypeFunction ;
+    spray:sourceStatus "integrated_0531" ;
+    spray:usesFunction spray:ApplySampleMethodsFunction,
+        spray:BuildOutputFunction,
+        spray:CalculateLineMetricsFunction,
+        spray:DetermineTimeTypeFunction,
+        spray:GetSampleMethodFunction,
+        spray:QueryDataFunction,
+        spray:ResolveLineScopeFunction .
+
+spray:Line1AirCompressor a spray:AirCompressor,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／空壓機"@zh ;
+    spray:lineId "line_1" .
+
+spray:Line1AirValve a spray:AirValve,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／氣閥"@zh ;
+    spray:lineId "line_1" .
+
+spray:Line1CurrentCycleTimeParameter a spray:CycleTimeParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／目前 cycle_time_sec"@zh ;
+    spray:lineId "line_1" ;
+    spray:parameterUnit "sec" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line1CurrentFlowRateMetric a spray:FlowRateMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／目前 flow_rate_ml_min"@zh ;
+    spray:lineId "line_1" ;
+    spray:metricUnit "ml/min pending confirmation" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line1CurrentPressureMetric a spray:PressureMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／目前 pressure_bar"@zh ;
+    spray:lineId "line_1" ;
+    spray:metricUnit "bar" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line1CurrentQualityMetric a spray:QualityMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／目前 quality_score_pct"@zh ;
+    spray:lineId "line_1" ;
+    spray:metricUnit "pct" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line1CurrentTemperatureParameter a spray:TemperatureParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／目前 temperature_c"@zh ;
+    spray:lineId "line_1" ;
+    spray:parameterUnit "C" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line1CurrentUtilizationParameter a spray:UtilizationParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／目前 utilization_pct"@zh ;
+    spray:lineId "line_1" ;
+    spray:parameterUnit "pct" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line1FilterMesh a spray:FilterMesh,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／濾網"@zh ;
+    spray:lineId "line_1" .
+
+spray:Line1Nozzle a spray:Nozzle,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／噴嘴"@zh ;
+    spray:lineId "line_1" .
+
+spray:Line1PastCycleTimeParameter a spray:CycleTimeParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／過去 cycle_time_sec"@zh ;
+    spray:lineId "line_1" ;
+    spray:parameterUnit "sec" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line1PastFlowRateMetric a spray:FlowRateMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／過去 flow_rate_ml_min"@zh ;
+    spray:lineId "line_1" ;
+    spray:metricUnit "ml/min pending confirmation" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line1PastPressureMetric a spray:PressureMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／過去 pressure_bar"@zh ;
+    spray:lineId "line_1" ;
+    spray:metricUnit "bar" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line1PastQualityMetric a spray:QualityMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／過去 quality_score_pct"@zh ;
+    spray:lineId "line_1" ;
+    spray:metricUnit "pct" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line1PastTemperatureParameter a spray:TemperatureParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／過去 temperature_c"@zh ;
+    spray:lineId "line_1" ;
+    spray:parameterUnit "C" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line1PastUtilizationParameter a spray:UtilizationParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／過去 utilization_pct"@zh ;
+    spray:lineId "line_1" ;
+    spray:parameterUnit "pct" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line1QualityModule a spray:QualityModule,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／品質模組"@zh ;
+    spray:lineId "line_1" .
+
+spray:Line1RobotArm a spray:RobotArm,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／機械手臂"@zh ;
+    spray:lineId "line_1" .
+
+spray:Line2AirCompressor a spray:AirCompressor,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／空壓機"@zh ;
+    spray:lineId "line_2" .
+
+spray:Line2AirValve a spray:AirValve,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／氣閥"@zh ;
+    spray:lineId "line_2" .
+
+spray:Line2CurrentCycleTimeParameter a spray:CycleTimeParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／目前 cycle_time_sec"@zh ;
+    spray:lineId "line_2" ;
+    spray:parameterUnit "sec" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line2CurrentFlowRateMetric a spray:FlowRateMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／目前 flow_rate_ml_min"@zh ;
+    spray:lineId "line_2" ;
+    spray:metricUnit "ml/min pending confirmation" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line2CurrentPressureMetric a spray:PressureMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／目前 pressure_bar"@zh ;
+    spray:lineId "line_2" ;
+    spray:metricUnit "bar" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line2CurrentQualityMetric a spray:QualityMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／目前 quality_score_pct"@zh ;
+    spray:lineId "line_2" ;
+    spray:metricUnit "pct" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line2CurrentTemperatureParameter a spray:TemperatureParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／目前 temperature_c"@zh ;
+    spray:lineId "line_2" ;
+    spray:parameterUnit "C" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line2CurrentUtilizationParameter a spray:UtilizationParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／目前 utilization_pct"@zh ;
+    spray:lineId "line_2" ;
+    spray:parameterUnit "pct" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line2FilterMesh a spray:FilterMesh,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／濾網"@zh ;
+    spray:lineId "line_2" .
+
+spray:Line2Nozzle a spray:Nozzle,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／噴嘴"@zh ;
+    spray:lineId "line_2" .
+
+spray:Line2PastCycleTimeParameter a spray:CycleTimeParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／過去 cycle_time_sec"@zh ;
+    spray:lineId "line_2" ;
+    spray:parameterUnit "sec" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line2PastFlowRateMetric a spray:FlowRateMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／過去 flow_rate_ml_min"@zh ;
+    spray:lineId "line_2" ;
+    spray:metricUnit "ml/min pending confirmation" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line2PastPressureMetric a spray:PressureMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／過去 pressure_bar"@zh ;
+    spray:lineId "line_2" ;
+    spray:metricUnit "bar" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line2PastQualityMetric a spray:QualityMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／過去 quality_score_pct"@zh ;
+    spray:lineId "line_2" ;
+    spray:metricUnit "pct" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line2PastTemperatureParameter a spray:TemperatureParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／過去 temperature_c"@zh ;
+    spray:lineId "line_2" ;
+    spray:parameterUnit "C" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line2PastUtilizationParameter a spray:UtilizationParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／過去 utilization_pct"@zh ;
+    spray:lineId "line_2" ;
+    spray:parameterUnit "pct" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line2QualityModule a spray:QualityModule,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／品質模組"@zh ;
+    spray:lineId "line_2" .
+
+spray:Line2RobotArm a spray:RobotArm,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／機械手臂"@zh ;
+    spray:lineId "line_2" .
+
+spray:Line3AirCompressor a spray:AirCompressor,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／空壓機"@zh ;
+    spray:lineId "line_3" .
+
+spray:Line3AirValve a spray:AirValve,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／氣閥"@zh ;
+    spray:lineId "line_3" .
+
+spray:Line3CurrentCycleTimeParameter a spray:CycleTimeParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／目前 cycle_time_sec"@zh ;
+    spray:lineId "line_3" ;
+    spray:parameterUnit "sec" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line3CurrentFlowRateMetric a spray:FlowRateMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／目前 flow_rate_ml_min"@zh ;
+    spray:lineId "line_3" ;
+    spray:metricUnit "ml/min pending confirmation" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line3CurrentPressureMetric a spray:PressureMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／目前 pressure_bar"@zh ;
+    spray:lineId "line_3" ;
+    spray:metricUnit "bar" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line3CurrentQualityMetric a spray:QualityMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／目前 quality_score_pct"@zh ;
+    spray:lineId "line_3" ;
+    spray:metricUnit "pct" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line3CurrentTemperatureParameter a spray:TemperatureParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／目前 temperature_c"@zh ;
+    spray:lineId "line_3" ;
+    spray:parameterUnit "C" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line3CurrentUtilizationParameter a spray:UtilizationParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／目前 utilization_pct"@zh ;
+    spray:lineId "line_3" ;
+    spray:parameterUnit "pct" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line3FilterMesh a spray:FilterMesh,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／濾網"@zh ;
+    spray:lineId "line_3" .
+
+spray:Line3Nozzle a spray:Nozzle,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／噴嘴"@zh ;
+    spray:lineId "line_3" .
+
+spray:Line3PastCycleTimeParameter a spray:CycleTimeParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／過去 cycle_time_sec"@zh ;
+    spray:lineId "line_3" ;
+    spray:parameterUnit "sec" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line3PastFlowRateMetric a spray:FlowRateMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／過去 flow_rate_ml_min"@zh ;
+    spray:lineId "line_3" ;
+    spray:metricUnit "ml/min pending confirmation" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line3PastPressureMetric a spray:PressureMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／過去 pressure_bar"@zh ;
+    spray:lineId "line_3" ;
+    spray:metricUnit "bar" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line3PastQualityMetric a spray:QualityMetric,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／過去 quality_score_pct"@zh ;
+    spray:lineId "line_3" ;
+    spray:metricUnit "pct" ;
+    spray:metricValue "to_be_filled" .
+
+spray:Line3PastTemperatureParameter a spray:TemperatureParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／過去 temperature_c"@zh ;
+    spray:lineId "line_3" ;
+    spray:parameterUnit "C" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line3PastUtilizationParameter a spray:UtilizationParameter,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／過去 utilization_pct"@zh ;
+    spray:lineId "line_3" ;
+    spray:parameterUnit "pct" ;
+    spray:parameterValue "to_be_filled" .
+
+spray:Line3QualityModule a spray:QualityModule,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／品質模組"@zh ;
+    spray:lineId "line_3" .
+
+spray:Line3RobotArm a spray:RobotArm,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／機械手臂"@zh ;
+    spray:lineId "line_3" .
+
+spray:LineClogRateFormula a spray:CalculationFormula,
+        owl:NamedIndividual ;
+    rdfs:label "clog_rate_pct 公式"@zh ;
+    spray:fieldKey "clog_rate_pct" ;
+    spray:formulaExpression "max(nozzle_clog_rate_pct, filter_clog_rate_pct)" ;
+    spray:sourceStatus "TimeSeriesService0531_calculation_rule" .
+
+spray:LineMaintainabilityFormula a spray:CalculationFormula,
+        owl:NamedIndividual ;
+    rdfs:label "maintainability_pct 公式"@zh ;
+    spray:fieldKey "maintainability_pct" ;
+    spray:formulaExpression "min(nozzle_maintainability_pct, filter_maintainability_pct)" ;
+    spray:sourceStatus "TimeSeriesService0531_calculation_rule" .
+
+spray:LineScope a spray:AppliesToScope,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "產線範圍"@zh .
+
+spray:MaintainabilityFormula a spray:CalculationFormula,
+        owl:NamedIndividual ;
+    rdfs:label "maintainability_pct 公式"@zh ;
+    spray:fieldKey "maintainability_pct" ;
+    spray:formulaExpression "rul_hr / (rul_hr + usage_time_hr) * 100" ;
+    spray:sourceStatus "TimeSeriesService0531_calculation_rule" .
+
+spray:MetricScope a spray:AppliesToScope,
+        owl:NamedIndividual .
+
+spray:NozzleClogRateFormula a spray:CalculationFormula,
+        owl:NamedIndividual ;
+    rdfs:label "nozzle_clog_rate_pct 公式"@zh ;
+    spray:fieldKey "nozzle_clog_rate_pct" ;
+    spray:formulaExpression "max(0, (nominal_flow_rate_ml_min - flow_rate_ml_min) / nominal_flow_rate_ml_min * 100)" ;
+    spray:sourceStatus "TimeSeriesService0531_calculation_rule" .
+
+spray:PastMeanSampleMethod a spray:SampleMethodPolicy,
+        owl:NamedIndividual ;
+    rdfs:label "past 取樣方法：mean"@zh ;
+    spray:sampleMethodValue "mean" ;
+    spray:timeType "past" .
+
+spray:PastSampleMethodDefinedByService a spray:SamplingMethod,
+        owl:NamedIndividual .
+
+spray:PastService a owl:Class ;
+    rdfs:label "過去資料服務"@zh ;
+    rdfs:subClassOf spray:Service .
+
+spray:PastWindowPolicyInputDefined a spray:WindowPolicy,
+        owl:NamedIndividual .
+
+spray:PendingDatabaseBinding a spray:KnowledgeAsset,
+        owl:NamedIndividual ;
+    rdfs:label "待確認資料庫串接"@zh .
+
+spray:PendingFutureModel a spray:KnowledgeAsset,
+        owl:NamedIndividual ;
+    rdfs:label "待確認未來預測模型"@zh .
+
+spray:PendingRuleService a spray:KnowledgeAsset,
+        owl:NamedIndividual ;
+    rdfs:label "待確認規則服務"@zh .
+
+spray:PredictionWindow a owl:Class ;
+    rdfs:subClassOf spray:StatisticsWindow .
+
+spray:PrimerStation a owl:Class ;
+    rdfs:label "底漆站"@zh ;
+    rdfs:subClassOf spray:Station .
+
+spray:ProcessParameterScope a spray:AppliesToScope,
+        owl:NamedIndividual .
+
+spray:QualityScoreFormula a spray:CalculationFormula,
+        owl:NamedIndividual ;
+    rdfs:label "quality_score_pct 公式"@zh ;
+    spray:fieldKey "quality_score_pct" ;
+    spray:formulaExpression "ok_count / total_count * 100; fallback coverage_score_pct" ;
+    spray:sourceStatus "TimeSeriesService0531_calculation_rule" .
+
+spray:RuleService a owl:Class ;
+    rdfs:subClassOf spray:Service .
+
+spray:RuleServiceConfigSource a spray:ThresholdSourceType,
+        owl:NamedIndividual .
+
+spray:RuntimeTTLGenerator a owl:Class ;
+    rdfs:label "Runtime TTL 產生器"@zh ;
+    rdfs:subClassOf spray:Service .
+
+spray:RuntimeTTLGenerator01 a spray:RuntimeTTLGenerator,
+        owl:NamedIndividual ;
+    spray:service_name "runtime_ttl_generator" .
+
+spray:SprayWidthCoverageFormula a spray:CalculationFormula,
+        owl:NamedIndividual ;
+    rdfs:label "coverage_score_pct 公式"@zh ;
+    spray:fieldKey "coverage_score_pct" ;
+    spray:formulaExpression "max(0, 100 - abs(spray_width_mm - target_spray_width_mm) / target_spray_width_mm * 100)" ;
+    spray:sourceStatus "TimeSeriesService0531_calculation_rule" .
+
+spray:StationScope a spray:AppliesToScope,
+        owl:NamedIndividual .
+
+spray:StatisticsWindowPolicyFollowContract a spray:WindowPolicy,
+        owl:NamedIndividual .
+
+spray:SystemConfigurationSource a spray:ThresholdSourceType,
+        owl:NamedIndividual .
+
+spray:Template10Batch a spray:TemplateArtifact,
+        owl:NamedIndividual ;
+    spray:alignedWithOntology spray:OntologyService01 ;
+    spray:definedInSourceFile spray:FileTemplate10batchJson ;
+    spray:sourceFilePath "02_統計Service/04_templates/template_10batch.json" ;
+    spray:validatesAgainst spray:StatisticsServiceSchema .
+
+spray:Template2Hour a spray:TemplateArtifact,
+        owl:NamedIndividual ;
+    spray:alignedWithOntology spray:OntologyService01 ;
+    spray:definedInSourceFile spray:FileTemplate2hourJson ;
+    spray:sourceFilePath "02_統計Service/04_templates/template_2hour.json" ;
+    spray:validatesAgainst spray:StatisticsServiceSchema .
+
+spray:TimeSeriesOutput a owl:Class ;
+    rdfs:label "時間序列輸出"@zh .
+
+spray:TimeSeriesOutputTemplate a spray:TemplateArtifact,
+        owl:NamedIndividual ;
+    spray:alignedWithOntology spray:OntologyService01 ;
+    spray:definedInSourceFile spray:FileTimeSeriesOutputTemplateJson ;
+    spray:sourceFilePath "02_統計Service/04_templates/time_series_output.template.json" ;
+    spray:validatesAgainst spray:TimeSeriesOutputSchema .
+
+spray:TimeSeriesQueryTemplate a spray:TemplateArtifact,
+        owl:NamedIndividual ;
+    spray:alignedWithOntology spray:OntologyService01 ;
+    spray:definedInSourceFile spray:FileTimeSeriesQueryTemplateJson ;
+    spray:sourceFilePath "02_統計Service/04_templates/time_series_query.template.json" ;
+    spray:validatesAgainst spray:TimeSeriesQuerySchema .
+
+spray:TimeSeriesService a owl:Class ;
+    rdfs:label "時間序列服務"@zh .
+
+spray:TimeSeriesService0531 a spray:TimeSeriesService,
+        owl:NamedIndividual ;
+    rdfs:label "0531 時間序列服務"@zh ;
+    spray:hasSamplingMethod spray:CurrentRecentAverageSampleMethod,
+        spray:FutureLatestValidSampleMethod,
+        spray:PastMeanSampleMethod ;
+    spray:produces spray:AvailabilityFormula,
+        spray:CycleTimeFormula,
+        spray:FlowLossFormula,
+        spray:LineClogRateFormula,
+        spray:LineMaintainabilityFormula,
+        spray:MaintainabilityFormula,
+        spray:NozzleClogRateFormula,
+        spray:QualityScoreFormula,
+        spray:SprayWidthCoverageFormula,
+        spray:UtilizationFormula ;
+    spray:queriesDatabase spray:GetComponentHealthSummary,
+        spray:GetDiagnosisTimeline,
+        spray:GetLatestDiagnosis,
+        spray:GetLatestPrediction,
+        spray:GetLatestRuntimeWindow,
+        spray:GetMetricTrend,
+        spray:GetMlFeatureInput,
+        spray:GetOmniverseValidationResult,
+        spray:GetRecentQualityTrend,
+        spray:GetRuntimeWindow,
+        spray:GetStationDashboardStatus ;
+    spray:sourceStatus "integrated_from_Project_SprayLine_main_0531" ;
+    spray:usesFunction spray:ApplySampleMethodsFunction,
+        spray:BuildLineOutputFunction,
+        spray:BuildOutputFunction,
+        spray:CalculateFilterMetricsFunction,
+        spray:CalculateLineMetricsFunction,
+        spray:CalculateNozzleMetricsFunction,
+        spray:CalculateSprayWidthMetricsFunction,
+        spray:DetermineTimeTypeFunction,
+        spray:GetSampleMethodFunction,
+        spray:HandleTimeSeriesQueryFunction,
+        spray:QueryDataFunction,
+        spray:ResolveLineScopeFunction .
+
+spray:TimeWindow a owl:Class ;
+    rdfs:subClassOf spray:StatisticsWindow .
+
+spray:TopcoatProcessStep01 a spray:SprayProcessStep,
+        owl:NamedIndividual ;
+    rdfs:label "面漆製程步驟"@zh ;
+    spray:precedesProcessStep spray:GoldPaintProcessStep01 .
+
+spray:TopcoatStation a owl:Class ;
+    rdfs:label "面漆站"@zh ;
+    rdfs:subClassOf spray:Station .
+
+spray:UIService01 a spray:UIService,
+        owl:NamedIndividual ;
+    spray:service_name "ui_service" ;
+    spray:usesInterface spray:UIEDashboard01 .
+
+spray:UIv4Interface a owl:Class ;
+    rdfs:label "UI_v4 介面"@zh .
+
+spray:UtilizationFormula a spray:CalculationFormula,
+        owl:NamedIndividual ;
+    rdfs:label "utilization_pct 公式"@zh ;
+    spray:fieldKey "utilization_pct" ;
+    spray:formulaExpression "running_time_sec / total_window_time_sec * 100" ;
+    spray:sourceStatus "TimeSeriesService0531_calculation_rule" .
+
+spray:WarningRule a owl:Class ;
+    rdfs:label "注意規則"@zh ;
+    rdfs:subClassOf spray:ThresholdRule .
+
+spray:WarningRuleTemplate a spray:WarningRule,
+        owl:NamedIndividual ;
+    spray:sourceFilePath "02_統計Service/05_threshold-config/threshold_config.template.json" .
+
+spray:BakingResult a owl:Class ;
+    rdfs:label "烘烤結果"@zh ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:BakingResultTemplate a spray:BakingResult,
+        owl:NamedIndividual ;
+    rdfs:label "烘烤結果模板"@zh ;
+    spray:hasUpstreamCause spray:FilterMeshFaultTemplate .
+
+spray:BakingStep a owl:Class ;
+    rdfs:label "烘烤步驟"@zh ;
+    rdfs:subClassOf spray:ProcessStep .
+
+spray:BakingStep01 a spray:BakingStep,
+        owl:NamedIndividual ;
+    rdfs:label "烘烤步驟"@zh ;
+    spray:producesBakingResult spray:BakingResultTemplate .
+
+spray:DashboardSnapshot001 a spray:DashboardSnapshot,
+        owl:NamedIndividual ;
+    spray:convertedToRuntimeTTL spray:RuntimeTTLOutputTemplate ;
+    spray:displayedBy spray:UIEDashboard01 ;
+    spray:generatedBy spray:StatisticsService ;
+    spray:hasLineSummary spray:LineSummary001 ;
+    spray:hasStationSummary spray:StatisticsSummaryLine1W004,
+        spray:StatisticsSummaryLine2W004,
+        spray:StatisticsSummaryLine3W004 ;
+    spray:hasTrendSeries spray:TrendSeries001 ;
+    spray:hasWindow spray:StatisticsWindowW004 .
+
+spray:DashboardSnapshotSchema a spray:SchemaArtifact,
+        owl:NamedIndividual ;
+    spray:alignedWithOntology spray:OntologyService01 ;
+    spray:definedInSourceFile spray:FileDashboardSnapshotSchemaJson ;
+    spray:sourceFilePath "02_統計Service/03_api-contract/dashboard_snapshot.schema.json" .
+
+spray:FieldMetrics a spray:JSONField,
+        owl:NamedIndividual .
+
+spray:FieldProcessParameters a spray:JSONField,
+        owl:NamedIndividual .
+
+spray:FieldState a spray:JSONField,
+        owl:NamedIndividual .
+
+spray:GetComponentHealthSummary a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_component_health_summary"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:GetLatestDiagnosis a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_latest_diagnosis"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:GetLatestPrediction a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_latest_prediction"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:GetLatestRuntimeWindow a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_latest_runtime_window"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:GetMetricTrend a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_metric_trend"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:GetRuntimeWindow a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_runtime_window"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:GetStationDashboardStatus a spray:DatabaseQueryFunction,
+        owl:NamedIndividual ;
+    rdfs:label "資料庫查詢：get_station_dashboard_status"@zh ;
+    spray:sourceStatus "Database_ER_reference_0531" .
+
+spray:HighRisk a spray:RiskAssessment,
+        owl:NamedIndividual ;
+    spray:riskText "high risk" .
+
+spray:LineSummary a owl:Class ;
+    rdfs:label "產線摘要"@zh ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:LineSummary001 a spray:LineSummary,
+        owl:NamedIndividual ;
+    spray:generatedBy spray:StatisticsService ;
+    spray:hasWindow spray:StatisticsWindowW004 .
+
+spray:OntologyService a owl:Class ;
+    rdfs:label "本體服務"@zh ;
+    rdfs:subClassOf spray:Service .
+
+spray:RuntimeTTLArtifact a owl:Class ;
+    rdfs:subClassOf spray:DataContractArtifact .
+
+spray:RuntimeTTLOutputTemplate a spray:RuntimeTTLArtifact,
+        owl:NamedIndividual ;
+    spray:alignedWithOntology spray:OntologyService01 ;
+    spray:definedInSourceFile spray:FileStatisticsServiceOutputTemplateTtl ;
+    spray:sourceFilePath "02_統計Service/07_runtime-ttl-template/statistics_service_output.template.ttl" .
+
+spray:SprayLine a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:StationSnapshot a owl:Class ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:StatisticsSummaryLine1W004 a spray:StatisticsStationSummary,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line1 ;
+    spray:generatedBy spray:StatisticsService ;
+    spray:hasRiskAssessment spray:LowRisk ;
+    spray:hasState spray:Running ;
+    spray:hasWindow spray:StatisticsWindowW004 .
+
+spray:StatisticsSummaryLine2W004 a spray:StatisticsStationSummary,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line2 ;
+    spray:generatedBy spray:StatisticsService ;
+    spray:hasRiskAssessment spray:LowRisk ;
+    spray:hasState spray:Running ;
+    spray:hasWindow spray:StatisticsWindowW004 .
+
+spray:StatisticsSummaryLine3W004 a spray:StatisticsStationSummary,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line3 ;
+    spray:generatedBy spray:StatisticsService ;
+    spray:hasRiskAssessment spray:HighRisk ;
+    spray:hasState spray:Maintenance ;
+    spray:hasWindow spray:StatisticsWindowW004 .
+
+spray:TimeSeriesOutputSchema a spray:SchemaArtifact,
+        owl:NamedIndividual ;
+    spray:alignedWithOntology spray:OntologyService01 ;
+    spray:definedInSourceFile spray:FileTimeSeriesOutputSchemaJson ;
+    spray:sourceFilePath "02_統計Service/03_api-contract/time_series_output.schema.json" .
+
+spray:TimeSeriesQuerySchema a spray:SchemaArtifact,
+        owl:NamedIndividual ;
+    spray:alignedWithOntology spray:OntologyService01 ;
+    spray:definedInSourceFile spray:FileTimeSeriesQuerySchemaJson ;
+    spray:sourceFilePath "02_統計Service/03_api-contract/time_series_query.schema.json" .
+
+spray:TrendSeries a owl:Class ;
+    rdfs:label "趨勢序列"@zh ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:TrendSeries001 a spray:TrendSeries,
+        owl:NamedIndividual ;
+    spray:generatedBy spray:StatisticsService ;
+    spray:hasWindow spray:StatisticsWindowW004 .
+
+spray:UIService a owl:Class ;
+    rdfs:label "使用者介面服務"@zh ;
+    rdfs:subClassOf spray:Service .
+
+spray:AirCompressor a owl:Class ;
+    rdfs:label "空壓機"@zh ;
+    rdfs:comment "UI_v4 中 AirCompressor 改為 AirCompressor / 空壓機。"@zh ;
+    rdfs:subClassOf spray:Component .
+
+spray:AirValve a owl:Class ;
+    rdfs:label "氣閥"@zh ;
+    rdfs:subClassOf spray:Component .
+
+spray:ApplySampleMethodsFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "ApplySampleMethods 功能"@zh ;
+    spray:hasNextFunction spray:CalculateNozzleMetricsFunction ;
+    spray:sourceStatus "integrated_0531" ;
+    spray:usesFunction spray:GetSampleMethodFunction .
+
+spray:BuildLineOutputFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "BuildLineOutput 功能"@zh ;
+    spray:hasNextFunction spray:BuildOutputFunction ;
+    spray:hasPendingDependency spray:PendingRuleService ;
+    spray:sourceStatus "integrated_0531" ;
+    spray:usesFunction spray:CalculateLineMetricsFunction .
+
+spray:BuildOutputFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "BuildOutput 功能"@zh ;
+    spray:hasPendingDependency spray:PendingFutureModel ;
+    spray:produces spray:TimeSeriesOutput ;
+    spray:sourceStatus "integrated_0531" ;
+    spray:usesFunction spray:BuildLineOutputFunction .
+
+spray:CalculateFilterMetricsFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "CalculateFilterMetrics 功能"@zh ;
+    spray:hasNextFunction spray:CalculateSprayWidthMetricsFunction ;
+    spray:sourceStatus "integrated_0531" .
+
+spray:CalculateNozzleMetricsFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "CalculateNozzleMetrics 功能"@zh ;
+    spray:hasNextFunction spray:CalculateFilterMetricsFunction ;
+    spray:sourceStatus "integrated_0531" .
+
+spray:CalculateSprayWidthMetricsFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "CalculateSprayWidthMetrics 功能"@zh ;
+    spray:hasNextFunction spray:CalculateLineMetricsFunction ;
+    spray:sourceStatus "integrated_0531" .
+
+spray:CurrentWindowW002 a spray:CurrentDefinedBySystemWindow,
+        owl:NamedIndividual ;
+    spray:displayLabel "current" ;
+    spray:windowId "W002" ;
+    spray:windowMode "current" ;
+    spray:windowSize "defined_by_system" ;
+    spray:windowType "current_window" .
+
+spray:DetermineTimeTypeFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "DetermineTimeType 功能"@zh ;
+    spray:hasNextFunction spray:ResolveLineScopeFunction ;
+    spray:sourceStatus "integrated_0531" .
+
+spray:FilterMesh a owl:Class ;
+    rdfs:label "濾網"@zh ;
+    rdfs:subClassOf spray:Component .
+
+spray:FuturePredictionLine1W003 a spray:FutureStationPrediction,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line1 ;
+    spray:generatedBy spray:FutureService01 ;
+    spray:hasRiskAssessment spray:LowRisk ;
+    spray:hasState spray:Running ;
+    spray:hasWindow spray:PredictionWindowW003 .
+
+spray:FuturePredictionLine2W003 a spray:FutureStationPrediction,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line2 ;
+    spray:generatedBy spray:FutureService01 ;
+    spray:hasRiskAssessment spray:LowRisk ;
+    spray:hasState spray:Running ;
+    spray:hasWindow spray:PredictionWindowW003 .
+
+spray:FuturePredictionLine3W003 a spray:FutureStationPrediction,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line3 ;
+    spray:generatedBy spray:FutureService01 ;
+    spray:hasRiskAssessment spray:HighRisk ;
+    spray:hasState spray:Maintenance ;
+    spray:hasWindow spray:PredictionWindowW003 .
+
+spray:FutureService a owl:Class ;
+    rdfs:label "未來預測服務"@zh ;
+    rdfs:subClassOf spray:Service .
+
+spray:HistoricalWindowW001 a spray:HistoricalWindow,
+        owl:NamedIndividual ;
+    spray:displayLabel "past window" ;
+    spray:windowEnd "to_be_defined" ;
+    spray:windowId "W001" ;
+    spray:windowMode "time_or_batch" ;
+    spray:windowStart "to_be_defined" ;
+    spray:windowType "2hour_or_10batch" .
+
+spray:Nozzle a owl:Class ;
+    rdfs:label "噴嘴"@zh ;
+    rdfs:subClassOf spray:Component .
+
+spray:PredictionWindowW003 a spray:PredictionWindow,
+        owl:NamedIndividual ;
+    spray:displayLabel "future prediction window" ;
+    spray:windowId "W003" ;
+    spray:windowMode "future" ;
+    spray:windowSize "defined_by_future_service" ;
+    spray:windowType "prediction_window" .
+
+spray:QualityModule a owl:Class ;
+    rdfs:label "品質模組"@zh ;
+    rdfs:subClassOf spray:Component .
+
+spray:QueryDataFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "QueryData 功能"@zh ;
+    spray:hasNextFunction spray:GetSampleMethodFunction ;
+    spray:hasPendingDependency spray:PendingDatabaseBinding ;
+    spray:queriesDatabase spray:GetComponentHealthSummary,
+        spray:GetLatestDiagnosis,
+        spray:GetLatestPrediction,
+        spray:GetLatestRuntimeWindow,
+        spray:GetMetricTrend,
+        spray:GetRuntimeWindow,
+        spray:GetStationDashboardStatus ;
+    spray:sourceStatus "integrated_0531" .
+
+spray:ResolveLineScopeFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "ResolveLineScope 功能"@zh ;
+    spray:hasNextFunction spray:QueryDataFunction ;
+    spray:sourceStatus "integrated_0531" .
+
+spray:RobotArm a owl:Class ;
+    rdfs:label "機械手臂"@zh ;
+    rdfs:subClassOf spray:Component .
+
+spray:SampleMethodPolicy a owl:Class ;
+    rdfs:label "取樣方法策略"@zh .
+
+spray:SamplingMethod a owl:Class ;
+    rdfs:subClassOf spray:KnowledgeAsset .
+
+spray:SprayProcessStep a owl:Class ;
+    rdfs:label "噴塗製程步驟"@zh ;
+    rdfs:subClassOf spray:ProcessStep .
+
+spray:StatisticsServiceSchema a spray:SchemaArtifact,
+        owl:NamedIndividual ;
+    spray:alignedWithOntology spray:OntologyService01 ;
+    spray:definedInSourceFile spray:FileStatServiceSchemaJson ;
+    spray:sourceFilePath "02_統計Service/03_api-contract/stat_service.schema.json" .
+
+spray:ThresholdRule a owl:Class ;
+    rdfs:label "門檻規則"@zh ;
+    rdfs:subClassOf spray:KnowledgeAsset .
+
+spray:UIEDashboard01 a spray:EngineeringDashboard,
+        owl:NamedIndividual .
+
+spray:CalculateLineMetricsFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "CalculateLineMetrics 功能"@zh ;
+    spray:hasNextFunction spray:BuildLineOutputFunction ;
+    spray:sourceStatus "integrated_0531" ;
+    spray:usesFunction spray:CalculateFilterMetricsFunction,
+        spray:CalculateNozzleMetricsFunction,
+        spray:CalculateSprayWidthMetricsFunction .
+
+spray:Chamber a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:CurrentSnapshotLine1W002 a spray:CurrentStationSnapshot,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line1 ;
+    spray:generatedAt "to_be_defined" ;
+    spray:generatedBy spray:CurrentService01 ;
+    spray:hasMetric spray:Line1CurrentFlowRateMetric,
+        spray:Line1CurrentPressureMetric,
+        spray:Line1CurrentQualityMetric ;
+    spray:hasProcessParameter spray:Line1CurrentCycleTimeParameter,
+        spray:Line1CurrentTemperatureParameter,
+        spray:Line1CurrentUtilizationParameter ;
+    spray:hasState spray:Running ;
+    spray:hasWindow spray:CurrentWindowW002 ;
+    spray:schemaVersion "service-contract-compatible" .
+
+spray:CurrentSnapshotLine2W002 a spray:CurrentStationSnapshot,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line2 ;
+    spray:generatedAt "to_be_defined" ;
+    spray:generatedBy spray:CurrentService01 ;
+    spray:hasMetric spray:Line2CurrentFlowRateMetric,
+        spray:Line2CurrentPressureMetric,
+        spray:Line2CurrentQualityMetric ;
+    spray:hasProcessParameter spray:Line2CurrentCycleTimeParameter,
+        spray:Line2CurrentTemperatureParameter,
+        spray:Line2CurrentUtilizationParameter ;
+    spray:hasState spray:Running ;
+    spray:hasWindow spray:CurrentWindowW002 ;
+    spray:schemaVersion "service-contract-compatible" .
+
+spray:CurrentSnapshotLine3W002 a spray:CurrentStationSnapshot,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line3 ;
+    spray:generatedAt "to_be_defined" ;
+    spray:generatedBy spray:CurrentService01 ;
+    spray:hasMetric spray:Line3CurrentFlowRateMetric,
+        spray:Line3CurrentPressureMetric,
+        spray:Line3CurrentQualityMetric ;
+    spray:hasProcessParameter spray:Line3CurrentCycleTimeParameter,
+        spray:Line3CurrentTemperatureParameter,
+        spray:Line3CurrentUtilizationParameter ;
+    spray:hasState spray:Maintenance ;
+    spray:hasWindow spray:CurrentWindowW002 ;
+    spray:schemaVersion "service-contract-compatible" .
+
+spray:FieldCatalog a spray:FieldCatalog,
+        owl:Class,
+        owl:NamedIndividual ;
+    spray:definedInSourceFile spray:FileFieldCatalogCsv,
+        spray:FileFieldCatalogMd ;
+    spray:hasJSONField spray:FieldGeneratedAt,
+        spray:FieldLineId,
+        spray:FieldMetrics,
+        spray:FieldProcessParameters,
+        spray:FieldState,
+        spray:FieldStationNameEn,
+        spray:FieldStationNameZh,
+        spray:FieldWindow ;
+    spray:sourceFilePath "02_統計Service/02_field-catalog/field_catalog.csv" ;
+    rdfs:subClassOf spray:DataContractArtifact .
+
+spray:FutureStationPrediction a owl:Class ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:GetSampleMethodFunction a spray:ServiceFunction,
+        owl:NamedIndividual ;
+    rdfs:label "GetSampleMethod 功能"@zh ;
+    spray:hasNextFunction spray:ApplySampleMethodsFunction ;
+    spray:sourceStatus "integrated_0531" .
+
+spray:LowRisk a spray:RiskAssessment,
+        owl:NamedIndividual ;
+    spray:riskText "low risk" .
+
+spray:Maintenance a spray:StationState,
+        owl:NamedIndividual ;
+    spray:stateText "Maintenance" .
+
+spray:PastSnapshotLine1W001 a spray:PastStationSnapshot,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line1 ;
+    spray:generatedAt "to_be_defined" ;
+    spray:generatedBy spray:PastService01 ;
+    spray:hasMetric spray:Line1PastFlowRateMetric,
+        spray:Line1PastPressureMetric,
+        spray:Line1PastQualityMetric ;
+    spray:hasProcessParameter spray:Line1PastCycleTimeParameter,
+        spray:Line1PastTemperatureParameter,
+        spray:Line1PastUtilizationParameter ;
+    spray:hasState spray:Running ;
+    spray:hasWindow spray:HistoricalWindowW001 ;
+    spray:schemaVersion "service-contract-compatible" .
+
+spray:PastSnapshotLine2W001 a spray:PastStationSnapshot,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line2 ;
+    spray:generatedAt "to_be_defined" ;
+    spray:generatedBy spray:PastService01 ;
+    spray:hasMetric spray:Line2PastFlowRateMetric,
+        spray:Line2PastPressureMetric,
+        spray:Line2PastQualityMetric ;
+    spray:hasProcessParameter spray:Line2PastCycleTimeParameter,
+        spray:Line2PastTemperatureParameter,
+        spray:Line2PastUtilizationParameter ;
+    spray:hasState spray:Running ;
+    spray:hasWindow spray:HistoricalWindowW001 ;
+    spray:schemaVersion "service-contract-compatible" .
+
+spray:PastSnapshotLine3W001 a spray:PastStationSnapshot,
+        owl:NamedIndividual ;
+    spray:describesStation spray:Line3 ;
+    spray:generatedAt "to_be_defined" ;
+    spray:generatedBy spray:PastService01 ;
+    spray:hasMetric spray:Line3PastFlowRateMetric,
+        spray:Line3PastPressureMetric,
+        spray:Line3PastQualityMetric ;
+    spray:hasProcessParameter spray:Line3PastCycleTimeParameter,
+        spray:Line3PastTemperatureParameter,
+        spray:Line3PastUtilizationParameter ;
+    spray:hasState spray:Maintenance ;
+    spray:hasWindow spray:HistoricalWindowW001 ;
+    spray:schemaVersion "service-contract-compatible" .
+
+spray:StatisticsStationSummary a owl:Class ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:CurrentService01 a spray:CurrentService,
+        owl:NamedIndividual ;
+    spray:hasDownstreamService spray:FutureService01,
+        spray:StatisticsService ;
+    spray:hasOutput spray:CurrentSnapshotLine1W002,
+        spray:CurrentSnapshotLine2W002,
+        spray:CurrentSnapshotLine3W002 ;
+    spray:hasSamplingMethod spray:CurrentSampleMethodDefinedByService ;
+    spray:hasWindowPolicy spray:CurrentWindowPolicyDefinedBySystem ;
+    spray:produces spray:CurrentSnapshotLine1W002,
+        spray:CurrentSnapshotLine2W002,
+        spray:CurrentSnapshotLine3W002 ;
+    spray:service_name "current_service" .
+
+spray:CurrentStationSnapshot a owl:Class ;
+    rdfs:subClassOf spray:StationSnapshot .
+
+spray:DashboardSnapshot a owl:Class ;
+    rdfs:label "儀表板快照"@zh ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:Function a owl:Class ;
+    rdfs:label "功能"@zh ;
+    rdfs:comment "由 UI、Services 或 Database 存取使用的服務操作、API function 或資料庫查詢功能。"@zh ;
+    rdfs:subClassOf spray:CyberAsset .
+
+spray:HistoricalWindow a owl:Class ;
+    rdfs:subClassOf spray:StatisticsWindow .
+
+spray:InterfaceAsset a owl:Class ;
+    rdfs:label "介面資產"@zh ;
+    rdfs:subClassOf spray:CyberAsset .
+
+spray:Line1 a spray:PrimerStation,
+        owl:NamedIndividual ;
+    rdfs:label "line_1／底漆站"@zh ;
+    spray:hasComponent spray:Line1AirCompressor,
+        spray:Line1AirValve,
+        spray:Line1FilterMesh,
+        spray:Line1Nozzle,
+        spray:Line1QualityModule,
+        spray:Line1RobotArm ;
+    spray:lineId "line_1" ;
+    spray:stationInChamber spray:Chamber1 ;
+    spray:stationNameEn "Primer Station" ;
+    spray:stationNameZh "底漆站" .
+
+spray:Line2 a spray:TopcoatStation,
+        owl:NamedIndividual ;
+    rdfs:label "line_2／面漆站"@zh ;
+    spray:hasComponent spray:Line2AirCompressor,
+        spray:Line2AirValve,
+        spray:Line2FilterMesh,
+        spray:Line2Nozzle,
+        spray:Line2QualityModule,
+        spray:Line2RobotArm ;
+    spray:lineId "line_2" ;
+    spray:stationInChamber spray:Chamber2 ;
+    spray:stationNameEn "Topcoat Station" ;
+    spray:stationNameZh "面漆站" .
+
+spray:Line3 a spray:GoldPaintStation,
+        owl:NamedIndividual ;
+    rdfs:label "line_3／金漆站"@zh ;
+    spray:hasComponent spray:Line3AirCompressor,
+        spray:Line3AirValve,
+        spray:Line3FilterMesh,
+        spray:Line3Nozzle,
+        spray:Line3QualityModule,
+        spray:Line3RobotArm ;
+    spray:lineId "line_3" ;
+    spray:stationInChamber spray:Chamber3 ;
+    spray:stationNameEn "Gold Paint Station" ;
+    spray:stationNameZh "金漆站" .
+
+spray:PastService01 a spray:PastService,
+        owl:NamedIndividual ;
+    spray:hasDownstreamService spray:FutureService01,
+        spray:StatisticsService ;
+    spray:hasOutput spray:PastSnapshotLine1W001,
+        spray:PastSnapshotLine2W001,
+        spray:PastSnapshotLine3W001 ;
+    spray:hasSamplingMethod spray:PastSampleMethodDefinedByService ;
+    spray:hasWindowPolicy spray:PastWindowPolicyInputDefined ;
+    spray:produces spray:PastSnapshotLine1W001,
+        spray:PastSnapshotLine2W001,
+        spray:PastSnapshotLine3W001 ;
+    spray:service_name "past_service" .
+
+spray:PastStationSnapshot a owl:Class ;
+    rdfs:subClassOf spray:StationSnapshot .
+
+spray:PhysicalAsset a owl:Class ;
+    rdfs:label "物理資產"@zh ;
+    rdfs:subClassOf spray:Entity .
+
+spray:ProcessStep a owl:Class ;
+    rdfs:label "製程步驟"@zh ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:RiskAssessment a owl:Class ;
+    rdfs:label "風險評估"@zh ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:SchemaArtifact a owl:Class ;
+    rdfs:subClassOf spray:DataContractArtifact .
+
+spray:ThresholdConfigTemplate a spray:ThresholdConfig,
+        owl:NamedIndividual ;
+    spray:affectsOutputField spray:FieldMetrics,
+        spray:FieldProcessParameters,
+        spray:FieldState ;
+    spray:definedInSourceFile spray:FileThresholdConfigTemplateJson ;
+    spray:hasAppliesToScope spray:ComponentScope,
+        spray:FuturePredictionScope,
+        spray:LineScope,
+        spray:MetricScope,
+        spray:ProcessParameterScope,
+        spray:StationScope ;
+    spray:hasThresholdRule spray:AlarmRuleTemplate,
+        spray:WarningRuleTemplate ;
+    spray:hasThresholdSourceType spray:ExpertKnowledgeSource,
+        spray:FutureRiskModelSource,
+        spray:RuleServiceConfigSource,
+        spray:SystemConfigurationSource ;
+    spray:sourceFilePath "02_統計Service/05_threshold-config/threshold_config.template.json" .
+
+spray:ThresholdSourceType a owl:Class ;
+    rdfs:subClassOf spray:KnowledgeAsset .
+
+spray:WindowPolicy a owl:Class ;
+    rdfs:subClassOf spray:KnowledgeAsset .
+
+spray:CyberAsset a owl:Class ;
+    rdfs:label "數位資產"@zh ;
+    rdfs:subClassOf spray:Entity .
+
+spray:CycleTimeParameter a owl:Class ;
+    rdfs:subClassOf spray:ProcessParameter .
+
+spray:FlowRateMetric a owl:Class ;
+    rdfs:subClassOf spray:Metric .
+
+spray:FutureService01 a spray:FutureService,
+        owl:NamedIndividual ;
+    spray:hasDownstreamService spray:StatisticsService ;
+    spray:hasOutput spray:FuturePredictionLine1W003,
+        spray:FuturePredictionLine2W003,
+        spray:FuturePredictionLine3W003 ;
+    spray:hasUpstreamService spray:CurrentService01,
+        spray:PastService01 ;
+    spray:hasWindowPolicy spray:FutureWindowPolicyDefinedByFutureService ;
+    spray:produces spray:FuturePredictionLine1W003,
+        spray:FuturePredictionLine2W003,
+        spray:FuturePredictionLine3W003 ;
+    spray:service_name "future_service" ;
+    spray:usesCurrentSnapshot spray:CurrentSnapshotLine1W002,
+        spray:CurrentSnapshotLine2W002,
+        spray:CurrentSnapshotLine3W002 ;
+    spray:usesPastSnapshot spray:PastSnapshotLine1W001,
+        spray:PastSnapshotLine2W001,
+        spray:PastSnapshotLine3W001 ;
+    spray:usesThresholdConfig spray:ThresholdConfigTemplate .
+
+spray:PressureMetric a owl:Class ;
+    rdfs:subClassOf spray:Metric .
+
+spray:ProcessParameter a owl:Class ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:QualityMetric a owl:Class ;
+    rdfs:subClassOf spray:Metric .
+
+spray:StatisticsWindowW004 a spray:StatisticsWindow,
+        owl:NamedIndividual ;
+    spray:displayLabel "statistics dashboard window" ;
+    spray:windowId "W004" ;
+    spray:windowMode "statistics" ;
+    spray:windowSize "follow_statistics_service_contract" ;
+    spray:windowType "dashboard_snapshot_window" .
+
+spray:TemperatureParameter a owl:Class ;
+    rdfs:subClassOf spray:ProcessParameter .
+
+spray:TemplateArtifact a owl:Class ;
+    rdfs:subClassOf spray:DataContractArtifact .
+
+spray:ThresholdConfig a owl:Class ;
+    rdfs:label "門檻設定"@zh ;
+    rdfs:subClassOf spray:KnowledgeAsset .
+
+spray:UtilizationParameter a owl:Class ;
+    rdfs:subClassOf spray:ProcessParameter .
+
+spray:AppliesToScope a owl:Class ;
+    rdfs:subClassOf spray:KnowledgeAsset .
+
+spray:StationState a owl:Class ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:Running a spray:StationState,
+        owl:NamedIndividual ;
+    spray:stateText "Running" .
+
+spray:Component a owl:Class ;
+    rdfs:label "元件"@zh ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:DataContractArtifact a owl:Class ;
+    rdfs:label "資料契約物件"@zh ;
+    rdfs:subClassOf spray:CyberAsset .
+
+spray:Metric a owl:Class ;
+    rdfs:label "指標"@zh ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:CalculationFormula a owl:Class ;
+    rdfs:label "計算公式"@zh .
+
+spray:Entity a owl:Class ;
+    rdfs:label "實體"@zh .
+
+spray:JSONField a owl:Class ;
+    rdfs:subClassOf spray:DataContractArtifact .
+
+spray:KnowledgeAsset a owl:Class ;
+    rdfs:label "知識資產"@zh ;
+    rdfs:subClassOf spray:CyberAsset .
+
+spray:Station a owl:Class ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:DatabaseQueryFunction a owl:Class ;
+    rdfs:label "資料庫查詢功能"@zh .
+
+spray:StatisticsWindow a owl:Class ;
+    rdfs:label "統計視窗"@zh ;
+    rdfs:subClassOf spray:RuntimeData .
+
+spray:OntologyService01 a spray:OntologyService,
+        owl:NamedIndividual ;
+    spray:service_name "ontology_service" .
+
+spray:StatisticsService a spray:StatisticsService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "統計服務"@zh ;
+    spray:aggregatesCurrentSnapshot spray:CurrentSnapshotLine1W002,
+        spray:CurrentSnapshotLine2W002,
+        spray:CurrentSnapshotLine3W002 ;
+    spray:aggregatesPastSnapshot spray:PastSnapshotLine1W001,
+        spray:PastSnapshotLine2W001,
+        spray:PastSnapshotLine3W001 ;
+    spray:hasDownstreamInterface spray:UIEDashboard01 ;
+    spray:hasDownstreamService spray:OntologyService01,
+        spray:RuntimeTTLGenerator01,
+        spray:UIService01 ;
+    spray:hasOutput spray:DashboardSnapshot001 ;
+    spray:hasUpstreamService spray:CurrentService01,
+        spray:FutureService01,
+        spray:PastService01 ;
+    spray:hasWindowPolicy spray:StatisticsWindowPolicyFollowContract ;
+    spray:produces spray:DashboardSnapshot001,
+        spray:LineSummary001,
+        spray:StatisticsSummaryLine1W004,
+        spray:StatisticsSummaryLine2W004,
+        spray:StatisticsSummaryLine3W004,
+        spray:TrendSeries001 ;
+    spray:service_name "statistics_service" ;
+    spray:usesFuturePrediction spray:FuturePredictionLine1W003,
+        spray:FuturePredictionLine2W003,
+        spray:FuturePredictionLine3W003 ;
+    spray:usesThresholdConfig spray:ThresholdConfigTemplate ;
+    rdfs:subClassOf spray:Service .
+
+spray:RawSensorField a owl:Class ;
+    rdfs:label "原始感測欄位"@zh .
+
+spray:SourceFile a owl:Class ;
+    rdfs:label "來源檔案"@zh ;
+    rdfs:subClassOf spray:DataContractArtifact .
+
+spray:ServiceFunction a owl:Class ;
+    rdfs:label "服務功能"@zh ;
+    rdfs:subClassOf spray:Function .
+
+spray:Service a owl:Class ;
+    rdfs:label "服務"@zh ;
+    rdfs:subClassOf spray:CyberAsset .
+
+spray:RuntimeData a owl:Class ;
+    rdfs:label "運行資料"@zh ;
+    rdfs:subClassOf spray:CyberAsset .
+

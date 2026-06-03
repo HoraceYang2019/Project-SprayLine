@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "http://nkust.edu.tw/mislab/spraying/schema/time_series_query.schema.json",
+  "title": "SprayLine Time Series Query",
+  "description": "Query contract aligned with csv_templates/time_series_query_template.csv. line_id is the database-facing identifier; typical values are line_1, line_2, line_3.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_id",
+    "line_id",
+    "mode",
+    "metric_name"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "line_id": {
+      "type": "string",
+      "description": "Database-facing line identifier, e.g. line_1, line_2, line_3."
+    },
+    "mode": {
+      "type": "string",
+      "description": "Query mode, such as time_mode or batch_mode."
+    },
+    "time_mode": {
+      "type": "boolean",
+      "description": "UI_v3 TimeMode state."
+    },
+    "batch_mode": {
+      "type": "boolean",
+      "description": "UI_v3 BatchMode state."
+    },
+    "metric_name": {
+      "type": "string"
+    },
+    "start_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Used when mode is time-based."
+    },
+    "end_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Used when mode is time-based."
+    },
+    "start_batch_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Used when mode is batch-based."
+    },
+    "end_batch_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Used when mode is batch-based."
+    },
+    "window_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "window_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "For example 2hour or 10batch; current window_size remains pending."
+    },
+    "selected_time_point": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "back_to_live": {
+      "type": "boolean"
+    }
+  }
+}

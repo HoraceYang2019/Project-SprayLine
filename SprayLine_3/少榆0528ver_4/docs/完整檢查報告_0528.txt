@@ -1,0 +1,36 @@
+少榆0528ver_1_fixed 完整檢查報告
+========================================
+
+TTL files:
+- ontology/SprayLine_service_extension.ttl: parse OK, triples=1557, target_lang=en, labels={'en': 322}, comments={'en': 46}, removed_controller_triples=3, controller_after_uri=0, controller_after_literal=0
+- ontology/SprayLine_service_extension_chinese.ttl: parse OK, triples=1323, target_lang=zh, labels={'zh': 129}, comments={'zh': 5}, removed_controller_triples=2, controller_after_uri=0, controller_after_literal=0
+- ontology/SprayLine_service_extension_english.ttl: parse OK, triples=1557, target_lang=en, labels={'en': 322}, comments={'en': 46}, removed_controller_triples=3, controller_after_uri=0, controller_after_literal=0
+- runtime/statistics_service_output.template.ttl: parse OK, triples=16, target_lang=en, labels={'en': 5}, comments={'en': 2}, removed_controller_triples=0, controller_after_uri=0, controller_after_literal=0
+- runtime/statistics_service_output_chinese.template.ttl: parse OK, triples=16, target_lang=zh, labels={'zh': 5}, comments={'zh': 2}, removed_controller_triples=0, controller_after_uri=0, controller_after_literal=0
+- runtime/statistics_service_output_english.template.ttl: parse OK, triples=16, target_lang=en, labels={'en': 5}, comments={'en': 2}, removed_controller_triples=0, controller_after_uri=0, controller_after_literal=0
+
+JSON files:
+- knowledge/threshold_config.template.json: OK
+- schema/dashboard_snapshot.schema.json: OK
+- schema/stat_service.schema.json: OK
+- schema/time_series_output.schema.json: OK
+- schema/time_series_query.schema.json: OK
+- templates/dashboard_snapshot.template.json: OK
+- templates/template_10batch.json: OK
+- templates/template_2hour.json: OK
+- templates/time_series_output.template.json: OK
+- templates/time_series_query.template.json: OK
+
+CSV files:
+- csv_templates/dashboard_snapshot_template.csv: rows=38, columns=9
+- csv_templates/dashboard_snapshot_template_STAGE2.csv: rows=38, columns=15
+- csv_templates/function_io_template.csv: rows=12, columns=7
+- csv_templates/function_io_template_STAGE2.csv: rows=12, columns=14
+- csv_templates/template_10batch.csv: rows=47, columns=9
+- csv_templates/template_2hour.csv: rows=47, columns=9
+- csv_templates/threshold_config_template.csv: rows=8, columns=15
+- csv_templates/time_series_output_template.csv: rows=27, columns=9
+- csv_templates/time_series_query_template.csv: rows=9, columns=9
+- docs/field_catalog.csv: rows=39, columns=13
+- docs/service_extension_mapping_table.csv: rows=10, columns=5
+- docs/ui_region_mapping.csv: rows=14, columns=5
