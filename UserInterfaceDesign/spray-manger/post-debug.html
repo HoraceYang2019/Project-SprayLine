@@ -3,514 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>POST Debug v2 - Apps Script Gmail Test</title>
+  <title>POST Debug</title>
   <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, "Microsoft JhengHei", sans-serif;
-      background: #f3f6f9;
-      color: #1f2937;
-    }
-
-    .debug-page {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    .debug-card {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-      padding: 24px;
-      margin-bottom: 20px;
-    }
-
-    h1, h2, h3 { margin-top: 0; }
-
-    .hint {
-      color: #6b7280;
-      line-height: 1.7;
-      margin-bottom: 0;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .field {
-      margin-bottom: 16px;
-    }
-
-    .field label {
-      display: block;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 14px;
-      background: #fff;
-    }
-
-    .field textarea {
-      min-height: 190px;
-      resize: vertical;
-      font-family: Consolas, monospace;
-    }
-
-    .actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .btn {
-      border: 1px solid #1d4ed8;
-      background: #1d4ed8;
-      color: white;
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .btn.secondary {
-      background: white;
-      color: #1d4ed8;
-    }
-
-    .btn.warning {
-      border-color: #b45309;
-      background: #b45309;
-    }
-
-    .btn.danger {
-      border-color: #b91c1c;
-      background: #b91c1c;
-    }
-
-    .status {
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .status.pending { color: #1d4ed8; }
-    .status.success { color: #166534; }
-    .status.error { color: #b91c1c; }
-    .status.warn { color: #b45309; }
-
-    pre {
-      margin: 0;
-      background: #111827;
-      color: #e5e7eb;
-      border-radius: 12px;
-      padding: 16px;
-      overflow: auto;
-      line-height: 1.5;
-      min-height: 220px;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .mini {
-      font-size: 13px;
-      color: #6b7280;
-      line-height: 1.6;
-    }
-
-    .check-list {
-      margin: 10px 0 0;
-      padding-left: 20px;
-      color: #4b5563;
-      line-height: 1.8;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 4px 9px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      background: #eff6ff;
-      color: #1d4ed8;
-      margin-right: 6px;
-    }
-
-    @media (max-width: 780px) {
-      .grid { grid-template-columns: 1fr; }
-    }
+    body { font-family: Arial, 'Microsoft JhengHei', sans-serif; background:#f8fafc; color:#0f172a; padding:24px; }
+    textarea { width:100%; min-height:260px; border-radius:14px; border:1px solid #cbd5e1; padding:14px; font-family:monospace; }
+    input { width:100%; border-radius:999px; border:1px solid #cbd5e1; padding:12px 14px; margin:10px 0; }
+    button { border:0; border-radius:999px; background:#0f172a; color:#fff; padding:12px 18px; font-weight:800; cursor:pointer; }
+    pre { background:#0f172a; color:#dbeafe; padding:14px; border-radius:14px; overflow:auto; }
   </style>
 </head>
 <body>
-  <div class="debug-page">
-    <section class="debug-card">
-      <h1>POST Debug v2</h1>
-      <p class="hint">
-        這頁專門測試 Dashboard → Google Apps Script → Gmail。它提供 4 種測法：
-        <span class="badge">GET</span>
-        <span class="badge">fetch</span>
-        <span class="badge">no-cors</span>
-        <span class="badge">form POST</span>
-        用來分辨到底是 URL、CORS、payload、部署權限，還是 warning 條件造成沒寄出。
-      </p>
-    </section>
-
-    <section class="debug-card">
-      <h2>Request</h2>
-
-      <div class="field">
-        <label for="urlInput">Apps Script Web App URL /exec</label>
-        <input id="urlInput" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
-        <div class="mini">請確認是正式網址 <strong>/exec</strong>，不是 <strong>/dev</strong>。</div>
-      </div>
-
-      <div class="grid">
-        <div class="field">
-          <label for="riskLevelInput">Risk Level</label>
-          <select id="riskLevelInput">
-            <option value="High">High → Apps Script 會轉成 ALARM</option>
-            <option value="Medium">Medium → Apps Script 會轉成 WARNING</option>
-            <option value="Low">Low → Apps Script 會轉成 INFO</option>
-            <option value="test">test → Apps Script 會轉成 TEST</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="stationInput">Station</label>
-          <select id="stationInput">
-            <option value="Station 1">Station 1 / Robot 1</option>
-            <option value="Station 2" selected>Station 2 / Robot 2</option>
-            <option value="Station 3">Station 3 / Robot 3</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="batchInput">Batch ID</label>
-          <input id="batchInput" type="text" value="B20260524-DEBUG" />
-        </div>
-
-        <div class="field">
-          <label for="hourInput">Hour Key</label>
-          <input id="hourInput" type="text" value="14:00" />
-        </div>
-
-        <div class="field">
-          <label for="okRateInput">Predicted OK Rate</label>
-          <input id="okRateInput" type="number" step="0.1" value="86.5" />
-        </div>
-
-        <div class="field">
-          <label for="ngPcsInput">Predicted NG pcs</label>
-          <input id="ngPcsInput" type="number" step="1" value="42" />
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="messageInput">Message</label>
-        <input id="messageInput" type="text" value="Manual POST debug from post-debug-v2.html. Station 2 risk test." />
-      </div>
-
-      <div class="field">
-        <label for="payloadInput">Payload Preview</label>
-        <textarea id="payloadInput"></textarea>
-        <div class="mini">你可以直接改 JSON；送出時會以這個 textarea 內容為準。</div>
-      </div>
-
-      <div class="actions">
-        <button class="btn secondary" id="reloadPayloadBtn" type="button">Refresh Payload</button>
-        <button class="btn secondary" id="openGetBtn" type="button">1. Open GET /exec</button>
-        <button class="btn" id="sendFetchBtn" type="button">2. POST by fetch</button>
-        <button class="btn warning" id="sendNoCorsBtn" type="button">3. POST by no-cors</button>
-        <button class="btn danger" id="sendFormBtn" type="button">4. POST by form</button>
-        <button class="btn secondary" id="copyCurlBtn" type="button">Copy cURL</button>
-        <button class="btn secondary" id="clearLogBtn" type="button">Clear Log</button>
-      </div>
-    </section>
-
-    <section class="debug-card">
-      <h2>Response / Debug Log</h2>
-      <div class="status" id="statusText">Idle</div>
-      <pre id="responseOutput">No request yet.</pre>
-
-      <h3 style="margin-top:20px;">怎麼判斷</h3>
-      <ul class="check-list">
-        <li><strong>Open GET /exec</strong>：新分頁如果看到 ok:true，代表部署 URL 基本正確。</li>
-        <li><strong>POST by fetch</strong>：如果失敗且出現 CORS，就是瀏覽器不允許讀 Apps Script 回應，不代表 Apps Script 沒收到。</li>
-        <li><strong>POST by no-cors</strong>：前端看不到回應，狀態會是 opaque；請去 Gmail 或 Apps Script Executions 看有沒有 MAIL_SENT。</li>
-        <li><strong>POST by form</strong>：用表單送 payload=JSON，會開新分頁；這通常最適合確認 Apps Script 的 doPost 是否真的被打到。</li>
-      </ul>
-    </section>
-  </div>
-
+  <h1>Apps Script POST Debug</h1>
+  <p>Paste your Apps Script Web App URL and submit a hidden-form payload test.</p>
+  <input id="url" placeholder="Apps Script URL" />
+  <textarea id="payload"></textarea>
+  <p><button id="sendBtn">Send hidden form POST</button></p>
+  <pre id="log">Idle</pre>
   <script>
-    const urlInput = document.getElementById("urlInput");
-    const riskLevelInput = document.getElementById("riskLevelInput");
-    const stationInput = document.getElementById("stationInput");
-    const batchInput = document.getElementById("batchInput");
-    const hourInput = document.getElementById("hourInput");
-    const okRateInput = document.getElementById("okRateInput");
-    const ngPcsInput = document.getElementById("ngPcsInput");
-    const messageInput = document.getElementById("messageInput");
-    const payloadInput = document.getElementById("payloadInput");
-    const statusText = document.getElementById("statusText");
-    const responseOutput = document.getElementById("responseOutput");
-
-    const DEFAULT_URL = "https://script.google.com/macros/s/AKfycbyvPzX3epFpOH9AUFLLlD_-W4EXCOULHInUZKfmnCyJHlrCOY_HYTNSCBLtm3ZVzoWnBQ/exec";
-
-    function pad(value) {
-      return String(value).padStart(2, "0");
-    }
-
-    function formatNow() {
-      const now = new Date();
-      return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-    }
-
-    function getRobotFromStation(station) {
-      if (station.includes("1")) return "Robot 1";
-      if (station.includes("2")) return "Robot 2";
-      if (station.includes("3")) return "Robot 3";
-      return "Unknown Robot";
-    }
-
-    function getProcessStepFromStation(station) {
-      if (station.includes("1")) return "Base Coat";
-      if (station.includes("2")) return "Top Coat";
-      if (station.includes("3")) return "Edge Touch-up";
-      return "-";
-    }
-
-    function buildPayloadFromFields() {
-      const station = stationInput.value;
-      const robot = getRobotFromStation(station);
-      const processStep = getProcessStepFromStation(station);
-      const now = formatNow();
-      const requestId = `DEBUG-${Date.now()}`;
-
-      return {
-        warningId: requestId,
-        timestamp: `${now} DEBUG`,
-        time: `${now} DEBUG`,
-        hourKey: hourInput.value.trim() || "14:00",
-        riskLevel: riskLevelInput.value,
-        line: "Spray Line 1",
-        station,
-        robot,
-        processStep,
-        batchId: batchInput.value.trim() || "B20260524-DEBUG",
-        message: messageInput.value.trim(),
-        mainCause: "Spray pressure instability and robot path deviation.",
-        suggestedAction: "Check nozzle condition, spray pressure, robot path, and paint supply.",
-        predictedNgPcs: Number(ngPcsInput.value),
-        predictedOkRate: Number(okRateInput.value),
-        metrics: {
-          predictedOkRate: `${Number(okRateInput.value).toFixed(1)}%`,
-          ngPcs: String(Number(ngPcsInput.value)),
-          utilization: "68.0%",
-          cycleTime: "46.5 sec"
-        },
-        recipientRole: "manager",
-        debugSource: "post-debug-v2.html"
-      };
-    }
-
-    function refreshPayloadPreview() {
-      payloadInput.value = JSON.stringify(buildPayloadFromFields(), null, 2);
-    }
-
-    function readPayloadFromTextarea() {
-      try {
-        return JSON.parse(payloadInput.value);
-      } catch (error) {
-        throw new Error("Payload textarea is not valid JSON: " + error.message);
-      }
-    }
-
-    function getUrl() {
-      const url = urlInput.value.trim();
-      if (!url) throw new Error("Apps Script URL is required.");
-      if (!url.includes("/exec")) {
-        log("Warning: URL does not include /exec. Make sure you are not using /dev.");
-      }
-      localStorage.setItem("appsScriptDebugUrl", url);
-      return url;
-    }
-
-    function setStatus(text, type) {
-      statusText.textContent = text;
-      statusText.className = `status ${type || ""}`.trim();
-    }
-
-    function log(message, data) {
-      const time = new Date().toLocaleTimeString();
-      const block = typeof data === "undefined"
-        ? `[${time}] ${message}`
-        : `[${time}] ${message}\n${typeof data === "string" ? data : JSON.stringify(data, null, 2)}`;
-      responseOutput.textContent = responseOutput.textContent === "No request yet."
-        ? block
-        : `${block}\n\n${responseOutput.textContent}`;
-    }
-
-    function openGet() {
-      try {
-        const url = getUrl();
-        setStatus("Opening GET /exec in new tab...", "pending");
-        log("Opening GET URL", url);
-        window.open(url, "_blank", "noopener,noreferrer");
-        setStatus("GET tab opened. Check whether it shows ok:true.", "success");
-      } catch (error) {
-        setStatus("GET failed before opening", "error");
-        log(String(error));
-      }
-    }
-
-    async function sendByFetch() {
-      try {
-        const url = getUrl();
-        const payload = readPayloadFromTextarea();
-
-        setStatus("Sending POST by normal fetch...", "pending");
-        log("POST by fetch payload", payload);
-
-        const response = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
-          body: JSON.stringify(payload)
-        });
-
-        const text = await response.text();
-        let parsed = null;
-
-        try {
-          parsed = JSON.parse(text);
-        } catch (error) {
-          parsed = null;
-        }
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status} ${response.statusText}\n${text}`);
-        }
-
-        setStatus("POST by fetch completed. If JSON says mailSent:true, Gmail should receive it.", "success");
-        log("POST by fetch response", parsed || text);
-      } catch (error) {
-        setStatus("POST by fetch failed", "error");
-        log("POST by fetch error. If this says CORS, try no-cors or form POST.", String(error));
-      }
-    }
-
-    async function sendByNoCors() {
-      try {
-        const url = getUrl();
-        const payload = readPayloadFromTextarea();
-
-        setStatus("Sending POST by no-cors...", "pending");
-        log("POST by no-cors payload", payload);
-
-        const response = await fetch(url, {
-          method: "POST",
-          mode: "no-cors",
-          body: JSON.stringify(payload)
-        });
-
-        setStatus("no-cors request completed locally. Browser cannot read Apps Script response.", "warn");
-        log("POST by no-cors result", {
-          note: "no-cors makes the response opaque. This does NOT prove Gmail sent. Check Apps Script Executions or Gmail.",
-          responseType: response.type,
-          responseStatus: response.status
-        });
-      } catch (error) {
-        setStatus("POST by no-cors failed before sending", "error");
-        log("POST by no-cors error", String(error));
-      }
-    }
-
-    function sendByForm() {
-      try {
-        const url = getUrl();
-        const payload = readPayloadFromTextarea();
-
-        setStatus("Submitting form POST in a new tab...", "pending");
-        log("POST by form payload", payload);
-
-        const form = document.createElement("form");
-        form.method = "POST";
-        form.action = url;
-        form.target = "_blank";
-        form.style.display = "none";
-
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "payload";
-        input.value = JSON.stringify(payload);
-
-        form.appendChild(input);
-        document.body.appendChild(form);
-        form.submit();
-        form.remove();
-
-        setStatus("Form POST submitted. Check the new tab, Gmail, and Apps Script Executions.", "success");
-        log("Form POST submitted", {
-          note: "Apps Script parsePayload_ should read e.parameter.payload for this test."
-        });
-      } catch (error) {
-        setStatus("Form POST failed before sending", "error");
-        log("POST by form error", String(error));
-      }
-    }
-
-    async function copyCurl() {
-      try {
-        const url = getUrl();
-        const payload = readPayloadFromTextarea();
-        const compactJson = JSON.stringify(payload).replace(/'/g, "'\"'\"'");
-        const command = `curl -L -X POST -H 'Content-Type: text/plain;charset=utf-8' --data '${compactJson}' '${url}'`;
-
-        await navigator.clipboard.writeText(command);
-        setStatus("cURL copied", "success");
-        log("Copied cURL command", command);
-      } catch (error) {
-        setStatus("Copy cURL failed", "error");
-        log("Copy cURL error", String(error));
-      }
-    }
-
-    function clearLog() {
-      responseOutput.textContent = "No request yet.";
-      setStatus("Idle", "");
-    }
-
-    const savedUrl = localStorage.getItem("appsScriptDebugUrl");
-    urlInput.value = savedUrl || DEFAULT_URL;
-    refreshPayloadPreview();
-
-    [riskLevelInput, stationInput, batchInput, hourInput, okRateInput, ngPcsInput, messageInput].forEach(element => {
-      element.addEventListener("input", refreshPayloadPreview);
-      element.addEventListener("change", refreshPayloadPreview);
+    const defaultPayload = {
+      warningId: 'POST-DEBUG-' + Date.now(),
+      timestamp: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }),
+      hourKey: 'TEST',
+      riskLevel: 'High',
+      line: 'Spray Line 1',
+      station: 'Station 2',
+      robot: 'Robot 2',
+      processStep: 'Top Coat',
+      batchId: 'DEBUG-TEST',
+      message: 'POST Debug test from dashboard utility page.',
+      mainCause: 'Frontend debug test.',
+      suggestedAction: 'No action required.',
+      predictedNgPcs: 42,
+      predictedOkRate: 86.5,
+      recipientRole: 'manager'
+    };
+    document.getElementById('payload').value = JSON.stringify(defaultPayload, null, 2);
+    document.getElementById('sendBtn').addEventListener('click', () => {
+      const url = document.getElementById('url').value.trim();
+      const payload = JSON.parse(document.getElementById('payload').value);
+      if (!url) { document.getElementById('log').textContent = 'Please enter URL.'; return; }
+      const iframeName = 'debugFrame_' + Date.now();
+      const iframe = document.createElement('iframe');
+      iframe.name = iframeName;
+      iframe.style.display = 'none';
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = url + '?source=post_debug&ts=' + Date.now();
+      form.target = iframeName;
+      form.style.display = 'none';
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'payload';
+      input.value = JSON.stringify(payload);
+      form.appendChild(input);
+      document.body.appendChild(iframe);
+      document.body.appendChild(form);
+      document.getElementById('log').textContent = 'Submitting hidden form POST... check Gmail and Apps Script Executions.';
+      form.submit();
+      setTimeout(() => { form.remove(); iframe.remove(); document.getElementById('log').textContent += '\nSubmitted. Browser may not read Apps Script response.'; }, 5000);
     });
-
-    document.getElementById("reloadPayloadBtn").addEventListener("click", refreshPayloadPreview);
-    document.getElementById("openGetBtn").addEventListener("click", openGet);
-    document.getElementById("sendFetchBtn").addEventListener("click", sendByFetch);
-    document.getElementById("sendNoCorsBtn").addEventListener("click", sendByNoCors);
-    document.getElementById("sendFormBtn").addEventListener("click", sendByForm);
-    document.getElementById("copyCurlBtn").addEventListener("click", copyCurl);
-    document.getElementById("clearLogBtn").addEventListener("click", clearLog);
   </script>
 </body>
 </html>
