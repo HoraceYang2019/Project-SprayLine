@@ -1,0 +1,9 @@
+{
+  "has_ui_adapter": true,
+  "api_has_ui_summary": true,
+  "api_has_ui_station_detail": true,
+  "api_has_ui_component_detail": true,
+  "ui_summary_output_has_stations": true,
+  "ui_station_detail_has_component_metrics": true,
+  "ui_component_detail_component_name": "nozzle"
+}
