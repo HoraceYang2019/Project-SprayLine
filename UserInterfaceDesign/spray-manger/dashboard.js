@@ -3,13 +3,43 @@
 // ==============================
 
 const CONFIG = {
-  USE_MOCK_DATA: true,
+  // Simulate the UI as if it is connected to Project-SprayLine API.
+  // The responses below still come from frontend mock data, but they use the same API/schema shape.
+  USE_MOCK_DATA: false,
+  SIMULATED_API_ENABLED: true,
+
+  // Legacy single endpoint. If your backend returns the old Manager UI aggregate payload, fill this.
   HISTORICAL_ACTUAL_API_URL: "",
   DB_API_URL: "",
   FORECAST_API_URL: "",
+
+  // Project-SprayLine Dashboard v15 / DB Schema v2 endpoints.
+  // When API_BASE_URL is set and USE_MOCK_DATA is false, the UI will call these routes:
+  // /api/v1/lines/{line_id}/stations/latest
+  // /api/v1/lines/{line_id}/kpi
+  // /api/v1/lines/{line_id}/charts/quality-trend
+  // /api/v1/lines/{line_id}/charts/utilization-trend
+  // /api/v1/lines/{line_id}/charts/cycle-time-trend
+  // /api/v1/lines/{line_id}/diagnosis/latest
+  // /api/v1/lines/{line_id}/alerts/pending
+  // /api/v1/lines/{line_id}/prediction-accuracy
+  API_BASE_URL: "http://127.0.0.1:5000",
+  API_USE_PROJECT_SCHEMA: true,
+  API_LINE_IDS: ["line_1", "line_2", "line_3"],
+  API_TREND_TIMESTEP: "hour",
+  API_DATE: "2026-06-08",
+  SIMULATED_API_START_DATE: "2026-06-08",
+  SIMULATED_API_START_HOUR: 0,
+  SIMULATED_API_MAX_HOUR: 23,
+  SIMULATED_API_STEP_HOURS: 1,
+
   WARNING_APP_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyvPzX3epFpOH9AUFLLlD_-W4EXCOULHInUZKfmnCyJHlrCOY_HYTNSCBLtm3ZVzoWnBQ/exec",
   DB_POLL_INTERVAL_MS: 20 * 60 * 1000,
-  MOCK_POLL_INTERVAL_MS: 5000
+  MOCK_POLL_INTERVAL_MS: 5000,
+  SIMULATED_API_UPLOAD_INTERVAL_MS: 5000,
+  SIMULATED_HISTORY_STORAGE_KEY: "spray_manager_daily_archive_v1",
+  SIMULATED_HOURLY_STORAGE_KEY: "spray_manager_hourly_snapshots_v1",
+  SIMULATED_STATE_STORAGE_KEY: "spray_manager_simulated_api_state_v1"
 };
 
 // ==============================
@@ -299,6 +329,1255 @@ const MOCK_STATION_DETAIL_HOURLY_TODAY = {
   }
 };
 
+
+// ==============================
+// Project-SprayLine DB Schema v2 / Dashboard v15 integration layer
+// Source in project: SprayLine_3/少榆0602ver_5/schema + templates + docs/api_v1_routes.csv
+// This layer keeps the Manager UI connected to DB/web-service contracts without hard-coding UI-only data.
+// ==============================
+
+const PROJECT_STATION_META = {
+  line_1: {
+    stationName: "第一站",
+    layerName: "底色層",
+    machineName: "第一站噴塗機",
+    stationNameZh: "底漆站",
+    stationNameEn: "Primer Station",
+    engineerRole: "第一站負責工程師",
+    engineerEmail: "station1.engineer@example.com",
+    recipeId: "BASE-WHITE-01"
+  },
+  line_2: {
+    stationName: "第二站",
+    layerName: "顏色層",
+    machineName: "第二站噴塗機",
+    stationNameZh: "面漆站",
+    stationNameEn: "Topcoat Station",
+    engineerRole: "第二站負責工程師",
+    engineerEmail: "station2.engineer@example.com",
+    recipeId: "COLOR-WHITE-01"
+  },
+  line_3: {
+    stationName: "第三站",
+    layerName: "保護層",
+    machineName: "第三站噴塗機",
+    stationNameZh: "金漆站",
+    stationNameEn: "Clearcoat Station",
+    engineerRole: "第三站負責工程師",
+    engineerEmail: "station3.engineer@example.com",
+    recipeId: "CLEAR-COAT-01"
+  }
+};
+
+const PROJECT_SCHEMA_DB_MAP = {
+  station_latest: {
+    route: "/api/v1/lines/{line_id}/stations/latest",
+    schema: "station_latest.schema.json",
+    dbTables: ["runtime_window", "runtime_signal", "runtime_reference", "runtime_metric", "robot_pose"],
+    uiUse: "三站最新壓力、流量、噴幅、品質分數、稼動率、Cycle Time、元件狀態"
+  },
+  quality_trend: {
+    route: "/api/v1/lines/{line_id}/charts/quality-trend",
+    schema: "quality_trend.schema.json",
+    dbTables: ["qc_result", "ml_prediction_result"],
+    uiUse: "Past / Current / Future 的 QC 或品質分數曲線"
+  },
+  utilization_trend: {
+    route: "/api/v1/lines/{line_id}/charts/utilization-trend",
+    schema: "utilization_trend.schema.json",
+    dbTables: ["runtime_metric"],
+    uiUse: "Past / Current / Future 的稼動率曲線"
+  },
+  cycle_time_trend: {
+    route: "/api/v1/lines/{line_id}/charts/cycle-time-trend",
+    schema: "cycle_time_trend.schema.json",
+    dbTables: ["part_history"],
+    uiUse: "Past / Current / Future 的 Cycle Time 曲線"
+  },
+  diagnosis_latest: {
+    route: "/api/v1/lines/{line_id}/diagnosis/latest",
+    schema: "diagnosis_latest.schema.json",
+    dbTables: ["diagnosis_result", "filter_threshold", "nozzle_threshold", "process_threshold"],
+    uiUse: "噴嘴、濾網、噴幅、壓力流量、品質異常原因判斷"
+  },
+  kpi_summary: {
+    route: "/api/v1/lines/{line_id}/kpi",
+    schema: "kpi_summary.schema.json",
+    dbTables: ["ml_prediction_result", "runtime_metric", "part_history", "qc_result"],
+    uiUse: "預測良率、預測 NG、整線稼動率、平均 Cycle Time"
+  },
+  pending_alerts: {
+    route: "/api/v1/lines/{line_id}/alerts/pending",
+    schema: "pending_alerts.schema.json",
+    dbTables: ["alert_log", "diagnosis_result", "ml_prediction_result", "qc_result"],
+    uiUse: "只顯示待處理 / warning / alarm 的站別問題"
+  },
+  prediction_accuracy: {
+    route: "/api/v1/lines/{line_id}/prediction-accuracy",
+    schema: "prediction_accuracy.schema.json",
+    dbTables: ["qc_result", "ml_prediction_result"],
+    uiUse: "預測驗證：昨日預測 OK 與實際 QC OK 的誤差"
+  }
+};
+
+
+let SIMULATED_API_UPLOAD_INDEX = 0;
+let SIMULATED_API_DAY_INDEX = 0;
+let SIMULATED_DECISION_HISTORY = [];
+let latestDecisionSnapshot = null;
+let previousDecisionSnapshot = null;
+
+const SIMULATED_BASE_METRICS = {
+  line_1: {
+    state: "running",
+    pressure_bar: 2.18,
+    flow_rate_ml_min: 124,
+    spray_width_mm: 182,
+    target_min_mm: 176,
+    target_max_mm: 190,
+    temperature_c: 27.8,
+    availability_pct: 87.2,
+    maintainability_pct: 92.4,
+    clog_rate_pct: 6.8,
+    quality_score_pct: 93.6,
+    utilization_pct: 82.5,
+    cycle_time_sec: 46.8,
+    componentHealth: { nozzle: "normal", filter_mesh: "normal", spray_width: "normal" }
+  },
+  line_2: {
+    state: "running",
+    pressure_bar: 2.26,
+    flow_rate_ml_min: 126,
+    spray_width_mm: 185,
+    target_min_mm: 178,
+    target_max_mm: 190,
+    temperature_c: 28.2,
+    availability_pct: 86.5,
+    maintainability_pct: 90.5,
+    clog_rate_pct: 6.4,
+    quality_score_pct: 93.2,
+    utilization_pct: 82.4,
+    cycle_time_sec: 47.3,
+    componentHealth: { nozzle: "normal", filter_mesh: "normal", spray_width: "normal" }
+  },
+  line_3: {
+    state: "running",
+    pressure_bar: 2.07,
+    flow_rate_ml_min: 119,
+    spray_width_mm: 187,
+    target_min_mm: 178,
+    target_max_mm: 190,
+    temperature_c: 27.2,
+    availability_pct: 85.9,
+    maintainability_pct: 88.8,
+    clog_rate_pct: 8.7,
+    quality_score_pct: 92.8,
+    utilization_pct: 80.4,
+    cycle_time_sec: 48.1,
+    componentHealth: { nozzle: "normal", filter_mesh: "normal", spray_width: "normal" }
+  }
+};
+
+
+function getDateKeyFromTimestamp(timestamp) {
+  const match = String(timestamp || "").match(/^(\d{4}-\d{2}-\d{2})/);
+  return match ? match[1] : getActiveApiDateKey();
+}
+
+function addDaysToDateKey(dateKey, days) {
+  const date = parseDateKey(dateKey);
+  date.setDate(date.getDate() + Number(days || 0));
+  return getDateKey(date);
+}
+
+function getActiveApiDateKey() {
+  const startDate = CONFIG.SIMULATED_API_START_DATE || CONFIG.API_DATE || getTodayKey();
+  if (!CONFIG.SIMULATED_API_ENABLED) return CONFIG.API_DATE || startDate;
+  return addDaysToDateKey(startDate, SIMULATED_API_DAY_INDEX);
+}
+
+function getInitialReportDateKey() {
+  return CONFIG.SIMULATED_API_ENABLED ? getActiveApiDateKey() : (CONFIG.API_DATE || getTodayKey());
+}
+
+function getSimulatedArchiveStore() {
+  if (typeof localStorage === "undefined") return {};
+  try {
+    return JSON.parse(localStorage.getItem(CONFIG.SIMULATED_HISTORY_STORAGE_KEY) || "{}");
+  } catch (error) {
+    console.warn("[Archive] failed to read daily archive", error);
+    return {};
+  }
+}
+
+function saveSimulatedArchiveStore(store) {
+  if (typeof localStorage === "undefined") return;
+  try {
+    localStorage.setItem(CONFIG.SIMULATED_HISTORY_STORAGE_KEY, JSON.stringify(store || {}));
+  } catch (error) {
+    console.warn("[Archive] failed to save daily archive", error);
+  }
+}
+
+function getSimulatedStateStore() {
+  if (typeof localStorage === "undefined") return null;
+  try {
+    return JSON.parse(localStorage.getItem(CONFIG.SIMULATED_STATE_STORAGE_KEY) || "null");
+  } catch (error) {
+    console.warn("[Simulation state] failed to read state", error);
+    return null;
+  }
+}
+
+function saveSimulatedApiState(reason = "state_update") {
+  if (!CONFIG.SIMULATED_API_ENABLED || typeof localStorage === "undefined") return;
+  const maxUploadIndex = Math.max(
+    0,
+    Number(CONFIG.SIMULATED_API_MAX_HOUR || 23) - Number(CONFIG.SIMULATED_API_START_HOUR || 0)
+  );
+  try {
+    localStorage.setItem(CONFIG.SIMULATED_STATE_STORAGE_KEY, JSON.stringify({
+      reason,
+      savedAt: new Date().toISOString(),
+      startDate: CONFIG.SIMULATED_API_START_DATE || CONFIG.API_DATE || getTodayKey(),
+      activeDate: getActiveApiDateKey(),
+      dayIndex: Math.max(0, Number(SIMULATED_API_DAY_INDEX || 0)),
+      uploadIndex: Math.max(0, Math.min(maxUploadIndex, Number(SIMULATED_API_UPLOAD_INDEX || 0))),
+      currentHour: getSimulatedApiCurrentHour()
+    }));
+  } catch (error) {
+    console.warn("[Simulation state] failed to save state", error);
+  }
+}
+
+function getDateDiffDays(startDateKey, targetDateKey) {
+  const start = parseDateKey(startDateKey);
+  const target = parseDateKey(targetDateKey);
+  return Math.round((target.getTime() - start.getTime()) / (24 * 60 * 60 * 1000));
+}
+
+function hydrateSimulatedApiStateFromLocalStorage() {
+  if (!CONFIG.SIMULATED_API_ENABLED) return;
+
+  const startDate = CONFIG.SIMULATED_API_START_DATE || CONFIG.API_DATE || getTodayKey();
+  const storedState = getSimulatedStateStore() || {};
+  const maxUploadIndex = Math.max(
+    0,
+    Number(CONFIG.SIMULATED_API_MAX_HOUR || 23) - Number(CONFIG.SIMULATED_API_START_HOUR || 0)
+  );
+
+  let dayIndex = Number.isFinite(Number(storedState.dayIndex)) ? Number(storedState.dayIndex) : 0;
+  let uploadIndex = Number.isFinite(Number(storedState.uploadIndex)) ? Number(storedState.uploadIndex) : 0;
+
+  const latestArchivedDate = getArchivedDateKeys()[0];
+  const storedActiveDate = addDaysToDateKey(startDate, dayIndex);
+
+  // Important: the archive survives page refresh, but normal JS variables do not.
+  // If the archive already contains dates newer than the in-memory simulated day,
+  // continue from the day after the latest archive instead of jumping back to the old start date.
+  if (latestArchivedDate && latestArchivedDate >= storedActiveDate) {
+    const nextActiveDate = addDaysToDateKey(latestArchivedDate, 1);
+    dayIndex = getDateDiffDays(startDate, nextActiveDate);
+    uploadIndex = 0;
+  }
+
+  SIMULATED_API_DAY_INDEX = Math.max(0, dayIndex);
+  SIMULATED_API_UPLOAD_INDEX = Math.max(0, Math.min(maxUploadIndex, uploadIndex));
+  saveSimulatedApiState("hydrate_from_local_storage");
+}
+
+function getArchivedDateKeys() {
+  return Object.keys(getSimulatedArchiveStore()).sort().reverse();
+}
+
+function getArchivedDatabaseResponse(dateKey) {
+  return getSimulatedArchiveStore()[dateKey]?.dbResponse || null;
+}
+
+function archiveDatabaseResponseForDate(dateKey, dbResponse, reason = "day_completed") {
+  if (!dateKey || !dbResponse) return;
+  const store = getSimulatedArchiveStore();
+  store[dateKey] = {
+    date: dateKey,
+    reason,
+    archivedAt: new Date().toISOString(),
+    dbResponse: JSON.parse(JSON.stringify(dbResponse))
+  };
+  saveSimulatedArchiveStore(store);
+}
+
+
+function getSimulatedHourlyStore() {
+  if (typeof localStorage === "undefined") return {};
+  try {
+    return JSON.parse(localStorage.getItem(CONFIG.SIMULATED_HOURLY_STORAGE_KEY) || "{}");
+  } catch (error) {
+    console.warn("[Hourly history] failed to read hourly snapshots", error);
+    return {};
+  }
+}
+
+function saveSimulatedHourlyStore(store) {
+  if (typeof localStorage === "undefined") return;
+  try {
+    localStorage.setItem(CONFIG.SIMULATED_HOURLY_STORAGE_KEY, JSON.stringify(store || {}));
+  } catch (error) {
+    console.warn("[Hourly history] failed to save hourly snapshots", error);
+  }
+}
+
+function getResponseHourFromDb(dbResponse) {
+  const rawTime =
+    dbResponse?.responseMeta?.dataWindow?.currentEnd ||
+    dbResponse?.responseMeta?.generatedAt ||
+    dbResponse?.generated_at ||
+    "";
+  const match = String(rawTime).match(/T(\d{2}):/);
+  const hour = match ? Number(match[1]) : 0;
+  return Math.max(0, Math.min(23, Number.isFinite(hour) ? hour : 0));
+}
+
+function getResponseDateKeyFromDb(dbResponse) {
+  return getDateKeyFromTimestamp(
+    dbResponse?.responseMeta?.dataWindow?.currentEnd ||
+    dbResponse?.responseMeta?.generatedAt ||
+    dbResponse?.generated_at ||
+    selectedReportDate ||
+    getActiveApiDateKey()
+  );
+}
+
+function createDecisionSnapshotForDb(dbResponse) {
+  if (!dbResponse) return null;
+
+  const previousDb = currentDatabaseResponse;
+  try {
+    currentDatabaseResponse = dbResponse;
+    const summary = buildManagerReportFromDatabase(dbResponse);
+    return getDecisionSnapshotFromSummary(summary);
+  } catch (error) {
+    console.warn("[Hourly history] failed to create decision snapshot", error);
+    return null;
+  } finally {
+    currentDatabaseResponse = previousDb;
+  }
+}
+
+function storeHourlySnapshotForDbResponse(dbResponse) {
+  if (!CONFIG.SIMULATED_API_ENABLED || !dbResponse) return;
+
+  const dateKey = getResponseDateKeyFromDb(dbResponse);
+  const hour = getResponseHourFromDb(dbResponse);
+  const decision = createDecisionSnapshotForDb(dbResponse);
+  const store = getSimulatedHourlyStore();
+
+  if (!store[dateKey]) {
+    store[dateKey] = {
+      date: dateKey,
+      hours: {}
+    };
+  }
+
+  store[dateKey].hours[String(hour)] = {
+    date: dateKey,
+    hour,
+    savedAt: new Date().toISOString(),
+    hasProblem: Boolean(decision && decision.level !== "正常"),
+    problemLevel: decision?.level || "正常",
+    problemStation: decision?.station || "無",
+    problemDirection: decision?.direction || "無需處理",
+    decisionLabel: decision?.label || "目前無異常",
+    dbResponse: JSON.parse(JSON.stringify(dbResponse))
+  };
+
+  saveSimulatedHourlyStore(store);
+}
+
+function getHourlySnapshot(dateKey, hour) {
+  if (hour === null || hour === undefined || hour === "") return null;
+  const key = String(Number(hour));
+  return getSimulatedHourlyStore()[dateKey]?.hours?.[key] || null;
+}
+
+function getHourlySnapshotsForDate(dateKey) {
+  const hours = getSimulatedHourlyStore()[dateKey]?.hours || {};
+  return Object.values(hours).sort((a, b) => Number(a.hour) - Number(b.hour));
+}
+
+function getProblemHourMapForDate(dateKey) {
+  const map = new Map();
+  getHourlySnapshotsForDate(dateKey).forEach(snapshot => {
+    if (!snapshot.hasProblem) return;
+    map.set(Number(snapshot.hour), snapshot);
+  });
+  return map;
+}
+
+function getLatestAvailableHourForDate(dateKey) {
+  const hours = getHourlySnapshotsForDate(dateKey).map(snapshot => Number(snapshot.hour));
+  if (hours.length) return Math.max(...hours);
+  if (dateKey === getActiveApiDateKey()) return getSimulatedApiCurrentHour();
+  return 23;
+}
+
+function getSimulationDayIndexForDate(dateKey) {
+  const startDate = parseDateKey(CONFIG.SIMULATED_API_START_DATE || CONFIG.API_DATE || getTodayKey());
+  const targetDate = parseDateKey(dateKey);
+  return Math.max(0, Math.round((targetDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)));
+}
+
+function makeSimulatedDbResponseForDateHour(dateKey, hour) {
+  const previousUploadIndex = SIMULATED_API_UPLOAD_INDEX;
+  const previousDayIndex = SIMULATED_API_DAY_INDEX;
+
+  try {
+    const startHour = Number(CONFIG.SIMULATED_API_START_HOUR || 0);
+    const stepHours = Number(CONFIG.SIMULATED_API_STEP_HOURS || 1) || 1;
+    SIMULATED_API_DAY_INDEX = getSimulationDayIndexForDate(dateKey);
+    SIMULATED_API_UPLOAD_INDEX = Math.max(0, Math.round((Number(hour) - startHour) / stepHours));
+    return normalizeProjectApiBundleToManagerDb(getProjectSchemaMockBundle());
+  } finally {
+    SIMULATED_API_UPLOAD_INDEX = previousUploadIndex;
+    SIMULATED_API_DAY_INDEX = previousDayIndex;
+  }
+}
+
+function getOrCreateHourlySnapshot(dateKey, hour) {
+  let snapshot = getHourlySnapshot(dateKey, hour);
+  if (snapshot) return snapshot;
+
+  if (!CONFIG.SIMULATED_API_ENABLED) return null;
+
+  const activeDate = getActiveApiDateKey();
+  const selectedHour = Number(hour);
+  const maxSelectableHour = dateKey === activeDate ? getSimulatedApiCurrentHour() : 23;
+
+  if (selectedHour < 0 || selectedHour > maxSelectableHour) return null;
+
+  const generatedDb = makeSimulatedDbResponseForDateHour(dateKey, selectedHour);
+  storeHourlySnapshotForDbResponse(generatedDb);
+  return getHourlySnapshot(dateKey, selectedHour);
+}
+
+function generateHourOptionsForSelectedDate() {
+  const activeDate = getActiveApiDateKey();
+  const selectedDate = selectedReportDate || activeDate;
+  const problemMap = getProblemHourMapForDate(selectedDate);
+  const latestHour = getLatestAvailableHourForDate(selectedDate);
+  const maxHour = selectedDate === activeDate ? getSimulatedApiCurrentHour() : Math.max(23, latestHour);
+  const options = [];
+
+  if (selectedDate === activeDate) {
+    options.push({
+      value: "live",
+      label: `跟隨最新 ${String(getSimulatedApiCurrentHour()).padStart(2, "0")}:00`,
+      problem: false
+    });
+  }
+
+  // Manager review UX: newest hour first, oldest hour last.
+  // Example: if current is 12:00, show 12:00, 11:00, 10:00 ... 00:00.
+  for (let hour = maxHour; hour >= 0; hour -= 1) {
+    const problem = problemMap.get(hour);
+    const problemText = problem ? ` ${problem.problemStation}：${problem.problemDirection}` : "";
+    options.push({
+      value: String(hour),
+      label: `${String(hour).padStart(2, "0")}:00${problemText}`,
+      hourLabel: `${String(hour).padStart(2, "0")}:00`,
+      problemText: problem ? `${problem.problemStation}：${problem.problemDirection}` : "",
+      problem: Boolean(problem),
+      problemLevel: problem?.problemLevel || "正常"
+    });
+  }
+
+  return options;
+}
+
+function getSelectedHourSelectValue() {
+  return selectedReportHourMode === "live" ? "live" : String(selectedReportHour ?? getLatestAvailableHourForDate(selectedReportDate));
+}
+
+function setDefaultTimeSelectionForDate(dateKey) {
+  const activeDate = getActiveApiDateKey();
+  if (dateKey === activeDate) {
+    selectedReportHourMode = "live";
+    selectedReportHour = null;
+    return;
+  }
+
+  selectedReportHourMode = "hour";
+  selectedReportHour = getLatestAvailableHourForDate(dateKey);
+}
+
+function getTimeReviewModeLabel() {
+  if (selectedReportHourMode === "live") return "跟隨最新資料";
+  return `回顧 ${String(selectedReportHour ?? 0).padStart(2, "0")}:00`;
+}
+
+function getSelectedDateMode() {
+  const activeDate = getActiveApiDateKey();
+  if (selectedReportDate === activeDate) return "active";
+  if (getArchivedDatabaseResponse(selectedReportDate)) return "archive";
+  return "missing";
+}
+
+function getSimulatedApiCurrentHour() {
+  const start = Number(CONFIG.SIMULATED_API_START_HOUR || 10);
+  const step = Number(CONFIG.SIMULATED_API_STEP_HOURS || 1);
+  const maxHour = Number(CONFIG.SIMULATED_API_MAX_HOUR || 23);
+  const hour = start + SIMULATED_API_UPLOAD_INDEX * step;
+  return Math.max(0, Math.min(maxHour, hour));
+}
+
+function getSimulatedGeneratedAt() {
+  const hour = getSimulatedApiCurrentHour();
+  return `${getActiveApiDateKey()}T${String(hour).padStart(2, "0")}:20:00+08:00`;
+}
+
+function getSimulatedScenario(hour) {
+  const h = Number(hour || 0);
+
+  if (h <= 10) {
+    return {
+      name: "第二站顏色層噴嘴堵塞風險",
+      activeLineId: "line_2",
+      note: "第一次 API upload：第二站品質、稼動率與 cycle time 同時變差。",
+      overrides: {
+        line_2: {
+          state: "warning",
+          pressure_bar: 2.52,
+          flow_rate_ml_min: 111,
+          spray_width_mm: 196,
+          temperature_c: 29.1,
+          availability_pct: 78.1,
+          maintainability_pct: 84.5,
+          clog_rate_pct: 14.6,
+          quality_score_pct: 89.1,
+          utilization_pct: 74.6,
+          cycle_time_sec: 52.4,
+          componentHealth: { nozzle: "warning", filter_mesh: "warning", spray_width: "out_of_range" }
+        }
+      }
+    };
+  }
+
+  if (h === 11) {
+    return {
+      name: "第二站處理後仍需觀察",
+      activeLineId: "line_2",
+      note: "第二次 API upload：第二站有改善，但品質還低於 92%，仍需追蹤。",
+      overrides: {
+        line_2: {
+          state: "warning",
+          pressure_bar: 2.43,
+          flow_rate_ml_min: 116,
+          spray_width_mm: 192,
+          temperature_c: 28.9,
+          availability_pct: 80.4,
+          maintainability_pct: 86.8,
+          clog_rate_pct: 11.8,
+          quality_score_pct: 90.8,
+          utilization_pct: 77.8,
+          cycle_time_sec: 50.2,
+          componentHealth: { nozzle: "warning", filter_mesh: "monitor", spray_width: "out_of_range" }
+        }
+      }
+    };
+  }
+
+  if (h === 12) {
+    return {
+      name: "第三站保護層濾網供漆阻力上升",
+      activeLineId: "line_3",
+      note: "第三次 API upload：問題轉移到第三站，決策應改通知第三站負責工程師。",
+      overrides: {
+        line_3: {
+          state: "warning",
+          pressure_bar: 2.02,
+          flow_rate_ml_min: 110,
+          spray_width_mm: 186,
+          temperature_c: 28.5,
+          availability_pct: 78.7,
+          maintainability_pct: 83.2,
+          clog_rate_pct: 12.2,
+          quality_score_pct: 91.1,
+          utilization_pct: 76.5,
+          cycle_time_sec: 51.2,
+          componentHealth: { nozzle: "normal", filter_mesh: "warning", spray_width: "normal" }
+        }
+      }
+    };
+  }
+
+  if (h === 13) {
+    return {
+      name: "第三站保護層惡化",
+      activeLineId: "line_3",
+      note: "第四次 API upload：第三站由警告升級為緊急，決策應升級。",
+      overrides: {
+        line_3: {
+          state: "warning",
+          pressure_bar: 1.96,
+          flow_rate_ml_min: 106,
+          spray_width_mm: 191,
+          temperature_c: 29.2,
+          availability_pct: 75.1,
+          maintainability_pct: 81.2,
+          clog_rate_pct: 15.5,
+          quality_score_pct: 89.5,
+          utilization_pct: 73.9,
+          cycle_time_sec: 53.0,
+          componentHealth: { nozzle: "monitor", filter_mesh: "warning", spray_width: "out_of_range" }
+        }
+      }
+    };
+  }
+
+  if (h === 14) {
+    return {
+      name: "第一站底色層噴幅偏低",
+      activeLineId: "line_1",
+      note: "第五次 API upload：第一站噴幅低於目標，決策應改通知第一站負責工程師。",
+      overrides: {
+        line_1: {
+          state: "warning",
+          pressure_bar: 2.01,
+          flow_rate_ml_min: 115,
+          spray_width_mm: 171,
+          temperature_c: 28.1,
+          availability_pct: 79.5,
+          maintainability_pct: 86.4,
+          clog_rate_pct: 10.5,
+          quality_score_pct: 90.6,
+          utilization_pct: 77.1,
+          cycle_time_sec: 51.0,
+          componentHealth: { nozzle: "normal", filter_mesh: "monitor", spray_width: "out_of_range" }
+        }
+      }
+    };
+  }
+
+  return {
+    name: "三站回穩",
+    activeLineId: null,
+    note: "API upload：目前三站回到可接受範圍，診斷區應自動隱藏。",
+    overrides: {}
+  };
+}
+
+function makeSimulatedStationMetric(lineId, scenario) {
+  const base = structuredClone(SIMULATED_BASE_METRICS[lineId] || SIMULATED_BASE_METRICS.line_1);
+  const override = scenario.overrides?.[lineId] || {};
+  const componentOverride = override.componentHealth || {};
+  return {
+    ...base,
+    ...override,
+    componentHealth: {
+      ...base.componentHealth,
+      ...componentOverride
+    }
+  };
+}
+
+function makeTrendValue(lineId, metricKey, hour, currentHour, latestMetric, scenario) {
+  const baseMetric = SIMULATED_BASE_METRICS[lineId] || SIMULATED_BASE_METRICS.line_1;
+  const baseValue = Number(baseMetric[metricKey] || 0);
+  const latestValue = Number(latestMetric[metricKey] ?? baseValue);
+  const active = scenario.activeLineId === lineId;
+  const distanceToCurrent = currentHour - Number(hour || 0);
+  const afterCurrent = Number(hour || 0) - currentHour;
+  const wave = Math.sin((Number(hour || 0) + lineId.length) * 0.72) * 0.16;
+
+  if (Number(hour) === currentHour) return latestValue;
+
+  if (Number(hour) < currentHour) {
+    if (!active) return baseValue + wave;
+    const influence = Math.max(0, Math.min(1, (4 - distanceToCurrent) / 4));
+    return baseValue + (latestValue - baseValue) * influence + wave;
+  }
+
+  if (!active) return baseValue + wave;
+
+  const severityDirection = {
+    quality_score_pct: -1,
+    utilization_pct: -1,
+    cycle_time_sec: 1
+  }[metricKey] || 0;
+
+  const continuation = Math.min(1.2, afterCurrent * 0.08);
+  const futureValue = latestValue + (latestValue - baseValue) * continuation * 0.45;
+  const drift = severityDirection * afterCurrent * 0.05;
+  return futureValue + drift;
+}
+
+function makeSimulatedTrend(lineId, metricKey, currentHour, latestMetric, scenario) {
+  return Array.from({ length: 24 }, (_, hour) => Number(makeTrendValue(lineId, metricKey, hour, currentHour, latestMetric, scenario).toFixed(1)));
+}
+
+function makeTrendApiPayload(lineId, values, currentHour, targetKey, targetValue) {
+  const labels = Array.from({ length: 24 }, (_, hour) => `${String(hour).padStart(2, "0")}:00`);
+  const basePayload = {
+    line_id: lineId,
+    timestep: "hour",
+    labels,
+    now_index: currentHour,
+    forecast_start_index: currentHour + 1,
+    cache_ttl_s: 30
+  };
+
+  if (targetKey === "quality") {
+    return {
+      ...basePayload,
+      actual_series: labels.map((label, hour) => ({ hour, label, value: hour < currentHour ? values[hour] : null })).filter(row => row.value !== null),
+      predicted_series: labels.map((label, hour) => ({ hour, label, value: hour === currentHour ? values[hour] : null })).filter(row => row.value !== null),
+      forecast_series: labels.map((label, hour) => ({ hour, label, value: hour > currentHour ? values[hour] : null })).filter(row => row.value !== null),
+      target: targetValue
+    };
+  }
+
+  return {
+    ...basePayload,
+    series: labels.map((label, hour) => ({ hour, label, value: values[hour] })),
+    target: targetKey === "utilization" ? targetValue : undefined,
+    baseline_cycle_time_s: targetKey === "cycle" ? targetValue : undefined
+  };
+}
+
+function buildSimulatedDiagnoses(lineId, latestMetric) {
+  const diagnoses = [];
+  const component = latestMetric.componentHealth || {};
+  const flowDelta = latestMetric.flow_rate_ml_min - (latestMetric.baseline_flow_rate_ml_min || SIMULATED_BASE_METRICS[lineId]?.flow_rate_ml_min || 0);
+
+  if ((component.nozzle && component.nozzle !== "normal") || latestMetric.clog_rate_pct >= 10) {
+    diagnoses.push({
+      category: "nozzle",
+      state_label: "噴嘴可能堵塞 / 霧化不穩",
+      severity: latestMetric.clog_rate_pct >= 14 ? "alarm" : "warning",
+      confidence: 0.82,
+      evidence: `堵塞率 ${latestMetric.clog_rate_pct}%；流量 ${latestMetric.flow_rate_ml_min} ml/min`
+    });
+  }
+
+  if ((component.filter_mesh && component.filter_mesh !== "normal") || (latestMetric.clog_rate_pct >= 10 && flowDelta < -5)) {
+    diagnoses.push({
+      category: "filter_mesh",
+      state_label: "濾網可能堵塞 / 供漆阻力變大",
+      severity: latestMetric.clog_rate_pct >= 14 ? "alarm" : "warning",
+      confidence: 0.78,
+      evidence: `濾網狀態 ${component.filter_mesh || "normal"}；流量差 ${flowDelta.toFixed(1)} ml/min`
+    });
+  }
+
+  if (latestMetric.spray_width_mm < latestMetric.target_min_mm || latestMetric.spray_width_mm > latestMetric.target_max_mm) {
+    diagnoses.push({
+      category: "spray_width",
+      state_label: "噴幅偏離目標範圍",
+      severity: "alarm",
+      confidence: 0.9,
+      evidence: `噴幅 ${latestMetric.spray_width_mm} mm；目標 ${latestMetric.target_min_mm}-${latestMetric.target_max_mm} mm`
+    });
+  }
+
+  if (latestMetric.quality_score_pct < 92) {
+    diagnoses.push({
+      category: "quality",
+      state_label: "品質分數低於管理線",
+      severity: latestMetric.quality_score_pct < 90 ? "alarm" : "warning",
+      confidence: 0.86,
+      evidence: `品質分數 ${latestMetric.quality_score_pct}%；管理線 92%`
+    });
+  }
+
+  if (latestMetric.utilization_pct < latestMetric.baseline_utilization_pct - 5) {
+    diagnoses.push({
+      category: "utilization",
+      state_label: "稼動率低於 baseline",
+      severity: latestMetric.utilization_pct < latestMetric.baseline_utilization_pct - 10 ? "alarm" : "warning",
+      confidence: 0.74,
+      evidence: `稼動率 ${latestMetric.utilization_pct}%；baseline ${latestMetric.baseline_utilization_pct}%`
+    });
+  }
+
+  if (latestMetric.cycle_time_sec > latestMetric.baseline_cycle_time_sec * 1.08) {
+    diagnoses.push({
+      category: "cycle_time",
+      state_label: "Cycle Time 高於 baseline",
+      severity: latestMetric.cycle_time_sec > latestMetric.baseline_cycle_time_sec * 1.14 ? "alarm" : "warning",
+      confidence: 0.72,
+      evidence: `Cycle Time ${latestMetric.cycle_time_sec}s；baseline ${latestMetric.baseline_cycle_time_sec}s`
+    });
+  }
+
+  return diagnoses;
+}
+
+function getSimulatedApiStatusText() {
+  const currentHour = getSimulatedApiCurrentHour();
+  const scenario = getSimulatedScenario(currentHour);
+  return {
+    uploadNo: SIMULATED_API_UPLOAD_INDEX + 1,
+    dateKey: getActiveApiDateKey(),
+    currentHour,
+    generatedAt: getSimulatedGeneratedAt(),
+    scenarioName: scenario.name,
+    scenarioNote: scenario.note,
+    intervalMs: CONFIG.SIMULATED_API_UPLOAD_INTERVAL_MS
+  };
+}
+
+function buildProjectSchemaMockBundle() {
+  const currentHour = getSimulatedApiCurrentHour();
+  const generatedAt = getSimulatedGeneratedAt();
+  const currentDateKey = getActiveApiDateKey();
+  const previousDateKey = addDaysToDateKey(currentDateKey, -1);
+  const scenario = getSimulatedScenario(currentHour);
+  const labels = Array.from({ length: 24 }, (_, hour) => `${String(hour).padStart(2, "0")}:00`);
+  const lineIds = CONFIG.API_LINE_IDS;
+
+  const stationLatest = {};
+  const qualityTrend = {};
+  const utilizationTrend = {};
+  const cycleTimeTrend = {};
+  const diagnosisLatest = {};
+  const pendingAlerts = {};
+  const kpiSummary = {};
+  const predictionAccuracy = {};
+  let warningCount = 0;
+
+  lineIds.forEach(lineId => {
+    const meta = PROJECT_STATION_META[lineId];
+    const base = SIMULATED_BASE_METRICS[lineId] || SIMULATED_BASE_METRICS.line_1;
+    const latest = makeSimulatedStationMetric(lineId, scenario);
+    latest.baseline_flow_rate_ml_min = base.flow_rate_ml_min;
+    latest.baseline_utilization_pct = base.utilization_pct;
+    latest.baseline_cycle_time_sec = base.cycle_time_sec;
+    latest.baseline_quality_score_pct = base.quality_score_pct;
+
+    const qualitySeries = makeSimulatedTrend(lineId, "quality_score_pct", currentHour, latest, scenario);
+    const utilizationSeries = makeSimulatedTrend(lineId, "utilization_pct", currentHour, latest, scenario);
+    const cycleSeries = makeSimulatedTrend(lineId, "cycle_time_sec", currentHour, latest, scenario);
+
+    stationLatest[lineId] = {
+      line_id: lineId,
+      window_id: `rw_${lineId}_${currentDateKey.replace(/-/g, "")}_${String(currentHour).padStart(2, "0")}20`,
+      generated_at: generatedAt,
+      signal: {
+        pressure_bar: latest.pressure_bar,
+        flow_rate_ml_min: latest.flow_rate_ml_min,
+        spray_width_mm: latest.spray_width_mm,
+        temperature_c: latest.temperature_c,
+        recipe_name: meta.recipeId,
+        state: latest.state
+      },
+      reference: {
+        target_min_mm: latest.target_min_mm,
+        target_max_mm: latest.target_max_mm,
+        baseline_pressure_bar: base.pressure_bar,
+        baseline_flow_rate_ml_min: base.flow_rate_ml_min,
+        baseline_quality_score_pct: base.quality_score_pct,
+        baseline_utilization_pct: base.utilization_pct,
+        baseline_cycle_time_sec: base.cycle_time_sec
+      },
+      metric: {
+        availability_pct: latest.availability_pct,
+        maintainability_pct: latest.maintainability_pct,
+        clog_rate_pct: latest.clog_rate_pct,
+        quality_score_pct: latest.quality_score_pct,
+        utilization_pct: latest.utilization_pct,
+        cycle_time_sec: latest.cycle_time_sec,
+        risk_text: scenario.activeLineId === lineId ? scenario.note : "目前站別指標在可接受範圍。"
+      },
+      components: [
+        { component_key: "nozzle", label_zh: "噴嘴", label_en: "Nozzle", level: latest.componentHealth.nozzle, level_text: latest.componentHealth.nozzle },
+        { component_key: "filter_mesh", label_zh: "濾網", label_en: "Filter mesh", level: latest.componentHealth.filter_mesh, level_text: latest.componentHealth.filter_mesh },
+        { component_key: "spray_width", label_zh: "噴幅", label_en: "Spray width", level: latest.componentHealth.spray_width, level_text: latest.componentHealth.spray_width }
+      ],
+      cache_ttl_s: 30
+    };
+
+    qualityTrend[lineId] = makeTrendApiPayload(lineId, qualitySeries, currentHour, "quality", 92);
+    utilizationTrend[lineId] = makeTrendApiPayload(lineId, utilizationSeries, currentHour, "utilization", base.utilization_pct);
+    cycleTimeTrend[lineId] = makeTrendApiPayload(lineId, cycleSeries, currentHour, "cycle", base.cycle_time_sec);
+
+    const diagnoses = buildSimulatedDiagnoses(lineId, latest);
+    if (diagnoses.length) warningCount += 1;
+
+    diagnosisLatest[lineId] = {
+      line_id: lineId,
+      generated_at: generatedAt,
+      diagnoses,
+      threshold_sources: ["station_latest.schema.json", "diagnosis_latest.schema.json", "baseline/reference"],
+      cache_ttl_s: 30
+    };
+
+    pendingAlerts[lineId] = {
+      line_id: lineId,
+      total: diagnoses.filter(item => ["warning", "alarm"].includes(String(item.severity))).length,
+      alerts: diagnoses.filter(item => ["warning", "alarm"].includes(String(item.severity))).map((item, index) => ({
+        alert_id: `sim_alert_${lineId}_${currentHour}_${index + 1}`,
+        source_type: "simulated_api_diagnosis",
+        source_id: `${lineId}_${item.category}`,
+        severity: item.severity,
+        message: item.state_label,
+        status: "pending"
+      }))
+    };
+
+    kpiSummary[lineId] = {
+      line_id: lineId,
+      date: currentDateKey,
+      predicted_ok_rate: latest.quality_score_pct,
+      predicted_ng_pcs: Math.max(0, Math.round((100 - latest.quality_score_pct) * 18)),
+      line_utilization: latest.utilization_pct,
+      avg_cycle_time_s: latest.cycle_time_sec,
+      delta: {
+        quality_vs_baseline_pts: Number((latest.quality_score_pct - base.quality_score_pct).toFixed(1)),
+        utilization_vs_baseline_pts: Number((latest.utilization_pct - base.utilization_pct).toFixed(1)),
+        cycle_time_vs_baseline_s: Number((latest.cycle_time_sec - base.cycle_time_sec).toFixed(1))
+      },
+      cache_ttl_s: 30
+    };
+
+    predictionAccuracy[lineId] = {
+      line_id: lineId,
+      date: previousDateKey,
+      yesterday_predicted_ok: MOCK_DATABASE_RESPONSE.qualityValidation.predictedOkRatePct,
+      yesterday_actual_ok: MOCK_DATABASE_RESPONSE.qualityValidation.actualOkRatePct,
+      prediction_error_pts: Math.abs(MOCK_DATABASE_RESPONSE.qualityValidation.actualOkRatePct - MOCK_DATABASE_RESPONSE.qualityValidation.predictedOkRatePct),
+      model_accuracy: 98.8
+    };
+  });
+
+  return {
+    schemaSource: "Project-SprayLine / Dashboard v15 / DB Schema v2 / simulated API upload",
+    generated_at: generatedAt,
+    simulation: getSimulatedApiStatusText(),
+    lineSummary: {
+      line_id: "spray_line_1",
+      timestamp: generatedAt,
+      total: 3,
+      normal: lineIds.length - warningCount,
+      warning: warningCount,
+      predict_risk: warningCount,
+      cache_ttl_s: 30
+    },
+    stationLatest,
+    qualityTrend,
+    utilizationTrend,
+    cycleTimeTrend,
+    diagnosisLatest,
+    pendingAlerts,
+    kpiSummary,
+    predictionAccuracy
+  };
+}
+
+let PROJECT_SCHEMA_MOCK_BUNDLE = null;
+
+function getProjectSchemaMockBundle() {
+  if (CONFIG.SIMULATED_API_ENABLED) {
+    return buildProjectSchemaMockBundle();
+  }
+
+  if (!PROJECT_SCHEMA_MOCK_BUNDLE) {
+    PROJECT_SCHEMA_MOCK_BUNDLE = buildProjectSchemaMockBundle();
+  }
+  return PROJECT_SCHEMA_MOCK_BUNDLE;
+}
+
+function normalizeProjectApiBundleToManagerDb(apiBundle) {
+  if (!apiBundle || !apiBundle.stationLatest) return MOCK_DATABASE_RESPONSE;
+
+  const apiDateKey = getDateKeyFromTimestamp(apiBundle.generated_at) || getActiveApiDateKey();
+  const lineIds = CONFIG.API_LINE_IDS;
+  const stationResponsibility = {};
+  const stationTelemetry = [];
+  const hourlyTrends = {};
+  let warningCount = 0;
+  let totalPredictedNg = 0;
+  let predictedOkRates = [];
+  let utilizations = [];
+  let cycles = [];
+
+  lineIds.forEach(lineId => {
+    const meta = PROJECT_STATION_META[lineId];
+    const latest = apiBundle.stationLatest[lineId] || {};
+    const signal = latest.signal || {};
+    const reference = latest.reference || {};
+    const metric = latest.metric || {};
+    const components = latest.components || [];
+    const diagnosis = apiBundle.diagnosisLatest?.[lineId] || { diagnoses: [] };
+    const alerts = apiBundle.pendingAlerts?.[lineId] || { total: 0, alerts: [] };
+    const kpi = apiBundle.kpiSummary?.[lineId] || {};
+
+    const componentHealth = components.reduce((acc, item) => {
+      const key = item.component_key || item.key;
+      if (key) acc[key] = item.level || item.level_text || item.status || "normal";
+      return acc;
+    }, {});
+
+    const metrics = {
+      pressure_bar: Number(signal.pressure_bar ?? metric.pressure_bar ?? reference.pressure_bar ?? 0),
+      flow_rate_ml_min: Number(signal.flow_rate_ml_min ?? metric.flow_rate_ml_min ?? 0),
+      spray_width_mm: Number(signal.spray_width_mm ?? metric.spray_width_mm ?? 0),
+      target_min_mm: Number(reference.target_min_mm ?? metric.target_min_mm ?? 0),
+      target_max_mm: Number(reference.target_max_mm ?? metric.target_max_mm ?? 0),
+      temperature_c: Number(signal.temperature_c ?? metric.temperature_c ?? 0),
+      availability_pct: Number(metric.availability_pct ?? 0),
+      maintainability_pct: Number(metric.maintainability_pct ?? 0),
+      clog_rate_pct: Number(metric.clog_rate_pct ?? 0),
+      quality_score_pct: Number(metric.quality_score_pct ?? kpi.predicted_ok_rate ?? 0),
+      utilization_pct: Number(metric.utilization_pct ?? kpi.line_utilization ?? 0),
+      cycle_time_sec: Number(metric.cycle_time_sec ?? kpi.avg_cycle_time_s ?? 0)
+    };
+
+    const baseline = {
+      pressure_bar: Number(reference.baseline_pressure_bar ?? reference.target_pressure_bar ?? metrics.pressure_bar),
+      flow_rate_ml_min: Number(reference.baseline_flow_rate_ml_min ?? metrics.flow_rate_ml_min),
+      quality_score_pct: Number(reference.baseline_quality_score_pct ?? 94),
+      utilization_pct: Number(reference.baseline_utilization_pct ?? 85),
+      cycle_time_sec: Number(reference.baseline_cycle_time_sec ?? reference.baseline_cycle_time_s ?? metrics.cycle_time_sec)
+    };
+
+    const normalizedDiagnoses = (diagnosis.diagnoses || []).map(item => ({
+      category: item.category || item.diagnosis_category || item.source_type || "diagnosis",
+      stateLabel: item.state_label || item.label || item.message || item.title || "診斷結果",
+      severity: normalizeSeverity(item.severity || item.level || item.risk_level),
+      confidence: Number(item.confidence ?? 0),
+      evidence: item.evidence || item.reason || item.detail || "",
+      action: item.suggestion || item.action || ""
+    }));
+
+    const predictedOkRate = Number(kpi.predicted_ok_rate ?? metric.quality_score_pct ?? 0);
+    const predictedNgPcs = Number(kpi.predicted_ng_pcs ?? 0);
+    totalPredictedNg += predictedNgPcs;
+    if (predictedOkRate) predictedOkRates.push(predictedOkRate);
+    if (metrics.utilization_pct) utilizations.push(metrics.utilization_pct);
+    if (metrics.cycle_time_sec) cycles.push(metrics.cycle_time_sec);
+    if (alerts.total > 0 || normalizedDiagnoses.some(item => item.severity !== "normal")) warningCount += 1;
+
+    stationResponsibility[lineId] = {
+      stationName: meta.stationName,
+      layerName: meta.layerName,
+      machineName: meta.machineName,
+      engineerRole: meta.engineerRole,
+      engineerEmail: meta.engineerEmail
+    };
+
+    stationTelemetry.push({
+      lineId,
+      timestamp: apiBundle.generated_at || latest.generated_at || new Date().toISOString(),
+      recipeId: signal.recipe_name || meta.recipeId,
+      state: normalizeState(signal.state || latest.state || (alerts.total > 0 ? "warning" : "running")),
+      metrics,
+      baseline,
+      componentHealth: {
+        nozzle: componentHealth.nozzle || "normal",
+        filter_mesh: componentHealth.filter_mesh || "normal",
+        spray_width: componentHealth.spray_width || "normal"
+      },
+      predictedQuality: {
+        ok_rate_pct: predictedOkRate || metrics.quality_score_pct,
+        ng_pcs_next_qc: predictedNgPcs,
+        riskLevel: alerts.total > 0 ? "warning" : "normal",
+        riskText: metric.risk_text || normalizedDiagnoses.map(item => item.stateLabel).join("；") || ""
+      },
+      projectDiagnosis: normalizedDiagnoses,
+      projectAlerts: alerts.alerts || [],
+      projectSchemaSource: "station_latest + diagnosis_latest + pending_alerts + kpi_summary"
+    });
+
+    hourlyTrends[lineId] = {
+      quality_score_pct: normalizeQualityTrend(apiBundle.qualityTrend?.[lineId]),
+      utilization_pct: normalizeSingleSeriesTrend(apiBundle.utilizationTrend?.[lineId]),
+      cycle_time_sec: normalizeSingleSeriesTrend(apiBundle.cycleTimeTrend?.[lineId])
+    };
+  });
+
+  const lineQuality = average(predictedOkRates);
+  const lineUtilization = average(utilizations);
+  const avgCycle = average(cycles);
+  const predictionAccuracy = apiBundle.predictionAccuracy?.line_2 || Object.values(apiBundle.predictionAccuracy || {})[0] || {};
+
+  return {
+    responseMeta: {
+      requestId: `project-schema-${Date.now()}`,
+      source: CONFIG.SIMULATED_API_ENABLED ? "Simulated Project API" : (CONFIG.USE_MOCK_DATA ? "Project schema mock" : "Project API"),
+      apiVersion: "dashboard-v15-db-schema-v2",
+      generatedAt: apiBundle.generated_at || new Date().toISOString(),
+      dataWindow: {
+        currentStart: `${apiDateKey}T00:00:00+08:00`,
+        currentEnd: apiBundle.generated_at || `${apiDateKey}T10:20:00+08:00`,
+        historicalBaseline: "DB Schema v2 baseline/reference",
+        forecastHorizonDays: 7
+      },
+      dataCompletenessPct: CONFIG.SIMULATED_API_ENABLED ? 100 : (CONFIG.USE_MOCK_DATA ? 65 : 100),
+      weekProgress: "由 kpi_summary / trend API 決定"
+    },
+    line: {
+      lineId: "spray_line_1",
+      lineName: "Spray Line Manager UI",
+      plant: "Demo Factory",
+      processFlow: ["底色層", "顏色層", "保護層"]
+    },
+    stationResponsibility,
+    stationTelemetry,
+    hourlyTrends,
+    projectApi: {
+      schemaMap: PROJECT_SCHEMA_DB_MAP,
+      rawBundle: apiBundle
+    },
+    productionKpi: {
+      currentPeriod: {
+        producedPcs: MOCK_DATABASE_RESPONSE.productionKpi.currentPeriod.producedPcs,
+        plannedPcs: MOCK_DATABASE_RESPONSE.productionKpi.currentPeriod.plannedPcs,
+        estimatedEfficiencyPct: lineUtilization || MOCK_DATABASE_RESPONSE.productionKpi.currentPeriod.estimatedEfficiencyPct,
+        estimatedOkRatePct: lineQuality || MOCK_DATABASE_RESPONSE.productionKpi.currentPeriod.estimatedOkRatePct,
+        predictedNgPcs: totalPredictedNg || MOCK_DATABASE_RESPONSE.productionKpi.currentPeriod.predictedNgPcs,
+        estimatedDowntimeMin: MOCK_DATABASE_RESPONSE.productionKpi.currentPeriod.estimatedDowntimeMin
+      },
+      previousPeriod: MOCK_DATABASE_RESPONSE.productionKpi.previousPeriod,
+      yesterdayActual: MOCK_DATABASE_RESPONSE.productionKpi.yesterdayActual,
+      todayEstimate: {
+        estimatedEfficiencyPct: lineUtilization || MOCK_DATABASE_RESPONSE.productionKpi.todayEstimate.estimatedEfficiencyPct,
+        estimatedOkRatePct: lineQuality || MOCK_DATABASE_RESPONSE.productionKpi.todayEstimate.estimatedOkRatePct,
+        predictedNgPcs: totalPredictedNg || MOCK_DATABASE_RESPONSE.productionKpi.todayEstimate.predictedNgPcs
+      },
+      monthToDate: MOCK_DATABASE_RESPONSE.productionKpi.monthToDate,
+      apiKpiSummary: apiBundle.kpiSummary
+    },
+    qualityValidation: {
+      validationDate: predictionAccuracy.date || MOCK_DATABASE_RESPONSE.qualityValidation.validationDate,
+      predictedOkRatePct: Number(predictionAccuracy.yesterday_predicted_ok ?? MOCK_DATABASE_RESPONSE.qualityValidation.predictedOkRatePct),
+      actualOkRatePct: Number(predictionAccuracy.yesterday_actual_ok ?? MOCK_DATABASE_RESPONSE.qualityValidation.actualOkRatePct),
+      predictedNgPcs: MOCK_DATABASE_RESPONSE.qualityValidation.predictedNgPcs,
+      actualNgPcs: MOCK_DATABASE_RESPONSE.qualityValidation.actualNgPcs,
+      modelTrustLevel: Number(predictionAccuracy.prediction_error_pts ?? 99) <= 2 ? "良好" : "需觀察",
+      modelInputSource: "qc_result + ml_prediction_result + prediction_accuracy.schema.json"
+    },
+    qualityHistory: MOCK_DATABASE_RESPONSE.qualityHistory,
+    forecastNoAction: MOCK_DATABASE_RESPONSE.forecastNoAction
+  };
+}
+
+function normalizeState(state) {
+  const value = String(state || "").toLowerCase();
+  if (["warning", "alarm", "fault", "down"].includes(value)) return "warning";
+  return "running";
+}
+
+function normalizeSeverity(value) {
+  const text = String(value || "").toLowerCase();
+  if (["alarm", "critical", "danger", "緊急", "危險"].includes(text)) return "alarm";
+  if (["warning", "warn", "警告"].includes(text)) return "warning";
+  if (["monitor", "observe", "觀察"].includes(text)) return "monitor";
+  return "normal";
+}
+
+function normalizeQualityTrend(trend) {
+  const values = Array(24).fill(null);
+  if (!trend) return values.map(value => Number(value || 0));
+  ["actual_series", "predicted_series", "forecast_series"].forEach(key => {
+    (trend[key] || []).forEach((row, index) => {
+      const hour = getTrendRowHour(row, index);
+      const value = getTrendRowValue(row);
+      if (hour >= 0 && hour < 24 && value !== null) values[hour] = value;
+    });
+  });
+  return values.map((value, hour) => Number(value ?? values[Math.max(0, hour - 1)] ?? 0));
+}
+
+function normalizeSingleSeriesTrend(trend) {
+  const values = Array(24).fill(null);
+  if (!trend) return values.map(value => Number(value || 0));
+  (trend.series || []).forEach((row, index) => {
+    const hour = getTrendRowHour(row, index);
+    const value = getTrendRowValue(row);
+    if (hour >= 0 && hour < 24 && value !== null) values[hour] = value;
+  });
+  return values.map((value, hour) => Number(value ?? values[Math.max(0, hour - 1)] ?? 0));
+}
+
+function getTrendRowHour(row, fallbackIndex) {
+  const raw = row.hour ?? row.index ?? row.t ?? row.label ?? row.timestamp ?? fallbackIndex;
+  const match = String(raw).match(/(\d{1,2})/);
+  const hour = match ? Number(match[1]) : Number(fallbackIndex);
+  return Number.isFinite(hour) ? Math.max(0, Math.min(23, hour)) : 0;
+}
+
+function getTrendRowValue(row) {
+  const candidates = [row.value, row.quality_score_pct, row.predicted_ok_rate, row.ok_rate, row.utilization_pct, row.cycle_time_sec, row.cycle_time_s, row.y];
+  const found = candidates.find(value => value !== undefined && value !== null && value !== "");
+  return found === undefined ? null : Number(found);
+}
+
+function buildProjectApiUrl(route, lineId, params = {}) {
+  const base = String(CONFIG.API_BASE_URL || "").replace(/\/$/, "");
+  let url = `${base}${route.replace("{line_id}", encodeURIComponent(lineId))}`;
+  const query = new URLSearchParams(params);
+  return query.toString() ? `${url}?${query.toString()}` : url;
+}
+
+async function fetchJsonOrNull(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${response.status} ${response.statusText}: ${url}`);
+  return response.json();
+}
+
+async function fetchProjectSchemaApiBundle() {
+  if (CONFIG.SIMULATED_API_ENABLED) return getProjectSchemaMockBundle();
+  if (CONFIG.USE_MOCK_DATA || !CONFIG.API_BASE_URL) return getProjectSchemaMockBundle();
+
+  const lineIds = CONFIG.API_LINE_IDS;
+  const bundle = {
+    schemaSource: "Project-SprayLine / Dashboard v15 / DB Schema v2",
+    generated_at: new Date().toISOString(),
+    stationLatest: {},
+    qualityTrend: {},
+    utilizationTrend: {},
+    cycleTimeTrend: {},
+    diagnosisLatest: {},
+    pendingAlerts: {},
+    kpiSummary: {},
+    predictionAccuracy: {}
+  };
+
+  await Promise.all(lineIds.map(async lineId => {
+    const apiDate = selectedReportDate || getActiveApiDateKey();
+    const params = { timestep: CONFIG.API_TREND_TIMESTEP, date: apiDate };
+    const [station, quality, utilization, cycle, diagnosis, alerts, kpi, accuracy] = await Promise.all([
+      fetchJsonOrNull(buildProjectApiUrl("/api/v1/lines/{line_id}/stations/latest", lineId)),
+      fetchJsonOrNull(buildProjectApiUrl("/api/v1/lines/{line_id}/charts/quality-trend", lineId, params)),
+      fetchJsonOrNull(buildProjectApiUrl("/api/v1/lines/{line_id}/charts/utilization-trend", lineId, params)),
+      fetchJsonOrNull(buildProjectApiUrl("/api/v1/lines/{line_id}/charts/cycle-time-trend", lineId, params)),
+      fetchJsonOrNull(buildProjectApiUrl("/api/v1/lines/{line_id}/diagnosis/latest", lineId)),
+      fetchJsonOrNull(buildProjectApiUrl("/api/v1/lines/{line_id}/alerts/pending", lineId)),
+      fetchJsonOrNull(buildProjectApiUrl("/api/v1/lines/{line_id}/kpi", lineId, { date: apiDate })),
+      fetchJsonOrNull(buildProjectApiUrl("/api/v1/lines/{line_id}/prediction-accuracy", lineId, { date: apiDate }))
+    ]);
+
+    bundle.stationLatest[lineId] = station;
+    bundle.qualityTrend[lineId] = quality;
+    bundle.utilizationTrend[lineId] = utilization;
+    bundle.cycleTimeTrend[lineId] = cycle;
+    bundle.diagnosisLatest[lineId] = diagnosis;
+    bundle.pendingAlerts[lineId] = alerts;
+    bundle.kpiSummary[lineId] = kpi;
+    bundle.predictionAccuracy[lineId] = accuracy;
+  }));
+
+  return bundle;
+}
+
+function getHourlyValuesFromDb(lineId, metricKey) {
+  const db = currentDatabaseResponse || MOCK_DATABASE_RESPONSE;
+  const values = db?.hourlyTrends?.[lineId]?.[metricKey];
+  if (Array.isArray(values) && values.length) return values;
+  return null;
+}
+
+hydrateSimulatedApiStateFromLocalStorage();
+
 // ==============================
 // Manager UI state
 // ==============================
@@ -311,7 +1590,9 @@ const CATEGORY_LIST = [
 let activeCategory = "monitor";
 let lastDataUpdateAt = new Date();
 let latestDataError = "";
-let selectedReportDate = getDateKey(new Date());
+let selectedReportDate = getInitialReportDateKey();
+let selectedReportHourMode = "live";
+let selectedReportHour = null;
 let isRecommendationDrawerOpen = false;
 let isStationDetailOpen = false;
 let selectedDetailLineId = "";
@@ -691,7 +1972,7 @@ function formatDateLabel(dateKey) {
 }
 
 function getTodayKey() {
-  return getDateKey(new Date());
+  return CONFIG.SIMULATED_API_ENABLED ? getActiveApiDateKey() : getDateKey(new Date());
 }
 
 function getCurrentDataHour() {
@@ -759,28 +2040,32 @@ function makeSvgPoints(rows, xForHour, yForValue, metricKey) {
 
 
 function isSelectedDatePendingQC(dateKey) {
-  return dateKey >= getTodayKey();
+  return dateKey >= getActiveApiDateKey();
 }
 
 function generateDateOptions(daysBack = 14) {
-  const options = [];
-  const today = new Date();
+  const activeDate = getActiveApiDateKey();
+  const archivedKeys = getArchivedDateKeys();
+  const keys = new Set([activeDate, ...archivedKeys]);
 
-  for (let i = 0; i <= daysBack; i += 1) {
-    const date = new Date(today);
-    date.setDate(today.getDate() - i);
-
-    const key = getDateKey(date);
-    const label = i === 0
-      ? `${formatDateLabel(key)} 今天`
-      : i === 1
-        ? `${formatDateLabel(key)} 昨天`
-        : formatDateLabel(key);
-
-    options.push({ key, label });
+  if (!CONFIG.SIMULATED_API_ENABLED) {
+    const today = new Date();
+    for (let i = 0; i <= daysBack; i += 1) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      keys.add(getDateKey(date));
+    }
   }
 
-  return options;
+  return Array.from(keys)
+    .sort()
+    .reverse()
+    .map(key => {
+      let suffix = "";
+      if (key === activeDate) suffix = " 目前模擬日";
+      else if (archivedKeys.includes(key)) suffix = " 已封存";
+      return { key, label: `${formatDateLabel(key)}${suffix}` };
+    });
 }
 
 function getQualityGradeByOkRate(okRate) {
@@ -1063,6 +2348,8 @@ function renderManagerHeader() {
   const level = getOperationLevel(summary);
   const selectedQuality = getSelectedQualityInfo(summary);
   const dateOptions = generateDateOptions(14);
+  const hourOptions = generateHourOptionsForSelectedDate();
+  const selectedHourValue = getSelectedHourSelectValue();
   const header = document.getElementById("managerHeader");
 
   header.innerHTML = `
@@ -1092,7 +2379,45 @@ function renderManagerHeader() {
             </option>
           `).join("")}
         </select>
-        <div class="overview-note">${escapeHtml(selectedQuality.sourceStatus)}</div>
+        <div class="overview-note">${escapeHtml(selectedQuality.sourceStatus)}｜${escapeHtml(getSelectedDateMode() === "archive" ? "歷史回顧" : "即時模擬")}</div>
+      </article>
+
+      <article class="overview-mini-card time-card">
+        <label class="overview-label" for="reportHourDropdownTrigger">資料時間</label>
+        <div class="time-review-picker">
+          <button
+            type="button"
+            id="reportHourDropdownTrigger"
+            class="time-dropdown-trigger ${hourOptions.find(option => option.value === selectedHourValue)?.problem ? "selected-problem-hour" : ""}"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+          >
+            <span>${escapeHtml(hourOptions.find(option => option.value === selectedHourValue)?.label || "選擇時間")}</span>
+            <span class="time-dropdown-arrow">⌄</span>
+          </button>
+          <div class="time-dropdown-menu" id="reportHourDropdownMenu" role="listbox" aria-label="選擇資料時間">
+            ${hourOptions.map(option => `
+              <button
+                type="button"
+                class="time-dropdown-option ${option.problem ? `problem-hour-option problem-${option.problemLevel}` : ""} ${option.value === selectedHourValue ? "is-selected" : ""}"
+                data-report-hour-option="${escapeHtml(option.value)}"
+                role="option"
+                aria-selected="${option.value === selectedHourValue ? "true" : "false"}"
+              >
+                <span class="time-option-hour">${escapeHtml(option.hourLabel || option.label)}</span>
+                ${option.problemText ? `<span class="time-option-problem">${escapeHtml(option.problemText)}</span>` : ""}
+              </button>
+            `).join("")}
+          </div>
+        </div>
+        <select id="reportHourSelect" class="date-select time-select sr-only" aria-hidden="true" tabindex="-1">
+          ${hourOptions.map(option => `
+            <option value="${escapeHtml(option.value)}" ${option.value === selectedHourValue ? "selected" : ""}>
+              ${escapeHtml(option.label)}
+            </option>
+          `).join("")}
+        </select>
+        <div class="overview-note">${escapeHtml(getTimeReviewModeLabel())}｜淺紅閃爍代表該小時曾出現問題</div>
       </article>
 
       <article class="overview-mini-card warning-card">
@@ -1113,11 +2438,6 @@ function renderManagerHeader() {
         <div class="overview-note">預估 vs 實績</div>
       </article>
 
-      <article class="overview-mini-card">
-        <div class="overview-label">主要異常站別</div>
-        <div class="overview-value small">${escapeHtml(summary.mainIssueStation)}</div>
-        <div class="overview-note">${escapeHtml(summary.mainIssueProcess)}｜${escapeHtml(summary.responsibleEngineer)}</div>
-      </article>
 
       <article class="overview-mini-card ${escapeHtml(selectedQuality.gradeClass)}">
         <div class="overview-label">${escapeHtml(selectedQuality.label)}</div>
@@ -1260,6 +2580,7 @@ function renderStationMonitorTable(summary) {
   });
 
   return `
+    ${renderApiSimulationStatusPanel(summary)}
     <section class="evidence-panel quality-chart-panel">
       <p class="content-section-kicker">Today hourly quality score</p>
       <h3>今日 24 小時品質分數：三站 XY 圖表</h3>
@@ -1272,7 +2593,7 @@ function renderStationMonitorTable(summary) {
 }
 
 function getHourlyQualityScoreSeries(lineId) {
-  const values = MOCK_QUALITY_SCORE_HOURLY_TODAY[lineId] || [];
+  const values = getHourlyValuesFromDb(lineId, "quality_score_pct") || MOCK_QUALITY_SCORE_HOURLY_TODAY[lineId] || [];
   return Array.from({ length: 24 }, (_, hour) => ({
     hour,
     hourLabel: `${String(hour).padStart(2, "0")}:00`,
@@ -1337,6 +2658,19 @@ function buildStationDiagnosis(evaluation) {
   const cycleSlow = metrics.cycle_time_sec > baseline.cycle_time_sec * 1.08;
 
   const issues = [];
+
+  (station.projectDiagnosis || [])
+    .filter(item => item.severity && item.severity !== "normal")
+    .forEach(item => {
+      const level = item.severity === "alarm" ? "緊急" : "警告";
+      issues.push({
+        level,
+        direction: item.stateLabel || "DB 診斷異常",
+        evidence: item.evidence || `來源：diagnosis_latest.schema.json，confidence=${item.confidence || 0}`,
+        impact: "此問題由 diagnosis_result 與 threshold tables 推論，代表目前站別資料已超出正常判斷規則。",
+        action: item.action || `請 ${responsibility.engineerRole} 依診斷類別先確認 ${responsibility.stationName} 的噴嘴、濾網、噴幅、壓力流量與製程條件。`
+      });
+    });
 
   if (highClog || component.nozzle !== "normal") {
     issues.push({
@@ -1483,21 +2817,6 @@ function renderRealtimeDiagnosisPanel(summary) {
         ${diagnosis.stationDiagnoses.map(diagnosisItem => renderStationDiagnosisCard(diagnosisItem)).join("")}
       </div>
 
-      <div class="decision-method-card">
-        <div>
-          <p class="content-section-kicker">Decision method</p>
-          <h4>決策法：先定位問題，再決定處理順序</h4>
-          <ol>
-            <li>先看哪一站低於警戒：品質分數 &lt; 92%、稼動率低於 baseline、Cycle Time 高於 baseline。</li>
-            <li>再看原因欄位：堵塞率、噴嘴、濾網、噴幅、壓力與流量是否同時異常。</li>
-            <li>若 QC 下降 + 堵塞率高 + 流量低，優先查噴嘴 / 濾網 / 供漆；若噴幅超出目標，優先查扇形氣壓與噴槍條件。</li>
-            <li>處理後用下一次 DB 更新驗收：品質分數回升、堵塞率下降、噴幅回到目標、稼動率與 Cycle Time 回穩。</li>
-          </ol>
-        </div>
-        <button type="button" class="decision-open-detail-btn" data-detail-line-id="${escapeHtml(main.station.lineId)}">
-          查看 ${escapeHtml(main.responsibility.stationName)} 詳細趨勢
-        </button>
-      </div>
     </section>
   `;
 }
@@ -1549,10 +2868,15 @@ function renderQualityScoreChartCard(item) {
   const station = item.station;
   const responsibility = item.responsibility;
   const series = getHourlyQualityScoreSeries(station.lineId);
-  const values = series.map(row => row.qualityScore).filter(value => value > 0);
-  const latest = values[values.length - 1] || 0;
-  const minValue = Math.min(...values);
-  const avgValue = average(values);
+  const currentHour = getCurrentDataHour();
+  const currentAndPastValues = series
+    .filter(row => Number(row.hour) <= currentHour)
+    .map(row => row.qualityScore)
+    .filter(value => value > 0);
+  const currentRow = series.find(row => Number(row.hour) === currentHour) || series[Math.min(currentHour, series.length - 1)];
+  const latest = Number(currentRow?.qualityScore || currentAndPastValues[currentAndPastValues.length - 1] || 0);
+  const minValue = currentAndPastValues.length ? Math.min(...currentAndPastValues) : latest;
+  const avgValue = average(currentAndPastValues.length ? currentAndPastValues : [latest]);
   const level = latest < 90 ? "緊急" : latest < 92 ? "警告" : "正常";
 
   return `
@@ -1675,23 +2999,33 @@ function getStationEvaluationByLineId(lineId) {
 function getStationHourlyDetailSeries(lineId) {
   const detail = MOCK_STATION_DETAIL_HOURLY_TODAY[lineId] || {};
   const fallbackQuality = MOCK_QUALITY_SCORE_HOURLY_TODAY[lineId] || [];
+  const apiQuality = getHourlyValuesFromDb(lineId, "quality_score_pct");
+  const apiUtilization = getHourlyValuesFromDb(lineId, "utilization_pct");
+  const apiCycle = getHourlyValuesFromDb(lineId, "cycle_time_sec");
 
   return Array.from({ length: 24 }, (_, hour) => ({
     hour,
     hourLabel: `${String(hour).padStart(2, "0")}:00`,
-    quality_score_pct: Number((detail.quality_score_pct || fallbackQuality)[hour] ?? 0),
-    utilization_pct: Number((detail.utilization_pct || [])[hour] ?? 0),
-    cycle_time_sec: Number((detail.cycle_time_sec || [])[hour] ?? 0)
+    quality_score_pct: Number((apiQuality || detail.quality_score_pct || fallbackQuality)[hour] ?? 0),
+    utilization_pct: Number((apiUtilization || detail.utilization_pct || [])[hour] ?? 0),
+    cycle_time_sec: Number((apiCycle || detail.cycle_time_sec || [])[hour] ?? 0)
   }));
 }
 
 function getMetricStats(series, key) {
-  const values = series.map(row => Number(row[key] || 0)).filter(value => value > 0);
+  const currentHour = getCurrentDataHour();
+  const values = series
+    .filter(row => Number(row.hour) <= currentHour)
+    .map(row => Number(row[key] || 0))
+    .filter(value => value > 0);
+  const currentRow = series.find(row => Number(row.hour) === currentHour) || series[Math.min(currentHour, series.length - 1)];
+  const latest = Number(currentRow?.[key] || values[values.length - 1] || 0);
+  const safeValues = values.length ? values : [latest].filter(value => value > 0);
   return {
-    latest: values[values.length - 1] || 0,
-    min: values.length ? Math.min(...values) : 0,
-    max: values.length ? Math.max(...values) : 0,
-    avg: average(values)
+    latest,
+    min: safeValues.length ? Math.min(...safeValues) : 0,
+    max: safeValues.length ? Math.max(...safeValues) : 0,
+    avg: average(safeValues)
   };
 }
 
@@ -2303,13 +3637,100 @@ function renderDataStatusBar() {
       <div class="data-status-main">
         <span class="live-dot ${latestDataError ? "error" : "ok"}"></span>
         <strong>資料狀態：</strong>
-        ${escapeHtml(dateLabel)}｜品質等級 ${escapeHtml(quality.grade)}｜${escapeHtml(quality.value)}｜${escapeHtml(quality.sourceStatus)}
+        ${escapeHtml(dateLabel)}｜${escapeHtml(getTimeReviewModeLabel())}｜品質等級 ${escapeHtml(quality.grade)}｜${escapeHtml(quality.value)}｜${escapeHtml(quality.sourceStatus)}
       </div>
       <div class="data-status-detail">
-        來源 ${escapeHtml(dataStatus.source)}｜API ${escapeHtml(dataStatus.apiVersion)}｜今日資料完整度 ${escapeHtml(dataStatus.todayCompleteness)}%｜
+        來源 ${escapeHtml(dataStatus.source)}｜契約 ${escapeHtml(dataStatus.apiVersion)}｜今日資料完整度 ${escapeHtml(dataStatus.todayCompleteness)}%｜
         本週 ${escapeHtml(dataStatus.weekProgress)}｜未來 7 天為 forecastNoAction 推估｜最後更新 ${escapeHtml(formatLastUpdateTime(lastDataUpdateAt))}
       </div>
     </div>
+  `;
+}
+
+
+function getDecisionSnapshotFromSummary(summary) {
+  const diagnosis = buildRealtimeDiagnosis(summary);
+  const main = diagnosis.main;
+
+  if (!main) {
+    return {
+      key: "normal",
+      label: "目前無異常",
+      station: "無",
+      direction: "無需處理",
+      level: "正常",
+      hour: getCurrentDataHour()
+    };
+  }
+
+  return {
+    key: `${main.station.lineId}_${main.topIssue.direction}_${main.topIssue.level}`,
+    label: `${main.responsibility.stationName} / ${main.responsibility.layerName}：${main.topIssue.direction}`,
+    station: `${main.responsibility.stationName} / ${main.responsibility.layerName}`,
+    direction: main.topIssue.direction,
+    level: main.topIssue.level,
+    hour: getCurrentDataHour()
+  };
+}
+
+function recordSimulatedDecisionAudit(summary) {
+  if (!CONFIG.SIMULATED_API_ENABLED) return;
+
+  const snapshot = getDecisionSnapshotFromSummary(summary);
+  const currentTime = currentDatabaseResponse?.responseMeta?.dataWindow?.currentEnd || getSimulatedGeneratedAt();
+
+  if (!latestDecisionSnapshot || latestDecisionSnapshot.key !== snapshot.key || latestDecisionSnapshot.hour !== snapshot.hour) {
+    previousDecisionSnapshot = latestDecisionSnapshot;
+    latestDecisionSnapshot = snapshot;
+    SIMULATED_DECISION_HISTORY.unshift({
+      ...snapshot,
+      time: currentTime,
+      uploadNo: SIMULATED_API_UPLOAD_INDEX + 1
+    });
+    SIMULATED_DECISION_HISTORY = SIMULATED_DECISION_HISTORY.slice(0, 6);
+  }
+}
+
+function renderApiSimulationStatusPanel(summary) {
+  if (!CONFIG.SIMULATED_API_ENABLED) return "";
+
+  const status = getSimulatedApiStatusText();
+  const segment = getTimeSegmentSummaryText();
+  const currentDecision = latestDecisionSnapshot || getDecisionSnapshotFromSummary(summary);
+  const previousDecision = previousDecisionSnapshot;
+  const changedText = previousDecision && previousDecision.key !== currentDecision.key
+    ? `已變更：${previousDecision.label} → ${currentDecision.label}`
+    : "目前決策未變更";
+
+  return `
+    <section class="api-simulation-panel">
+      <div>
+        <p class="content-section-kicker">Simulated API upload</p>
+        <h3>API 模擬資料流：每 ${Math.round(status.intervalMs / 1000)} 秒更新一筆</h3>
+        <p>目前模擬日期 ${escapeHtml(formatDateLabel(status.dateKey))}，第 ${escapeHtml(status.uploadNo)} 筆 API 回傳，資料時間 ${escapeHtml(status.generatedAt)}。畫面模式：${escapeHtml(getTimeReviewModeLabel())}。</p>
+      </div>
+      <div class="api-simulation-grid">
+        <div>
+          <span>日期 / Current 時間</span>
+          <strong>${escapeHtml(formatDateLabel(status.dateKey))} ${escapeHtml(String(status.currentHour).padStart(2, "0"))}:00</strong>
+          <p>${escapeHtml(segment.pastText)}｜${escapeHtml(segment.currentText)}｜${escapeHtml(segment.futureText)}</p>
+        </div>
+        <div>
+          <span>目前情境</span>
+          <strong>${escapeHtml(status.scenarioName)}</strong>
+          <p>${escapeHtml(status.scenarioNote)}</p>
+        </div>
+        <div>
+          <span>建議決策驗證</span>
+          <strong>${escapeHtml(currentDecision.label)}</strong>
+          <p>${escapeHtml(changedText)}</p>
+        </div>
+      </div>
+      <div class="api-simulation-actions">
+        <button type="button" class="api-sim-next-btn" data-sim-next-upload="1">立即模擬下一筆 API upload</button>
+        <span>用途：驗證不同 DB/API 資料進來後，診斷、建議決策、Past / Current / Future 是否會同步改變。當 23:00 完成後會自動封存當天，下一筆切到隔天 00:00。</span>
+      </div>
+    </section>
   `;
 }
 
@@ -2333,6 +3754,13 @@ async function fetchHistoricalActualData() {
 }
 
 async function fetchRealtimeDataFromDB() {
+  // Preferred path for this project: Project-SprayLine Dashboard v15 / DB Schema v2 endpoints.
+  if (CONFIG.API_USE_PROJECT_SCHEMA) {
+    const apiBundle = await fetchProjectSchemaApiBundle();
+    return normalizeProjectApiBundleToManagerDb(apiBundle);
+  }
+
+  // Legacy path: one aggregate Manager UI endpoint.
   if (CONFIG.USE_MOCK_DATA || !CONFIG.DB_API_URL) return MOCK_DATABASE_RESPONSE;
   const response = await fetch(CONFIG.DB_API_URL);
   return response.json();
@@ -2346,11 +3774,25 @@ async function fetchFutureForecastData() {
 
 async function loadManagerData() {
   try {
-    const dbResponse = await fetchRealtimeDataFromDB();
+    const activeDate = getActiveApiDateKey();
+    let dbResponse = null;
+
+    if (selectedReportHourMode === "hour") {
+      const snapshot = getOrCreateHourlySnapshot(selectedReportDate, selectedReportHour);
+      dbResponse = snapshot?.dbResponse || null;
+    }
+
+    if (!dbResponse) {
+      const archived = selectedReportDate !== activeDate ? getArchivedDatabaseResponse(selectedReportDate) : null;
+      dbResponse = archived || await fetchRealtimeDataFromDB();
+    }
+
     currentDatabaseResponse = dbResponse || MOCK_DATABASE_RESPONSE;
     MANAGER_MOCK_SUMMARY = buildManagerReportFromDatabase(currentDatabaseResponse);
     ASSIGNMENT_CARDS = MANAGER_MOCK_SUMMARY.assignments;
     ACCEPTANCE_CHECKLIST = MANAGER_MOCK_SUMMARY.acceptanceChecklist;
+    storeHourlySnapshotForDbResponse(currentDatabaseResponse);
+    recordSimulatedDecisionAudit(MANAGER_MOCK_SUMMARY);
     lastDataUpdateAt = new Date();
     latestDataError = "";
   } catch (error) {
@@ -2363,6 +3805,55 @@ async function loadManagerData() {
   }
 }
 
+
+async function refreshManagerDataAndRender({ advanceSimulation = false } = {}) {
+  let shouldStoreLiveSnapshotBeforeReview = false;
+
+  if (advanceSimulation && CONFIG.SIMULATED_API_ENABLED) {
+    const oldActiveDate = getActiveApiDateKey();
+    const maxIndex = Math.max(0, Number(CONFIG.SIMULATED_API_MAX_HOUR || 23) - Number(CONFIG.SIMULATED_API_START_HOUR || 0));
+
+    if (SIMULATED_API_UPLOAD_INDEX >= maxIndex) {
+      archiveDatabaseResponseForDate(oldActiveDate, currentDatabaseResponse, "simulated_day_completed");
+      SIMULATED_API_DAY_INDEX += 1;
+      SIMULATED_API_UPLOAD_INDEX = 0;
+
+      if (selectedReportDate === oldActiveDate && selectedReportHourMode === "live") {
+        selectedReportDate = getActiveApiDateKey();
+      }
+    } else {
+      SIMULATED_API_UPLOAD_INDEX += 1;
+    }
+
+    saveSimulatedApiState("advance_simulated_upload");
+    shouldStoreLiveSnapshotBeforeReview = selectedReportHourMode === "hour";
+  }
+
+  if (shouldStoreLiveSnapshotBeforeReview) {
+    try {
+      const liveDb = await fetchRealtimeDataFromDB();
+      storeHourlySnapshotForDbResponse(liveDb);
+    } catch (error) {
+      console.warn("[Hourly history] failed to store live snapshot while reviewing past hour", error);
+    }
+  }
+
+  await loadManagerData();
+  renderCockpit();
+}
+
+function startAutoDataRefresh() {
+  const intervalMs = CONFIG.SIMULATED_API_ENABLED
+    ? CONFIG.SIMULATED_API_UPLOAD_INTERVAL_MS
+    : (CONFIG.USE_MOCK_DATA ? CONFIG.MOCK_POLL_INTERVAL_MS : CONFIG.DB_POLL_INTERVAL_MS);
+
+  if (!intervalMs || intervalMs <= 0) return;
+
+  window.setInterval(() => {
+    refreshManagerDataAndRender({ advanceSimulation: CONFIG.SIMULATED_API_ENABLED });
+  }, intervalMs);
+}
+
 function initCockpit() {
   renderCockpit();
 
@@ -2373,17 +3864,58 @@ function initCockpit() {
   });
 
   document.getElementById("categoryContent").addEventListener("click", event => {
+    const simButton = event.target.closest("[data-sim-next-upload]");
+    if (simButton) {
+      refreshManagerDataAndRender({ advanceSimulation: true });
+      return;
+    }
+
     const chartButton = event.target.closest("[data-detail-line-id]");
     if (!chartButton) return;
     setStationDetailOpen(true, chartButton.dataset.detailLineId);
   });
 
-  document.getElementById("managerHeader").addEventListener("change", event => {
-    const select = event.target.closest("#reportDateSelect");
-    if (!select) return;
+  document.getElementById("managerHeader").addEventListener("click", event => {
+    const trigger = event.target.closest("#reportHourDropdownTrigger");
+    if (trigger) {
+      const picker = trigger.closest(".time-review-picker");
+      const isOpen = picker.classList.toggle("is-open");
+      trigger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      return;
+    }
 
-    selectedReportDate = select.value;
-    renderCockpit();
+    const hourOption = event.target.closest("[data-report-hour-option]");
+    if (!hourOption) return;
+
+    const selectedValue = hourOption.dataset.reportHourOption;
+    if (selectedValue === "live") {
+      selectedReportHourMode = "live";
+      selectedReportHour = null;
+      selectedReportDate = getActiveApiDateKey();
+    } else {
+      selectedReportHourMode = "hour";
+      selectedReportHour = Number(selectedValue);
+    }
+
+    loadManagerData().then(renderCockpit);
+  });
+
+  document.addEventListener("click", event => {
+    if (event.target.closest("#managerHeader .time-review-picker")) return;
+    const picker = document.querySelector("#managerHeader .time-review-picker");
+    if (!picker) return;
+    picker.classList.remove("is-open");
+    const trigger = document.getElementById("reportHourDropdownTrigger");
+    if (trigger) trigger.setAttribute("aria-expanded", "false");
+  });
+
+  document.getElementById("managerHeader").addEventListener("change", event => {
+    const dateSelect = event.target.closest("#reportDateSelect");
+    if (!dateSelect) return;
+
+    selectedReportDate = dateSelect.value;
+    setDefaultTimeSelectionForDate(selectedReportDate);
+    loadManagerData().then(renderCockpit);
   });
 
   document.getElementById("recommendationDrawerTrigger").addEventListener("click", () => {
@@ -2430,4 +3962,7 @@ function initCockpit() {
     sendEngineerWarningEmail(Number(button.dataset.assignmentIndex));
   });
 }
-loadManagerData().finally(initCockpit);
+loadManagerData().finally(() => {
+  initCockpit();
+  startAutoDataRefresh();
+});
