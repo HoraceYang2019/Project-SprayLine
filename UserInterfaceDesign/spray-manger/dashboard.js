@@ -13,127 +13,570 @@ const CONFIG = {
 };
 
 // ==============================
-// Centralized manager mock data
+// Mock database / web service response
+// This object is intentionally shaped like an API response.
+// Later, replace this with fetch(DB_API_URL).json().
 // ==============================
 
-const MANAGER_MOCK_SUMMARY = {
-  lineName: "Spray Line 1",
-  mainIssueStation: "Station 2",
-  mainIssueRobot: "Robot 2",
-  mainIssueProcess: "Top Coat",
-
-  estimatedThisWeekEfficiency: 78.2,
-  lastWeekActualEfficiency: 86.0,
-  efficiencyChange: -7.8,
-
-  todayEstimatedEfficiency: 76.8,
-  yesterdayActualEfficiency: 84.5,
-  todayVsYesterdayChange: -7.7,
-
-  monthToDateEstimatedEfficiency: 80.5,
-  lastMonthSamePeriodActualEfficiency: 85.2,
-  monthChange: -4.7,
-
-  predictedOkRate: 90.2,
-  lastWeekActualOkRate: 94.5,
-  predictedNgPcs: 610,
-  lastWeekActualNgPcs: 420,
-
-  utilization: 74.6,
-  lastWeekUtilization: 85.8,
-
-  performance: 84.5,
-  lastWeekPerformance: 92.0,
-
-  producedPcs: 11950,
-  lastWeekProducedPcs: 12800,
-
-  lostProductionPcs: 850,
-  extraPredictedNgPcs: 190,
-  extraDowntimeMinutes: 190,
-
-  futureNoActionEfficiency: 72.5,
-  futureNoActionOkRate: 87.8,
-  futureLostPcs: 840,
-  futureExtraNgPcs: 175,
-
-  dataStatus: {
-    todayCompleteness: 65,
+const MOCK_DATABASE_RESPONSE = {
+  responseMeta: {
+    requestId: "mock-sprayline-manager-20260609-001",
+    source: "mock_web_service",
+    apiVersion: "manager-ui-v3",
+    generatedAt: "2026-06-09T10:20:00+08:00",
+    dataWindow: {
+      currentStart: "2026-06-09T00:00:00+08:00",
+      currentEnd: "2026-06-09T10:20:00+08:00",
+      historicalBaseline: "last_week_same_period",
+      forecastHorizonDays: 7
+    },
+    dataCompletenessPct: 65,
     weekProgress: "3 / 5 工作日"
   },
 
-  predictionValidation: {
-    yesterdayPredictedOkRate: 91.4,
-    yesterdayActualOkRate: 92.6,
-    predictionErrorPts: 1.2,
-    yesterdayPredictedNgPcs: 41,
-    yesterdayActualNgPcs: 35,
-    modelTrustLevel: "良好"
+  line: {
+    lineId: "spray_line_1",
+    lineName: "Spray Line 1",
+    plant: "Demo Factory",
+    processFlow: ["底色層", "顏色層", "保護層"]
+  },
+
+  stationResponsibility: {
+    line_1: {
+      stationName: "第一站",
+      layerName: "底色層",
+      machineName: "第一站噴塗機",
+      engineerRole: "第一站負責工程師",
+      engineerEmail: "station1.engineer@example.com"
+    },
+    line_2: {
+      stationName: "第二站",
+      layerName: "顏色層",
+      machineName: "第二站噴塗機",
+      engineerRole: "第二站負責工程師",
+      engineerEmail: "station2.engineer@example.com"
+    },
+    line_3: {
+      stationName: "第三站",
+      layerName: "保護層",
+      machineName: "第三站噴塗機",
+      engineerRole: "第三站負責工程師",
+      engineerEmail: "station3.engineer@example.com"
+    }
+  },
+
+  stationTelemetry: [
+    {
+      lineId: "line_1",
+      timestamp: "2026-06-09T10:20:00+08:00",
+      recipeId: "BASE-WHITE-01",
+      state: "running",
+      metrics: {
+        pressure_bar: 2.18,
+        flow_rate_ml_min: 124,
+        spray_width_mm: 182,
+        target_min_mm: 176,
+        target_max_mm: 190,
+        temperature_c: 27.8,
+        availability_pct: 87.2,
+        maintainability_pct: 92.4,
+        clog_rate_pct: 6.8,
+        quality_score_pct: 93.6,
+        utilization_pct: 82.5,
+        cycle_time_sec: 46.8
+      },
+      baseline: {
+        pressure_bar: 2.2,
+        flow_rate_ml_min: 126,
+        quality_score_pct: 95.0,
+        utilization_pct: 85.0,
+        cycle_time_sec: 45.0
+      },
+      componentHealth: {
+        nozzle: "normal",
+        filter_mesh: "normal",
+        spray_width: "normal"
+      },
+      predictedQuality: {
+        ok_rate_pct: 93.4,
+        ng_pcs_next_qc: 128,
+        riskLevel: "normal",
+        riskText: "底色層目前穩定，但仍需確認是否影響後段顏色層。"
+      }
+    },
+    {
+      lineId: "line_2",
+      timestamp: "2026-06-09T10:20:00+08:00",
+      recipeId: "COLOR-WHITE-01",
+      state: "warning",
+      metrics: {
+        pressure_bar: 2.52,
+        flow_rate_ml_min: 111,
+        spray_width_mm: 196,
+        target_min_mm: 178,
+        target_max_mm: 190,
+        temperature_c: 29.1,
+        availability_pct: 78.1,
+        maintainability_pct: 84.5,
+        clog_rate_pct: 14.6,
+        quality_score_pct: 89.1,
+        utilization_pct: 74.6,
+        cycle_time_sec: 52.4
+      },
+      baseline: {
+        pressure_bar: 2.24,
+        flow_rate_ml_min: 126,
+        quality_score_pct: 95.2,
+        utilization_pct: 85.8,
+        cycle_time_sec: 45.2
+      },
+      componentHealth: {
+        nozzle: "warning",
+        filter_mesh: "warning",
+        spray_width: "out_of_range"
+      },
+      predictedQuality: {
+        ok_rate_pct: 90.2,
+        ng_pcs_next_qc: 610,
+        riskLevel: "warning",
+        riskText: "第二站 / 顏色層風險最高，噴幅偏寬、流量偏低且堵塞率偏高。"
+      }
+    },
+    {
+      lineId: "line_3",
+      timestamp: "2026-06-09T10:20:00+08:00",
+      recipeId: "CLEAR-COAT-01",
+      state: "running",
+      metrics: {
+        pressure_bar: 2.07,
+        flow_rate_ml_min: 119,
+        spray_width_mm: 187,
+        target_min_mm: 180,
+        target_max_mm: 192,
+        temperature_c: 28.4,
+        availability_pct: 84.8,
+        maintainability_pct: 89.2,
+        clog_rate_pct: 8.7,
+        quality_score_pct: 92.0,
+        utilization_pct: 80.4,
+        cycle_time_sec: 48.1
+      },
+      baseline: {
+        pressure_bar: 2.1,
+        flow_rate_ml_min: 121,
+        quality_score_pct: 94.1,
+        utilization_pct: 84.0,
+        cycle_time_sec: 46.0
+      },
+      componentHealth: {
+        nozzle: "normal",
+        filter_mesh: "monitor",
+        spray_width: "normal"
+      },
+      predictedQuality: {
+        ok_rate_pct: 92.1,
+        ng_pcs_next_qc: 214,
+        riskLevel: "monitor",
+        riskText: "保護層需追蹤確認，避免放大顏色層造成的外觀不良。"
+      }
+    }
+  ],
+
+  productionKpi: {
+    currentPeriod: {
+      producedPcs: 11950,
+      plannedPcs: 12800,
+      estimatedEfficiencyPct: 78.2,
+      estimatedOkRatePct: 90.2,
+      predictedNgPcs: 610,
+      estimatedDowntimeMin: 190
+    },
+    previousPeriod: {
+      producedPcs: 12800,
+      actualEfficiencyPct: 86.0,
+      actualOkRatePct: 94.5,
+      actualNgPcs: 420,
+      utilizationPct: 85.8,
+      performancePct: 92.0
+    },
+    yesterdayActual: {
+      actualEfficiencyPct: 84.5,
+      actualOkRatePct: 92.6,
+      actualNgPcs: 35
+    },
+    todayEstimate: {
+      estimatedEfficiencyPct: 76.8,
+      estimatedOkRatePct: 90.2,
+      predictedNgPcs: 41
+    },
+    monthToDate: {
+      estimatedEfficiencyPct: 80.5,
+      lastMonthSamePeriodActualEfficiencyPct: 85.2
+    }
+  },
+
+  qualityValidation: {
+    validationDate: "2026-06-08",
+    predictedOkRatePct: 91.4,
+    actualOkRatePct: 92.6,
+    predictedNgPcs: 41,
+    actualNgPcs: 35,
+    modelTrustLevel: "良好",
+    modelInputSource: "station_telemetry + production_kpi + qc_history"
+  },
+
+  qualityHistory: [
+    {
+      qcDate: "2026-06-08",
+      workOrder: "WO-20260608-002",
+      partNo: "Cover-A",
+      colorCode: "White",
+      okPcs: 721,
+      ngPcs: 35,
+      defectTypes: ["色差", "橘皮", "流掛"]
+    },
+    {
+      qcDate: "2026-06-07",
+      workOrder: "WO-20260607-004",
+      partNo: "Cover-A",
+      colorCode: "White",
+      okPcs: 694,
+      ngPcs: 42,
+      defectTypes: ["膜厚不足", "色差"]
+    }
+  ],
+
+  forecastNoAction: {
+    horizonDays: 7,
+    estimatedEfficiencyPct: 72.5,
+    estimatedOkRatePct: 87.8,
+    extraLostProductionPcs: 840,
+    extraPredictedNgPcs: 175,
+    riskText: "若第二站顏色層不改善，未來 7 天可能造成額外產量缺口與 NG 增加。"
   }
 };
 
-const CATEGORY_LIST = [
-  { key: "decision", label: "目前狀態" },
-  { key: "impact", label: "損失多少" },
-  { key: "action", label: "處理進度" },
-  { key: "validation", label: "預測結果驗證" }
-];
 
-const ASSIGNMENT_CARDS = [
-  {
-    priority: "P1",
-    owner: "設備工程師",
-    email: "equipment.engineer@example.com",
-    issue: "Station 2 稼動率下降",
-    task: "查 downtime、alarm、pump、氣壓、sensor。",
-    due: "今天 16:00",
-    status: "待處理",
-    acceptance: "Utilization 回升到 80% 以上"
+// ==============================
+// Mock 24-hour quality score series
+// 模擬今天 00:00-23:00 每小時品質分數，未來可由 DB/API 回傳。
+// 建議 API 欄位格式：quality_score_hourly_today[lineId] = [{ hourKey, quality_score_pct }]
+// ==============================
+
+const MOCK_QUALITY_SCORE_HOURLY_TODAY = {
+  line_1: [
+    94.2, 94.1, 94.0, 93.9, 94.0, 93.8, 93.7, 93.6,
+    93.8, 93.9, 93.7, 93.6, 93.8, 93.7, 93.5, 93.6,
+    93.4, 93.5, 93.6, 93.8, 93.7, 93.6, 93.5, 93.6
+  ],
+  line_2: [
+    92.8, 92.6, 92.4, 92.1, 91.8, 91.4, 91.1, 90.9,
+    90.5, 90.2, 89.9, 89.7, 89.5, 89.2, 89.0, 88.8,
+    88.6, 88.4, 88.7, 88.9, 89.0, 89.1, 89.2, 89.1
+  ],
+  line_3: [
+    92.7, 92.8, 92.9, 93.0, 92.8, 92.7, 92.6, 92.7,
+    92.8, 92.9, 93.0, 93.1, 93.0, 92.9, 92.8, 92.9,
+    93.0, 93.1, 93.0, 92.9, 92.8, 92.9, 93.0, 92.8
+  ]
+};
+
+const MOCK_STATION_DETAIL_HOURLY_TODAY = {
+  line_1: {
+    quality_score_pct: MOCK_QUALITY_SCORE_HOURLY_TODAY.line_1,
+    utilization_pct: [84.8, 84.6, 84.5, 84.3, 84.1, 84.0, 83.8, 83.6, 83.4, 83.2, 83.1, 83.0, 82.9, 82.8, 82.7, 82.6, 82.5, 82.4, 82.3, 82.4, 82.5, 82.6, 82.5, 82.5],
+    cycle_time_sec: [45.2, 45.3, 45.4, 45.5, 45.5, 45.6, 45.7, 45.8, 45.9, 46.0, 46.1, 46.0, 46.2, 46.3, 46.4, 46.5, 46.4, 46.6, 46.7, 46.8, 46.7, 46.8, 46.8, 46.8]
   },
-  {
-    priority: "P2",
-    owner: "製程工程師",
-    email: "process.engineer@example.com",
-    issue: "Top Coat 品質風險",
-    task: "查噴槍、霧化壓力、塗料壓力、供漆穩定性。",
-    due: "今天下班前",
-    status: "待處理",
-    acceptance: "Predicted NG 不再增加"
+  line_2: {
+    quality_score_pct: MOCK_QUALITY_SCORE_HOURLY_TODAY.line_2,
+    utilization_pct: [83.1, 82.5, 81.8, 80.7, 79.9, 79.0, 78.2, 77.4, 76.8, 76.1, 75.6, 75.0, 74.7, 74.2, 73.8, 73.4, 72.9, 72.4, 72.1, 72.6, 73.0, 73.5, 74.0, 74.6],
+    cycle_time_sec: [46.1, 46.5, 47.0, 47.8, 48.4, 49.1, 49.8, 50.4, 51.0, 51.7, 52.2, 52.7, 53.1, 53.5, 53.8, 54.1, 54.4, 54.8, 54.2, 53.6, 53.0, 52.8, 52.6, 52.4]
   },
-  {
-    priority: "P3",
-    owner: "自動化工程師",
-    email: "automation.engineer@example.com",
-    issue: "Cycle Time 增加",
-    task: "查 Robot 2 path、等待時間、治具定位、節拍設定。",
-    due: "下一次更新前",
-    status: "待處理",
-    acceptance: "Cycle Time 回到 baseline +5% 以內"
-  },
-  {
-    priority: "P4",
-    owner: "品保工程師",
-    email: "qa.engineer@example.com",
-    issue: "待 QC 品質確認",
-    task: "明天 QC 後查 NG 類型與 Station 2 相關批次分布。",
-    due: "明天 QC 後",
-    status: "等待 QC",
-    acceptance: "確認 NG 沒有擴大"
+  line_3: {
+    quality_score_pct: MOCK_QUALITY_SCORE_HOURLY_TODAY.line_3,
+    utilization_pct: [82.0, 82.1, 82.2, 82.3, 82.2, 82.0, 81.8, 81.6, 81.5, 81.4, 81.2, 81.0, 80.9, 80.7, 80.6, 80.5, 80.4, 80.5, 80.6, 80.5, 80.4, 80.4, 80.5, 80.4],
+    cycle_time_sec: [46.2, 46.3, 46.4, 46.5, 46.6, 46.7, 46.8, 47.0, 47.2, 47.4, 47.5, 47.6, 47.7, 47.9, 48.0, 48.1, 48.1, 48.2, 48.2, 48.1, 48.1, 48.1, 48.1, 48.1]
   }
+};
+
+// ==============================
+// Manager UI state
+// ==============================
+
+const CATEGORY_LIST = [
+  { key: "monitor", label: "狀態實時監控表" },
+  { key: "validation", label: "預測驗證" }
 ];
 
-const ACCEPTANCE_CHECKLIST = [
-  "Station 2 utilization 回升到 80% 以上",
-  "Cycle Time 回到 baseline +5% 以內",
-  "Predicted NG 不再增加",
-  "本週預估效益開始回升",
-  "明天 QC 結果確認 NG 沒有擴大"
-];
-
-let activeCategory = "decision";
+let activeCategory = "monitor";
 let lastDataUpdateAt = new Date();
 let latestDataError = "";
 let selectedReportDate = getDateKey(new Date());
+let isRecommendationDrawerOpen = false;
+let isStationDetailOpen = false;
+let selectedDetailLineId = "";
+
+let currentDatabaseResponse = MOCK_DATABASE_RESPONSE;
+let MANAGER_MOCK_SUMMARY = buildManagerReportFromDatabase(currentDatabaseResponse);
+let ASSIGNMENT_CARDS = MANAGER_MOCK_SUMMARY.assignments;
+let ACCEPTANCE_CHECKLIST = MANAGER_MOCK_SUMMARY.acceptanceChecklist;
+
+// ==============================
+// Data transformation layer
+// Database/API response -> Manager report
+// ==============================
+
+function buildManagerReportFromDatabase(db) {
+  const production = db.productionKpi;
+  const stationEvaluations = db.stationTelemetry.map(station => evaluateStationRisk(db, station));
+  stationEvaluations.sort((a, b) => b.riskScore - a.riskScore);
+
+  const mainEvaluation = stationEvaluations[0];
+  const mainStation = mainEvaluation.station;
+  const responsibility = mainEvaluation.responsibility;
+  const validation = db.qualityValidation;
+
+  const efficiencyChange = production.currentPeriod.estimatedEfficiencyPct - production.previousPeriod.actualEfficiencyPct;
+  const todayVsYesterdayChange = production.todayEstimate.estimatedEfficiencyPct - production.yesterdayActual.actualEfficiencyPct;
+  const monthChange = production.monthToDate.estimatedEfficiencyPct - production.monthToDate.lastMonthSamePeriodActualEfficiencyPct;
+  const lostProductionPcs = Math.max(0, production.previousPeriod.producedPcs - production.currentPeriod.producedPcs);
+  const extraPredictedNgPcs = Math.max(0, production.currentPeriod.predictedNgPcs - production.previousPeriod.actualNgPcs);
+
+  const assignments = buildAssignmentsFromStations(db, stationEvaluations);
+
+  return {
+    dataSource: db.responseMeta.source,
+    apiVersion: db.responseMeta.apiVersion,
+    generatedAt: db.responseMeta.generatedAt,
+    rawDatabaseResponse: db,
+
+    lineName: db.line.lineName,
+    mainIssueLineId: mainStation.lineId,
+    mainIssueStation: responsibility.stationName,
+    mainIssueRobot: responsibility.machineName,
+    mainIssueProcess: responsibility.layerName,
+    responsibleEngineer: responsibility.engineerRole,
+    responsibleEmail: responsibility.engineerEmail,
+    mainStationState: mainStation.state,
+    mainStationRecipe: mainStation.recipeId,
+    mainStationMetrics: mainStation.metrics,
+    mainStationBaseline: mainStation.baseline,
+    mainStationComponents: mainStation.componentHealth,
+    mainStationRiskScore: mainEvaluation.riskScore,
+    mainRiskReasons: mainEvaluation.reasons,
+    stationEvaluations,
+
+    estimatedThisWeekEfficiency: production.currentPeriod.estimatedEfficiencyPct,
+    lastWeekActualEfficiency: production.previousPeriod.actualEfficiencyPct,
+    efficiencyChange,
+
+    todayEstimatedEfficiency: production.todayEstimate.estimatedEfficiencyPct,
+    yesterdayActualEfficiency: production.yesterdayActual.actualEfficiencyPct,
+    todayVsYesterdayChange,
+
+    monthToDateEstimatedEfficiency: production.monthToDate.estimatedEfficiencyPct,
+    lastMonthSamePeriodActualEfficiency: production.monthToDate.lastMonthSamePeriodActualEfficiencyPct,
+    monthChange,
+
+    predictedOkRate: production.currentPeriod.estimatedOkRatePct,
+    lastWeekActualOkRate: production.previousPeriod.actualOkRatePct,
+    predictedNgPcs: production.currentPeriod.predictedNgPcs,
+    lastWeekActualNgPcs: production.previousPeriod.actualNgPcs,
+
+    utilization: mainStation.metrics.utilization_pct,
+    lastWeekUtilization: mainStation.baseline.utilization_pct,
+
+    performance: estimatePerformancePct(mainStation),
+    lastWeekPerformance: estimateBaselinePerformancePct(mainStation),
+
+    producedPcs: production.currentPeriod.producedPcs,
+    lastWeekProducedPcs: production.previousPeriod.producedPcs,
+
+    lostProductionPcs,
+    extraPredictedNgPcs,
+    extraDowntimeMinutes: production.currentPeriod.estimatedDowntimeMin,
+
+    futureNoActionEfficiency: db.forecastNoAction.estimatedEfficiencyPct,
+    futureNoActionOkRate: db.forecastNoAction.estimatedOkRatePct,
+    futureLostPcs: db.forecastNoAction.extraLostProductionPcs,
+    futureExtraNgPcs: db.forecastNoAction.extraPredictedNgPcs,
+    futureRiskText: db.forecastNoAction.riskText,
+
+    dataStatus: {
+      todayCompleteness: db.responseMeta.dataCompletenessPct,
+      weekProgress: db.responseMeta.weekProgress,
+      source: db.responseMeta.source,
+      apiVersion: db.responseMeta.apiVersion,
+      dataWindow: db.responseMeta.dataWindow
+    },
+
+    predictionValidation: {
+      yesterdayPredictedOkRate: validation.predictedOkRatePct,
+      yesterdayActualOkRate: validation.actualOkRatePct,
+      predictionErrorPts: Math.abs(validation.actualOkRatePct - validation.predictedOkRatePct),
+      yesterdayPredictedNgPcs: validation.predictedNgPcs,
+      yesterdayActualNgPcs: validation.actualNgPcs,
+      modelTrustLevel: validation.modelTrustLevel,
+      modelInputSource: validation.modelInputSource
+    },
+
+    assignments,
+    acceptanceChecklist: buildAcceptanceChecklist(mainEvaluation, assignments)
+  };
+}
+
+function evaluateStationRisk(db, station) {
+  const responsibility = db.stationResponsibility[station.lineId];
+  const metrics = station.metrics;
+  const baseline = station.baseline;
+
+  const qualityRisk = Math.max(0, (94 - metrics.quality_score_pct) * 4.2);
+  const clogRisk = Math.max(0, (metrics.clog_rate_pct - 5) * 3.2);
+  const utilizationRisk = Math.max(0, (baseline.utilization_pct - metrics.utilization_pct) * 2.0);
+  const cycleRisk = Math.max(0, ((metrics.cycle_time_sec - baseline.cycle_time_sec) / baseline.cycle_time_sec) * 100 * 1.8);
+  const sprayRisk = getSprayWidthStatus(station) === "out" ? 16 : getSprayWidthStatus(station) === "near" ? 6 : 0;
+  const flowRisk = Math.max(0, ((baseline.flow_rate_ml_min - metrics.flow_rate_ml_min) / baseline.flow_rate_ml_min) * 100 * 1.4);
+  const pressureRisk = Math.max(0, ((Math.abs(metrics.pressure_bar - baseline.pressure_bar) / baseline.pressure_bar) * 100 - 5) * 1.1);
+
+  const riskScore = Math.round(
+    qualityRisk + clogRisk + utilizationRisk + cycleRisk + sprayRisk + flowRisk + pressureRisk
+  );
+
+  return {
+    station,
+    responsibility,
+    riskScore,
+    riskLevel: getRiskLevelFromScore(riskScore),
+    reasons: buildStationRiskReasons(station)
+  };
+}
+
+function getRiskLevelFromScore(score) {
+  if (score >= 70) return "緊急";
+  if (score >= 35) return "警告";
+  return "正常";
+}
+
+function buildStationRiskReasons(station) {
+  const metrics = station.metrics;
+  const baseline = station.baseline;
+  const reasons = [];
+
+  if (metrics.quality_score_pct < 92) {
+    reasons.push(`品質分數 ${metrics.quality_score_pct.toFixed(1)}%，低於警戒值 92%。`);
+  }
+
+  if (metrics.clog_rate_pct >= 10) {
+    reasons.push(`堵塞率 ${metrics.clog_rate_pct.toFixed(1)}%，噴嘴或濾網需優先確認。`);
+  }
+
+  if (metrics.utilization_pct < baseline.utilization_pct - 5) {
+    reasons.push(`稼動率 ${metrics.utilization_pct.toFixed(1)}%，比基準 ${baseline.utilization_pct.toFixed(1)}% 低。`);
+  }
+
+  if (metrics.cycle_time_sec > baseline.cycle_time_sec * 1.08) {
+    reasons.push(`Cycle Time ${metrics.cycle_time_sec.toFixed(1)} 秒，比基準 ${baseline.cycle_time_sec.toFixed(1)} 秒變慢。`);
+  }
+
+  if (metrics.spray_width_mm < metrics.target_min_mm || metrics.spray_width_mm > metrics.target_max_mm) {
+    reasons.push(`噴幅 ${metrics.spray_width_mm.toFixed(0)} mm，超出目標 ${metrics.target_min_mm}-${metrics.target_max_mm} mm。`);
+  }
+
+  if (metrics.flow_rate_ml_min < baseline.flow_rate_ml_min * 0.92) {
+    reasons.push(`流量 ${metrics.flow_rate_ml_min.toFixed(0)} ml/min，低於基準 ${baseline.flow_rate_ml_min.toFixed(0)} ml/min。`);
+  }
+
+  if (Math.abs(metrics.pressure_bar - baseline.pressure_bar) / baseline.pressure_bar > 0.08) {
+    reasons.push(`壓力 ${metrics.pressure_bar.toFixed(2)} bar，和基準 ${baseline.pressure_bar.toFixed(2)} bar 偏差較大。`);
+  }
+
+  if (!reasons.length) {
+    reasons.push("目前沒有明顯異常，但仍需持續觀察下一次資料更新。");
+  }
+
+  return reasons;
+}
+
+function getSprayWidthStatus(station) {
+  const metrics = station.metrics;
+  if (metrics.spray_width_mm < metrics.target_min_mm || metrics.spray_width_mm > metrics.target_max_mm) return "out";
+
+  const margin = Math.min(
+    Math.abs(metrics.spray_width_mm - metrics.target_min_mm),
+    Math.abs(metrics.target_max_mm - metrics.spray_width_mm)
+  );
+
+  return margin <= 2 ? "near" : "normal";
+}
+
+function estimatePerformancePct(station) {
+  const value = (station.baseline.cycle_time_sec / station.metrics.cycle_time_sec) * 100;
+  return Math.max(0, Math.min(100, value));
+}
+
+function estimateBaselinePerformancePct(station) {
+  return 100;
+}
+
+function buildAssignmentsFromStations(db, stationEvaluations) {
+  return stationEvaluations.map((evaluation, index) => {
+    const responsibility = evaluation.responsibility;
+    const isMainIssue = index === 0;
+    const priority = `P${index + 1}`;
+    const stationName = responsibility.stationName;
+    const layerName = responsibility.layerName;
+    const taskCore = getStationTaskText(evaluation.station);
+
+    return {
+      priority,
+      owner: responsibility.engineerRole,
+      station: stationName,
+      processLayer: layerName,
+      email: responsibility.engineerEmail,
+      issue: isMainIssue
+        ? `${stationName} / ${layerName} 數據異常，風險分數最高`
+        : `${stationName} / ${layerName} 需同步確認前後段影響`,
+      task: isMainIssue
+        ? `優先檢查${stationName}${layerName}：${taskCore}`
+        : `同步確認${stationName}${layerName}：${taskCore}`,
+      due: isMainIssue ? "下一次資料更新前" : "今天下班前",
+      status: isMainIssue ? "優先處理" : "同步確認",
+      acceptance: isMainIssue
+        ? `${stationName}異常指標下降，${layerName}預測 NG 不再增加`
+        : `${stationName}${layerName}沒有造成整線品質波動`,
+      riskScore: evaluation.riskScore,
+      riskReasons: evaluation.reasons
+    };
+  });
+}
+
+function getStationTaskText(station) {
+  const tasks = [];
+  const metrics = station.metrics;
+
+  if (metrics.clog_rate_pct >= 10 || station.componentHealth.nozzle !== "normal") tasks.push("噴嘴狀態");
+  if (station.componentHealth.filter_mesh !== "normal") tasks.push("濾網堵塞");
+  if (getSprayWidthStatus(station) !== "normal") tasks.push("噴幅範圍");
+  tasks.push("霧化空氣壓力");
+  tasks.push("扇形氣壓");
+  tasks.push("塗料壓力");
+  tasks.push("供漆流量穩定性");
+  tasks.push("噴塗節拍");
+
+  return `${tasks.join("、")}。`;
+}
+
+function buildAcceptanceChecklist(mainEvaluation, assignments) {
+  const main = mainEvaluation.responsibility;
+  return [
+    `${main.stationName}風險分數下降`,
+    `${main.stationName}${main.layerName}預測 NG 不再增加`,
+    `${main.stationName}壓力、流量、噴幅回到穩定範圍`,
+    "其他站別未出現連鎖異常",
+    `明天 QC 後確認 NG 類型沒有集中在${main.stationName}${main.layerName}`
+  ];
+}
+
 // ==============================
 // Helpers
 // ==============================
@@ -180,11 +623,12 @@ function formatLastUpdateTime(date) {
 }
 
 function getOperationLevel(summary) {
-  if (summary.efficiencyChange <= -8 || summary.extraPredictedNgPcs >= 220) {
+  if (summary.mainStationRiskScore >= 70 || summary.efficiencyChange <= -8 || summary.extraPredictedNgPcs >= 220) {
     return "緊急";
   }
 
   if (
+    summary.mainStationRiskScore >= 35 ||
     summary.efficiencyChange <= -3 ||
     summary.futureNoActionEfficiency < 73 ||
     summary.utilization < 80 ||
@@ -203,6 +647,16 @@ function statusClass(level) {
   return "normal";
 }
 
+function shouldShowCategoryAlert(level) {
+  return level === "警告" || level === "緊急" || level === "危險";
+}
+
+function getCategoryAlertClass(level) {
+  if (level === "緊急" || level === "危險") return "danger";
+  if (level === "警告") return "warning";
+  return "";
+}
+
 function assignmentStatusClass(status) {
   if (status.includes("等待")) return "waiting";
   if (status.includes("完成")) return "done";
@@ -211,13 +665,11 @@ function assignmentStatusClass(status) {
 
 function changeClass(value) {
   const text = String(value || "");
-  if (text.startsWith("-") || text.includes("少產") || text.includes("增加") || text.includes("惡化")) return "negative-text";
-  if (text.startsWith("+")) return "good-text";
+  if (text.startsWith("-") || text.includes("少產") || text.includes("增加") || text.includes("下降") || text.includes("異常") || text.includes("惡化")) return "negative-text";
+  if (text.startsWith("+") || text.includes("改善") || text.includes("正常")) return "good-text";
   return "";
 }
-// ==============================
-// 日期相關
-// ==============================
+
 function getDateKey(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -241,6 +693,70 @@ function formatDateLabel(dateKey) {
 function getTodayKey() {
   return getDateKey(new Date());
 }
+
+function getCurrentDataHour() {
+  const db = currentDatabaseResponse || MOCK_DATABASE_RESPONSE;
+  const rawTime =
+    db?.responseMeta?.dataWindow?.currentEnd ||
+    db?.responseMeta?.generatedAt ||
+    new Date().toISOString();
+
+  const match = String(rawTime).match(/T(\d{2}):/);
+  const hour = match ? Number(match[1]) : new Date().getHours();
+
+  return Math.max(0, Math.min(23, Number.isFinite(hour) ? hour : 0));
+}
+
+function getTimeSegment(hour) {
+  const currentHour = getCurrentDataHour();
+  const value = Number(hour || 0);
+
+  if (value < currentHour) {
+    return { key: "past", label: "Past / 已發生" };
+  }
+
+  if (value === currentHour) {
+    return { key: "current", label: "Current / 當下" };
+  }
+
+  return { key: "future", label: "Future / 預測" };
+}
+
+function getTimeSegmentLabel(hour) {
+  return getTimeSegment(hour).label;
+}
+
+function getTimeSegmentSummaryText() {
+  const currentHour = getCurrentDataHour();
+  const currentLabel = `${String(currentHour).padStart(2, "0")}:00`;
+  const pastEnd = currentHour > 0 ? `${String(currentHour - 1).padStart(2, "0")}:00` : "無";
+  const futureStart = currentHour < 23 ? `${String(currentHour + 1).padStart(2, "0")}:00` : "無";
+
+  return {
+    currentHour,
+    currentLabel,
+    pastText: currentHour > 0 ? `Past：00:00-${pastEnd}` : "Past：無",
+    currentText: `Current：${currentLabel}`,
+    futureText: currentHour < 23 ? `Future：${futureStart}-24:00` : "Future：無"
+  };
+}
+
+function splitSeriesByCurrentHour(series) {
+  const currentHour = getCurrentDataHour();
+  return {
+    currentHour,
+    pastRows: series.filter(row => Number(row.hour) <= currentHour),
+    futureRows: series.filter(row => Number(row.hour) >= currentHour),
+    currentRow: series.find(row => Number(row.hour) === currentHour) || series[Math.min(currentHour, series.length - 1)]
+  };
+}
+
+function makeSvgPoints(rows, xForHour, yForValue, metricKey) {
+  return rows
+    .map(row => `${xForHour(row.hour).toFixed(1)},${yForValue(row[metricKey]).toFixed(1)}`)
+    .join(" ");
+}
+
 
 function isSelectedDatePendingQC(dateKey) {
   return dateKey >= getTodayKey();
@@ -266,31 +782,21 @@ function generateDateOptions(daysBack = 14) {
 
   return options;
 }
+
 function getQualityGradeByOkRate(okRate) {
   const rate = Number(okRate || 0);
 
   if (rate >= 92) {
-    return {
-      grade: "良好",
-      className: "quality-good",
-      description: "品質穩定"
-    };
+    return { grade: "良好", className: "quality-good", description: "品質穩定" };
   }
 
   if (rate >= 88) {
-    return {
-      grade: "警告",
-      className: "quality-warning",
-      description: "品質有下降風險"
-    };
+    return { grade: "警告", className: "quality-warning", description: "品質有下降風險" };
   }
 
-  return {
-    grade: "危險",
-    className: "quality-danger",
-    description: "品質風險偏高"
-  };
+  return { grade: "危險", className: "quality-danger", description: "品質風險偏高" };
 }
+
 function getSelectedQualityInfo(summary) {
   const pending = isSelectedDatePendingQC(selectedReportDate);
 
@@ -322,76 +828,177 @@ function getSelectedQualityInfo(summary) {
     description: gradeInfo.description
   };
 }
+function setRecommendationDrawerOpen(open) {
+  isRecommendationDrawerOpen = Boolean(open);
+
+  const panel = document.getElementById("recommendationPanel");
+  const overlay = document.getElementById("drawerOverlay");
+  const trigger = document.getElementById("recommendationDrawerTrigger");
+
+  if (panel) {
+    panel.classList.toggle("open", isRecommendationDrawerOpen);
+    panel.setAttribute("aria-hidden", String(!isRecommendationDrawerOpen));
+  }
+
+  if (overlay) {
+    overlay.classList.toggle("open", isRecommendationDrawerOpen);
+  }
+
+  if (trigger) {
+    trigger.setAttribute("aria-expanded", String(isRecommendationDrawerOpen));
+  }
+
+  document.body.classList.toggle("drawer-open", isRecommendationDrawerOpen);
+}
+
+function toggleRecommendationDrawer() {
+  setRecommendationDrawerOpen(!isRecommendationDrawerOpen);
+}
 // ==============================
 // Content builders
 // ==============================
 
 function buildTopProblemCards(summary) {
+  const mainMetrics = summary.mainStationMetrics;
+  const mainBaseline = summary.mainStationBaseline;
+  const reasons = summary.mainRiskReasons;
+
   return [
     {
       rank: "1",
-      title: "最大拖累 1：稼動率下降",
-      metric: `本週 ${formatPercent(summary.utilization)}｜上週 ${formatPercent(summary.lastWeekUtilization)}｜${formatDeltaPercent(summary.utilization - summary.lastWeekUtilization)}`,
-      judgement: "Station 2 可能有停機、等待、alarm、pump、氣壓、sensor 或供料不穩定問題。",
-      action: "設備工程師先查 Station 2 downtime、alarm、pump、氣壓、sensor。"
+      title: `最大風險 1：${summary.mainIssueStation} / ${summary.mainIssueProcess} 風險最高`,
+      metric: `風險分數 ${summary.mainStationRiskScore}｜品質分數 ${formatPercent(mainMetrics.quality_score_pct)}｜預測良率 ${formatPercent(summary.predictedOkRate)}`,
+      judgement: reasons[0] || `${summary.mainIssueStation} 數據異常，需要責任工程師確認。`,
+      action: `通知 ${summary.responsibleEngineer} 優先處理，檢查壓力、流量、噴幅、噴嘴、濾網與噴塗節拍。`
     },
     {
       rank: "2",
-      title: "最大拖累 2：Cycle Time 變慢",
-      metric: `本週 ${formatPercent(summary.performance)}｜上週 ${formatPercent(summary.lastWeekPerformance)}｜${formatDeltaPercent(summary.performance - summary.lastWeekPerformance)}`,
-      judgement: "設備可能有運轉，但節拍變慢，可能來自 robot path、等待時間、治具定位或節拍設定問題。",
-      action: "自動化工程師與製程工程師檢查 Robot 2 path、等待時間、cycle time 增加原因。"
+      title: "最大風險 2：堵塞與流量造成噴塗不穩",
+      metric: `堵塞率 ${formatPercent(mainMetrics.clog_rate_pct)}｜流量 ${formatNumber(mainMetrics.flow_rate_ml_min)} ml/min｜基準 ${formatNumber(mainBaseline.flow_rate_ml_min)} ml/min`,
+      judgement: "堵塞率偏高且流量低於基準，可能造成膜厚不均、色差或局部覆蓋不足。",
+      action: `由 ${summary.responsibleEngineer} 確認噴嘴、濾網、供漆流量與塗料壓力。`
     },
     {
       rank: "3",
-      title: "最大拖累 3：品質風險上升",
-      metric: `預測良率 ${formatPercent(summary.predictedOkRate)}｜上週實際 ${formatPercent(summary.lastWeekActualOkRate)}｜${formatDeltaPercent(summary.predictedOkRate - summary.lastWeekActualOkRate)}`,
-      judgement: "今日 QC 尚未完成，目前不是實際品質結果，而是 Top Coat 的預測品質風險上升。",
-      action: "製程工程師查 Top Coat 噴槍、霧化壓力、塗料壓力、供漆穩定性；品保工程師明天 QC 後比對 NG 類型。"
+      title: "最大風險 3：噴幅與節拍偏離基準",
+      metric: `噴幅 ${mainMetrics.spray_width_mm} mm｜目標 ${mainMetrics.target_min_mm}-${mainMetrics.target_max_mm} mm｜Cycle Time ${mainMetrics.cycle_time_sec.toFixed(1)} sec`,
+      judgement: "噴幅超出目標範圍且 Cycle Time 變慢，會讓品質風險與產能風險同時上升。",
+      action: `下一次資料更新前確認 ${summary.mainIssueStation} 噴幅、扇形氣壓、Robot path 與等待時間。`
     }
   ];
 }
 
 function buildCategoryContent(summary) {
   const level = getOperationLevel(summary);
+  const mainMetrics = summary.mainStationMetrics;
+  const mainBaseline = summary.mainStationBaseline;
 
   return {
-    decision: {
-      title: "目前狀態",
+    monitor: {
+      title: "狀態實時監控表",
       status: level,
       conclusion: {
-        meta: `本週預估整體效益 ${formatPercent(summary.estimatedThisWeekEfficiency)}，比上週實際效益 ${formatDeltaPercent(summary.efficiencyChange)}；今日預估效益也比昨日實際效益 ${formatDeltaPercent(summary.todayVsYesterdayChange)}。`,
-        reason: `主要拖累是 ${summary.mainIssueStation} 稼動率下降、Cycle Time 增加，以及 ${summary.mainIssueProcess} 預測品質風險上升。`,
-        action: `${level}狀態：不建議等明天 QC 完成才處理。今天先派設備工程師與製程工程師做預防性檢查。`
+        meta: `${level}：目前即時資料顯示 ${summary.mainIssueStation} / ${summary.mainIssueProcess} 風險最高，風險分數 ${summary.mainStationRiskScore}。`,
+        reason: `狀態表由 stationTelemetry / component_metrics 欄位產生，包含壓力、流量、噴幅、堵塞率、品質分數、稼動率與 Cycle Time。`,
+        action: `先通知 ${summary.responsibleEngineer} 處理 ${summary.mainIssueStation}，並用下一次 DB 更新確認指標是否回穩。`
       },
-      situation: "系統判斷目前不是單純觀察，因為本週預估效益明顯低於上週實際效益，而且 Station 2 的稼動與節拍同時變差，今日品質仍是待 QC / 預測品質。",
-      actionText: "先派設備工程師查 Station 2 downtime、alarm、pump、氣壓與 sensor；再派製程工程師查 Top Coat 噴槍、霧化壓力、塗料壓力與供漆穩定性。",
+      situation: "這一頁是主管主畫面：把三站即時資料整理成一張監控表。主管不需要先看六個分類，而是先看哪一站異常、異常欄位是什麼、責任工程師是誰。",
+      actionText: `目前 P1 是 ${summary.responsibleEngineer}。驗收重點是 ${summary.mainIssueStation} 的風險分數下降、堵塞率降低、噴幅回到目標範圍，以及預測 NG 不再增加。`,
       evidence: [
         {
-          label: "目前狀態",
-          answer: level,
-          text: `本週預估整體效益 ${formatPercent(summary.estimatedThisWeekEfficiency)}，比上週實際 ${formatPercent(summary.lastWeekActualEfficiency)} 下降 ${Math.abs(summary.efficiencyChange).toFixed(1)}%。`,
-          status: "實際 + 預測 + 未來推估"
+          label: "最高風險站別",
+          answer: `${summary.mainIssueStation} / ${summary.mainIssueProcess}`,
+          text: `風險分數 ${summary.mainStationRiskScore}，對應設備 ${summary.mainIssueRobot}，責任人 ${summary.responsibleEngineer}。`,
+          status: "stationTelemetry + responsibility"
         },
         {
-          label: "昨日 vs 今日",
-          answer: formatDeltaPercent(summary.todayVsYesterdayChange),
-          text: `今日預估 ${formatPercent(summary.todayEstimatedEfficiency)}，昨日實際 ${formatPercent(summary.yesterdayActualEfficiency)}，下降 ${Math.abs(summary.todayVsYesterdayChange).toFixed(1)}%。`,
-          status: "今日待 QC / 預測品質"
-        },
-        {
-          label: "為什麼變差",
-          answer: `${summary.mainIssueStation} 拖累`,
-          text: `稼動率從上週 ${formatPercent(summary.lastWeekUtilization)} 降到 ${formatPercent(summary.utilization)}，Cycle Time 相關效益從 ${formatPercent(summary.lastWeekPerformance)} 降到 ${formatPercent(summary.performance)}。`,
-          status: "製程實際 + 品質預測"
-        },
-        {
-          label: "品質是否已確認",
-          answer: "尚未確認",
-          text: "今日品質狀態為待 QC / 預測品質，尚不是最終 QC 結果。",
+          label: "目前品質",
+          answer: formatPercent(summary.predictedOkRate),
+          text: `今日品質尚未完成 QC，目前為預測良率；上週實際良率 ${formatPercent(summary.lastWeekActualOkRate)}。`,
           status: "待 QC / 預測品質"
+        },
+        {
+          label: "產出差異",
+          answer: `-${formatNumber(summary.lostProductionPcs)} pcs`,
+          text: `目前產出 ${formatNumber(summary.producedPcs)} pcs，上週同期間 ${formatNumber(summary.lastWeekProducedPcs)} pcs。`,
+          status: "productionKpi"
+        },
+        {
+          label: "資料模式",
+          answer: "Mock DB",
+          text: `目前使用 mock web service 格式，未來可把 CONFIG.DB_API_URL 換成實際 API。`,
+          status: "尚未真連線"
         }
       ]
+    },
+
+    decision: {
+      title: "現在要不要處理",
+      status: level,
+      conclusion: {
+        meta: `答案：要處理。${summary.mainIssueStation} / ${summary.mainIssueProcess} 是目前風險最高站別，風險分數 ${summary.mainStationRiskScore}。`,
+        reason: `資料來源指出 ${summary.mainIssueStation} 品質分數 ${formatPercent(mainMetrics.quality_score_pct)}、堵塞率 ${formatPercent(mainMetrics.clog_rate_pct)}、稼動率 ${formatPercent(mainMetrics.utilization_pct)}，且噴幅 ${mainMetrics.spray_width_mm} mm 已超出目標範圍。`,
+        action: `通知 ${summary.responsibleEngineer} 優先處理，不建議等明天 QC 完成才處理。`
+      },
+      situation: `這一頁是把 mock database / web service 回傳的三站即時資料轉成主管決策。系統比較第一站、第二站、第三站後，判斷 ${summary.mainIssueStation} / ${summary.mainIssueProcess} 的風險最高。`,
+      actionText: `今天先通知 ${summary.responsibleEngineer} 處理 ${summary.mainIssueStation}，其他站別負責工程師同步確認前後段是否受到影響。`,
+      evidence: [
+        {
+          label: "決策",
+          answer: level === "正常" ? "觀察" : "要處理",
+          text: `${summary.mainIssueStation} 風險分數 ${summary.mainStationRiskScore}，高於其他站別。`,
+          status: "由 stationTelemetry 計算"
+        },
+        {
+          label: "問題站別",
+          answer: `${summary.mainIssueStation} / ${summary.mainIssueProcess}`,
+          text: `對應設備：${summary.mainIssueRobot}；對應責任人：${summary.responsibleEngineer}。`,
+          status: "由 stationResponsibility 對應"
+        },
+        {
+          label: "主要異常",
+          answer: `堵塞率 ${formatPercent(mainMetrics.clog_rate_pct)}`,
+          text: summary.mainRiskReasons.slice(0, 2).join(" "),
+          status: "壓力 / 流量 / 噴幅 / 堵塞率"
+        },
+        {
+          label: "品質狀態",
+          answer: "待 QC / 預測",
+          text: `今日良率為模型預測 ${formatPercent(summary.predictedOkRate)}，明天 QC 後再驗證。`,
+          status: "prediction + QC delay"
+        }
+      ]
+    },
+
+    gap: {
+      title: "差多少",
+      status: level,
+      conclusion: {
+        meta: `本週預估效益 ${formatPercent(summary.estimatedThisWeekEfficiency)}，比上週實際 ${formatDeltaPercent(summary.efficiencyChange)}。`,
+        reason: `${summary.mainIssueStation} 稼動率比基準低 ${Math.abs(mainMetrics.utilization_pct - mainBaseline.utilization_pct).toFixed(1)} points，Cycle Time 比基準慢 ${(mainMetrics.cycle_time_sec - mainBaseline.cycle_time_sec).toFixed(1)} 秒。`,
+        action: "先看差距最大的站別，不要平均看三站，否則會把第二站問題稀釋掉。"
+      },
+      situation: "這裡顯示的是 database / web service 資料轉換後的差異，不是人工填寫的結論。",
+      actionText: `差距主要集中在 ${summary.mainIssueStation}，下一次更新要看稼動率、Cycle Time、堵塞率、噴幅是否回到基準。`,
+      cards: [
+        { label: "本週效益差異", value: formatDeltaPercent(summary.efficiencyChange), tone: "danger", note: `本週預估 ${formatPercent(summary.estimatedThisWeekEfficiency)} vs 上週實際 ${formatPercent(summary.lastWeekActualEfficiency)}` },
+        { label: "今日 vs 昨日", value: formatDeltaPercent(summary.todayVsYesterdayChange), tone: "danger", note: `今日預估 ${formatPercent(summary.todayEstimatedEfficiency)} vs 昨日實際 ${formatPercent(summary.yesterdayActualEfficiency)}` },
+        { label: "主站稼動差異", value: `${formatDeltaPercent(mainMetrics.utilization_pct - mainBaseline.utilization_pct)}`, tone: "warning", note: `${summary.mainIssueStation} 現在 ${formatPercent(mainMetrics.utilization_pct)}，基準 ${formatPercent(mainBaseline.utilization_pct)}` },
+        { label: "Cycle Time 差異", value: `+${(mainMetrics.cycle_time_sec - mainBaseline.cycle_time_sec).toFixed(1)} sec`, tone: "warning", note: `${summary.mainIssueStation} 現在 ${mainMetrics.cycle_time_sec.toFixed(1)} sec，基準 ${mainBaseline.cycle_time_sec.toFixed(1)} sec` }
+      ]
+    },
+
+    cause: {
+      title: "為什麼變差",
+      status: level,
+      conclusion: {
+        meta: `主要原因集中在 ${summary.mainIssueStation} / ${summary.mainIssueProcess}。`,
+        reason: summary.mainRiskReasons.join(" "),
+        action: `先由 ${summary.responsibleEngineer} 查 ${summary.mainIssueStation}，不要先分散處理所有站。`
+      },
+      situation: "原因分析不是寫死文字，而是由每站 pressure、flow rate、spray width、clog rate、quality score、utilization、cycle time 和 baseline 比較後產生。",
+      actionText: `優先處理 ${summary.mainIssueStation} 的噴嘴、濾網、供漆流量、噴幅、壓力與節拍。`,
+      causes: summary.mainRiskReasons
     },
 
     impact: {
@@ -399,48 +1006,48 @@ function buildCategoryContent(summary) {
       status: level,
       conclusion: {
         meta: `目前預估少產 ${formatNumber(summary.lostProductionPcs)} pcs，預測不良數增加 ${formatNumber(summary.extraPredictedNgPcs)} pcs，停機增加 ${formatNumber(summary.extraDowntimeMinutes)} min。`,
-        reason: "效益下降已經轉成產出缺口、停機增加與預測不良風險。",
-        action: "若交期緊，列為 Priority 1；即使交期不緊，也要今天完成 Station 2 初查。"
+        reason: "這些是由 productionKpi 與 forecastNoAction 推估出的管理風險，不是最終財務損失。",
+        action: `${summary.mainIssueStation} 若不改善，未來 7 天可能再少產 ${formatNumber(summary.futureLostPcs)} pcs。`
       },
-      situation: "本週效益下降不只是百分比變差，而是已經造成產量損失與品質風險上升。預測不良數增加代表明天 QC 完成後可能出現更多實際品質損失。",
-      actionText: "先壓低預估少產與預測不良。只要 Station 2 的稼動與節拍恢復，損失評估會比只看品質欄位更快改善。",
+      situation: "損失區塊要標示為預估 / 預測 / 待驗證，不能說成已發生的實際損失。",
+      actionText: "主管應把它當成優先順序判斷依據：先降低預測 NG 與少產風險，再等待 QC 實績驗證。",
       cards: [
-        { label: "預估少產", value: `-${formatNumber(summary.lostProductionPcs)} pcs`, tone: "danger", note: "產能未達本週預期。" },
-        { label: "預測不良數增加", value: `+${formatNumber(summary.extraPredictedNgPcs)} pcs`, tone: "danger", note: "今日品質仍待 QC，這是預測風險。" },
-        { label: "停機增加", value: `+${formatNumber(summary.extraDowntimeMinutes)} min`, tone: "warning", note: "代表設備或流程穩定性需要檢查。" },
-        { label: "Rework / Scrap 風險", value: "上升", tone: "warning", note: "若明天 QC 確認，成本會進一步增加。" },
-        { label: "預估額外損失", value: "NT$ xx,xxx", tone: "neutral", note: "待串接成本資料後可自動換算。" },
-        { label: "交期 / 客訴風險", value: "中風險", tone: "warning", note: "若後續 7 天不改善，風險會升高。" }
+        { label: "預估少產風險", value: `-${formatNumber(summary.lostProductionPcs)} pcs`, tone: "danger", note: "currentPeriod.producedPcs vs previousPeriod.producedPcs" },
+        { label: "預測 NG 增加風險", value: `+${formatNumber(summary.extraPredictedNgPcs)} pcs`, tone: "danger", note: "currentPeriod.predictedNgPcs vs previousPeriod.actualNgPcs" },
+        { label: "停機 / 等待風險", value: `+${formatNumber(summary.extraDowntimeMinutes)} min`, tone: "warning", note: "productionKpi.currentPeriod.estimatedDowntimeMin" },
+        { label: "未來 7 天少產風險", value: `-${formatNumber(summary.futureLostPcs)} pcs`, tone: "warning", note: "forecastNoAction.extraLostProductionPcs" },
+        { label: "未來 7 天 NG 風險", value: `+${formatNumber(summary.futureExtraNgPcs)} pcs`, tone: "warning", note: "forecastNoAction.extraPredictedNgPcs" },
+        { label: "額外成本", value: "待成本資料", tone: "neutral", note: "之後可接成本表自動換算" }
       ]
     },
 
     action: {
-      title: "處理進度",
+      title: "叫誰處理",
       status: level,
       conclusion: {
-        meta: "派工已按設備、製程、自動化、品保四個角色拆分，重點是下一次資料更新要能驗收改善。",
-        reason: "右側派工卡負責固定顯示責任人；本頁用來看各角色任務進度與驗收條件。",
-        action: "主管下一步不是再看更多表格，而是確認 P1 / P2 是否在期限前回報，並用驗收條件判斷是否有效。"
+        meta: `P1：${summary.responsibleEngineer}。因為 ${summary.mainIssueStation} / ${summary.mainIssueProcess} 是風險最高站別。`,
+        reason: "每一站有對應負責工程師，系統依照 stationResponsibility 與風險分數產生責任分派。",
+        action: `先發送通知給 ${summary.responsibleEngineer}，其他站別負責工程師同步確認前後段影響。`
       },
-      situation: "這一頁不再重複右側派工內容，而是把派工任務轉成可追蹤的進度卡。主管可以用每張卡的期限與驗收條件檢查是否真的改善。",
-      actionText: "下一次資料更新要看 Station 2 utilization、Cycle Time、Predicted NG、本週預估效益是否同步回升；明天 QC 後再確認實際 NG 是否沒有擴大。",
-      assignments: ASSIGNMENT_CARDS
+      situation: "這裡不是叫主管自己猜要查哪一站，而是由資料判斷異常站別，再對應該站負責工程師。",
+      actionText: "下一次資料更新要用驗收條件確認是否有效：風險分數下降、預測 NG 不再增加、壓力/流量/噴幅回穩。",
+      assignments: summary.assignments
     },
 
     validation: {
-      title: "預測結果驗證",
+      title: "預測可不可信",
       status: Math.abs(summary.predictionValidation.predictionErrorPts) <= 2 ? "正常" : "警告",
       conclusion: {
         meta: `昨日預測良率與今日完成 QC 後實際良率誤差 ${formatDeltaPoints(summary.predictionValidation.predictionErrorPts)}。`,
-        reason: `目前預測可信度為 ${summary.predictionValidation.modelTrustLevel}，可以用於今日待 QC / 預測品質的提前風險判斷。`,
-        action: "若誤差連續超過 2 points，降低預測信任度並檢查模型輸入欄位。"
+        reason: `模型輸入來源：${summary.predictionValidation.modelInputSource}；目前預測可信度為 ${summary.predictionValidation.modelTrustLevel}。`,
+        action: "若誤差連續超過 2 points，降低預測信任度並檢查資料欄位或模型。"
       },
-      situation: "因為品質 QC 延遲 1 天，所以今天看到的品質是預測值。此區塊用來檢查昨天預測與今天完成 QC 後實際結果差多少。",
-      actionText: "若預測誤差超過 2 percentage points，請標示預測可信度為中或低，並提醒工程師檢查模型或資料欄位。",
+      situation: "因為品質 QC 延遲 1 天，今天看到的品質是預測值；昨天以前可以用實際 QC 回來驗證模型。",
+      actionText: "今日的 NG、良率與品質等級都要標示為待 QC / 預測品質，不能當成實際結果。",
       validations: [
         { label: "預測良率", predicted: formatPercent(summary.predictionValidation.yesterdayPredictedOkRate), actual: formatPercent(summary.predictionValidation.yesterdayActualOkRate), error: formatDeltaPoints(summary.predictionValidation.predictionErrorPts), result: "良好" },
-        { label: "預測不良數", predicted: String(summary.predictionValidation.yesterdayPredictedNgPcs), actual: String(summary.predictionValidation.yesterdayActualNgPcs), error: formatDeltaNumber(summary.predictionValidation.yesterdayActualNgPcs - summary.predictionValidation.yesterdayPredictedNgPcs, " pcs"), result: "良好" },
-        { label: "風險等級", predicted: "中風險", actual: "中風險", error: "一致", result: "可信" },
+        { label: "預測不良數", predicted: String(summary.predictionValidation.yesterdayPredictedNgPcs), actual: String(summary.predictionValidation.yesterdayActualNgPcs), error: formatDeltaNumber(summary.predictionValidation.yesterdayActualNgPcs - summary.predictionValidation.yesterdayPredictedNgPcs, " pcs"), result: "可接受" },
+        { label: "模型輸入來源", predicted: summary.predictionValidation.modelInputSource, actual: "QC 實績驗證", error: "有對照", result: "可信" },
         { label: "預測可信度", predicted: "-", actual: "-", error: "-", result: summary.predictionValidation.modelTrustLevel }
       ]
     }
@@ -465,64 +1072,64 @@ function renderManagerHeader() {
         <span class="header-status-pill ${statusClass(level)}">${escapeHtml(level)}</span>
       </div>
       <p class="decision-line primary">
-        ${escapeHtml(level)}：本週預估效益比上週實際下降
-        <span class="negative">${escapeHtml(Math.abs(summary.efficiencyChange).toFixed(1))}%</span>
+        ${escapeHtml(level)}：${escapeHtml(summary.mainIssueStation)} / ${escapeHtml(summary.mainIssueProcess)} 風險最高
       </p>
       <p class="decision-line secondary">
-        主要拖累：${escapeHtml(summary.mainIssueStation)} 稼動率下降 + Cycle Time 增加
+        主要依據：風險分數 ${escapeHtml(summary.mainStationRiskScore)}｜堵塞率 ${escapeHtml(formatPercent(summary.mainStationMetrics.clog_rate_pct))}｜噴幅 ${escapeHtml(summary.mainStationMetrics.spray_width_mm)} mm
       </p>
       <p class="decision-line action">
-        建議：今天先派設備工程師與製程工程師做預防性檢查。選定日期若為今日，品質為待 QC / 預測品質；昨日以前則為已完成 QC 實績。
+        建議：通知 ${escapeHtml(summary.responsibleEngineer)} 優先處理。資料目前來自 mock database response，未來可直接替換成 DB_API_URL 回傳資料。
       </p>
     </div>
 
     <div class="overview-card-grid" aria-label="主管總覽摘要">
-    <article class="overview-mini-card date-card">
-      <label class="overview-label" for="reportDateSelect">資料日期</label>
-      <select id="reportDateSelect" class="date-select">
-        ${dateOptions.map(option => `
-          <option value="${escapeHtml(option.key)}" ${option.key === selectedReportDate ? "selected" : ""}>
-            ${escapeHtml(option.label)}
-          </option>
-        `).join("")}
-      </select>
-      <div class="overview-note">${escapeHtml(selectedQuality.status)}</div>
-    </article>
+      <article class="overview-mini-card date-card">
+        <label class="overview-label" for="reportDateSelect">資料日期</label>
+        <select id="reportDateSelect" class="date-select">
+          ${dateOptions.map(option => `
+            <option value="${escapeHtml(option.key)}" ${option.key === selectedReportDate ? "selected" : ""}>
+              ${escapeHtml(option.label)}
+            </option>
+          `).join("")}
+        </select>
+        <div class="overview-note">${escapeHtml(selectedQuality.sourceStatus)}</div>
+      </article>
 
-    <article class="overview-mini-card warning-card">
-      <div class="overview-label">本週預估效益</div>
-      <div class="overview-value">${escapeHtml(formatPercent(summary.estimatedThisWeekEfficiency))}</div>
-      <div class="overview-note">實際 + 預測 + 未來推估</div>
-    </article>
+      <article class="overview-mini-card warning-card">
+        <div class="overview-label">本週預估效益</div>
+        <div class="overview-value">${escapeHtml(formatPercent(summary.estimatedThisWeekEfficiency))}</div>
+        <div class="overview-note">productionKpi.currentPeriod</div>
+      </article>
 
-    <article class="overview-mini-card actual-card">
-      <div class="overview-label">上週實際效益</div>
-      <div class="overview-value">${escapeHtml(formatPercent(summary.lastWeekActualEfficiency))}</div>
-      <div class="overview-note">已完成 QC 實績</div>
-    </article>
+      <article class="overview-mini-card actual-card">
+        <div class="overview-label">上週實際效益</div>
+        <div class="overview-value">${escapeHtml(formatPercent(summary.lastWeekActualEfficiency))}</div>
+        <div class="overview-note">productionKpi.previousPeriod</div>
+      </article>
 
-    <article class="overview-mini-card danger-card">
-      <div class="overview-label">效益差異</div>
-      <div class="overview-value">${escapeHtml(formatDeltaPercent(summary.efficiencyChange))}</div>
-      <div class="overview-note">本週預估 vs 上週實際</div>
-    </article>
+      <article class="overview-mini-card danger-card">
+        <div class="overview-label">效益差異</div>
+        <div class="overview-value">${escapeHtml(formatDeltaPercent(summary.efficiencyChange))}</div>
+        <div class="overview-note">預估 vs 實績</div>
+      </article>
 
-    <article class="overview-mini-card">
-      <div class="overview-label">主要拖累</div>
-      <div class="overview-value small">${escapeHtml(summary.mainIssueStation)}</div>
-      <div class="overview-note">${escapeHtml(summary.mainIssueProcess)} / Cycle Time</div>
-    </article>
+      <article class="overview-mini-card">
+        <div class="overview-label">主要異常站別</div>
+        <div class="overview-value small">${escapeHtml(summary.mainIssueStation)}</div>
+        <div class="overview-note">${escapeHtml(summary.mainIssueProcess)}｜${escapeHtml(summary.responsibleEngineer)}</div>
+      </article>
 
-    <article class="overview-mini-card ${escapeHtml(selectedQuality.gradeClass)}">
-      <div class="overview-label">${escapeHtml(selectedQuality.label)}</div>
-      <div class="overview-value">${escapeHtml(selectedQuality.value)}</div>
-      <div class="overview-note">
-        品質等級：${escapeHtml(selectedQuality.grade)}｜${escapeHtml(selectedQuality.sourceStatus)}
-      </div>
-    </article>
-
+      <article class="overview-mini-card ${escapeHtml(selectedQuality.gradeClass)}">
+        <div class="overview-label">${escapeHtml(selectedQuality.label)}</div>
+        <div class="overview-value">${escapeHtml(selectedQuality.value)}</div>
+        <div class="overview-note">
+          品質等級：${escapeHtml(selectedQuality.grade)}｜${escapeHtml(selectedQuality.sourceStatus)}
+        </div>
+      </article>
+    </div>
   `;
 }
+
 function renderSelectedQualityNote() {
   const note = document.getElementById("selectedQualityNote");
   if (!note) return;
@@ -530,14 +1137,7 @@ function renderSelectedQualityNote() {
   const quality = getSelectedQualityInfo(MANAGER_MOCK_SUMMARY);
   const dateLabel = formatDateLabel(selectedReportDate);
 
-  note.classList.remove(
-    "pending-qc",
-    "actual-qc",
-    "quality-good",
-    "quality-warning",
-    "quality-danger"
-  );
-
+  note.classList.remove("pending-qc", "actual-qc", "quality-good", "quality-warning", "quality-danger");
   note.classList.add(quality.gradeClass);
 
   note.innerHTML = `
@@ -548,19 +1148,34 @@ function renderSelectedQualityNote() {
     </span>
   `;
 }
+
 function renderCategoryButtons() {
   const container = document.getElementById("categoryButtons");
+  const contentMap = buildCategoryContent(MANAGER_MOCK_SUMMARY);
 
-  container.innerHTML = CATEGORY_LIST.map(category => `
-    <button
-      type="button"
-      class="category-btn ${activeCategory === category.key ? "active" : ""}"
-      data-category="${escapeHtml(category.key)}"
-      aria-pressed="${activeCategory === category.key}"
-    >
-      ${escapeHtml(category.label)}
-    </button>
-  `).join("");
+  container.innerHTML = CATEGORY_LIST.map(category => {
+    const categoryState = contentMap[category.key]?.status || "正常";
+    const showAlert = shouldShowCategoryAlert(categoryState);
+    const alertClass = getCategoryAlertClass(categoryState);
+
+    return `
+      <button
+        type="button"
+        class="category-btn ${activeCategory === category.key ? "active" : ""}"
+        data-category="${escapeHtml(category.key)}"
+        aria-pressed="${activeCategory === category.key}"
+      >
+        <span class="category-btn-text">${escapeHtml(category.label)}</span>
+        ${showAlert ? `
+          <span
+            class="category-alert-icon ${alertClass}"
+            aria-label="${escapeHtml(categoryState)}"
+            title="狀態：${escapeHtml(categoryState)}"
+          >!</span>
+        ` : ""}
+      </button>
+    `;
+  }).join("");
 }
 
 function setActiveCategory(category) {
@@ -572,17 +1187,26 @@ function setActiveCategory(category) {
 
 function renderCategoryContent(category) {
   const contentMap = buildCategoryContent(MANAGER_MOCK_SUMMARY);
-  const content = contentMap[category] || contentMap.decision;
+  const content = contentMap[category] || contentMap.monitor;
   document.getElementById("activeCategoryTitle").textContent = content.title;
 
   const container = document.getElementById("categoryContent");
 
-  container.innerHTML = `
-    ${renderConclusionCard(content)}
-    ${renderCategoryEvidence(category, content)}
-    ${renderTextSection("情況說明", content.situation)}
-    ${renderTextSection("建議行動", content.actionText)}
-  `;
+  // Manager UI simplified view:
+  // 1) 狀態實時監控表：只保留三站即時監控表
+  // 2) 預測驗證：只保留預測 vs QC 實績驗證
+  // 不再顯示主管決策來源、情況說明、建議行動等文字卡片。
+  if (category === "monitor") {
+    container.innerHTML = renderStationMonitorTable(MANAGER_MOCK_SUMMARY);
+    return;
+  }
+
+  if (category === "validation") {
+    container.innerHTML = renderValidationCards(content);
+    return;
+  }
+
+  container.innerHTML = renderCategoryEvidence(category, content);
 }
 
 function renderConclusionCard(content) {
@@ -610,18 +1234,727 @@ function renderConclusionCard(content) {
 }
 
 function renderCategoryEvidence(category, content) {
-  if (category === "decision") {
-    return `
-      ${renderTopProblemCards(MANAGER_MOCK_SUMMARY)}
-      ${renderDecisionEvidenceCards(content)}
-    `;
+  if (category === "monitor") {
+    return `${renderStationMonitorTable(MANAGER_MOCK_SUMMARY)}${renderTopProblemCards(MANAGER_MOCK_SUMMARY)}${renderDecisionEvidenceCards(content)}`;
   }
 
-  if (category === "impact") return renderImpactCards(content);
+  if (category === "decision") {
+    return `${renderTopProblemCards(MANAGER_MOCK_SUMMARY)}${renderDecisionEvidenceCards(content)}`;
+  }
+
+  if (category === "gap") return renderImpactCards(content, "判斷依據：目前差距");
+  if (category === "cause") return renderCauseCards(content);
+  if (category === "impact") return renderImpactCards(content, "判斷依據：預估損失風險");
   if (category === "action") return renderProgressCards(content);
   if (category === "validation") return renderValidationCards(content);
 
   return "";
+}
+
+
+function renderStationMonitorTable(summary) {
+  const stationItems = [...(summary.stationEvaluations || [])].sort((a, b) => {
+    const aNo = Number(String(a.station.lineId || "").replace(/[^0-9]/g, "")) || 0;
+    const bNo = Number(String(b.station.lineId || "").replace(/[^0-9]/g, "")) || 0;
+    return aNo - bNo;
+  });
+
+  return `
+    <section class="evidence-panel quality-chart-panel">
+      <p class="content-section-kicker">Today hourly quality score</p>
+      <h3>今日 24 小時品質分數：三站 XY 圖表</h3>
+      <div class="quality-chart-grid">
+        ${stationItems.map(item => renderQualityScoreChartCard(item)).join("")}
+      </div>
+    </section>
+    ${renderRealtimeDiagnosisPanel(summary)}
+  `;
+}
+
+function getHourlyQualityScoreSeries(lineId) {
+  const values = MOCK_QUALITY_SCORE_HOURLY_TODAY[lineId] || [];
+  return Array.from({ length: 24 }, (_, hour) => ({
+    hour,
+    hourLabel: `${String(hour).padStart(2, "0")}:00`,
+    qualityScore: Number(values[hour] ?? 0)
+  }));
+}
+
+function average(values) {
+  if (!values.length) return 0;
+  return values.reduce((sum, value) => sum + Number(value || 0), 0) / values.length;
+}
+
+
+function getMetricDeltaPct(current, baseline) {
+  const base = Number(baseline || 0);
+  if (!base) return 0;
+  return ((Number(current || 0) - base) / base) * 100;
+}
+
+function getHourlyTrendStats(lineId) {
+  const series = getStationHourlyDetailSeries(lineId);
+  const qualityStats = getMetricStats(series, "quality_score_pct");
+  const utilizationStats = getMetricStats(series, "utilization_pct");
+  const cycleStats = getMetricStats(series, "cycle_time_sec");
+  const firstQuality = Number(series[0]?.quality_score_pct || 0);
+  const latestQuality = Number(series[series.length - 1]?.quality_score_pct || 0);
+  const qualityDrop = latestQuality - firstQuality;
+
+  return {
+    series,
+    qualityStats,
+    utilizationStats,
+    cycleStats,
+    qualityDrop
+  };
+}
+
+function severityRank(level) {
+  if (level === "緊急") return 3;
+  if (level === "警告") return 2;
+  return 1;
+}
+
+function buildStationDiagnosis(evaluation) {
+  const station = evaluation.station;
+  const responsibility = evaluation.responsibility;
+  const metrics = station.metrics;
+  const baseline = station.baseline;
+  const component = station.componentHealth || {};
+  const trend = getHourlyTrendStats(station.lineId);
+
+  const flowDelta = getMetricDeltaPct(metrics.flow_rate_ml_min, baseline.flow_rate_ml_min);
+  const pressureDelta = getMetricDeltaPct(metrics.pressure_bar, baseline.pressure_bar);
+  const utilizationGap = metrics.utilization_pct - baseline.utilization_pct;
+  const cycleGap = metrics.cycle_time_sec - baseline.cycle_time_sec;
+  const sprayOut = metrics.spray_width_mm < metrics.target_min_mm || metrics.spray_width_mm > metrics.target_max_mm;
+  const qualityWarning = metrics.quality_score_pct < 92 || trend.qualityStats.latest < 92 || trend.qualityDrop <= -2;
+  const highClog = metrics.clog_rate_pct >= 10;
+  const flowLow = metrics.flow_rate_ml_min < baseline.flow_rate_ml_min * 0.92;
+  const pressureAbnormal = Math.abs(pressureDelta) >= 8;
+  const utilizationLow = utilizationGap <= -5;
+  const cycleSlow = metrics.cycle_time_sec > baseline.cycle_time_sec * 1.08;
+
+  const issues = [];
+
+  if (highClog || component.nozzle !== "normal") {
+    issues.push({
+      level: highClog && flowLow ? "緊急" : "警告",
+      direction: "噴嘴可能堵塞 / 霧化不穩",
+      evidence: `堵塞率 ${formatPercent(metrics.clog_rate_pct)}；噴嘴狀態 ${component.nozzle || "unknown"}；流量 ${formatNumber(metrics.flow_rate_ml_min)} ml/min，基準 ${formatNumber(baseline.flow_rate_ml_min)} ml/min。`,
+      impact: "可能造成霧化不均、膜厚不穩、色差或局部覆蓋不足，進一步拉低 QC / 品質分數。",
+      action: `請 ${responsibility.engineerRole} 先檢查 ${responsibility.stationName} 噴嘴是否堵塞、磨耗或噴形異常，必要時清潔或更換。`
+    });
+  }
+
+  if ((component.filter_mesh && component.filter_mesh !== "normal") || (highClog && flowLow)) {
+    issues.push({
+      level: highClog && flowLow ? "緊急" : "警告",
+      direction: "濾網可能堵塞 / 供漆阻力變大",
+      evidence: `濾網狀態 ${component.filter_mesh || "unknown"}；流量偏差 ${flowDelta.toFixed(1)}%；堵塞率 ${formatPercent(metrics.clog_rate_pct)}。`,
+      impact: "濾網阻塞會讓供漆流量下降，造成顏色層覆蓋不穩，品質分數與稼動率可能一起下降。",
+      action: `檢查 ${responsibility.stationName} 濾網、管路與供漆壓力穩定性，先排除供漆端堵塞。`
+    });
+  }
+
+  if (sprayOut || component.spray_width === "out_of_range") {
+    const side = metrics.spray_width_mm > metrics.target_max_mm ? "偏寬" : "偏窄";
+    issues.push({
+      level: "緊急",
+      direction: `噴幅偏離目標範圍（${side}）`,
+      evidence: `目前噴幅 ${metrics.spray_width_mm.toFixed(0)} mm，目標 ${metrics.target_min_mm}-${metrics.target_max_mm} mm；噴幅狀態 ${component.spray_width || "unknown"}。`,
+      impact: "噴幅偏離會直接影響顏色均勻性、過噴、邊緣覆蓋與外觀缺陷，是 QC 下降的高關聯原因。",
+      action: `立即確認扇形氣壓、噴槍角度、噴槍距離與 Robot path，先把噴幅拉回目標範圍。`
+    });
+  }
+
+  if (pressureAbnormal || flowLow) {
+    const pressureText = pressureDelta >= 0 ? `高於基準 ${Math.abs(pressureDelta).toFixed(1)}%` : `低於基準 ${Math.abs(pressureDelta).toFixed(1)}%`;
+    const flowText = flowDelta >= 0 ? `高於基準 ${Math.abs(flowDelta).toFixed(1)}%` : `低於基準 ${Math.abs(flowDelta).toFixed(1)}%`;
+    issues.push({
+      level: pressureAbnormal && flowLow ? "緊急" : "警告",
+      direction: "壓力與流量不匹配",
+      evidence: `壓力 ${metrics.pressure_bar.toFixed(2)} bar（${pressureText}）；流量 ${formatNumber(metrics.flow_rate_ml_min)} ml/min（${flowText}）。`,
+      impact: "壓力上升但流量下降時，通常代表供漆阻力、堵塞或調壓不穩；會造成噴塗量不穩並影響品質分數。",
+      action: "同時查塗料壓力、霧化空氣壓力、扇形氣壓與供漆流量，不要只調單一壓力值。"
+    });
+  }
+
+  if (qualityWarning) {
+    issues.push({
+      level: trend.qualityStats.latest < 90 ? "緊急" : "警告",
+      direction: "QC / 品質分數正在下降",
+      evidence: `最新品質分數 ${formatPercent(trend.qualityStats.latest)}；最低 ${formatPercent(trend.qualityStats.min)}；00:00 到 23:00 變化 ${formatDeltaPoints(trend.qualityDrop)}。`,
+      impact: "品質分數低於 92% 管理線時，明天 QC 可能出現 NG 增加或缺陷集中在該站相關製程。",
+      action: "先把品質下降視為待驗證風險，下一次資料更新看品質分數是否停止下滑；明日 QC 回來後確認缺陷類型。"
+    });
+  }
+
+  if (utilizationLow || cycleSlow) {
+    issues.push({
+      level: utilizationLow && cycleSlow ? "警告" : "正常",
+      direction: "稼動率下降 / Cycle Time 變慢",
+      evidence: `稼動率 ${formatPercent(metrics.utilization_pct)}，基準 ${formatPercent(baseline.utilization_pct)}；Cycle Time ${metrics.cycle_time_sec.toFixed(1)} s，基準 ${baseline.cycle_time_sec.toFixed(1)} s。`,
+      impact: "若品質異常同時伴隨節拍變慢，可能代表等待、清槍、重噴、調機或設備狀態不穩。",
+      action: "查看該時段是否有停等、清槍、換漆、換濾網、Robot path 等事件，判斷是品質造成產能下降，還是設備造成品質下降。"
+    });
+  }
+
+  const activeIssues = issues.filter(issue => issue.level !== "正常");
+  activeIssues.sort((a, b) => severityRank(b.level) - severityRank(a.level));
+
+  const topIssue = activeIssues[0] || null;
+  const decisionLevel = topIssue
+    ? topIssue.level === "緊急"
+      ? "立即處理"
+      : "優先確認"
+    : "不顯示";
+
+  return {
+    evaluation,
+    station,
+    responsibility,
+    issues: activeIssues,
+    topIssue,
+    hasProblem: Boolean(topIssue),
+    decisionLevel,
+    trend,
+    evidenceSummary: `品質 ${formatPercent(metrics.quality_score_pct)}｜堵塞 ${formatPercent(metrics.clog_rate_pct)}｜噴幅 ${metrics.spray_width_mm} mm｜壓力 ${metrics.pressure_bar.toFixed(2)} bar｜流量 ${formatNumber(metrics.flow_rate_ml_min)} ml/min｜稼動 ${formatPercent(metrics.utilization_pct)}｜Cycle ${metrics.cycle_time_sec.toFixed(1)} s`
+  };
+}
+
+function buildRealtimeDiagnosis(summary) {
+  const stationDiagnoses = (summary.stationEvaluations || [])
+    .map(buildStationDiagnosis)
+    .filter(item => item.hasProblem);
+
+  stationDiagnoses.sort((a, b) => severityRank(b.topIssue.level) - severityRank(a.topIssue.level) || b.evaluation.riskScore - a.evaluation.riskScore);
+  const main = stationDiagnoses[0] || null;
+
+  if (!main) {
+    return {
+      main: null,
+      stationDiagnoses: [],
+      decision: "無異常",
+      decisionText: "目前沒有需要顯示的異常資料。"
+    };
+  }
+
+  return {
+    main,
+    stationDiagnoses,
+    decision: main.decisionLevel,
+    decisionText: main.topIssue.level === "緊急"
+      ? `現在先處理 ${main.responsibility.stationName} / ${main.responsibility.layerName}，不要等 QC 完成才處理。`
+      : `先請 ${main.responsibility.engineerRole} 確認 ${main.topIssue.direction}，下一次資料更新再決定是否升級。`
+  };
+}
+
+function renderRealtimeDiagnosisPanel(summary) {
+  const diagnosis = buildRealtimeDiagnosis(summary);
+  const main = diagnosis.main;
+
+  if (!main) return "";
+
+  return `
+    <section class="evidence-panel diagnosis-panel">
+      <div class="diagnosis-head">
+        <div>
+          <p class="content-section-kicker">Realtime diagnosis</p>
+          <h3>目前可能發生什麼：由 DB 指標自動判斷</h3>
+        </div>
+        <span class="diagnosis-decision-pill ${statusClass(main.topIssue.level)}">${escapeHtml(diagnosis.decision)}</span>
+      </div>
+
+      <div class="diagnosis-main-card ${statusClass(main.topIssue.level)}">
+        <div>
+          <div class="diagnosis-label">最可能問題方向</div>
+          <h4>${escapeHtml(main.responsibility.stationName)} / ${escapeHtml(main.responsibility.layerName)}：${escapeHtml(main.topIssue.direction)}</h4>
+          <p>${escapeHtml(main.topIssue.impact)}</p>
+        </div>
+        <div class="diagnosis-main-evidence">
+          <strong>資料證據</strong>
+          <span>${escapeHtml(main.topIssue.evidence)}</span>
+        </div>
+      </div>
+
+      <div class="diagnosis-grid">
+        ${diagnosis.stationDiagnoses.map(diagnosisItem => renderStationDiagnosisCard(diagnosisItem)).join("")}
+      </div>
+
+      <div class="decision-method-card">
+        <div>
+          <p class="content-section-kicker">Decision method</p>
+          <h4>決策法：先定位問題，再決定處理順序</h4>
+          <ol>
+            <li>先看哪一站低於警戒：品質分數 &lt; 92%、稼動率低於 baseline、Cycle Time 高於 baseline。</li>
+            <li>再看原因欄位：堵塞率、噴嘴、濾網、噴幅、壓力與流量是否同時異常。</li>
+            <li>若 QC 下降 + 堵塞率高 + 流量低，優先查噴嘴 / 濾網 / 供漆；若噴幅超出目標，優先查扇形氣壓與噴槍條件。</li>
+            <li>處理後用下一次 DB 更新驗收：品質分數回升、堵塞率下降、噴幅回到目標、稼動率與 Cycle Time 回穩。</li>
+          </ol>
+        </div>
+        <button type="button" class="decision-open-detail-btn" data-detail-line-id="${escapeHtml(main.station.lineId)}">
+          查看 ${escapeHtml(main.responsibility.stationName)} 詳細趨勢
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+function renderStationDiagnosisCard(diagnosisItem) {
+  if (!diagnosisItem || !diagnosisItem.topIssue) return "";
+
+  const issue = diagnosisItem.topIssue;
+  const visibleIssues = diagnosisItem.issues.slice(0, 3);
+
+  return `
+    <article class="diagnosis-card ${statusClass(issue.level)}">
+      <div class="diagnosis-card-head">
+        <div>
+          <span>${escapeHtml(diagnosisItem.responsibility.stationName)}｜${escapeHtml(diagnosisItem.responsibility.layerName)}</span>
+          <h4>${escapeHtml(issue.direction)}</h4>
+        </div>
+        <span class="table-status ${statusClass(issue.level)}">${escapeHtml(issue.level)}</span>
+      </div>
+      <p class="diagnosis-evidence-line">${escapeHtml(diagnosisItem.evidenceSummary)}</p>
+      <ul>
+        ${visibleIssues.map(item => `
+          <li>
+            <strong>${escapeHtml(item.direction)}</strong>
+            <span>${escapeHtml(item.evidence)}</span>
+          </li>
+        `).join("")}
+      </ul>
+      <div class="diagnosis-action-box">
+        <strong>建議決策</strong>
+        <span>${escapeHtml(issue.action)}</span>
+      </div>
+    </article>
+  `;
+}
+
+
+function renderTimeSegmentLegend() {
+  const segment = getTimeSegmentSummaryText();
+
+  return `
+    <span class="time-segment-chip past">${escapeHtml(segment.pastText)}</span>
+    <span class="time-segment-chip current">${escapeHtml(segment.currentText)}</span>
+    <span class="time-segment-chip future">${escapeHtml(segment.futureText)}</span>
+  `;
+}
+
+function renderQualityScoreChartCard(item) {
+  const station = item.station;
+  const responsibility = item.responsibility;
+  const series = getHourlyQualityScoreSeries(station.lineId);
+  const values = series.map(row => row.qualityScore).filter(value => value > 0);
+  const latest = values[values.length - 1] || 0;
+  const minValue = Math.min(...values);
+  const avgValue = average(values);
+  const level = latest < 90 ? "緊急" : latest < 92 ? "警告" : "正常";
+
+  return `
+    <button
+      type="button"
+      class="quality-chart-card ${statusClass(level)}"
+      data-detail-line-id="${escapeHtml(station.lineId)}"
+      aria-label="開啟 ${escapeHtml(responsibility.stationName)} ${escapeHtml(responsibility.layerName)} 詳細資料"
+    >
+      <div class="quality-chart-head">
+        <div>
+          <p class="quality-chart-kicker">${escapeHtml(responsibility.stationName)}｜${escapeHtml(responsibility.layerName)}</p>
+          <h4>${escapeHtml(responsibility.machineName)}</h4>
+        </div>
+        <span class="table-status ${statusClass(level)}">${escapeHtml(level)}</span>
+      </div>
+
+      <div class="quality-chart-kpi-row">
+        <div><span>最新</span><strong>${escapeHtml(formatPercent(latest))}</strong></div>
+        <div><span>最低</span><strong>${escapeHtml(formatPercent(minValue))}</strong></div>
+        <div><span>平均</span><strong>${escapeHtml(formatPercent(avgValue))}</strong></div>
+      </div>
+
+      ${renderQualityScoreSvg(series)}
+
+      <div class="quality-chart-foot">
+        ${renderTimeSegmentLegend()}
+        <span>Y 軸：品質分數 %</span>
+        <span>管理線：92%</span>
+      </div>
+
+      <div class="quality-card-open-hint">點開查看 QC、稼動率與 Cycle Time 詳細圖表</div>
+    </button>
+  `;
+}
+
+function renderQualityScoreSvg(series) {
+  const width = 720;
+  const height = 240;
+  const left = 54;
+  const right = 20;
+  const top = 22;
+  const bottom = 38;
+  const plotWidth = width - left - right;
+  const plotHeight = height - top - bottom;
+  const yMin = 84;
+  const yMax = 96;
+  const currentHour = getCurrentDataHour();
+  const halfStep = plotWidth / 23 / 2;
+
+  const xForHour = hour => left + (Number(hour || 0) / 23) * plotWidth;
+  const yForValue = value => top + ((yMax - Number(value || 0)) / (yMax - yMin)) * plotHeight;
+
+  const metricKey = "qualityScore";
+  const { pastRows, futureRows, currentRow } = splitSeriesByCurrentHour(series);
+  const allPoints = makeSvgPoints(series, xForHour, yForValue, metricKey);
+  const pastPoints = makeSvgPoints(pastRows, xForHour, yForValue, metricKey);
+  const futurePoints = makeSvgPoints(futureRows, xForHour, yForValue, metricKey);
+  const areaPoints = `${left},${top + plotHeight} ${allPoints} ${left + plotWidth},${top + plotHeight}`;
+  const thresholdY = yForValue(92);
+  const lastPoint = currentRow || series[series.length - 1];
+  const lastX = xForHour(lastPoint.hour);
+  const lastY = yForValue(lastPoint.qualityScore);
+  const currentX = xForHour(currentHour);
+  const currentBandX = Math.max(left, currentX - halfStep);
+  const currentBandWidth = Math.min(left + plotWidth, currentX + halfStep) - currentBandX;
+  const yTicks = [96, 94, 92, 90, 88, 86, 84];
+  const xTicks = Array.from(new Set([0, 4, 8, currentHour, 12, 16, 20, 23]))
+    .filter(hour => hour >= 0 && hour <= 23)
+    .sort((a, b) => a - b);
+
+  return `
+    <div class="quality-svg-wrap" aria-label="每小時品質分數折線圖">
+      <svg viewBox="0 0 ${width} ${height}" role="img">
+        <rect x="0" y="0" width="${width}" height="${height}" rx="16" class="chart-bg"></rect>
+        <rect x="${left}" y="${top}" width="${Math.max(0, currentBandX - left).toFixed(1)}" height="${plotHeight}" class="chart-zone-past"></rect>
+        <rect x="${currentBandX.toFixed(1)}" y="${top}" width="${currentBandWidth.toFixed(1)}" height="${plotHeight}" class="chart-zone-current"></rect>
+        <rect x="${(currentX + halfStep).toFixed(1)}" y="${top}" width="${Math.max(0, left + plotWidth - (currentX + halfStep)).toFixed(1)}" height="${plotHeight}" class="chart-zone-future"></rect>
+
+        ${yTicks.map(value => `
+          <line x1="${left}" y1="${yForValue(value).toFixed(1)}" x2="${left + plotWidth}" y2="${yForValue(value).toFixed(1)}" class="chart-grid-line"></line>
+          <text x="${left - 12}" y="${(yForValue(value) + 4).toFixed(1)}" text-anchor="end" class="chart-axis-label">${value}%</text>
+        `).join("")}
+
+        ${xTicks.map(hour => `
+          <text x="${xForHour(hour).toFixed(1)}" y="${height - 12}" text-anchor="middle" class="chart-axis-label ${hour === currentHour ? "chart-current-axis-label" : ""}">${String(hour).padStart(2, "0")}</text>
+        `).join("")}
+
+        <line x1="${left}" y1="${thresholdY.toFixed(1)}" x2="${left + plotWidth}" y2="${thresholdY.toFixed(1)}" class="chart-threshold-line"></line>
+        <text x="${left + plotWidth - 4}" y="${(thresholdY - 6).toFixed(1)}" text-anchor="end" class="chart-threshold-label">92% 管理線</text>
+
+        <polygon points="${areaPoints}" class="chart-area"></polygon>
+        ${pastPoints ? `<polyline points="${pastPoints}" class="chart-line-past"></polyline>` : ""}
+        ${futurePoints ? `<polyline points="${futurePoints}" class="chart-line-future"></polyline>` : ""}
+        <line x1="${currentX.toFixed(1)}" y1="${top}" x2="${currentX.toFixed(1)}" y2="${top + plotHeight}" class="chart-current-line"></line>
+        <text x="${(currentX + 5).toFixed(1)}" y="${top + 14}" class="chart-current-label">Current ${String(currentHour).padStart(2, "0")}:00</text>
+
+        <circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="6" class="chart-current-point"></circle>
+        <text x="${(lastX - 8).toFixed(1)}" y="${(lastY - 10).toFixed(1)}" text-anchor="end" class="chart-last-label">${lastPoint.qualityScore.toFixed(1)}%</text>
+        ${renderSvgHoverPoints({
+          series,
+          xForHour,
+          yForValue,
+          metricKey,
+          valueFormatter: value => `${value.toFixed(1)}%`,
+          plotTop: top,
+          plotBottom: top + plotHeight,
+          plotLeft: left,
+          plotRight: left + plotWidth
+        })}
+      </svg>
+    </div>
+  `;
+}
+
+function getStationEvaluationByLineId(lineId) {
+  return (MANAGER_MOCK_SUMMARY.stationEvaluations || []).find(item => item.station.lineId === lineId) || null;
+}
+
+function getStationHourlyDetailSeries(lineId) {
+  const detail = MOCK_STATION_DETAIL_HOURLY_TODAY[lineId] || {};
+  const fallbackQuality = MOCK_QUALITY_SCORE_HOURLY_TODAY[lineId] || [];
+
+  return Array.from({ length: 24 }, (_, hour) => ({
+    hour,
+    hourLabel: `${String(hour).padStart(2, "0")}:00`,
+    quality_score_pct: Number((detail.quality_score_pct || fallbackQuality)[hour] ?? 0),
+    utilization_pct: Number((detail.utilization_pct || [])[hour] ?? 0),
+    cycle_time_sec: Number((detail.cycle_time_sec || [])[hour] ?? 0)
+  }));
+}
+
+function getMetricStats(series, key) {
+  const values = series.map(row => Number(row[key] || 0)).filter(value => value > 0);
+  return {
+    latest: values[values.length - 1] || 0,
+    min: values.length ? Math.min(...values) : 0,
+    max: values.length ? Math.max(...values) : 0,
+    avg: average(values)
+  };
+}
+
+
+function renderSvgHoverPoints(options) {
+  const {
+    series,
+    xForHour,
+    yForValue,
+    metricKey,
+    valueFormatter,
+    plotTop,
+    plotBottom,
+    plotLeft,
+    plotRight
+  } = options;
+
+  const tooltipWidth = 136;
+  const tooltipHeight = 46;
+
+  return series.map(row => {
+    const x = xForHour(row.hour);
+    const y = yForValue(row[metricKey]);
+    const valueText = valueFormatter(Number(row[metricKey] || 0));
+    const timeText = row.hourLabel || `${String(row.hour).padStart(2, "0")}:00`;
+    const segment = getTimeSegment(row.hour);
+    const preferLeft = x > plotLeft + (plotRight - plotLeft) * 0.72;
+    const tooltipX = preferLeft ? x - tooltipWidth - 12 : x + 12;
+    const tooltipY = Math.max(6, Math.min(plotBottom - tooltipHeight - 6, y - tooltipHeight - 10));
+    const textX = tooltipX + 10;
+
+    return `
+      <g class="chart-hover-point" tabindex="0" aria-label="${escapeHtml(timeText)}，${escapeHtml(valueText)}，${escapeHtml(segment.label)}">
+        <line x1="${x.toFixed(1)}" y1="${plotTop}" x2="${x.toFixed(1)}" y2="${plotBottom}" class="chart-hover-guide"></line>
+        <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="15" class="chart-hover-hit"></circle>
+        <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" class="chart-hover-dot ${escapeHtml(segment.key)}"></circle>
+        <rect x="${tooltipX.toFixed(1)}" y="${tooltipY.toFixed(1)}" width="${tooltipWidth}" height="${tooltipHeight}" rx="9" class="chart-hover-tooltip-bg"></rect>
+        <text x="${textX.toFixed(1)}" y="${(tooltipY + 13).toFixed(1)}" class="chart-hover-tooltip-text">${escapeHtml(timeText)}｜${escapeHtml(segment.key.toUpperCase())}</text>
+        <text x="${textX.toFixed(1)}" y="${(tooltipY + 28).toFixed(1)}" class="chart-hover-tooltip-value">${escapeHtml(valueText)}</text>
+        <text x="${textX.toFixed(1)}" y="${(tooltipY + 40).toFixed(1)}" class="chart-hover-tooltip-segment">${escapeHtml(segment.label)}</text>
+      </g>
+    `;
+  }).join("");
+}
+
+function formatMetricValue(value, unit, digits = 1) {
+  const number = Number(value || 0).toFixed(digits);
+  return unit === "%" ? `${number}%` : `${number} ${unit}`;
+}
+
+function setStationDetailOpen(open, lineId = selectedDetailLineId) {
+  isStationDetailOpen = Boolean(open);
+  selectedDetailLineId = isStationDetailOpen ? lineId : "";
+
+  const panel = document.getElementById("stationDetailPanel");
+  const overlay = document.getElementById("stationDetailOverlay");
+
+  if (panel) {
+    if (isStationDetailOpen) {
+      panel.innerHTML = renderStationDetailPanel(selectedDetailLineId);
+    }
+
+    panel.classList.toggle("open", isStationDetailOpen);
+    panel.setAttribute("aria-hidden", String(!isStationDetailOpen));
+  }
+
+  if (overlay) {
+    overlay.classList.toggle("open", isStationDetailOpen);
+  }
+
+  document.body.classList.toggle("detail-open", isStationDetailOpen);
+}
+
+function renderStationDetailPanel(lineId) {
+  const evaluation = getStationEvaluationByLineId(lineId);
+
+  if (!evaluation) {
+    return `
+      <div class="station-detail-header">
+        <div>
+          <p class="content-section-kicker">Station detail</p>
+          <h3>找不到站別資料</h3>
+        </div>
+        <button type="button" class="station-detail-close-btn" id="stationDetailCloseBtn">關閉</button>
+      </div>
+    `;
+  }
+
+  const station = evaluation.station;
+  const responsibility = evaluation.responsibility;
+  const series = getStationHourlyDetailSeries(lineId);
+  const qualityStats = getMetricStats(series, "quality_score_pct");
+  const utilizationStats = getMetricStats(series, "utilization_pct");
+  const cycleStats = getMetricStats(series, "cycle_time_sec");
+
+  return `
+    <div class="station-detail-header">
+      <div>
+        <p class="content-section-kicker">Station detail / today 24 hours</p>
+        <h3>${escapeHtml(responsibility.stationName)}｜${escapeHtml(responsibility.layerName)} 詳細資料</h3>
+        <p>
+          ${escapeHtml(responsibility.machineName)}｜負責：${escapeHtml(responsibility.engineerRole)}｜
+          目前風險分數 ${escapeHtml(evaluation.riskScore)}
+        </p>
+      </div>
+      <button type="button" class="station-detail-close-btn" id="stationDetailCloseBtn">關閉</button>
+    </div>
+
+    <div class="station-detail-summary-grid">
+      <div><span>QC 最新品質分數</span><strong>${escapeHtml(formatMetricValue(qualityStats.latest, "%"))}</strong></div>
+      <div><span>稼動率最新值</span><strong>${escapeHtml(formatMetricValue(utilizationStats.latest, "%"))}</strong></div>
+      <div><span>Cycle Time 最新值</span><strong>${escapeHtml(formatMetricValue(cycleStats.latest, "s"))}</strong></div>
+      <div><span>資料時間</span><strong>${escapeHtml(getTimeSegmentSummaryText().currentText)}</strong></div>
+    </div>
+
+    <div class="station-detail-chart-stack">
+      ${renderMetricDetailChart({
+        title: "QC / 品質分數",
+        leftLabel: "品質分數",
+        series,
+        metricKey: "quality_score_pct",
+        unit: "%",
+        yMin: 84,
+        yMax: 96,
+        standardValue: 92,
+        standardLabel: "標準線 92%",
+        stats: qualityStats,
+        lowerIsWorse: true
+      })}
+
+      ${renderMetricDetailChart({
+        title: "稼動率",
+        leftLabel: "稼動率",
+        series,
+        metricKey: "utilization_pct",
+        unit: "%",
+        yMin: 68,
+        yMax: 90,
+        standardValue: station.baseline.utilization_pct,
+        standardLabel: `基準 ${station.baseline.utilization_pct.toFixed(1)}%`,
+        stats: utilizationStats,
+        lowerIsWorse: true
+      })}
+
+      ${renderMetricDetailChart({
+        title: "Cycle Time",
+        leftLabel: "Cycle-Time",
+        series,
+        metricKey: "cycle_time_sec",
+        unit: "s",
+        yMin: 44,
+        yMax: 56,
+        standardValue: station.baseline.cycle_time_sec,
+        standardLabel: `基準 ${station.baseline.cycle_time_sec.toFixed(1)}s`,
+        stats: cycleStats,
+        lowerIsWorse: false
+      })}
+    </div>
+  `;
+}
+
+function renderMetricDetailChart(config) {
+  return `
+    <article class="station-detail-chart-row">
+      <div class="station-detail-chart-label">
+        <strong>${escapeHtml(config.leftLabel)}</strong>
+        <span>${escapeHtml(config.title)}</span>
+      </div>
+      <div class="station-detail-chart-card">
+        <div class="station-detail-chart-head">
+          <h4>${escapeHtml(config.title)}</h4>
+          <div>
+            <span>最新 ${escapeHtml(formatMetricValue(config.stats.latest, config.unit))}</span>
+            <span>平均 ${escapeHtml(formatMetricValue(config.stats.avg, config.unit))}</span>
+            <span>${escapeHtml(config.lowerIsWorse ? "低於標準為異常" : "高於基準為異常")}</span>
+            ${renderTimeSegmentLegend()}
+          </div>
+        </div>
+        ${renderMetricDetailSvg(config)}
+      </div>
+    </article>
+  `;
+}
+
+function renderMetricDetailSvg(config) {
+  const width = 980;
+  const height = 220;
+  const left = 62;
+  const right = 26;
+  const top = 22;
+  const bottom = 38;
+  const plotWidth = width - left - right;
+  const plotHeight = height - top - bottom;
+  const yMin = Number(config.yMin);
+  const yMax = Number(config.yMax);
+  const currentHour = getCurrentDataHour();
+  const halfStep = plotWidth / 23 / 2;
+
+  const xForHour = hour => left + (Number(hour || 0) / 23) * plotWidth;
+  const yForValueRaw = value => top + ((yMax - Number(value || 0)) / (yMax - yMin)) * plotHeight;
+  const clampY = value => Math.max(top, Math.min(top + plotHeight, yForValueRaw(value)));
+  const yForValue = value => clampY(value);
+  const { pastRows, futureRows, currentRow } = splitSeriesByCurrentHour(config.series);
+  const allPoints = makeSvgPoints(config.series, xForHour, yForValue, config.metricKey);
+  const pastPoints = makeSvgPoints(pastRows, xForHour, yForValue, config.metricKey);
+  const futurePoints = makeSvgPoints(futureRows, xForHour, yForValue, config.metricKey);
+  const areaPoints = `${left},${top + plotHeight} ${allPoints} ${left + plotWidth},${top + plotHeight}`;
+  const standardY = clampY(config.standardValue);
+  const lastPoint = currentRow || config.series[config.series.length - 1];
+  const lastX = xForHour(lastPoint.hour);
+  const lastY = clampY(lastPoint[config.metricKey]);
+  const currentX = xForHour(currentHour);
+  const currentBandX = Math.max(left, currentX - halfStep);
+  const currentBandWidth = Math.min(left + plotWidth, currentX + halfStep) - currentBandX;
+  const tickStep = (yMax - yMin) / 4;
+  const yTicks = Array.from({ length: 5 }, (_, index) => yMax - tickStep * index);
+  const xTicks = Array.from(new Set([0, 2, 4, 8, currentHour, 12, 16, 20, 23]))
+    .filter(hour => hour >= 0 && hour <= 23)
+    .sort((a, b) => a - b);
+
+  return `
+    <div class="station-detail-svg-wrap">
+      <svg viewBox="0 0 ${width} ${height}" role="img">
+        <rect x="0" y="0" width="${width}" height="${height}" rx="16" class="chart-bg"></rect>
+        <rect x="${left}" y="${top}" width="${Math.max(0, currentBandX - left).toFixed(1)}" height="${plotHeight}" class="chart-zone-past"></rect>
+        <rect x="${currentBandX.toFixed(1)}" y="${top}" width="${currentBandWidth.toFixed(1)}" height="${plotHeight}" class="chart-zone-current"></rect>
+        <rect x="${(currentX + halfStep).toFixed(1)}" y="${top}" width="${Math.max(0, left + plotWidth - (currentX + halfStep)).toFixed(1)}" height="${plotHeight}" class="chart-zone-future"></rect>
+
+        ${yTicks.map(value => `
+          <line x1="${left}" y1="${clampY(value).toFixed(1)}" x2="${left + plotWidth}" y2="${clampY(value).toFixed(1)}" class="chart-grid-line"></line>
+          <text x="${left - 12}" y="${(clampY(value) + 4).toFixed(1)}" text-anchor="end" class="chart-axis-label">${value.toFixed(config.unit === "s" ? 1 : 0)}${config.unit}</text>
+        `).join("")}
+
+        ${xTicks.map(hour => `
+          <text x="${xForHour(hour).toFixed(1)}" y="${height - 12}" text-anchor="middle" class="chart-axis-label ${hour === currentHour ? "chart-current-axis-label" : ""}">${String(hour).padStart(2, "0")}</text>
+        `).join("")}
+
+        <line x1="${left}" y1="${standardY.toFixed(1)}" x2="${left + plotWidth}" y2="${standardY.toFixed(1)}" class="detail-standard-line"></line>
+        <text x="${left + 6}" y="${(standardY - 8).toFixed(1)}" class="detail-standard-label">${escapeHtml(config.standardLabel)}</text>
+
+        <polygon points="${areaPoints}" class="detail-chart-area"></polygon>
+        ${pastPoints ? `<polyline points="${pastPoints}" class="detail-chart-line-past"></polyline>` : ""}
+        ${futurePoints ? `<polyline points="${futurePoints}" class="detail-chart-line-future"></polyline>` : ""}
+        <line x1="${currentX.toFixed(1)}" y1="${top}" x2="${currentX.toFixed(1)}" y2="${top + plotHeight}" class="chart-current-line"></line>
+        <text x="${(currentX + 5).toFixed(1)}" y="${top + 14}" class="chart-current-label">Current ${String(currentHour).padStart(2, "0")}:00</text>
+
+        <circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="6" class="chart-current-point"></circle>
+        <text x="${(lastX - 8).toFixed(1)}" y="${(lastY - 10).toFixed(1)}" text-anchor="end" class="chart-last-label">${formatMetricValue(lastPoint[config.metricKey], config.unit)}</text>
+        ${renderSvgHoverPoints({
+          series: config.series,
+          xForHour,
+          yForValue,
+          metricKey: config.metricKey,
+          valueFormatter: value => formatMetricValue(value, config.unit),
+          plotTop: top,
+          plotBottom: top + plotHeight,
+          plotLeft: left,
+          plotRight: left + plotWidth
+        })}
+        <text x="${left + plotWidth}" y="${height - 12}" text-anchor="end" class="chart-axis-label">time</text>
+      </svg>
+    </div>
+  `;
 }
 
 function renderTopProblemCards(summary) {
@@ -641,7 +1974,7 @@ function renderTopProblemCards(summary) {
     </section>
 
     <div class="efficiency-note">
-      註：本週預估整體效益由稼動效益、節拍效益與預測品質效益綜合判斷；今日品質尚未完成 QC，因此品質效益為預測值。
+      註：目前資料由 MOCK_DATABASE_RESPONSE 模擬 web service 回傳；站別風險由 stationTelemetry 與 baseline 比較產生。
     </div>
   `;
 }
@@ -650,7 +1983,7 @@ function renderDecisionEvidenceCards(content) {
   return `
     <section class="evidence-panel">
       <p class="content-section-kicker">判斷依據</p>
-      <h3>${escapeHtml("判斷依據：目前狀態分級")}</h3>
+      <h3>判斷依據：主管決策來源</h3>
       <div class="decision-evidence-grid">
         ${content.evidence.map(item => `
           <article class="decision-evidence-card">
@@ -665,16 +1998,35 @@ function renderDecisionEvidenceCards(content) {
   `;
 }
 
-function renderImpactCards(content) {
+function renderCauseCards(content) {
   return `
     <section class="evidence-panel">
       <p class="content-section-kicker">判斷依據</p>
-      <h3>判斷依據：本週預估損失</h3>
+      <h3>判斷依據：異常原因 Top ${content.causes.length}</h3>
+      <div class="decision-evidence-grid">
+        ${content.causes.map((cause, index) => `
+          <article class="decision-evidence-card">
+            <div class="decision-evidence-label">原因 ${index + 1}</div>
+            <div class="decision-evidence-answer negative-text">${escapeHtml(MANAGER_MOCK_SUMMARY.mainIssueStation)}</div>
+            <p class="decision-evidence-text">${escapeHtml(cause)}</p>
+            <div class="decision-evidence-status">stationTelemetry vs baseline</div>
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderImpactCards(content, title = "判斷依據：本週預估損失") {
+  return `
+    <section class="evidence-panel">
+      <p class="content-section-kicker">判斷依據</p>
+      <h3>${escapeHtml(title)}</h3>
       <div class="impact-card-grid">
         ${content.cards.map(item => `
           <article class="impact-card ${escapeHtml(item.tone)}">
             <div class="impact-label">${escapeHtml(item.label)}</div>
-            <div class="impact-value">${escapeHtml(item.value)}</div>
+            <div class="impact-value ${changeClass(item.value)}">${escapeHtml(item.value)}</div>
             <p>${escapeHtml(item.note)}</p>
           </article>
         `).join("")}
@@ -687,7 +2039,7 @@ function renderProgressCards(content) {
   return `
     <section class="evidence-panel">
       <p class="content-section-kicker">判斷依據</p>
-      <h3>判斷依據：今日派工狀態與驗收條件</h3>
+      <h3>判斷依據：站別責任工程師與驗收條件</h3>
       <div class="progress-card-grid">
         ${content.assignments.map(item => `
           <article class="progress-card">
@@ -696,6 +2048,7 @@ function renderProgressCards(content) {
               <span class="assignment-status ${assignmentStatusClass(item.status)}">${escapeHtml(item.status)}</span>
             </div>
             <h4>${escapeHtml(item.owner)}</h4>
+            <p><strong>站別：</strong>${escapeHtml(item.station)} / ${escapeHtml(item.processLayer)}</p>
             <p><strong>問題：</strong>${escapeHtml(item.issue)}</p>
             <p><strong>任務：</strong>${escapeHtml(item.task)}</p>
             <p><strong>期限：</strong>${escapeHtml(item.due)}</p>
@@ -716,9 +2069,9 @@ function renderValidationCards(content) {
         ${content.validations.map(item => `
           <article class="validation-card">
             <div class="validation-label">${escapeHtml(item.label)}</div>
-            <div class="validation-row"><span>昨日預測</span><strong>${escapeHtml(item.predicted)}</strong></div>
+            <div class="validation-row"><span>昨日預測 / 輸入</span><strong>${escapeHtml(item.predicted)}</strong></div>
             <div class="validation-row"><span>今日 QC 後實際</span><strong>${escapeHtml(item.actual)}</strong></div>
-            <div class="validation-row"><span>誤差</span><strong class="${changeClass(item.error)}">${escapeHtml(item.error)}</strong></div>
+            <div class="validation-row"><span>誤差 / 狀態</span><strong class="${changeClass(item.error)}">${escapeHtml(item.error)}</strong></div>
             <div class="validation-result">${escapeHtml(item.result)}</div>
           </article>
         `).join("")}
@@ -744,43 +2097,72 @@ function renderRecommendationPanel() {
   panel.innerHTML = `
     <div class="recommendation-title">
       <div>
-        <p class="rec-eyebrow">派工卡</p>
-        <h2>建議派工</h2>
+        <p class="rec-eyebrow">責任分派</p>
+        <h2>站別責任工程師</h2>
       </div>
-      <span class="status-pill ${statusClass(level)}">${escapeHtml(level)}</span>
+      <div class="recommendation-title-actions">
+        <span class="status-pill ${statusClass(level)}">${escapeHtml(level)}</span>
+        <button
+          type="button"
+          class="drawer-close-btn"
+          id="recommendationDrawerCloseBtn"
+          aria-label="關閉責任工程師面板"
+        >
+          關閉
+        </button>
+      </div>
     </div>
 
-    <div class="future-risk-alert">
-      若今天不處理，未來 7 天可能再少產 ${escapeHtml(formatNumber(summary.futureLostPcs))} pcs，預測 NG 再增加 ${escapeHtml(formatNumber(summary.futureExtraNgPcs))} pcs，整體效益可能降到 ${escapeHtml(formatPercent(summary.futureNoActionEfficiency))}。
+    <div class="recommendation-summary-row">
+      <div>
+        <strong>目前異常指向 ${escapeHtml(summary.mainIssueStation)} / ${escapeHtml(summary.mainIssueProcess)}</strong>
+        <p>
+          P1 通知 ${escapeHtml(summary.responsibleEngineer)} 優先處理；其他站別負責工程師同步確認前後段影響。
+        </p>
+      </div>
+      <div class="recommendation-summary-count">
+        ${ASSIGNMENT_CARDS.length} 項
+      </div>
     </div>
 
-    <div class="assignment-list">
-      ${ASSIGNMENT_CARDS.map((item, index) => `
-        <article class="assignment-card priority-${index + 1}">
-          <div class="assignment-head">
-            <span class="assignment-priority">${escapeHtml(item.priority)}</span>
-            <span class="assignment-status ${assignmentStatusClass(item.status)}">${escapeHtml(item.status)}</span>
-          </div>
-          <div class="assignment-owner">${escapeHtml(item.owner)}</div>
-          <div class="assignment-grid">
-            <div><strong>任務：</strong>${escapeHtml(item.task)}</div>
-            <div><strong>期限：</strong>${escapeHtml(item.due)}</div>
-            <div><strong>驗收：</strong>${escapeHtml(item.acceptance)}</div>
-          </div>
-          <button type="button" class="send-warning-btn" data-assignment-index="${index}">發送通知 Email</button>
-        </article>
-      `).join("")}
-    </div>
+    <div class="recommendation-collapsible-body">
+      <div class="future-risk-alert">
+        ${escapeHtml(summary.futureRiskText)} 未來 7 天可能再少產 ${escapeHtml(formatNumber(summary.futureLostPcs))} pcs，
+        預測 NG 再增加 ${escapeHtml(formatNumber(summary.futureExtraNgPcs))} pcs，
+        整體效益可能降到 ${escapeHtml(formatPercent(summary.futureNoActionEfficiency))}。
+      </div>
 
-    <section class="acceptance-checklist">
-      <h3>改善是否有效，看下一次資料更新</h3>
-      <ul>
-        ${ACCEPTANCE_CHECKLIST.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
-    </section>
+      <div class="assignment-list">
+        ${ASSIGNMENT_CARDS.map((item, index) => `
+          <article class="assignment-card priority-${index + 1}">
+            <div class="assignment-head">
+              <span class="assignment-priority">${escapeHtml(item.priority)}</span>
+              <span class="assignment-status ${assignmentStatusClass(item.status)}">${escapeHtml(item.status)}</span>
+            </div>
+            <div class="assignment-owner">${escapeHtml(item.owner)}</div>
+            <div class="assignment-grid">
+              <div><strong>站別：</strong>${escapeHtml(item.station)} / ${escapeHtml(item.processLayer)}</div>
+              <div><strong>任務：</strong>${escapeHtml(item.task)}</div>
+              <div><strong>期限：</strong>${escapeHtml(item.due)}</div>
+              <div><strong>驗收：</strong>${escapeHtml(item.acceptance)}</div>
+            </div>
+            <button type="button" class="send-warning-btn" data-assignment-index="${index}">
+              發送通知 Email
+            </button>
+          </article>
+        `).join("")}
+      </div>
 
-    <div class="data-reminder">
-      今日品質不能視為實際品質結果。今日品質一律為待 QC / 預測品質；良率、不良率、不良數、不良類型都是預測或待驗證。
+      <section class="acceptance-checklist">
+        <h3>改善是否有效，看下一次資料更新</h3>
+        <ul>
+          ${ACCEPTANCE_CHECKLIST.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </section>
+
+      <div class="data-reminder">
+        今日品質不能視為實際品質結果。今日品質一律為待 QC / 預測品質；良率、不良率、不良數、不良類型都是預測或待驗證。
+      </div>
     </div>
   `;
 }
@@ -792,26 +2174,28 @@ function buildEngineerWarningPayload(assignment) {
   return {
     warningId: `ENGINEER-${assignment.priority}-${Date.now()}`,
     timestamp: new Date().toLocaleString("zh-TW", { timeZone: "Asia/Taipei" }),
+    source: summary.dataSource,
+    apiVersion: summary.apiVersion,
     recipientRole: assignment.owner,
     recipientEmail: assignment.email,
     to: assignment.email,
     level,
     riskLevel: level === "緊急" ? "High" : "Warning",
     line: summary.lineName,
-    station: summary.mainIssueStation,
-    robot: summary.mainIssueRobot,
-    processStep: summary.mainIssueProcess,
-    title: `${assignment.priority} ${assignment.owner} 派工通知`,
+    station: assignment.station,
+    processLayer: assignment.processLayer,
+    machine: summary.mainIssueRobot,
+    title: `${assignment.priority} ${assignment.owner} 站別責任通知`,
     issue: assignment.issue,
     task: assignment.task,
     due: assignment.due,
     acceptance: assignment.acceptance,
     message:
-      `請處理 ${assignment.issue}。目前本週預估整體效益 ${formatPercent(summary.estimatedThisWeekEfficiency)}，` +
-      `比上週實際效益下降 ${Math.abs(summary.efficiencyChange).toFixed(1)}%。` +
-      `主要問題為 ${summary.mainIssueStation} 稼動率下降、Cycle Time 增加，以及 ${summary.mainIssueProcess} 預測品質風險上升。`,
-    mainCause: `${summary.mainIssueStation} 稼動率下降 + Cycle Time 增加 + ${summary.mainIssueProcess} 預測品質風險上升。`,
+      `請處理 ${assignment.issue}。目前 ${summary.mainIssueStation} / ${summary.mainIssueProcess} 風險分數 ${summary.mainStationRiskScore}，` +
+      `本週預估效益 ${formatPercent(summary.estimatedThisWeekEfficiency)}，比上週實際 ${formatDeltaPercent(summary.efficiencyChange)}。`,
+    mainCause: summary.mainRiskReasons.join(" "),
     suggestedAction: assignment.task,
+    stationMetrics: summary.mainStationMetrics,
     predictedOkRate: summary.predictedOkRate,
     predictedNgPcs: summary.predictedNgPcs,
     lostProductionPcs: summary.lostProductionPcs,
@@ -919,16 +2303,11 @@ function renderDataStatusBar() {
       <div class="data-status-main">
         <span class="live-dot ${latestDataError ? "error" : "ok"}"></span>
         <strong>資料狀態：</strong>
-        ${escapeHtml(dateLabel)}｜
-        品質等級 ${escapeHtml(quality.grade)}｜
-        ${escapeHtml(quality.value)}｜
-        ${escapeHtml(quality.sourceStatus)}
+        ${escapeHtml(dateLabel)}｜品質等級 ${escapeHtml(quality.grade)}｜${escapeHtml(quality.value)}｜${escapeHtml(quality.sourceStatus)}
       </div>
       <div class="data-status-detail">
-        今日資料完整度 ${escapeHtml(dataStatus.todayCompleteness)}%｜
-        本週 ${escapeHtml(dataStatus.weekProgress)}｜
-        未來 7 天為未來推估｜
-        最後更新 ${escapeHtml(formatLastUpdateTime(lastDataUpdateAt))}
+        來源 ${escapeHtml(dataStatus.source)}｜API ${escapeHtml(dataStatus.apiVersion)}｜今日資料完整度 ${escapeHtml(dataStatus.todayCompleteness)}%｜
+        本週 ${escapeHtml(dataStatus.weekProgress)}｜未來 7 天為 forecastNoAction 推估｜最後更新 ${escapeHtml(formatLastUpdateTime(lastDataUpdateAt))}
       </div>
     </div>
   `;
@@ -954,7 +2333,7 @@ async function fetchHistoricalActualData() {
 }
 
 async function fetchRealtimeDataFromDB() {
-  if (CONFIG.USE_MOCK_DATA || !CONFIG.DB_API_URL) return null;
+  if (CONFIG.USE_MOCK_DATA || !CONFIG.DB_API_URL) return MOCK_DATABASE_RESPONSE;
   const response = await fetch(CONFIG.DB_API_URL);
   return response.json();
 }
@@ -963,6 +2342,25 @@ async function fetchFutureForecastData() {
   if (CONFIG.USE_MOCK_DATA || !CONFIG.FORECAST_API_URL) return null;
   const response = await fetch(CONFIG.FORECAST_API_URL);
   return response.json();
+}
+
+async function loadManagerData() {
+  try {
+    const dbResponse = await fetchRealtimeDataFromDB();
+    currentDatabaseResponse = dbResponse || MOCK_DATABASE_RESPONSE;
+    MANAGER_MOCK_SUMMARY = buildManagerReportFromDatabase(currentDatabaseResponse);
+    ASSIGNMENT_CARDS = MANAGER_MOCK_SUMMARY.assignments;
+    ACCEPTANCE_CHECKLIST = MANAGER_MOCK_SUMMARY.acceptanceChecklist;
+    lastDataUpdateAt = new Date();
+    latestDataError = "";
+  } catch (error) {
+    console.error("[DATA ERROR] Failed to load manager data:", error);
+    latestDataError = error.message || "資料載入失敗";
+    currentDatabaseResponse = MOCK_DATABASE_RESPONSE;
+    MANAGER_MOCK_SUMMARY = buildManagerReportFromDatabase(currentDatabaseResponse);
+    ASSIGNMENT_CARDS = MANAGER_MOCK_SUMMARY.assignments;
+    ACCEPTANCE_CHECKLIST = MANAGER_MOCK_SUMMARY.acceptanceChecklist;
+  }
 }
 
 function initCockpit() {
@@ -974,18 +2372,62 @@ function initCockpit() {
     setActiveCategory(button.dataset.category);
   });
 
-  document.getElementById("managerHeader").addEventListener("change", event => {
-  const select = event.target.closest("#reportDateSelect");
-  if (!select) return;
-
-  selectedReportDate = select.value;
-  renderCockpit();
+  document.getElementById("categoryContent").addEventListener("click", event => {
+    const chartButton = event.target.closest("[data-detail-line-id]");
+    if (!chartButton) return;
+    setStationDetailOpen(true, chartButton.dataset.detailLineId);
   });
+
+  document.getElementById("managerHeader").addEventListener("change", event => {
+    const select = event.target.closest("#reportDateSelect");
+    if (!select) return;
+
+    selectedReportDate = select.value;
+    renderCockpit();
+  });
+
+  document.getElementById("recommendationDrawerTrigger").addEventListener("click", () => {
+    setRecommendationDrawerOpen(true);
+  });
+
+  document.getElementById("drawerOverlay").addEventListener("click", () => {
+    setRecommendationDrawerOpen(false);
+  });
+
+  document.getElementById("stationDetailOverlay").addEventListener("click", () => {
+    setStationDetailOpen(false);
+  });
+
+  document.getElementById("stationDetailPanel").addEventListener("click", event => {
+    const closeButton = event.target.closest("#stationDetailCloseBtn");
+    if (!closeButton) return;
+    setStationDetailOpen(false);
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape") return;
+
+    if (isStationDetailOpen) {
+      setStationDetailOpen(false);
+      return;
+    }
+
+    if (isRecommendationDrawerOpen) {
+      setRecommendationDrawerOpen(false);
+    }
+  });
+
   document.getElementById("recommendationPanel").addEventListener("click", event => {
+    const closeButton = event.target.closest("#recommendationDrawerCloseBtn");
+    if (closeButton) {
+      setRecommendationDrawerOpen(false);
+      return;
+    }
+
     const button = event.target.closest("[data-assignment-index]");
     if (!button) return;
+
     sendEngineerWarningEmail(Number(button.dataset.assignmentIndex));
   });
 }
-
-fetchHistoricalActualData().finally(initCockpit);
+loadManagerData().finally(initCockpit);

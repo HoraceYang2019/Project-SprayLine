@@ -17,7 +17,7 @@
         <div class="main-panel-head">
           <div>
             <p class="panel-eyebrow">主管決策</p>
-            <h2 id="activeCategoryTitle">目前狀態</h2>
+            <h2 id="activeCategoryTitle">狀態實時監控表</h2>
           </div>
           <div class="qc-delay-note pending-qc" id="selectedQualityNote">
             選定日期品質狀態：<strong>待 QC / 預測品質</strong>
@@ -26,12 +26,37 @@
 
         <div class="category-content" id="categoryContent"></div>
       </section>
-
-      <aside class="right-recommendation-panel" id="recommendationPanel"></aside>
     </main>
 
     <footer class="bottom-data-status-bar" id="dataStatusBar"></footer>
   </div>
+
+  <button
+    type="button"
+    class="drawer-trigger-btn"
+    id="recommendationDrawerTrigger"
+    aria-controls="recommendationPanel"
+    aria-expanded="false"
+  >
+    責任工程師
+  </button>
+
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <aside
+    class="right-recommendation-panel drawer-panel"
+    id="recommendationPanel"
+    aria-hidden="true"
+  ></aside>
+
+  <div class="station-detail-overlay" id="stationDetailOverlay"></div>
+
+  <section
+    class="station-detail-panel"
+    id="stationDetailPanel"
+    aria-hidden="true"
+    aria-label="站別詳細資料"
+  ></section>
 
   <script src="dashboard.js"></script>
 </body>
