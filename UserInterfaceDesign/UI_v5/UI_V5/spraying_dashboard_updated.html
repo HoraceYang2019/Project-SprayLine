@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>噴塗產線監控系統</title>
+    <style>
+        body { margin:0; font-family:"Microsoft JhengHei", Arial, sans-serif; background:#f4f6f8; color:#102027; }
+        .header { background:#263238; color:white; padding:20px 30px; }
+        .header h1 { margin:0; font-size:28px; }
+        .header p { margin:8px 0 0; color:#cfd8dc; }
+        .main { padding:22px; max-width:1600px; margin:auto; }
+        .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px; margin-bottom:22px; }
+        .summary-card { background:white; border-radius:14px; padding:18px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+        .summary-card h3 { margin:0; font-size:15px; color:#666; }
+        .summary-card .number { margin-top:10px; font-size:30px; font-weight:bold; }
+        .status-line { margin-bottom:16px; padding:10px 14px; border-radius:12px; background:#eef3f6; color:#37474f; font-size:14px; line-height:1.7; }
+        .station-area { display:grid; grid-template-columns:repeat(auto-fit,minmax(430px,1fr)); gap:22px; }
+        .station-card { background:white; border-radius:18px; padding:20px; box-shadow:0 4px 15px rgba(0,0,0,0.1); border-top:10px solid #aaa; transition:0.3s; }
+        .station-title { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+        .station-title h2 { margin:0; font-size:24px; }
+        .station-title p { margin:6px 0 0; color:#666; }
+        .status-badge { padding:8px 14px; border-radius:20px; color:white; font-weight:bold; font-size:14px; white-space:nowrap; }
+        .section-title { font-weight:bold; margin:16px 0 10px; color:#37474f; }
+        .component-wrap { margin:18px 0 10px; padding:14px; border-radius:16px; background:#f1f3f4; box-sizing:border-box; }
+        .component-overview { width:100%; display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+        .component-mini { min-height:118px; border-radius:14px; padding:10px 8px; text-align:center; background:white; border:1px solid #dfe6e9; border-top:6px solid #90a4ae; box-shadow:0 2px 6px rgba(0,0,0,0.04); box-sizing:border-box; cursor:pointer; transition:0.2s; }
+        .component-mini:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,0.12); }
+        .component-icon { width:32px; height:32px; margin:0 auto 6px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; background:#eef3f6; }
+        .component-name { font-size:14px; font-weight:bold; line-height:1.2; }
+        .component-en { font-size:11px; color:#777; margin-top:2px; }
+        .component-value { margin-top:5px; font-size:12px; color:#555; }
+        .component-status { display:inline-block; margin-top:6px; padding:3px 9px; border-radius:12px; color:white; font-size:12px; font-weight:bold; }
+        .component-hint { margin-top:5px; font-size:11px; color:#777; }
+        .component-mini.ok { border-top-color:#2e7d32; background:#f1faf3; }
+        .component-mini.ok .component-status { background:#2e7d32; }
+        .component-mini.warn { border-top-color:#ef6c00; background:#fff8ef; }
+        .component-mini.warn .component-status { background:#ef6c00; }
+        .component-mini.bad { border-top-color:#c62828; background:#fff2f2; }
+        .component-mini.bad .component-status { background:#c62828; }
+        .action-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+        .toggle-btn { border:none; border-radius:18px; padding:9px 14px; cursor:pointer; background:#eceff1; color:#263238; font-weight:bold; transition:0.2s; }
+        .toggle-btn:hover { filter:brightness(0.95); }
+        .toggle-btn.success { background:#2e7d32; color:white; }
+        .toggle-btn.danger, .toggle-btn.active-fault.bad { background:#c62828; color:white; box-shadow:0 4px 12px rgba(198,40,40,0.25); }
+        .toggle-btn.warn, .toggle-btn.active-fault.warn { background:#ef6c00; color:white; box-shadow:0 4px 12px rgba(239,108,0,0.25); }
+        .toggle-btn.process-active { background:#1976d2; color:white; box-shadow:0 4px 12px rgba(25,118,210,0.25); }
+        .toggle-btn.image-active { background:#00897b; color:white; box-shadow:0 4px 12px rgba(0,137,123,0.25); }
+        .fault-detail-panel { display:none; margin-top:14px; border-radius:14px; background:#ffffff; padding:14px; line-height:1.5; }
+        .fault-detail-panel h4 { margin:0 0 12px; color:#102027; font-weight:900; font-size:20px; letter-spacing:0.3px; }
+        .fault-card { border-left:6px solid #90a4ae; border-radius:12px; padding:12px 16px; margin:10px 0; background:#f7f9fa; }
+        .fault-card.ok { border-left-color:#2e7d32; background:#f1faf3; }
+        .fault-card.warn { border-left-color:#ef6c00; background:#fff8ef; }
+        .fault-card.bad { border-left-color:#c62828; background:#fff8f8; }
+        .fault-card-title { font-weight:900; font-size:17px; margin-bottom:10px; line-height:1.45; }
+        .fault-card.warn .fault-card-title { color:#ef6c00; }
+        .fault-card.bad .fault-card-title { color:#c62828; }
+        .fault-card.ok .fault-card-title { color:#2e7d32; }
+        .fault-line { display:flex; align-items:flex-start; gap:4px; margin-bottom:3px; font-size:16px; line-height:1.45; }
+        .fault-line:last-child { margin-bottom:0; }
+        .fault-label { flex:0 0 78px; font-weight:900; color:#111; white-space:nowrap; }
+        .fault-text { flex:1; min-width:0; }
+        .detail-source { margin-top:8px; font-size:12px; color:#607d8b; line-height:1.5; }
+        .loading-detail { color:#546e7a; font-weight:bold; padding:10px 0; }
+        .process-panel, .spray-image-box { display:none; margin-top:12px; }
+        .metric-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+        .metric { background:#fafafa; border-radius:10px; padding:10px; border:1px solid #eee; }
+        .metric span { display:block; color:#666; font-size:13px; }
+        .metric strong { display:block; margin-top:5px; font-size:18px; }
+        .spray-image-inner { background:#f1f3f4; border-radius:14px; padding:12px; border:3px solid transparent; }
+        .spray-image-inner.ok { border-color:#2e7d32; }
+        .spray-image-inner.warn { border-color:#ef6c00; }
+        .spray-image-inner.bad { border-color:#c62828; }
+        .spray-svg { width:100%; height:230px; display:block; }
+        .spray-image-note { font-size:13px; color:#666; margin-top:8px; line-height:1.6; }
+        .timeline-panel { margin-top:24px; background:white; border-radius:18px; padding:22px; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+        .timeline-top { display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap; }
+        .mode-buttons button { border:none; padding:10px 15px; border-radius:20px; margin-right:8px; margin-bottom:8px; cursor:pointer; background:#eceff1; font-weight:bold; }
+        .mode-buttons button.active { background:#263238; color:white; }
+        .live-badge { display:inline-block; margin-left:8px; padding:5px 10px; border-radius:16px; background:#2e7d32; color:white; font-size:13px; font-weight:bold; }
+        .pause-badge { display:inline-block; margin-left:8px; padding:5px 10px; border-radius:16px; background:#ef6c00; color:white; font-size:13px; font-weight:bold; }
+        .time-chips { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:18px; }
+        .time-chip { border-radius:14px; background:#f7f9fa; border:1px solid #e0e0e0; padding:12px; text-align:center; color:#546e7a; font-weight:bold; }
+        .time-chip.active { background:#263238; color:white; }
+        .slider-area { margin-top:18px; }
+        input[type="range"] { width:100%; }
+        .time-labels { position:relative; height:22px; font-size:13px; color:#666; margin-top:5px; }
+        .time-labels span { position:absolute; white-space:nowrap; }
+        .time-labels .left-label { left:0; }
+        .time-labels .right-label { right:0; }
+        .time-labels.time-mode .now-label { left:60%; transform:translateX(-50%); }
+        .time-labels.batch-mode .now-label { left:50%; transform:translateX(-50%); }
+        .selected-time { margin-top:12px; font-size:20px; font-weight:bold; color:#263238; }
+        .timeline-result { margin-top:16px; background:#f7f7f7; padding:14px; border-radius:12px; line-height:1.8; }
+        .future-warning { color:#c62828; font-weight:bold; }
+        .history-note { color:#1565c0; font-weight:bold; }
+        .running { border-top-color:#2e7d32; }
+        .running .status-badge { background:#2e7d32; }
+        .standby { border-top-color:#1976d2; }
+        .standby .status-badge { background:#1976d2; }
+        .maintenance { border-top-color:#ef6c00; }
+        .maintenance .status-badge { background:#ef6c00; }
+        .alarm { border-top-color:#b71c1c; box-shadow:0 0 20px rgba(183,28,28,0.25); }
+        .alarm .status-badge { background:#b71c1c; }
+        @media (max-width:900px) { .component-overview, .metric-grid, .time-chips { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>噴塗產線監控系統</h1>
+        <p>SprayingLineMonitoringSystem</p>
+        <p id="updateTime">最後更新時間：</p>
+    </div>
+    <div class="main">
+        <div class="summary">
+            <div class="summary-card"><h3>總站數 TotalStations</h3><div class="number" id="totalCount">0</div></div>
+            <div class="summary-card"><h3>正常 Normal</h3><div class="number" id="normalCount">0</div></div>
+            <div class="summary-card"><h3>注意 Warning</h3><div class="number" id="warningCount">0</div></div>
+            <div class="summary-card"><h3>預測風險 PredictRisk</h3><div class="number" id="riskCount">0</div></div>
+        </div>
+        <div class="status-line" id="sourceStatus">資料來源檢查中...</div>
+        <div class="station-area" id="stationArea"></div>
+        <div class="timeline-panel">
+            <div class="timeline-top">
+                <div>
+                    <h2>時間序列檢視 TimeSeriesViewer <span id="liveStatusBadge" class="live-badge">即時更新中｜每15秒</span></h2>
+                    <p>可切換現在、過去與未來預測；畫面資料由後端 API 提供，不再由前端寫死。</p>
+                </div>
+                <div class="mode-buttons">
+                    <button id="timeModeBtn" class="active" onclick="setMode('time')">時間模式 TimeMode</button>
+                    <button id="batchModeBtn" onclick="setMode('batch')">批次模式 BatchMode</button>
+                    <button onclick="backToLive()">回到即時 BackToLive</button>
+                </div>
+            </div>
+            <div class="time-chips"><div class="time-chip" id="pastChip">過去 Past</div><div class="time-chip active" id="nowChip">現在 Now</div><div class="time-chip" id="futureChip">未來 Future</div></div>
+            <div class="slider-area">
+                <input type="range" id="timeSlider" min="-6" max="4" step="1" value="0" oninput="handleSliderChange()">
+                <div class="time-labels time-mode" id="sliderLabels"><span class="left-label">過去6小時</span><span class="now-label">現在</span><span class="right-label">未來2小時</span></div>
+                <div class="selected-time" id="selectedTimeText">目前時間點：現在</div>
+            </div>
+            <div class="timeline-result" id="timelineResult">資料載入中...</div>
+        </div>
+    </div>
+    <script>
+        const AUTO_REFRESH_MS = 15000;
+        let currentMode = "time";
+        let autoUpdate = true;
+        let latestDiagnosis = {};
+        let latestPayload = null;
+        const openedFaults = new Map();
+        const openedProcessPanels = new Set();
+        const openedImagePanels = new Set();
+
+        const stateMap = {
+            "Running": { text: "運行中", className: "running" },
+            "Standby": { text: "待機", className: "standby" },
+            "Stop": { text: "停止", className: "alarm" },
+            "Maintenance": { text: "維護", className: "maintenance" },
+            "Alarm": { text: "異常", className: "alarm" }
+        };
+
+        function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
+        function getSliderValue() { return Number(document.getElementById("timeSlider").value); }
+        function statusText(level) { if (level === "ok") return "正常"; if (level === "warn") return "注意"; if (level === "bad") return "異常"; return "監控"; }
+        function escapeHtml(value) { return String(value ?? "").replace(/[&<>'"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[ch])); }
+        function levelRank(level) { return level === "bad" ? 3 : level === "warn" ? 2 : level === "ok" ? 1 : 0; }
+        function getSprayComponent(station) { return (station.components || []).find(c => c.key === "width") || { level: "ok", status_text: "正常" }; }
+        function stateInfo(overall) { return stateMap[overall] || stateMap.Running; }
+
+        function updateTimeFromPayload(payload) {
+            const generatedAt = payload?.generated_at ? new Date(payload.generated_at) : new Date();
+            const text = generatedAt.toLocaleString("zh-TW", { hour12:false });
+            document.getElementById("updateTime").innerText = "最後更新時間：" + text;
+        }
+
+        function updateSourceStatus(payload) {
+            const source = payload?.source_type || "Unknown";
+            const rule = payload?.diagnosis_database_file || payload?.diagnosis_rule_file || "diagnosis_rules.db";
+            const interval = payload?.update_interval_sec || 15;
+            document.getElementById("sourceStatus").innerHTML = `資料來源：<b>${escapeHtml(source)}</b>　｜　診斷資料庫：<b>${escapeHtml(rule.split(/[\\/]/).pop())}</b>　｜　更新週期：<b>${interval}秒</b>`;
+        }
+
+        function componentOverview(station) {
+            const components = station.components || [];
+            latestDiagnosis[station.id] = { station, components, issues: components.filter(c => c.level !== "ok") };
+            return `
+                <div class="component-wrap">
+                    <div class="section-title">零件狀態 PartStatus</div>
+                    <div class="component-overview">
+                        ${components.map(component => `
+                            <div class="component-mini ${escapeHtml(component.level)}" onclick="openComponentDetail('${escapeHtml(station.id)}', '${escapeHtml(component.key)}')">
+                                <div class="component-icon">${escapeHtml(component.icon)}</div>
+                                <div class="component-name">${escapeHtml(component.name)}</div>
+                                <div class="component-en">${escapeHtml(component.en)}</div>
+                                <div class="component-value">${escapeHtml(component.value)}</div>
+                                <div class="component-status">${escapeHtml(component.status_text || statusText(component.level))}</div>
+                                <div class="component-hint">${component.level === "ok" ? "狀態穩定" : "點擊查看原因"}</div>
+                            </div>`).join("")}
+                    </div>
+                </div>`;
+        }
+
+        function sprayWidthImage(station) {
+            const widthValue = Number(station.sprayWidth ?? 0);
+            const targetMin = Number(station.targetMin ?? 110);
+            const targetMax = Number(station.targetMax ?? 130);
+            const component = getSprayComponent(station);
+            const level = component.level || "ok";
+            const statusLabel = component.status_text || statusText(level);
+            let statusColor = "#2e7d32";
+            if (level === "warn") statusColor = "#ef6c00";
+            if (level === "bad") statusColor = "#c62828";
+            const displayWidth = clamp(widthValue, 40, 160);
+            const halfWidth = displayWidth * 0.65;
+            const leftX = 180 - halfWidth;
+            const rightX = 180 + halfWidth;
+            const targetLeft = 180 - targetMin * 0.65;
+            const targetRight = 180 + targetMax * 0.65;
+            return `
+                <svg viewBox="0 0 360 230" class="spray-svg">
+                    <rect x="0" y="0" width="360" height="230" rx="16" fill="#f7f9fa"/>
+                    <text x="20" y="28" font-size="14" font-weight="bold" fill="#263238">噴幅影像 SprayWidthImage</text>
+                    <rect x="286" y="12" width="52" height="24" rx="12" fill="${statusColor}"/>
+                    <text x="312" y="29" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">${escapeHtml(statusLabel)}</text>
+                    <rect x="18" y="45" width="324" height="160" rx="12" fill="#ffffff" stroke="#dfe6e9"/>
+                    <rect x="164" y="60" width="32" height="20" rx="5" fill="#455a64"/>
+                    <polygon points="180,80 170,96 190,96" fill="#455a64"/>
+                    <polygon points="180,96 ${leftX},165 ${rightX},165" fill="rgba(25,118,210,0.18)" stroke="${statusColor}" stroke-width="3"/>
+                    <rect x="${targetLeft}" y="145" width="${targetRight-targetLeft}" height="18" rx="8" fill="rgba(46,125,50,0.10)" stroke="#2e7d32" stroke-dasharray="5 4"/>
+                    <text x="180" y="139" text-anchor="middle" font-size="12" fill="#2e7d32">目標範圍 ${targetMin}~${targetMax}mm</text>
+                    <line x1="${leftX}" y1="164" x2="${leftX}" y2="180" stroke="${statusColor}" stroke-width="3"/>
+                    <line x1="${rightX}" y1="164" x2="${rightX}" y2="180" stroke="${statusColor}" stroke-width="3"/>
+                    <line x1="${leftX}" y1="176" x2="${rightX}" y2="176" stroke="#263238" stroke-width="2"/>
+                    <text x="180" y="195" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">目前噴幅：${widthValue}mm</text>
+                </svg>
+                <div class="spray-image-note">此區塊資料由後端 API 產生，前端每 ${AUTO_REFRESH_MS / 1000} 秒更新一次；需要確認噴幅異常時，再展開查看影像、目標範圍與實際噴幅。</div>`;
+        }
+
+        function renderStations(stationData) {
+            const stationArea = document.getElementById("stationArea");
+            stationArea.innerHTML = "";
+            latestDiagnosis = {};
+            stationData.forEach(station => {
+                const info = stateInfo(station.overall);
+                const components = station.components || [];
+                const issues = components.filter(c => c.level !== "ok");
+                const hasBad = issues.some(c => c.level === "bad");
+                const processOpened = openedProcessPanels.has(station.id);
+                const imageOpened = openedImagePanels.has(station.id);
+                const card = document.createElement("div");
+                card.className = `station-card ${info.className}`;
+                card.innerHTML = `
+                    <div class="station-title"><div><h2>${escapeHtml(station.name)}</h2><p>${escapeHtml(station.englishName)}</p></div><div class="status-badge">${info.text}</div></div>
+                    ${componentOverview(station)}
+                    <div class="action-row">
+                        <button id="fault-btn-${escapeHtml(station.id)}" class="toggle-btn ${hasBad ? "danger" : issues.length > 0 ? "warn" : "success"}" onclick="toggleAllIssues('${escapeHtml(station.id)}')">${issues.length > 0 ? "查看異常原因與改善 FaultDetail" : "零件正常 NoFault"}</button>
+                        <button id="process-btn-${escapeHtml(station.id)}" class="toggle-btn ${processOpened ? "process-active" : ""}" onclick="toggleProcessPanel('${escapeHtml(station.id)}')">製程參數 ProcessParameters</button>
+                        <button id="image-btn-${escapeHtml(station.id)}" class="toggle-btn ${imageOpened ? "image-active" : ""}" onclick="toggleImagePanel('${escapeHtml(station.id)}')">噴幅影像 SprayWidthImage</button>
+                    </div>
+                    <div class="fault-detail-panel" id="fault-${escapeHtml(station.id)}"></div>
+                    <div class="process-panel" id="process-${escapeHtml(station.id)}">
+                        <div class="section-title">製程參數 ProcessParameters</div>
+                        <div class="metric-grid">
+                            <div class="metric"><span>配方 Recipe</span><strong>${escapeHtml(station.recipe)}</strong></div>
+                            <div class="metric"><span>溫度 Temperature</span><strong>${escapeHtml(station.temperature)}°C</strong></div>
+                            <div class="metric"><span>利用率 Utilization</span><strong>${escapeHtml(station.utilization)}%</strong></div>
+                            <div class="metric"><span>週期時間 CycleTime</span><strong>${escapeHtml(station.cycle)}sec</strong></div>
+                        </div>
+                    </div>
+                    <div class="spray-image-box" id="image-${escapeHtml(station.id)}">
+                        <div class="section-title">噴幅影像 SprayWidthImage</div>
+                        <div class="spray-image-inner ${escapeHtml(getSprayComponent(station).level)}">${sprayWidthImage(station)}</div>
+                    </div>`;
+                stationArea.appendChild(card);
+            });
+            restoreOpenedPanels();
+        }
+
+        function restoreOpenedPanels() {
+            openedProcessPanels.forEach(stationId => { const p = document.getElementById(`process-${stationId}`); const b = document.getElementById(`process-btn-${stationId}`); if (p) p.style.display = "block"; if (b) b.classList.add("process-active"); });
+            openedImagePanels.forEach(stationId => { const p = document.getElementById(`image-${stationId}`); const b = document.getElementById(`image-btn-${stationId}`); if (p) p.style.display = "block"; if (b) b.classList.add("image-active"); });
+            openedFaults.forEach((value, stationId) => { if (value.componentKey === "ALL") renderAllIssues(stationId); else renderComponentIssue(stationId, value.componentKey); });
+        }
+
+        function toggleProcessPanel(stationId) { const panel = document.getElementById(`process-${stationId}`); const btn = document.getElementById(`process-btn-${stationId}`); if (!panel) return; if (panel.style.display === "block") { panel.style.display = "none"; openedProcessPanels.delete(stationId); btn?.classList.remove("process-active"); } else { panel.style.display = "block"; openedProcessPanels.add(stationId); btn?.classList.add("process-active"); } }
+        function toggleImagePanel(stationId) { const panel = document.getElementById(`image-${stationId}`); const btn = document.getElementById(`image-btn-${stationId}`); if (!panel) return; if (panel.style.display === "block") { panel.style.display = "none"; openedImagePanels.delete(stationId); btn?.classList.remove("image-active"); } else { panel.style.display = "block"; openedImagePanels.add(stationId); btn?.classList.add("image-active"); } }
+        function detailQueryString(extra = {}) {
+            const params = new URLSearchParams({
+                mode: currentMode,
+                slider_value: String(getSliderValue()),
+                _: String(Date.now()),
+                ...extra
+            });
+            return params.toString();
+        }
+
+        async function fetchDetail(url) {
+            const res = await fetch(url, { cache: "no-store" });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return await res.json();
+        }
+
+        function openComponentDetail(stationId, componentKey) {
+            openedFaults.set(stationId, { componentKey });
+            renderComponentIssue(stationId, componentKey);
+        }
+
+        function toggleAllIssues(stationId) {
+            const old = openedFaults.get(stationId);
+            if (old && old.componentKey === "ALL") {
+                closeFaultDetail(stationId);
+                return;
+            }
+            openedFaults.set(stationId, { componentKey:"ALL" });
+            renderAllIssues(stationId);
+        }
+
+        function closeFaultDetail(stationId) {
+            const panel = document.getElementById(`fault-${stationId}`);
+            if (panel) { panel.style.display="none"; panel.innerHTML=""; }
+            openedFaults.delete(stationId);
+            const btn = document.getElementById(`fault-btn-${stationId}`);
+            if (btn) btn.classList.remove("active-fault", "warn", "bad");
+        }
+
+        function faultCard(component) {
+            const detail = component.detail_source || component.detail_function || "";
+            const endpoint = component.detail_endpoint || "";
+            const diagnosis = component.diagnosis_source || "";
+            const sourceLine = detail || endpoint || diagnosis
+                ? `<div class="detail-source">Detail來源：${escapeHtml(detail)} ${endpoint ? "｜" + escapeHtml(endpoint) : ""}${diagnosis ? "｜診斷：" + escapeHtml(diagnosis) : ""}</div>`
+                : "";
+            return `<div class="fault-card ${escapeHtml(component.level)}">
+                <div class="fault-card-title">${escapeHtml(component.name)} ${escapeHtml(component.en)}｜${escapeHtml(component.status_text || statusText(component.level))}</div>
+                <div class="fault-line"><span class="fault-label">目前數值：</span><span class="fault-text">${escapeHtml(component.value)}</span></div>
+                <div class="fault-line"><span class="fault-label">問題說明：</span><span class="fault-text">${escapeHtml(component.issue)}</span></div>
+                <div class="fault-line"><span class="fault-label">可能原因：</span><span class="fault-text">${escapeHtml(component.reason)}</span></div>
+                <div class="fault-line"><span class="fault-label">處理建議：</span><span class="fault-text">${escapeHtml(component.solution)}</span></div>
+                ${sourceLine}
+            </div>`;
+        }
+
+        function setPanelLoading(stationId, title) {
+            const data = latestDiagnosis[stationId];
+            const panel = document.getElementById(`fault-${stationId}`);
+            if (!panel) return null;
+            panel.style.display = "block";
+            panel.innerHTML = `<h4>${escapeHtml(data?.station?.name || stationId)}｜${escapeHtml(title)}</h4><div class="loading-detail">正在呼叫後端 detail function...</div>`;
+            return panel;
+        }
+
+        async function renderComponentIssue(stationId, componentKey) {
+            const data = latestDiagnosis[stationId];
+            const panel = setPanelLoading(stationId, "零件狀態說明");
+            if (!data || !panel) return;
+            try {
+                const payload = await fetchDetail(`/api/component-detail?${detailQueryString({ station_id: stationId, component_key: componentKey })}`);
+                const component = payload.component;
+                panel.innerHTML = `<h4>${escapeHtml(data.station.name)}｜零件狀態說明</h4>${faultCard(component)}<button class="toggle-btn" onclick="closeFaultDetail('${escapeHtml(stationId)}')">收起 Close</button>`;
+            } catch (err) {
+                const component = data.components.find(item => item.key === componentKey);
+                panel.innerHTML = `<h4>${escapeHtml(data.station.name)}｜零件狀態說明</h4><div class="fault-card bad"><div class="fault-card-title">Detail API 呼叫失敗</div><div class="fault-line"><span class="fault-label">錯誤：</span><span class="fault-text">${escapeHtml(err.message)}</span></div></div>${component ? faultCard(component) : ""}<button class="toggle-btn" onclick="closeFaultDetail('${escapeHtml(stationId)}')">收起 Close</button>`;
+            }
+        }
+
+        async function renderAllIssues(stationId) {
+            const data = latestDiagnosis[stationId];
+            const panel = setPanelLoading(stationId, "異常原因與改善建議");
+            if (!data || !panel) return;
+            try {
+                const payload = await fetchDetail(`/api/station-detail?${detailQueryString({ station_id: stationId })}`);
+                const station = payload.station || data.station;
+                const issues = payload.issues || [];
+                if (issues.length === 0) {
+                    const allOk = { level:"ok", name:station.name, en:"", status_text:"目前無異常", value:"所有零件正常", issue:"所有零件目前皆為正常狀態。", reason:"未偵測到異常狀態。", solution:"平常可保持收起，只需定期巡檢。", detail_source:payload.detail_function, detail_endpoint:payload.detail_endpoint };
+                    panel.innerHTML = `<h4>${escapeHtml(station.name)}｜目前無異常</h4>${faultCard(allOk)}<button class="toggle-btn" onclick="closeFaultDetail('${escapeHtml(stationId)}')">收起 Close</button>`;
+                    return;
+                }
+                const hasBad = issues.some(c => c.level === "bad");
+                const title = hasBad ? "異常與注意原因及改善建議" : "注意原因與改善建議";
+                panel.innerHTML = `<h4>${escapeHtml(station.name)}｜${title}</h4>${issues.map(faultCard).join("")}<button class="toggle-btn" onclick="closeFaultDetail('${escapeHtml(stationId)}')">收起 Close</button>`;
+                const btn = document.getElementById(`fault-btn-${stationId}`);
+                if (btn) btn.classList.add("active-fault", hasBad ? "bad" : "warn");
+            } catch (err) {
+                const issues = data.issues || [];
+                panel.innerHTML = `<h4>${escapeHtml(data.station.name)}｜Detail API 呼叫失敗</h4><div class="fault-card bad"><div class="fault-card-title">無法取得 station-detail</div><div class="fault-line"><span class="fault-label">錯誤：</span><span class="fault-text">${escapeHtml(err.message)}</span></div></div>${issues.map(faultCard).join("")}<button class="toggle-btn" onclick="closeFaultDetail('${escapeHtml(stationId)}')">收起 Close</button>`;
+            }
+        }
+
+        function updateSummary(payload) {
+            const s = payload.summary || {};
+            document.getElementById("totalCount").innerText = s.total_station_count ?? 0;
+            document.getElementById("normalCount").innerText = s.normal_count ?? 0;
+            document.getElementById("warningCount").innerText = s.warning_count ?? 0;
+            document.getElementById("riskCount").innerText = s.predict_risk_count ?? 0;
+        }
+        function updateLiveBadge() { const badge = document.getElementById("liveStatusBadge"); if (autoUpdate && getSliderValue() === 0) { badge.className="live-badge"; badge.innerText=`即時更新中｜每${AUTO_REFRESH_MS/1000}秒`; } else { badge.className="pause-badge"; badge.innerText="時間軸檢視中"; } }
+        function updateTimeChips() { const offset=getSliderValue(); [pastChip,nowChip,futureChip].forEach(c=>c.classList.remove("active")); if (offset < 0) pastChip.classList.add("active"); else if (offset > 0) futureChip.classList.add("active"); else nowChip.classList.add("active"); }
+        function updateTimelineText(payload) {
+            const offset = getSliderValue(); let label = "";
+            if (currentMode === "time") { if (offset < 0) label = `過去${Math.abs(offset)}小時`; else if (offset === 0) label = "現在"; else { const futureHour = offset * 0.5; label = futureHour % 1 === 0 ? `未來${futureHour.toFixed(0)}小時預測` : `未來${futureHour}小時預測`; } }
+            else { if (offset < 0) label = `過去第${Math.abs(offset)}批`; else if (offset === 0) label = "目前批次"; else label = `未來第${offset}批預測`; }
+            selectedTimeText.innerText = "目前時間點：" + label;
+            let result = "";
+            if (offset < 0) result += `<span class="history-note">歷史資料檢視：</span><br>目前顯示的是 ${label} 的設備狀態。<br><br>`;
+            else if (offset === 0) result += `<b>目前狀態：</b><br>目前顯示的是三站即時狀態，前端每 ${AUTO_REFRESH_MS/1000} 秒向後端 API 抓取一次最新資料。<br><br>`;
+            else result += `<span class="future-warning">未來預測：</span><br>目前顯示的是 ${label}。系統根據後端 TimeSeriesService 回傳資料推估可能風險。<br><br>`;
+            (payload.stations || []).forEach(station => { result += `${escapeHtml(station.name)}：噴嘴堵塞率 ${escapeHtml(station.clog)}%，空壓機壓力 ${escapeHtml(station.pressure)}bar，噴幅 ${escapeHtml(station.sprayWidth)}mm，可用度 ${escapeHtml(station.availability)}%，品質 ${escapeHtml(station.quality)}%，風險判斷為「${escapeHtml(station.riskText)}」。<br>`; });
+            timelineResult.innerHTML = result;
+            updateTimeChips();
+        }
+
+        async function refreshDashboard() {
+            try {
+                const url = `/api/dashboard-data?mode=${encodeURIComponent(currentMode)}&slider_value=${encodeURIComponent(getSliderValue())}&_=${Date.now()}`;
+                const res = await fetch(url, { cache:"no-store" });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const payload = await res.json();
+                latestPayload = payload;
+                updateTimeFromPayload(payload); updateSourceStatus(payload); updateSummary(payload); renderStations(payload.stations || []); updateTimelineText(payload); updateLiveBadge();
+            } catch (err) {
+                sourceStatus.innerHTML = `<span style="color:#c62828;font-weight:bold;">資料讀取失敗：</span> 無法連線到後端 API，錯誤訊息：${escapeHtml(err.message)}`;
+                updateLiveBadge(); updateTimeChips();
+            }
+        }
+        function handleSliderChange() { autoUpdate = getSliderValue() === 0; refreshDashboard(); }
+        function backToLive() { timeSlider.value = 0; autoUpdate = true; refreshDashboard(); }
+        function setMode(mode) {
+            currentMode = mode; const slider = timeSlider;
+            if (mode === "time") { slider.min=-6; slider.max=4; slider.step=1; slider.value=0; sliderLabels.className="time-labels time-mode"; sliderLabels.innerHTML='<span class="left-label">過去6小時</span><span class="now-label">現在</span><span class="right-label">未來2小時</span>'; timeModeBtn.classList.add("active"); batchModeBtn.classList.remove("active"); }
+            else { slider.min=-10; slider.max=10; slider.step=1; slider.value=0; sliderLabels.className="time-labels batch-mode"; sliderLabels.innerHTML='<span class="left-label">過去10批</span><span class="now-label">目前批次</span><span class="right-label">未來10批</span>'; timeModeBtn.classList.remove("active"); batchModeBtn.classList.add("active"); }
+            autoUpdate = true; refreshDashboard();
+        }
+        refreshDashboard();
+        setInterval(() => { if (autoUpdate && getSliderValue() === 0) refreshDashboard(); else updateLiveBadge(); }, AUTO_REFRESH_MS);
+    </script>
+</body>
+</html>

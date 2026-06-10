@@ -1,0 +1,166 @@
+{
+  "schema_version": "v1.0",
+  "note": "這個檔案是診斷規則資料庫。前端不再寫死問題文字；main.py 每次呼叫 API 時會讀取這裡的 issue/reason/solution。之後可以改成 SQLite/MySQL，只要保留相同欄位即可。",
+  "rules": [
+    {
+      "component": "arm",
+      "level": "ok",
+      "direction": "ok",
+      "issue": "機械手臂目前可用度正常，噴塗路徑穩定。",
+      "reason": "目前未偵測到關節負載、馬達溫升或定位偏移異常。",
+      "solution": "維持定期巡檢與座標校正即可。"
+    },
+    {
+      "component": "arm",
+      "level": "warn",
+      "direction": "low",
+      "issue": "機械手臂可用度下降，可能影響噴塗路徑穩定性。",
+      "reason": "可能原因為關節負載過高、馬達溫升、定位偏移或保養週期接近。",
+      "solution": "建議檢查手臂關節、馬達狀態與座標校正，必要時安排保養。"
+    },
+    {
+      "component": "arm",
+      "level": "bad",
+      "direction": "low",
+      "issue": "機械手臂可用度過低，可能導致噴塗路徑偏移或停機風險。",
+      "reason": "可能原因為伺服馬達異常、軸承磨耗、定位誤差過大或保養逾期。",
+      "solution": "建議先暫停該站，檢查手臂伺服狀態、座標校正與保養紀錄。"
+    },
+    {
+      "component": "nozzle",
+      "level": "ok",
+      "direction": "ok",
+      "issue": "噴嘴堵塞率正常，目前噴塗量穩定。",
+      "reason": "目前塗料流動與噴嘴清潔狀態正常。",
+      "solution": "維持定期清潔噴嘴與確認塗料黏度即可。"
+    },
+    {
+      "component": "nozzle",
+      "level": "warn",
+      "direction": "high",
+      "issue": "噴嘴堵塞率偏高，可能造成噴塗量下降或噴霧不均。",
+      "reason": "可能原因為塗料顆粒、黏度過高、乾漆殘留或清潔不足。",
+      "solution": "建議清潔噴嘴、檢查塗料黏度，並確認前段過濾是否正常。"
+    },
+    {
+      "component": "nozzle",
+      "level": "bad",
+      "direction": "high",
+      "issue": "噴嘴堵塞率過高，可能造成噴塗中斷、膜厚不均或局部漏噴。",
+      "reason": "可能原因為噴嘴堵塞、濾網失效、塗料沉積或長時間未清潔。",
+      "solution": "建議立即停機清潔或更換噴嘴，並檢查濾網與塗料循環系統。"
+    },
+    {
+      "component": "air",
+      "level": "ok",
+      "direction": "ok",
+      "issue": "空壓機壓力正常，目前霧化狀態穩定。",
+      "reason": "目前空壓機輸出、調壓閥與管路狀態正常。",
+      "solution": "維持定期檢查空壓機輸出與空氣過濾器即可。"
+    },
+    {
+      "component": "air",
+      "level": "warn",
+      "direction": "low",
+      "issue": "空壓機壓力偏低，可能導致霧化不足或噴塗不均。",
+      "reason": "可能原因為空壓機輸出不足、管路漏氣、調壓閥設定不當或濾水杯堵塞。",
+      "solution": "建議檢查空壓機輸出、管線接頭、調壓閥與空氣過濾器。"
+    },
+    {
+      "component": "air",
+      "level": "bad",
+      "direction": "low",
+      "issue": "空壓機壓力過低，可能導致噴塗霧化失敗或塗佈品質明顯下降。",
+      "reason": "可能原因為空壓機異常、主供氣不足、管路漏氣嚴重或調壓閥失效。",
+      "solution": "建議立即檢查供氣系統，必要時暫停該站並更換異常管路或調壓元件。"
+    },
+    {
+      "component": "width",
+      "level": "ok",
+      "direction": "ok",
+      "issue": "噴幅位於目標範圍內，目前狀態穩定。",
+      "reason": "目前噴幅量測值落在 {targetMin:g}~{targetMax:g}mm 目標範圍內。",
+      "solution": "維持目前參數，持續監控即可。"
+    },
+    {
+      "component": "width",
+      "level": "warn",
+      "direction": "low",
+      "issue": "噴幅低於目標範圍，可能造成塗布範圍不足、邊緣漏噴或膜厚集中。",
+      "reason": "可能原因為噴嘴距離過近、空壓機壓力偏低、塗料流量不足或噴嘴局部堵塞。",
+      "solution": "建議檢查噴嘴是否堵塞，並適度調整噴嘴距離、空壓機壓力與塗料流量，讓噴幅回到 {targetMin:g}~{targetMax:g}mm。"
+    },
+    {
+      "component": "width",
+      "level": "bad",
+      "direction": "low",
+      "issue": "噴幅嚴重低於目標範圍，可能造成大範圍漏噴或膜厚集中。",
+      "reason": "可能原因為噴嘴堵塞、壓力不足、噴嘴距離過近或塗料流量不足。",
+      "solution": "建議先檢查噴嘴與空壓機，再重新校正噴幅到 {targetMin:g}~{targetMax:g}mm。"
+    },
+    {
+      "component": "width",
+      "level": "warn",
+      "direction": "high",
+      "issue": "噴幅高於目標範圍，可能造成噴塗過度擴散、邊緣飛漆或膜厚不足。",
+      "reason": "可能原因為噴嘴距離過遠、空壓機壓力偏高、塗料流量過大或噴幅調整過大。",
+      "solution": "建議確認噴嘴距離是否過遠，並降低過大的壓力或流量設定，重新校正噴幅至 {targetMin:g}~{targetMax:g}mm。"
+    },
+    {
+      "component": "width",
+      "level": "bad",
+      "direction": "high",
+      "issue": "噴幅嚴重高於目標範圍，可能造成飛漆、邊緣污染或膜厚不足。",
+      "reason": "可能原因為空壓機壓力過高、噴嘴距離過遠或塗料流量過大。",
+      "solution": "建議降低壓力與流量，重新確認噴嘴高度並校正噴幅至 {targetMin:g}~{targetMax:g}mm。"
+    },
+    {
+      "component": "filter",
+      "level": "ok",
+      "direction": "ok",
+      "issue": "濾網維護性正常，目前塗料過濾狀態穩定。",
+      "reason": "目前濾網阻塞程度低，塗料流動狀態正常。",
+      "solution": "維持定期清潔與更換週期即可。"
+    },
+    {
+      "component": "filter",
+      "level": "warn",
+      "direction": "low",
+      "issue": "濾網維護性偏低，可能影響塗料流量與噴嘴堵塞率。",
+      "reason": "可能原因為濾網累積雜質、塗料顆粒過多或清潔週期過長。",
+      "solution": "建議清潔或更換濾網，並縮短檢查週期。"
+    },
+    {
+      "component": "filter",
+      "level": "bad",
+      "direction": "low",
+      "issue": "濾網維護性過低，可能造成塗料流量不穩與噴嘴快速堵塞。",
+      "reason": "可能原因為濾網堵塞嚴重、塗料沉積或濾網壽命到期。",
+      "solution": "建議立即更換濾網，並檢查塗料循環與前處理過濾流程。"
+    },
+    {
+      "component": "quality",
+      "level": "ok",
+      "direction": "ok",
+      "issue": "品質穩定度正常，目前膜厚變異低。",
+      "reason": "目前噴塗速度、壓力、噴幅與塗料條件穩定。",
+      "solution": "維持目前製程參數並持續監控即可。"
+    },
+    {
+      "component": "quality",
+      "level": "warn",
+      "direction": "low",
+      "issue": "品質穩定度下降，可能代表膜厚變異增加。",
+      "reason": "可能原因為噴塗速度、壓力、噴幅或塗料條件不穩。",
+      "solution": "建議檢查配方、噴塗速度、壓力與噴幅影像，確認膜厚是否需重新校正。"
+    },
+    {
+      "component": "quality",
+      "level": "bad",
+      "direction": "low",
+      "issue": "品質穩定度過低，可能造成膜厚不均或產品不良。",
+      "reason": "可能原因為噴塗參數失控、噴幅偏移、塗料濃度異常或設備狀態不穩。",
+      "solution": "建議暫停該站抽檢膜厚，重新確認配方、噴幅與壓力設定。"
+    }
+  ]
+}
