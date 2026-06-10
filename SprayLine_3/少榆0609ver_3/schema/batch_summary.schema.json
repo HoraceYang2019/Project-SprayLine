@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "batch_summary",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema only. Enhanced in 0609ver_2 to include quality / prediction fields requested for DataPreprocess alignment. Template file; unknown values remain null or pending_confirmation.",
+  "required": [
+    "batch_id",
+    "station",
+    "completed_at",
+    "paint_flow_ml_min",
+    "spray_width_mm",
+    "path_error_mm",
+    "risk_rule_status"
+  ],
+  "properties": {
+    "batch_id": {
+      "type": "string"
+    },
+    "station": {
+      "type": "string",
+      "enum": [
+        "Station_1",
+        "Station_2",
+        "Station_3"
+      ]
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "batch_start_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "batch_end_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "paint_flow_ml_min": {
+      "type": "number"
+    },
+    "spray_width_mm": {
+      "type": "number"
+    },
+    "path_error_mm": {
+      "type": "number"
+    },
+    "ok_count": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "ng_count": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "predicted_ok_rate": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "predicted_ng_count": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "quality_score": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "defect_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "defect_code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "risk_level": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "Low",
+            "Medium",
+            "High"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "risk_rule_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "confirmed",
+        "pending"
+      ]
+    }
+  }
+}

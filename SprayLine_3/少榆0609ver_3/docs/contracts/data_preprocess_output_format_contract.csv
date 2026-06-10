@@ -1,0 +1,9 @@
+sep=,
+contract_item,expected_value_or_format,required,owner,status,reason
+output_format,CSV / JSON / direct DB write，待林聖堯確認,yes,DataPreprocess,pending_confirmation,決定後續 DB 匯入與 API 測試方式。
+file_name,固定命名規則，待林聖堯確認,recommended,DataPreprocess,pending_confirmation,方便自動讀檔與版本管理。
+timestamp_format,ISO 8601 date-time recommended,yes,DataPreprocess / DB,pending_confirmation,避免時間解析錯誤。
+timezone,Asia/Taipei 或 UTC，需固定,yes,DataPreprocess / DB,pending_confirmation,避免 sensor/batch/event 時間對不上。
+batch_id_format,固定字串格式，待確認,recommended,DataPreprocess / DB,pending_confirmation,支援跨表關聯。
+station_format,Station_1 / Station_2 / Station_3,yes,All teams,proposed_as_current_standard,符合目前 GitHub 0606 / 林聖堯資料方向。
+missing_value_format,null / NaN / blank 需擇一,yes,DataPreprocess / DB,pending_confirmation,避免缺值被誤認為 0 或正常值。

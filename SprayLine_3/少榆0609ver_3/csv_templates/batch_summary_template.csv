@@ -1,0 +1,2 @@
+sep=,
+batch_id,station,completed_at,batch_start_time,batch_end_time,paint_flow_ml_min,spray_width_mm,path_error_mm,ok_count,ng_count,predicted_ok_rate,predicted_ng_count,quality_score,defect_type,defect_code,risk_level,risk_rule_status

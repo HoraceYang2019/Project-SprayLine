@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "sensor_threshold",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema for sensor_threshold. Threshold values may be DataPreprocess reference values or confirmed configuration values; use status and threshold_source to distinguish them.",
+  "required": [
+    "threshold_id",
+    "sensor_name",
+    "station",
+    "unit",
+    "threshold_source",
+    "status"
+  ],
+  "properties": {
+    "threshold_id": {
+      "type": "string"
+    },
+    "sensor_name": {
+      "type": "string"
+    },
+    "station": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "Station_1",
+            "Station_2",
+            "Station_3"
+          ]
+        },
+        {
+          "type": "string",
+          "const": "ALL"
+        }
+      ]
+    },
+    "normal_min": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "normal_max": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "warning_min": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "warning_max": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "alarm_min": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "alarm_max": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "unit": {
+      "type": "string"
+    },
+    "threshold_source": {
+      "type": "string",
+      "enum": [
+        "DataPreprocess_LinShengYao",
+        "DB_config",
+        "manual_config",
+        "experiment_reference",
+        "discussion_draft",
+        "pending_confirmation"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "preprocess_reference_pending_confirmation",
+        "confirmed_config",
+        "pending_confirmation",
+        "deprecated"
+      ]
+    },
+    "threshold_logic": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    }
+  }
+}

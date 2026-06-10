@@ -1,0 +1,159 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spray:AirPressureEventRule a spray:TriggerRule,
+        owl:NamedIndividual ;
+    rdfs:label "空壓壓力事件規則"@zh ;
+    spray:requiresPendingDefinition true ;
+    spray:triggeredBySignal spray:air_pressure_bar ;
+    spray:usesThresholdReference spray:TH_AIR_PRESSURE_ALL ;
+    spray:writesEventTable spray:alert_event .
+
+spray:DiscussionRiskLevelRule0604 a spray:RiskLevelRule,
+        owl:NamedIndividual ;
+    rdfs:label "0604 討論提供 risk_level 草案規則"@zh ;
+    spray:requiresPendingDefinition true ;
+    spray:ruleExpression "predicted_ok_rate < 84 OR ng_count >= 35 -> High; predicted_ok_rate < 90 OR ng_count >= 20 -> Medium; else -> Low" .
+
+spray:FilterPressureEventRule a spray:TriggerRule,
+        owl:NamedIndividual ;
+    rdfs:label "濾網壓差事件規則"@zh ;
+    spray:requiresPendingDefinition true ;
+    spray:triggeredBySignal spray:filter_diff_pressure_bar ;
+    spray:usesThresholdReference spray:TH_FILTER_DIFF_ALL ;
+    spray:writesEventTable spray:alert_event .
+
+spray:PathErrorEventRule a spray:TriggerRule,
+        owl:NamedIndividual ;
+    rdfs:label "軌跡誤差事件規則"@zh ;
+    spray:requiresPendingDefinition true ;
+    spray:triggeredBySignal spray:path_error_mm ;
+    spray:usesThresholdReference spray:TH_PATH_ERROR_ALL ;
+    spray:writesEventTable spray:alert_event .
+
+spray:ServoLoadEventRule a spray:TriggerRule,
+        owl:NamedIndividual ;
+    rdfs:label "伺服負載事件規則"@zh ;
+    spray:requiresPendingDefinition true ;
+    spray:triggeredBySignal spray:servo_torque_load_pct ;
+    spray:usesThresholdReference spray:TH_SERVO_TORQUE_ALL ;
+    spray:writesEventTable spray:alert_event .
+
+spray:SprayWidthEventRule a spray:TriggerRule,
+        owl:NamedIndividual ;
+    rdfs:label "噴幅事件規則"@zh ;
+    spray:requiresPendingDefinition true ;
+    spray:triggeredBySignal spray:spray_width_mm ;
+    spray:usesThresholdReference spray:TH_SPRAY_WIDTH_STATION_1 ;
+    spray:usesThresholdReference spray:TH_SPRAY_WIDTH_STATION_2 ;
+    spray:usesThresholdReference spray:TH_SPRAY_WIDTH_STATION_3 ;
+    spray:writesEventTable spray:alert_event .
+
+
+spray:usesThresholdReference a owl:ObjectProperty ;
+    rdfs:label "使用門檻參考"@zh ;
+    rdfs:domain spray:EventRule ;
+    rdfs:range spray:SensorThresholdReference .
+
+spray:createsEvent a owl:ObjectProperty ;
+    rdfs:label "建立事件"@zh ;
+    rdfs:domain spray:EventRule ;
+    rdfs:range spray:AlertEvent .
+
+spray:hasAction a owl:ObjectProperty ;
+    rdfs:label "具有動作"@zh ;
+    rdfs:domain spray:EventRule ;
+    rdfs:range spray:RuleAction .
+
+spray:hasCondition a owl:ObjectProperty ;
+    rdfs:label "具有條件"@zh ;
+    rdfs:domain spray:EventRule ;
+    rdfs:range spray:RuleCondition .
+
+spray:hasRuleStatus a owl:ObjectProperty ;
+    rdfs:label "具有規則狀態"@zh ;
+    rdfs:domain spray:EventRule ;
+    rdfs:range spray:RuleStatus .
+
+spray:requiresPendingDefinition a owl:DatatypeProperty ;
+    rdfs:label "需要待確認定義"@zh ;
+    rdfs:domain spray:RuleConcept .
+
+spray:ruleExpression a owl:DatatypeProperty ;
+    rdfs:label "規則運算式"@zh ;
+    rdfs:domain spray:RuleConcept .
+
+spray:triggeredBySignal a owl:ObjectProperty ;
+    rdfs:label "由訊號觸發"@zh ;
+    rdfs:domain spray:EventRule ;
+    rdfs:range spray:SensorSignal .
+
+spray:writesEventTable a owl:ObjectProperty ;
+    rdfs:label "寫入事件表"@zh ;
+    rdfs:domain spray:EventRule ;
+    rdfs:range spray:AlertEventTable .
+
+spray:AlertEvent a owl:Class ;
+    rdfs:label "警示事件"@zh ;
+    rdfs:subClassOf spray:RuleConcept .
+
+spray:RiskLevelRule a owl:Class ;
+    rdfs:label "風險等級規則"@zh ;
+    rdfs:subClassOf spray:RuleConcept .
+
+spray:RuleAction a owl:Class ;
+    rdfs:label "規則動作"@zh ;
+    rdfs:subClassOf spray:RuleConcept .
+
+spray:RuleCondition a owl:Class ;
+    rdfs:label "規則條件"@zh ;
+    rdfs:subClassOf spray:RuleConcept .
+
+spray:RuleStatus a owl:Class ;
+    rdfs:label "規則狀態"@zh ;
+    rdfs:subClassOf spray:RuleConcept .
+
+spray:TriggerRule a owl:Class ;
+    rdfs:label "觸發規則"@zh ;
+    rdfs:subClassOf spray:EventRule .
+
+spray:EventRule a owl:Class ;
+    rdfs:label "事件規則"@zh ;
+    rdfs:subClassOf spray:RuleConcept .
+
+spray:RuleConcept a owl:Class ;
+    rdfs:label "規則概念"@zh .
+
+# 0609ver_2 alert traceability enhancement
+spray:sourceValue a owl:DatatypeProperty ;
+    rdfs:label "事件來源數值"@zh ;
+    rdfs:domain spray:AlertEvent .
+
+spray:sourceSignalName a owl:DatatypeProperty ;
+    rdfs:label "事件來源訊號名稱"@zh ;
+    rdfs:domain spray:AlertEvent .
+
+
+
+spray:ThresholdComparisonCondition a spray:RuleCondition, owl:NamedIndividual ;
+    rdfs:label "門檻比較條件"@zh .
+
+spray:CreateAlertEventAction a spray:RuleAction, owl:NamedIndividual ;
+    rdfs:label "建立 alert_event 動作"@zh .
+
+spray:FilterPressureEventRule spray:hasCondition spray:ThresholdComparisonCondition ;
+    spray:hasAction spray:CreateAlertEventAction .
+
+spray:AirPressureEventRule spray:hasCondition spray:ThresholdComparisonCondition ;
+    spray:hasAction spray:CreateAlertEventAction .
+
+spray:ServoLoadEventRule spray:hasCondition spray:ThresholdComparisonCondition ;
+    spray:hasAction spray:CreateAlertEventAction .
+
+spray:PathErrorEventRule spray:hasCondition spray:ThresholdComparisonCondition ;
+    spray:hasAction spray:CreateAlertEventAction .
+
+spray:SprayWidthEventRule spray:hasCondition spray:ThresholdComparisonCondition ;
+    spray:hasAction spray:CreateAlertEventAction .

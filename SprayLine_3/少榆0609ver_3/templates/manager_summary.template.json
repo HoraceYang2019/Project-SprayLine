@@ -1,0 +1,11 @@
+{
+  "date": null,
+  "station": null,
+  "predicted_ok_rate": null,
+  "predicted_ng_count": null,
+  "utilization": null,
+  "performance": null,
+  "open_alerts": null,
+  "data_status": null,
+  "template_status": "structure_only_pending_values"
+}

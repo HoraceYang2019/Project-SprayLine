@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "alert acknowledge response",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema only. Template file; unknown values remain null or pending_confirmation.",
+  "required": [
+    "event_id",
+    "operator_id",
+    "acknowledged_at",
+    "acknowledged_status"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "operator_id": {
+      "type": "string"
+    },
+    "acknowledged_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "acknowledged_status": {
+      "type": "string",
+      "const": "acknowledged"
+    }
+  }
+}

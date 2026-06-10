@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "troubleshooting issue response",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema only. Template file; unknown values remain null or pending_confirmation.",
+  "required": [
+    "issue_type",
+    "affected_assets",
+    "observed_signals",
+    "possible_causes",
+    "candidate_responses",
+    "status"
+  ],
+  "properties": {
+    "issue_type": {
+      "type": "string"
+    },
+    "affected_assets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "observed_signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "possible_causes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "candidate_responses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "candidate",
+        "confirmed",
+        "pending"
+      ]
+    }
+  }
+}

@@ -1,0 +1,178 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+
+spray:batch_zone a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "批次生產資料"@zh ;
+    spray:containsTable spray:batch_run,
+        spray:batch_summary ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:config_zone a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "設定主資料"@zh ;
+    spray:containsTable spray:sensor_threshold,
+        spray:station_config ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:containsTable a owl:ObjectProperty ;
+    rdfs:label "包含資料表"@zh ;
+    rdfs:domain spray:DatabaseZone ;
+    rdfs:range spray:DatabaseTable .
+
+spray:containsView a owl:ObjectProperty ;
+    rdfs:label "包含視圖"@zh ;
+    rdfs:domain spray:DatabaseZone ;
+    rdfs:range spray:DatabaseView .
+
+spray:dashboard_view_zone a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Dashboard 查詢視圖"@zh ;
+    spray:containsView spray:v_latest_batch_per_station,
+        spray:v_latest_pdm_status,
+        spray:v_unacknowledged_alerts ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:event_zone a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "事件 / 警示資料"@zh ;
+    spray:containsTable spray:alert_event ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:pdm_zone a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "預診斷 / 劣化資料"@zh ;
+    spray:containsTable spray:pdm_degradation_log ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:tableStoresEvent a owl:ObjectProperty ;
+    rdfs:label "資料表儲存事件"@zh ;
+    rdfs:domain spray:DatabaseTable ;
+    rdfs:range spray:AlertEvent .
+
+spray:tableStoresSignal a owl:ObjectProperty ;
+    rdfs:label "資料表儲存訊號"@zh ;
+    rdfs:domain spray:DatabaseTable ;
+    rdfs:range spray:SensorSignal .
+
+spray:time_series_zone a spray:DatabaseZone,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "時間序列資料"@zh ;
+    spray:containsTable spray:sensor_1hz ;
+    rdfs:subClassOf spray:DatabaseZone .
+
+spray:alert_event a spray:AlertEventTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "alert_event"@zh ;
+    rdfs:subClassOf spray:AlertEventTable .
+
+spray:batch_run a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "batch_run"@zh ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:batch_summary a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "batch_summary"@zh ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:pdm_degradation_log a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "pdm_degradation_log"@zh ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:sensor_1hz a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "sensor_1hz"@zh ;
+    spray:tableStoresSignal spray:air_pressure_bar,
+        spray:filter_diff_pressure_bar,
+        spray:humidity_rh,
+        spray:servo_torque_load_pct,
+        spray:temperature_c ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:sensor_threshold a spray:SensorThresholdTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "sensor_threshold"@zh ;
+    rdfs:subClassOf spray:SensorThresholdTable .
+
+spray:station_config a spray:DatabaseTable,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "station_config"@zh ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:v_latest_batch_per_station a spray:DatabaseView,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "v_latest_batch_per_station"@zh ;
+    rdfs:subClassOf spray:DatabaseView .
+
+spray:v_latest_pdm_status a spray:DatabaseView,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "v_latest_pdm_status"@zh ;
+    rdfs:subClassOf spray:DatabaseView .
+
+spray:v_unacknowledged_alerts a spray:DatabaseView,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "v_unacknowledged_alerts"@zh ;
+    rdfs:subClassOf spray:DatabaseView .
+
+spray:AlertEventTable a owl:Class ;
+    rdfs:label "事件警示表"@zh ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:SensorThresholdTable a owl:Class ;
+    rdfs:label "感測閾值表"@zh ;
+    rdfs:subClassOf spray:DatabaseTable .
+
+spray:DatabaseConcept a owl:Class ;
+    rdfs:label "資料庫概念"@zh .
+
+spray:DatabaseView a owl:Class ;
+    rdfs:label "資料庫視圖"@zh ;
+    rdfs:subClassOf spray:DatabaseConcept .
+
+spray:DatabaseZone a owl:Class ;
+    rdfs:label "資料庫區域"@zh ;
+    rdfs:subClassOf spray:DatabaseConcept .
+
+spray:DatabaseTable a owl:Class ;
+    rdfs:label "資料表"@zh ;
+    rdfs:subClassOf spray:DatabaseConcept .
+
+
+
+spray:tableStoresThresholdReference a owl:ObjectProperty ;
+    rdfs:label "資料表儲存門檻參考"@zh ;
+    rdfs:domain spray:DatabaseTable ;
+    rdfs:range spray:SensorThresholdReference .
+
+spray:sensor_threshold spray:tableStoresThresholdReference spray:TH_FILTER_DIFF_ALL,
+        spray:TH_SERVO_TORQUE_ALL,
+        spray:TH_SPRAY_WIDTH_STATION_1,
+        spray:TH_SPRAY_WIDTH_STATION_2,
+        spray:TH_SPRAY_WIDTH_STATION_3,
+        spray:TH_FILM_THICKNESS_ALL,
+        spray:TH_PAINT_FLOW_ALL,
+        spray:TH_VIBRATION_ALL,
+        spray:TH_PATH_ERROR_ALL,
+        spray:TH_GEARBOX_TEMP_ALL,
+        spray:TH_TEMPERATURE_ALL,
+        spray:TH_HUMIDITY_ALL,
+        spray:TH_AIR_PRESSURE_ALL .

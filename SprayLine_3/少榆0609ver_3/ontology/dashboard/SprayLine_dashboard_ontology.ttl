@@ -1,0 +1,73 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+
+spray:AlertPanelInstance a spray:AlertPanel,
+        owl:NamedIndividual ;
+    rdfs:label "AlertPanel"@zh .
+
+spray:BatchRiskTableInstance a spray:BatchRiskTable,
+        owl:NamedIndividual ;
+    rdfs:label "BatchRiskTable"@zh .
+
+spray:EngineerDashboard a owl:Class ;
+    rdfs:label "工程師 Dashboard"@zh ;
+    rdfs:subClassOf spray:DashboardConcept .
+
+spray:ManagerDashboard a owl:Class ;
+    rdfs:label "主管 Dashboard"@zh ;
+    rdfs:subClassOf spray:DashboardConcept .
+
+spray:SensorTrendChartInstance a spray:SensorTrendChart,
+        owl:NamedIndividual ;
+    rdfs:label "SensorTrendChart"@zh .
+
+spray:TroubleshootingPanelInstance a spray:TroubleshootingPanel,
+        owl:NamedIndividual ;
+    rdfs:label "TroubleshootingPanel"@zh .
+
+spray:showsAlertEvent a owl:ObjectProperty ;
+    rdfs:label "顯示警示事件"@zh ;
+    rdfs:domain spray:UIComponent ;
+    rdfs:range spray:AlertEvent .
+
+spray:usesEndpoint a owl:ObjectProperty ;
+    rdfs:label "使用 API 端點"@zh ;
+    rdfs:domain spray:UIComponent ;
+    rdfs:range spray:RESTEndpoint .
+
+spray:visualizesTable a owl:ObjectProperty ;
+    rdfs:label "視覺化資料表"@zh ;
+    rdfs:domain spray:UIComponent ;
+    rdfs:range spray:DatabaseTable .
+
+spray:AlertPanel a owl:Class ;
+    rdfs:label "警示面板"@zh ;
+    spray:usesEndpoint spray:Endpoint_alerts_unacknowledged ;
+    spray:visualizesTable spray:alert_event ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:BatchRiskTable a owl:Class ;
+    rdfs:label "批次風險表格"@zh ;
+    spray:usesEndpoint spray:Endpoint_batches ;
+    spray:visualizesTable spray:batch_summary ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:SensorTrendChart a owl:Class ;
+    rdfs:label "感測趨勢圖"@zh ;
+    spray:usesEndpoint spray:Endpoint_time_series ;
+    spray:visualizesTable spray:sensor_1hz ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:TroubleshootingPanel a owl:Class ;
+    rdfs:label "原因對策面板"@zh ;
+    spray:usesEndpoint spray:Endpoint_troubleshooting_issues ;
+    rdfs:subClassOf spray:UIComponent .
+
+spray:DashboardConcept a owl:Class ;
+    rdfs:label "Dashboard 概念"@zh .
+
+spray:UIComponent a owl:Class ;
+    rdfs:label "UI 元件"@zh ;
+    rdfs:subClassOf spray:DashboardConcept .
+

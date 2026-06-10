@@ -1,0 +1,312 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+
+spray:hasResponseSchema a owl:ObjectProperty ;
+    rdfs:label "具有回應 Schema"@zh ;
+    rdfs:domain spray:RESTEndpoint ;
+    rdfs:range spray:ResponseSchema .
+
+spray:implementedByFunction a owl:ObjectProperty ;
+    rdfs:label "由功能實作"@zh ;
+    rdfs:domain spray:RESTEndpoint ;
+    rdfs:range spray:ServiceFunction .
+
+spray:readsTable a owl:ObjectProperty ;
+    rdfs:label "讀取資料表"@zh ;
+    rdfs:domain spray:ServiceFunction ;
+    rdfs:range spray:DatabaseTable .
+
+spray:servedByEndpoint a owl:ObjectProperty ;
+    rdfs:label "由 API 端點服務"@zh ;
+    rdfs:domain spray:ServiceFunction ;
+    rdfs:range spray:RESTEndpoint .
+
+spray:writesTable a owl:ObjectProperty ;
+    rdfs:label "寫入資料表"@zh ;
+    rdfs:domain spray:ServiceFunction ;
+    rdfs:range spray:DatabaseTable .
+
+spray:AcknowledgeAlertEvent a spray:EventRuleService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "acknowledge_alert_event"@zh ;
+    spray:readsTable spray:alert_event ;
+    spray:servedByEndpoint spray:Endpoint_alerts_event_id_ack ;
+    spray:writesTable spray:alert_event ;
+    rdfs:subClassOf spray:EventRuleService .
+
+spray:Endpoint_alerts_event_id_ack a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "POST /alerts/{event_id}/ack"@zh ;
+    spray:hasResponseSchema spray:alert_acknowledge ;
+    spray:implementedByFunction spray:AcknowledgeAlertEvent ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:Endpoint_alerts_unacknowledged a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "GET /alerts/unacknowledged"@zh ;
+    spray:hasResponseSchema spray:alert_events ;
+    spray:implementedByFunction spray:ListUnacknowledgedAlertEvents ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:Endpoint_batches a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "GET /batches"@zh ;
+    spray:hasResponseSchema spray:batches_filtered ;
+    spray:implementedByFunction spray:ListBatchesFiltered ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:Endpoint_batches_batch_id a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "GET /batches/{batch_id}"@zh ;
+    spray:hasResponseSchema spray:batch_detail ;
+    spray:implementedByFunction spray:GetBatchDetail ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:Endpoint_dashboard_manager_summary a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "GET /dashboard/manager-summary"@zh ;
+    spray:hasResponseSchema spray:manager_summary ;
+    spray:implementedByFunction spray:GetManagerSummary ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:Endpoint_rules_evaluate a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "POST /rules/evaluate"@zh ;
+    spray:hasResponseSchema spray:event_rule_evaluation ;
+    spray:implementedByFunction spray:EvaluateEventRules ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:Endpoint_time_series a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "GET /time-series"@zh ;
+    spray:hasResponseSchema spray:time_series_response ;
+    spray:implementedByFunction spray:GetTimeSeries ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:Endpoint_time_series_latest a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "GET /time-series/latest"@zh ;
+    spray:hasResponseSchema spray:sensor_snapshot ;
+    spray:implementedByFunction spray:GetLatestSensorSnapshot ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:Endpoint_troubleshooting_issues a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "GET /troubleshooting/issues"@zh ;
+    spray:hasResponseSchema spray:troubleshooting_matrix ;
+    spray:implementedByFunction spray:GetTroubleshootingMatrix ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:Endpoint_troubleshooting_issues_issue_type a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "GET /troubleshooting/issues/{issue_type}"@zh ;
+    spray:hasResponseSchema spray:troubleshooting_issue ;
+    spray:implementedByFunction spray:GetIssueRecommendations ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:EvaluateEventRules a spray:EventRuleService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "evaluate_event_rules"@zh ;
+    spray:readsTable spray:batch_summary,
+        spray:sensor_1hz,
+        spray:sensor_threshold ;
+    spray:servedByEndpoint spray:Endpoint_rules_evaluate ;
+    spray:writesTable spray:alert_event ;
+    rdfs:subClassOf spray:EventRuleService .
+
+spray:GetBatchDetail a spray:BatchService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_batch_detail"@zh ;
+    spray:readsTable spray:batch_run,
+        spray:batch_summary,
+        spray:sensor_1hz ;
+    spray:servedByEndpoint spray:Endpoint_batches_batch_id ;
+    rdfs:subClassOf spray:BatchService .
+
+spray:GetIssueRecommendations a spray:TroubleshootingService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_issue_recommendations"@zh ;
+    spray:readsTable spray:sensor_1hz,
+        spray:sensor_threshold ;
+    spray:servedByEndpoint spray:Endpoint_troubleshooting_issues_issue_type ;
+    rdfs:subClassOf spray:TroubleshootingService .
+
+spray:GetLatestSensorSnapshot a spray:TimeSeriesService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_latest_sensor_snapshot"@zh ;
+    spray:readsTable spray:sensor_1hz ;
+    spray:servedByEndpoint spray:Endpoint_time_series_latest ;
+    rdfs:subClassOf spray:TimeSeriesService .
+
+spray:GetManagerSummary a spray:DashboardService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_manager_summary"@zh ;
+    spray:readsTable spray:alert_event,
+        spray:batch_summary,
+        spray:v_latest_pdm_status ;
+    spray:servedByEndpoint spray:Endpoint_dashboard_manager_summary ;
+    rdfs:subClassOf spray:DashboardService .
+
+spray:GetTimeSeries a spray:TimeSeriesService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_time_series"@zh ;
+    spray:readsTable spray:sensor_1hz ;
+    spray:servedByEndpoint spray:Endpoint_time_series ;
+    rdfs:subClassOf spray:TimeSeriesService .
+
+spray:GetTroubleshootingMatrix a spray:TroubleshootingService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_troubleshooting_matrix"@zh ;
+    spray:servedByEndpoint spray:Endpoint_troubleshooting_issues ;
+    rdfs:subClassOf spray:TroubleshootingService .
+
+spray:ListBatchesFiltered a spray:BatchService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "list_batches_filtered"@zh ;
+    spray:readsTable spray:batch_run,
+        spray:batch_summary,
+        spray:v_latest_batch_per_station ;
+    spray:servedByEndpoint spray:Endpoint_batches ;
+    rdfs:subClassOf spray:BatchService .
+
+spray:ListUnacknowledgedAlertEvents a spray:EventRuleService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "list_unacknowledged_alert_events"@zh ;
+    spray:readsTable spray:alert_event,
+        spray:v_unacknowledged_alerts ;
+    spray:servedByEndpoint spray:Endpoint_alerts_unacknowledged ;
+    rdfs:subClassOf spray:EventRuleService .
+
+spray:alert_acknowledge a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "alert_acknowledge.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:alert_events a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "alert_events.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:batch_detail a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "batch_detail.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:batches_filtered a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "batches_filtered.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:event_rule_evaluation a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "event_rule_evaluation.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:manager_summary a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "manager_summary.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:sensor_snapshot a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "sensor_snapshot.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:time_series_response a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "time_series_response.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:troubleshooting_issue a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "troubleshooting_issue.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:troubleshooting_matrix a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "troubleshooting_matrix.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+
+spray:DashboardService a owl:Class ;
+    rdfs:label "Dashboard 服務"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:BatchService a owl:Class ;
+    rdfs:label "批次服務"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:TimeSeriesService a owl:Class ;
+    rdfs:label "時間序列服務"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:TroubleshootingService a owl:Class ;
+    rdfs:label "原因對策服務"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:EventRuleService a owl:Class ;
+    rdfs:label "事件規則服務"@zh ;
+    rdfs:subClassOf spray:ServiceFunction .
+
+spray:ServiceFunction a owl:Class ;
+    rdfs:label "服務功能"@zh .
+
+spray:ResponseSchema a owl:Class ;
+    rdfs:label "回應 Schema"@zh .
+
+spray:RESTEndpoint a owl:Class ;
+    rdfs:label "REST API 端點"@zh .
+
+# 0609ver_2 derived feature service contract
+spray:Endpoint_time_series_features a spray:RESTEndpoint,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "GET /time-series/features"@zh ;
+    spray:hasResponseSchema spray:sensor_feature_window ;
+    spray:implementedByFunction spray:GetSensorFeatureWindow ;
+    rdfs:subClassOf spray:RESTEndpoint .
+
+spray:GetSensorFeatureWindow a spray:TimeSeriesService,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "get_sensor_feature_window"@zh ;
+    spray:readsTable spray:sensor_1hz ;
+    spray:servedByEndpoint spray:Endpoint_time_series_features ;
+    rdfs:subClassOf spray:TimeSeriesService .
+
+spray:sensor_feature_window a spray:ResponseSchema,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "sensor_feature_window.schema.json"@zh ;
+    rdfs:subClassOf spray:ResponseSchema .
+

@@ -1,0 +1,2 @@
+sep=,
+timestamp,station,temperature_c,humidity_rh,filter_diff_pressure_bar,servo_torque_load_pct,air_pressure_bar,data_quality_flag,is_interpolated,is_outlier,preprocess_method,missing_value_flag

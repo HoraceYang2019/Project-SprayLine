@@ -1,0 +1,507 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+
+spray:BatchRecord a owl:Class ;
+    rdfs:label "批次紀錄"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:ManualInspectionField a owl:Class ;
+    rdfs:label "人工檢測欄位"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:PredictionMetric a owl:Class ;
+    rdfs:label "預測指標"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:QualityMetric a owl:Class ;
+    rdfs:label "品質指標"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:RiskLevel a owl:Class ;
+    rdfs:label "風險等級"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:affectedBy a owl:ObjectProperty ;
+    rdfs:label "受到影響"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:affectsDownstream a owl:ObjectProperty ;
+    rdfs:label "影響下游"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:assetKey a owl:DatatypeProperty ;
+    rdfs:label "資產鍵"@zh ;
+    rdfs:domain spray:PhysicalAsset .
+
+spray:belongsToStation a owl:ObjectProperty ;
+    rdfs:label "屬於站點"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:Station .
+
+spray:hasAsset a owl:ObjectProperty ;
+    rdfs:label "具有資產"@zh ;
+    rdfs:domain spray:Station ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:hasSpecificAssetClass a owl:ObjectProperty ;
+    rdfs:label "具有特定資產類別"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:humidity_rh a spray:EnvironmentSignal,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "humidity_rh（環境濕度）"@zh ;
+    spray:signalName "humidity_rh" ;
+    rdfs:subClassOf spray:EnvironmentSignal .
+
+spray:observesSignal a owl:ObjectProperty ;
+    rdfs:label "觀測訊號"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:SensorSignal .
+
+spray:signalName a owl:DatatypeProperty ;
+    rdfs:label "訊號名稱"@zh ;
+    rdfs:domain spray:SensorSignal .
+
+spray:stationCode a owl:DatatypeProperty ;
+    rdfs:label "站點代碼"@zh ;
+    rdfs:domain spray:Station .
+
+spray:temperature_c a spray:EnvironmentSignal,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "temperature_c（環境溫度）"@zh ;
+    spray:signalName "temperature_c" ;
+    rdfs:subClassOf spray:EnvironmentSignal .
+
+spray:upstreamOf a owl:ObjectProperty ;
+    rdfs:label "位於上游"@zh ;
+    rdfs:domain spray:PhysicalAsset ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:SprayLine a owl:Class ;
+    rdfs:label "噴塗產線系統"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:filter_diff_pressure_bar a spray:FilterSignal,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "filter_diff_pressure_bar（濾網壓差）"@zh ;
+    spray:signalName "filter_diff_pressure_bar" ;
+    rdfs:subClassOf spray:FilterSignal .
+
+spray:paint_flow_ml_min a spray:ProcessSignal,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "paint_flow_ml_min（塗料流量）"@zh ;
+    spray:signalName "paint_flow_ml_min" ;
+    rdfs:subClassOf spray:ProcessSignal .
+
+spray:path_error_mm a spray:RobotArmSignal,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "path_error_mm（軌跡追隨誤差）"@zh ;
+    spray:signalName "path_error_mm" ;
+    rdfs:subClassOf spray:RobotArmSignal .
+
+spray:servo_torque_load_pct a spray:RobotArmSignal,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "servo_torque_load_pct（伺服馬達負載）"@zh ;
+    spray:signalName "servo_torque_load_pct" ;
+    rdfs:subClassOf spray:RobotArmSignal .
+
+spray:spray_width_mm a spray:SprayWidthSignal,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "spray_width_mm（噴幅寬度）"@zh ;
+    spray:signalName "spray_width_mm" ;
+    rdfs:subClassOf spray:SprayWidthSignal .
+
+spray:AirPressureSignal a owl:Class ;
+    rdfs:label "空壓訊號"@zh ;
+    rdfs:subClassOf spray:SensorSignal .
+
+spray:FilterSignal a owl:Class ;
+    rdfs:label "濾網訊號"@zh ;
+    rdfs:subClassOf spray:SensorSignal .
+
+spray:ProcessSignal a owl:Class ;
+    rdfs:label "製程訊號"@zh ;
+    rdfs:subClassOf spray:SensorSignal .
+
+spray:SprayWidthSignal a owl:Class ;
+    rdfs:label "噴幅訊號"@zh ;
+    rdfs:subClassOf spray:SensorSignal .
+
+spray:Station_1_RobotArm a spray:RobotArm,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_1／機械手臂"@zh ;
+    spray:belongsToStation spray:Station_1 ;
+    rdfs:subClassOf spray:RobotArm .
+
+spray:Station_2_RobotArm a spray:RobotArm,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_2／機械手臂"@zh ;
+    spray:belongsToStation spray:Station_2 ;
+    rdfs:subClassOf spray:RobotArm .
+
+spray:Station_3_RobotArm a spray:RobotArm,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_3／機械手臂"@zh ;
+    spray:belongsToStation spray:Station_3 ;
+    rdfs:subClassOf spray:RobotArm .
+
+spray:air_pressure_bar a spray:AirPressureSignal,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "air_pressure_bar（空氣壓力）"@zh ;
+    spray:signalName "air_pressure_bar" ;
+    rdfs:subClassOf spray:AirPressureSignal .
+
+spray:Station_1_AirCompressor a spray:AirCompressor,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_1／空壓機"@zh ;
+    spray:affectsDownstream spray:Station_1_Oven ;
+    spray:belongsToStation spray:Station_1 ;
+    spray:upstreamOf spray:Station_1_Nozzle ;
+    rdfs:subClassOf spray:AirCompressor .
+
+spray:Station_1_FilterMesh a spray:FilterMesh,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_1／濾網"@zh ;
+    spray:affectsDownstream spray:Station_1_Oven ;
+    spray:belongsToStation spray:Station_1 ;
+    spray:upstreamOf spray:Station_1_Nozzle ;
+    rdfs:subClassOf spray:FilterMesh .
+
+spray:Station_1_QualityModule a spray:QualityModule,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_1／品質模組"@zh ;
+    spray:belongsToStation spray:Station_1 ;
+    spray:upstreamOf spray:Station_1_Oven ;
+    rdfs:subClassOf spray:QualityModule .
+
+spray:Station_2_AirCompressor a spray:AirCompressor,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_2／空壓機"@zh ;
+    spray:affectsDownstream spray:Station_2_Oven ;
+    spray:belongsToStation spray:Station_2 ;
+    spray:upstreamOf spray:Station_2_Nozzle ;
+    rdfs:subClassOf spray:AirCompressor .
+
+spray:Station_2_FilterMesh a spray:FilterMesh,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_2／濾網"@zh ;
+    spray:affectsDownstream spray:Station_2_Oven ;
+    spray:belongsToStation spray:Station_2 ;
+    spray:upstreamOf spray:Station_2_Nozzle ;
+    rdfs:subClassOf spray:FilterMesh .
+
+spray:Station_2_QualityModule a spray:QualityModule,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_2／品質模組"@zh ;
+    spray:belongsToStation spray:Station_2 ;
+    spray:upstreamOf spray:Station_2_Oven ;
+    rdfs:subClassOf spray:QualityModule .
+
+spray:Station_3_AirCompressor a spray:AirCompressor,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_3／空壓機"@zh ;
+    spray:affectsDownstream spray:Station_3_Oven ;
+    spray:belongsToStation spray:Station_3 ;
+    spray:upstreamOf spray:Station_3_Nozzle ;
+    rdfs:subClassOf spray:AirCompressor .
+
+spray:Station_3_FilterMesh a spray:FilterMesh,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_3／濾網"@zh ;
+    spray:affectsDownstream spray:Station_3_Oven ;
+    spray:belongsToStation spray:Station_3 ;
+    spray:upstreamOf spray:Station_3_Nozzle ;
+    rdfs:subClassOf spray:FilterMesh .
+
+spray:Station_3_QualityModule a spray:QualityModule,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_3／品質模組"@zh ;
+    spray:belongsToStation spray:Station_3 ;
+    spray:upstreamOf spray:Station_3_Oven ;
+    rdfs:subClassOf spray:QualityModule .
+
+spray:EnvironmentSignal a owl:Class ;
+    rdfs:label "環境訊號"@zh ;
+    rdfs:subClassOf spray:SensorSignal .
+
+spray:RobotArmSignal a owl:Class ;
+    rdfs:label "機械手臂訊號"@zh ;
+    rdfs:subClassOf spray:SensorSignal .
+
+spray:Station_1_SprayWidth a spray:SprayWidth,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_1／噴幅"@zh ;
+    spray:affectsDownstream spray:Station_1_Oven ;
+    spray:belongsToStation spray:Station_1 ;
+    spray:upstreamOf spray:Station_1_QualityModule ;
+    rdfs:subClassOf spray:SprayWidth .
+
+spray:Station_2_SprayWidth a spray:SprayWidth,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_2／噴幅"@zh ;
+    spray:affectsDownstream spray:Station_2_Oven ;
+    spray:belongsToStation spray:Station_2 ;
+    spray:upstreamOf spray:Station_2_QualityModule ;
+    rdfs:subClassOf spray:SprayWidth .
+
+spray:Station_3_SprayWidth a spray:SprayWidth,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_3／噴幅"@zh ;
+    spray:affectsDownstream spray:Station_3_Oven ;
+    spray:belongsToStation spray:Station_3 ;
+    spray:upstreamOf spray:Station_3_QualityModule ;
+    rdfs:subClassOf spray:SprayWidth .
+
+spray:Station_1_Nozzle a spray:Nozzle,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_1／噴嘴"@zh ;
+    spray:affectsDownstream spray:Station_1_Oven ;
+    spray:belongsToStation spray:Station_1 ;
+    spray:upstreamOf spray:Station_1_SprayWidth ;
+    rdfs:subClassOf spray:Nozzle .
+
+spray:Station_2_Nozzle a spray:Nozzle,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_2／噴嘴"@zh ;
+    spray:affectsDownstream spray:Station_2_Oven ;
+    spray:belongsToStation spray:Station_2 ;
+    spray:upstreamOf spray:Station_2_SprayWidth ;
+    rdfs:subClassOf spray:Nozzle .
+
+spray:Station_3_Nozzle a spray:Nozzle,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_3／噴嘴"@zh ;
+    spray:affectsDownstream spray:Station_3_Oven ;
+    spray:belongsToStation spray:Station_3 ;
+    spray:upstreamOf spray:Station_3_SprayWidth ;
+    rdfs:subClassOf spray:Nozzle .
+
+spray:AirCompressor a owl:Class ;
+    rdfs:label "空壓機"@zh ;
+    spray:hasSpecificAssetClass spray:Station_1_AirCompressor,
+        spray:Station_2_AirCompressor,
+        spray:Station_3_AirCompressor ;
+    spray:observesSignal spray:air_pressure_bar ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:FilterMesh a owl:Class ;
+    rdfs:label "濾網"@zh ;
+    spray:hasSpecificAssetClass spray:Station_1_FilterMesh,
+        spray:Station_2_FilterMesh,
+        spray:Station_3_FilterMesh ;
+    spray:observesSignal spray:filter_diff_pressure_bar ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:Nozzle a owl:Class ;
+    rdfs:label "噴嘴"@zh ;
+    spray:hasSpecificAssetClass spray:Station_1_Nozzle,
+        spray:Station_2_Nozzle,
+        spray:Station_3_Nozzle ;
+    spray:observesSignal spray:air_pressure_bar,
+        spray:paint_flow_ml_min ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:Oven a owl:Class ;
+    rdfs:label "烤箱"@zh ;
+    spray:hasSpecificAssetClass spray:Station_1_Oven,
+        spray:Station_2_Oven,
+        spray:Station_3_Oven ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:QualityModule a owl:Class ;
+    rdfs:label "品質模組"@zh ;
+    spray:hasSpecificAssetClass spray:Station_1_QualityModule,
+        spray:Station_2_QualityModule,
+        spray:Station_3_QualityModule ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:RobotArm a owl:Class ;
+    rdfs:label "機械手臂"@zh ;
+    spray:hasSpecificAssetClass spray:Station_1_RobotArm,
+        spray:Station_2_RobotArm,
+        spray:Station_3_RobotArm ;
+    spray:observesSignal spray:path_error_mm,
+        spray:servo_torque_load_pct ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:SprayWidth a owl:Class ;
+    rdfs:label "噴幅"@zh ;
+    spray:hasSpecificAssetClass spray:Station_1_SprayWidth,
+        spray:Station_2_SprayWidth,
+        spray:Station_3_SprayWidth ;
+    spray:observesSignal spray:spray_width_mm ;
+    rdfs:subClassOf spray:PhysicalAsset .
+
+spray:Station_1 a spray:Station,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_1／底漆站"@zh ;
+    spray:hasAsset spray:Station_1_AirCompressor,
+        spray:Station_1_FilterMesh,
+        spray:Station_1_Nozzle,
+        spray:Station_1_Oven,
+        spray:Station_1_QualityModule,
+        spray:Station_1_RobotArm,
+        spray:Station_1_SprayWidth ;
+    spray:stationCode "Station_1" ;
+    rdfs:subClassOf spray:Station .
+
+spray:Station_1_Oven a spray:Oven,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_1／烤箱"@zh ;
+    spray:affectedBy spray:Station_1_AirCompressor,
+        spray:Station_1_FilterMesh,
+        spray:Station_1_Nozzle,
+        spray:Station_1_SprayWidth ;
+    spray:belongsToStation spray:Station_1 ;
+    rdfs:subClassOf spray:Oven .
+
+spray:Station_2 a spray:Station,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_2／面漆站"@zh ;
+    spray:hasAsset spray:Station_2_AirCompressor,
+        spray:Station_2_FilterMesh,
+        spray:Station_2_Nozzle,
+        spray:Station_2_Oven,
+        spray:Station_2_QualityModule,
+        spray:Station_2_RobotArm,
+        spray:Station_2_SprayWidth ;
+    spray:stationCode "Station_2" ;
+    rdfs:subClassOf spray:Station .
+
+spray:Station_2_Oven a spray:Oven,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_2／烤箱"@zh ;
+    spray:affectedBy spray:Station_2_AirCompressor,
+        spray:Station_2_FilterMesh,
+        spray:Station_2_Nozzle,
+        spray:Station_2_SprayWidth ;
+    spray:belongsToStation spray:Station_2 ;
+    rdfs:subClassOf spray:Oven .
+
+spray:Station_3 a spray:Station,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_3／金漆站"@zh ;
+    spray:hasAsset spray:Station_3_AirCompressor,
+        spray:Station_3_FilterMesh,
+        spray:Station_3_Nozzle,
+        spray:Station_3_Oven,
+        spray:Station_3_QualityModule,
+        spray:Station_3_RobotArm,
+        spray:Station_3_SprayWidth ;
+    spray:stationCode "Station_3" ;
+    rdfs:subClassOf spray:Station .
+
+spray:Station_3_Oven a spray:Oven,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Station_3／烤箱"@zh ;
+    spray:affectedBy spray:Station_3_AirCompressor,
+        spray:Station_3_FilterMesh,
+        spray:Station_3_Nozzle,
+        spray:Station_3_SprayWidth ;
+    spray:belongsToStation spray:Station_3 ;
+    rdfs:subClassOf spray:Oven .
+
+spray:SensorSignal a owl:Class ;
+    rdfs:label "感測訊號"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:SprayLineProjectConcept a owl:Class ;
+    rdfs:label "噴塗系統專案概念"@zh .
+
+spray:Station a owl:Class ;
+    rdfs:label "作業站點"@zh ;
+    rdfs:subClassOf spray:SprayLine .
+
+spray:PhysicalAsset a owl:Class ;
+    rdfs:label "實體資產"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+# 0609ver_2 DataPreprocess enhancement concepts
+spray:DataQualityFlag a owl:Class ;
+    rdfs:label "資料品質旗標"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:DerivedFeature a owl:Class ;
+    rdfs:label "前處理衍生特徵"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:SensorFeatureWindow a owl:Class ;
+    rdfs:label "感測時間窗特徵"@zh ;
+    rdfs:subClassOf spray:DerivedFeature .
+
+spray:StationSensorMapping a owl:Class ;
+    rdfs:label "站點感測欄位對應表"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:DataPreprocessOutputContract a owl:Class ;
+    rdfs:label "DataPreprocess 輸出格式契約"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:hasDataQualityFlag a owl:ObjectProperty ;
+    rdfs:label "具有資料品質旗標"@zh ;
+    rdfs:domain spray:SensorSignal ;
+    rdfs:range spray:DataQualityFlag .
+
+spray:hasDerivedFeature a owl:ObjectProperty ;
+    rdfs:label "具有衍生特徵"@zh ;
+    rdfs:domain spray:SensorSignal ;
+    rdfs:range spray:DerivedFeature .
+
+spray:mapsSensorToAsset a owl:ObjectProperty ;
+    rdfs:label "將感測欄位對應到資產"@zh ;
+    rdfs:domain spray:StationSensorMapping ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:mapsSensorSignal a owl:ObjectProperty ;
+    rdfs:label "對應感測訊號"@zh ;
+    rdfs:domain spray:StationSensorMapping ;
+    rdfs:range spray:SensorSignal .
+
+spray:rolling_avg a spray:SensorFeatureWindow, owl:Class, owl:NamedIndividual ;
+    rdfs:label "rolling_avg（移動平均）"@zh ;
+    rdfs:subClassOf spray:SensorFeatureWindow .
+
+spray:duration_over_threshold a spray:SensorFeatureWindow, owl:Class, owl:NamedIndividual ;
+    rdfs:label "duration_over_threshold（超標持續時間）"@zh ;
+    rdfs:subClassOf spray:SensorFeatureWindow .
+
+spray:anomaly_score a spray:SensorFeatureWindow, owl:Class, owl:NamedIndividual ;
+    rdfs:label "anomaly_score（異常分數）"@zh ;
+    rdfs:subClassOf spray:SensorFeatureWindow .
+

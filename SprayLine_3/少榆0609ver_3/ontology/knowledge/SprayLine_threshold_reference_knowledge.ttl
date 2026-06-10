@@ -1,0 +1,202 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+
+spray:ThresholdReferenceConcept a owl:Class ;
+    rdfs:label "門檻參考概念"@zh ;
+    rdfs:subClassOf spray:SprayLineProjectConcept .
+
+spray:SensorThresholdReference a owl:Class ;
+    rdfs:label "感測門檻參考值"@zh ;
+    rdfs:subClassOf spray:ThresholdReferenceConcept .
+
+spray:appliesToSignal a owl:ObjectProperty ;
+    rdfs:label "適用訊號"@zh ;
+    rdfs:domain spray:SensorThresholdReference ;
+    rdfs:range spray:SensorSignal .
+
+spray:appliesToStation a owl:ObjectProperty ;
+    rdfs:label "適用站點"@zh ;
+    rdfs:domain spray:SensorThresholdReference ;
+    rdfs:range spray:Station .
+
+spray:normalMin a owl:DatatypeProperty ; rdfs:label "正常下限"@zh .
+spray:normalMax a owl:DatatypeProperty ; rdfs:label "正常上限"@zh .
+spray:warningMin a owl:DatatypeProperty ; rdfs:label "預警下限"@zh .
+spray:warningMax a owl:DatatypeProperty ; rdfs:label "預警上限"@zh .
+spray:alarmMin a owl:DatatypeProperty ; rdfs:label "異常下限描述"@zh .
+spray:alarmMax a owl:DatatypeProperty ; rdfs:label "異常上限描述"@zh .
+spray:thresholdLogic a owl:DatatypeProperty ; rdfs:label "門檻邏輯"@zh .
+spray:thresholdSource a owl:DatatypeProperty ; rdfs:label "門檻來源"@zh .
+spray:thresholdStatus a owl:DatatypeProperty ; rdfs:label "門檻狀態"@zh .
+spray:thresholdUnit a owl:DatatypeProperty ; rdfs:label "門檻單位"@zh .
+
+spray:TH_FILTER_DIFF_ALL a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "filter_diff_pressure_bar / ALL 門檻參考"@zh ;
+    spray:appliesToSignal spray:filter_diff_pressure_bar ;
+    spray:normalMin "0.15" ;
+    spray:normalMax "0.30" ;
+    spray:warningMin "0.31" ;
+    spray:warningMax "0.50" ;
+    spray:alarmMin ">0.50" ;
+    spray:thresholdUnit "bar" ;
+    spray:thresholdLogic "value_above" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_SERVO_TORQUE_ALL a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "servo_torque_load_pct / ALL 門檻參考"@zh ;
+    spray:appliesToSignal spray:servo_torque_load_pct ;
+    spray:normalMax "<60" ;
+    spray:warningMin "60" ;
+    spray:warningMax "80" ;
+    spray:alarmMin ">80" ;
+    spray:thresholdUnit "pct" ;
+    spray:thresholdLogic "value_above" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_SPRAY_WIDTH_STATION_1 a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "spray_width_mm / Station_1 門檻參考"@zh ;
+    spray:appliesToSignal spray:spray_width_mm ;
+    spray:appliesToStation spray:Station_1 ;
+    spray:normalMin "110" ;
+    spray:normalMax "130" ;
+    spray:warningMin "100" ;
+    spray:warningMax "140" ;
+    spray:alarmMin "<100" ;
+    spray:alarmMax ">140" ;
+    spray:thresholdUnit "mm" ;
+    spray:thresholdLogic "base_120_abs_tolerance" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_SPRAY_WIDTH_STATION_2 a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "spray_width_mm / Station_2 門檻參考"@zh ;
+    spray:appliesToSignal spray:spray_width_mm ;
+    spray:appliesToStation spray:Station_2 ;
+    spray:normalMin "90" ;
+    spray:normalMax "110" ;
+    spray:warningMin "80" ;
+    spray:warningMax "120" ;
+    spray:alarmMin "<80" ;
+    spray:alarmMax ">120" ;
+    spray:thresholdUnit "mm" ;
+    spray:thresholdLogic "base_100_abs_tolerance" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_SPRAY_WIDTH_STATION_3 a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "spray_width_mm / Station_3 門檻參考"@zh ;
+    spray:appliesToSignal spray:spray_width_mm ;
+    spray:appliesToStation spray:Station_3 ;
+    spray:normalMin "72" ;
+    spray:normalMax "92" ;
+    spray:warningMin "62" ;
+    spray:warningMax "102" ;
+    spray:alarmMin "<62" ;
+    spray:alarmMax ">102" ;
+    spray:thresholdUnit "mm" ;
+    spray:thresholdLogic "base_82_abs_tolerance" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_FILM_THICKNESS_ALL a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "film_thickness_um / ALL 門檻參考"@zh ;
+    spray:appliesToSignal spray:film_thickness_um ;
+    spray:normalMin "14.5" ;
+    spray:normalMax "15.5" ;
+    spray:warningMin "14.0" ;
+    spray:warningMax "16.0" ;
+    spray:alarmMin "<14.0" ;
+    spray:alarmMax ">16.0" ;
+    spray:thresholdUnit "um" ;
+    spray:thresholdLogic "target_15_tolerance" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_PAINT_FLOW_ALL a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "paint_flow_ml_min / ALL 門檻參考"@zh ;
+    spray:appliesToSignal spray:paint_flow_ml_min ;
+    spray:normalMin "245.0" ;
+    spray:normalMax "255.0" ;
+    spray:warningMin "235.0" ;
+    spray:warningMax "265.0" ;
+    spray:alarmMin "<235.0" ;
+    spray:alarmMax ">265.0" ;
+    spray:thresholdUnit "ml/min" ;
+    spray:thresholdLogic "target_250_tolerance" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_VIBRATION_ALL a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "vibration_g / ALL 門檻參考"@zh ;
+    spray:appliesToSignal spray:vibration_g ;
+    spray:normalMax "<1.5" ;
+    spray:warningMin "1.5" ;
+    spray:warningMax "3.0" ;
+    spray:alarmMin ">3.0" ;
+    spray:thresholdUnit "G" ;
+    spray:thresholdLogic "value_above" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_PATH_ERROR_ALL a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "path_error_mm / ALL 門檻參考"@zh ;
+    spray:appliesToSignal spray:path_error_mm ;
+    spray:normalMax "<0.5" ;
+    spray:warningMin "0.5" ;
+    spray:warningMax "1.5" ;
+    spray:alarmMin ">1.5" ;
+    spray:thresholdUnit "mm" ;
+    spray:thresholdLogic "value_above" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_GEARBOX_TEMP_ALL a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "gearbox_temperature_c / ALL 門檻參考"@zh ;
+    spray:appliesToSignal spray:gearbox_temperature_c ;
+    spray:normalMax "<55" ;
+    spray:warningMin "55" ;
+    spray:warningMax "70" ;
+    spray:alarmMin ">70" ;
+    spray:thresholdUnit "degC" ;
+    spray:thresholdLogic "value_above" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_TEMPERATURE_ALL a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "temperature_c / ALL 門檻參考"@zh ;
+    spray:appliesToSignal spray:temperature_c ;
+    spray:normalMin "22" ;
+    spray:normalMax "26" ;
+    spray:alarmMin "<22" ;
+    spray:alarmMax ">26" ;
+    spray:thresholdUnit "degC" ;
+    spray:thresholdLogic "outside_normal_range" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_HUMIDITY_ALL a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "humidity_rh / ALL 門檻參考"@zh ;
+    spray:appliesToSignal spray:humidity_rh ;
+    spray:normalMin "50" ;
+    spray:normalMax "60" ;
+    spray:alarmMin "<50" ;
+    spray:alarmMax ">60" ;
+    spray:thresholdUnit "pctRH" ;
+    spray:thresholdLogic "outside_normal_range" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+
+spray:TH_AIR_PRESSURE_ALL a spray:SensorThresholdReference, owl:NamedIndividual ;
+    rdfs:label "air_pressure_bar / ALL 門檻參考"@zh ;
+    spray:appliesToSignal spray:air_pressure_bar ;
+    spray:normalMin ">=1.5" ;
+    spray:alarmMin "<1.5" ;
+    spray:thresholdUnit "bar" ;
+    spray:thresholdLogic "low_limit" ;
+    spray:thresholdSource "DataPreprocess_LinShengYao" ;
+    spray:thresholdStatus "preprocess_reference_pending_confirmation" .
+

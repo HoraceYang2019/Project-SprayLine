@@ -1,0 +1,15 @@
+{
+  "timestamp": null,
+  "station": null,
+  "temperature_c": null,
+  "humidity_rh": null,
+  "filter_diff_pressure_bar": null,
+  "servo_torque_load_pct": null,
+  "air_pressure_bar": null,
+  "data_quality_flag": null,
+  "is_interpolated": null,
+  "is_outlier": null,
+  "preprocess_method": null,
+  "missing_value_flag": null,
+  "template_status": "structure_only_pending_values"
+}

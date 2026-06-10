@@ -1,0 +1,70 @@
+sep=,
+group,field_name,zh_name,unit_or_format,required,source,target_table_or_output,ontology_class,reason
+1 Batch 時間區間,batch_id,批次編號,string,yes,DataPreprocess / DB,batch_run; batch_summary,BatchRecord,串接 sensor data、品質結果、event 與 risk_level 的批次主鍵。
+1 Batch 時間區間,station,站點,Station_1 / Station_2 / Station_3,yes,DataPreprocess / DB,batch_run; batch_summary; sensor_1hz,Station,統一 DB / API / ontology 的站點命名。
+1 Batch 時間區間,batch_start_time,批次開始時間,datetime,recommended,DataPreprocess / DB,batch_run,BatchRecord,用來抓取該批次期間的 sensor_1hz 資料。
+1 Batch 時間區間,batch_end_time,批次結束時間,datetime,recommended,DataPreprocess / DB,batch_run,BatchRecord,與 batch_start_time 形成時間區間，支援 batch-level diagnosis。
+1 Batch 時間區間,completed_at,批次完成時間,datetime,yes,DataPreprocess / DB,batch_summary,BatchRecord,Dashboard 顯示與批次查詢排序所需。
+By Time 已提供欄位,timestamp,資料時間戳,datetime,yes,DataPreprocess,sensor_1hz,SensorSignal,每筆時間序列資料的時間。
+By Time 已提供欄位,temperature_c,環境溫度,°C,yes,DataPreprocess,sensor_1hz,EnvironmentSignal,林聖堯已提供，用於環境異常判斷。
+By Time 已提供欄位,humidity_rh,環境濕度,%RH,yes,DataPreprocess,sensor_1hz,EnvironmentSignal,林聖堯已提供，用於環境異常判斷。
+By Time 已提供欄位,filter_diff_pressure_bar,濾網壓差,bar,yes,DataPreprocess,sensor_1hz,FilterSignal,林聖堯已提供，用於濾網阻塞或壓差異常判斷。
+By Time 已提供欄位,servo_torque_load_pct,伺服馬達負載,%,yes,DataPreprocess,sensor_1hz,RobotArmSignal,林聖堯已提供，用於機械手臂負載異常判斷。
+By Time 已提供欄位,air_pressure_bar,空氣壓力,bar,yes,DataPreprocess,sensor_1hz,AirPressureSignal,林聖堯已提供，用於空壓異常判斷。
+By Batch 已提供欄位,paint_flow_ml_min,塗料流量,ml/min,yes,DataPreprocess,batch_summary,ProcessSignal,林聖堯已提供，用於流量異常與批次結果分析。
+By Batch 已提供欄位,spray_width_mm,噴幅寬度,mm,yes,DataPreprocess,batch_summary,SprayWidthSignal,林聖堯已提供，用於噴幅異常判斷。
+By Batch 已提供欄位,path_error_mm,軌跡追隨誤差,mm,yes,DataPreprocess,batch_summary,RobotPathSignal,林聖堯已提供，用於軌跡偏差判斷。
+2 品質 / 預測結果,ok_count,OK 數量,count,optional,QC / Prediction / Dashboard service,batch_summary or API response,QualityMetric / PredictionMetric / RiskLevel,用於計算批次良率。
+2 品質 / 預測結果,ng_count,NG 數量,count,recommended_for_risk_level,QC / Prediction / Dashboard service,batch_summary or API response,QualityMetric / PredictionMetric / RiskLevel,討論 risk_level 規則需要 NG 數量。
+2 品質 / 預測結果,predicted_ok_rate,預測 OK 率,%,recommended_for_risk_level,Prediction service,batch_summary or API response,QualityMetric / PredictionMetric / RiskLevel,討論 risk_level 規則需要 predicted_ok_rate。
+2 品質 / 預測結果,predicted_ng_count,預測 NG 數量,count,optional,Prediction service,batch_summary or API response,QualityMetric / PredictionMetric / RiskLevel,支援 manager dashboard 顯示預測風險。
+2 品質 / 預測結果,quality_score,品質分數,score,optional,QC / Dashboard service,batch_summary or API response,QualityMetric / PredictionMetric / RiskLevel,用單一分數呈現批次品質狀態。
+2 品質 / 預測結果,defect_type,瑕疵類型,string,optional,QC service,batch_summary or API response,QualityMetric / PredictionMetric / RiskLevel,原因對策 service 需要知道異常或瑕疵種類。
+2 品質 / 預測結果,defect_code,瑕疵代碼,string,optional,QC service,batch_summary or API response,QualityMetric / PredictionMetric / RiskLevel,讓瑕疵類型可固定查詢與對應 ontology。
+2 品質 / 預測結果,risk_level,風險等級,High / Medium / Low,derived,BatchService / RiskLevelRule,batch_summary or API response,QualityMetric / PredictionMetric / RiskLevel,支援討論提出的批次風險查詢 API。
+3 Threshold / 判斷基準,sensor_name,感測欄位名稱,string,yes,DataPreprocess / DB / discussion / manual_config,sensor_threshold,SensorThreshold,指定 threshold 對應哪一個感測欄位。
+3 Threshold / 判斷基準,station,站點,Station_1 / Station_2 / Station_3 / ALL,yes,DataPreprocess / DB / discussion / manual_config,sensor_threshold,SensorThreshold,不同站點可能有不同門檻。
+3 Threshold / 判斷基準,normal_min,正常下限,number/null,recommended,DataPreprocess / DB / discussion / manual_config,sensor_threshold,SensorThreshold,定義正常範圍。
+3 Threshold / 判斷基準,normal_max,正常上限,number/null,recommended,DataPreprocess / DB / discussion / manual_config,sensor_threshold,SensorThreshold,定義正常範圍。
+3 Threshold / 判斷基準,warning_min,警告下限,number/null,recommended,DataPreprocess / DB / discussion / manual_config,sensor_threshold,SensorThreshold,支援 warning 判斷。
+3 Threshold / 判斷基準,warning_max,警告上限,number/null,recommended,DataPreprocess / DB / discussion / manual_config,sensor_threshold,SensorThreshold,支援 warning 判斷。
+3 Threshold / 判斷基準,alarm_min,異常下限,number/null,recommended,DataPreprocess / DB / discussion / manual_config,sensor_threshold,SensorThreshold,支援 alarm 判斷。
+3 Threshold / 判斷基準,alarm_max,異常上限,number/null,recommended,DataPreprocess / DB / discussion / manual_config,sensor_threshold,SensorThreshold,支援 alarm 判斷。
+3 Threshold / 判斷基準,unit,單位,string,yes,DataPreprocess / DB / discussion / manual_config,sensor_threshold,SensorThreshold,避免 bar、mm、%、°C 混用。
+3 Threshold / 判斷基準,threshold_source,門檻來源,discussion_draft / experiment / pending_confirmation,yes,DataPreprocess / DB / discussion / manual_config,sensor_threshold,SensorThreshold,區分正式門檻與暫定門檻。
+4 Event / Alert 紀錄,event_id,事件編號,string,yes,RuleService / EventRuleService,alert_event,AlertEvent,唯一識別每一筆 alert_event。
+4 Event / Alert 紀錄,event_time,事件時間,datetime,yes,RuleService / EventRuleService,alert_event,AlertEvent,回查事件發生時的 sensor data。
+4 Event / Alert 紀錄,station,站點,Station_1 / Station_2 / Station_3,yes,RuleService / EventRuleService,alert_event,AlertEvent,知道事件發生站點。
+4 Event / Alert 紀錄,event_type,事件類型,string,yes,RuleService / EventRuleService,alert_event,AlertEvent,分類警示，例如 filter_warning、pressure_alarm。
+4 Event / Alert 紀錄,severity,嚴重程度,Low / Medium / High / Critical,yes,RuleService / EventRuleService,alert_event,AlertEvent,Dashboard 顯示警示等級。
+4 Event / Alert 紀錄,source_signal,來源訊號,string,yes,RuleService / EventRuleService,alert_event,AlertEvent,知道是哪個 sensor 觸發事件。
+4 Event / Alert 紀錄,source_value,來源數值,number/string/null,yes,RuleService / EventRuleService,alert_event,AlertEvent,知道觸發當下實際值，支援 diagnosis。
+4 Event / Alert 紀錄,trigger_rule_id,觸發規則 ID,string,yes,RuleService / EventRuleService,alert_event,AlertEvent,對應 ontology 裡的 EventRule / TriggerRule。
+4 Event / Alert 紀錄,message,警示訊息,string,yes,RuleService / EventRuleService,alert_event,AlertEvent,Dashboard 顯示文字。
+4 Event / Alert 紀錄,acknowledged_status,確認狀態,unacknowledged / acknowledged,yes,RuleService / EventRuleService,alert_event,AlertEvent,支援未確認警示查詢與工程師確認。
+5 DataPreprocess 狀態,data_quality_flag,資料品質旗標,normal/missing/interpolated/outlier/questionable,yes,DataPreprocess,sensor_1hz,DataQualityFlag,標記此筆資料品質，避免 rule 誤判。
+5 DataPreprocess 狀態,is_interpolated,是否補值,boolean,yes,DataPreprocess,sensor_1hz,DataQualityFlag,區分真實感測值與補值資料。
+5 DataPreprocess 狀態,is_outlier,是否離群,boolean,yes,DataPreprocess,sensor_1hz,DataQualityFlag,標記離群資料，避免被誤當正式異常。
+5 DataPreprocess 狀態,preprocess_method,前處理方法,raw/cleaned/resampled/aggregated/smoothed,yes,DataPreprocess,sensor_1hz,DataQualityFlag,說明輸出資料是原始或前處理後資料。
+5 DataPreprocess 狀態,missing_value_flag,是否缺值,boolean,yes,DataPreprocess,sensor_1hz,DataQualityFlag,標記缺值狀態，避免 service 解析錯誤。
+6 Derived Features / 統計特徵,rolling_avg,移動平均,number/null,proposed,DataPreprocess / FeatureService,sensor_feature_window,DerivedFeature,降低瞬間雜訊造成的誤判。
+6 Derived Features / 統計特徵,rolling_std,移動標準差,number/null,proposed,DataPreprocess / FeatureService,sensor_feature_window,DerivedFeature,判斷製程波動程度。
+6 Derived Features / 統計特徵,max_value,時間窗最大值,number/null,proposed,DataPreprocess / FeatureService,sensor_feature_window,DerivedFeature,判斷時間窗內是否曾超標。
+6 Derived Features / 統計特徵,min_value,時間窗最小值,number/null,proposed,DataPreprocess / FeatureService,sensor_feature_window,DerivedFeature,判斷時間窗內是否低於下限。
+6 Derived Features / 統計特徵,change_rate,變化率,number/null,proposed,DataPreprocess / FeatureService,sensor_feature_window,DerivedFeature,判斷壓力、溫度、流量等是否快速變化。
+6 Derived Features / 統計特徵,duration_over_threshold,超標持續時間,number/null,proposed,DataPreprocess / FeatureService,sensor_feature_window,DerivedFeature,避免短暫尖峰造成誤判。
+6 Derived Features / 統計特徵,anomaly_score,異常分數,number/null,proposed,DataPreprocess / FeatureService,sensor_feature_window,DerivedFeature,支援 risk_level 或 diagnosis 參考。
+7 Station / Sensor 對應表,station,站點,Station_1 / Station_2 / Station_3,yes,DataPreprocess / DB,station_sensor_mapping.csv,StationSensorMapping,指定 sensor 所屬站點。
+7 Station / Sensor 對應表,sensor_name,sensor 名稱,string,yes,DataPreprocess / DB,station_sensor_mapping.csv,StationSensorMapping,固定 sensor 名稱，避免命名混亂。
+7 Station / Sensor 對應表,field_name,欄位名稱,string,yes,DataPreprocess / DB,station_sensor_mapping.csv,StationSensorMapping,對應實際資料欄位。
+7 Station / Sensor 對應表,unit,單位,string,yes,DataPreprocess / DB,station_sensor_mapping.csv,StationSensorMapping,確認感測欄位單位。
+7 Station / Sensor 對應表,asset,對應設備,PhysicalAsset,yes,DataPreprocess / DB,station_sensor_mapping.csv,StationSensorMapping,連到 ontology 的 FilterMesh / AirCompressor / Nozzle / RobotArm。
+7 Station / Sensor 對應表,sampling_rate_hz,採樣頻率,number or per_batch,yes,DataPreprocess / DB,station_sensor_mapping.csv,StationSensorMapping,確認資料是 1Hz 還是 per batch。
+8 輸出格式確認,output_format,輸出格式,CSV / JSON / DB,yes,DataPreprocess,data_preprocess_output_format_contract.csv,DataPreprocessOutputContract,確認 DataPreprocess 最後如何交付資料。
+8 輸出格式確認,file_name,檔名規則,string,recommended,DataPreprocess,data_preprocess_output_format_contract.csv,DataPreprocessOutputContract,支援自動讀檔與版本管理。
+8 輸出格式確認,timestamp_format,時間格式,ISO 8601 recommended,yes,DataPreprocess,data_preprocess_output_format_contract.csv,DataPreprocessOutputContract,避免 DB / API 解析錯誤。
+8 輸出格式確認,timezone,時區,Asia/Taipei or UTC,yes,DataPreprocess,data_preprocess_output_format_contract.csv,DataPreprocessOutputContract,避免不同資料來源時間對不上。
+8 輸出格式確認,batch_id_format,batch_id 格式,string,recommended,DataPreprocess,data_preprocess_output_format_contract.csv,DataPreprocessOutputContract,支援跨表關聯。
+8 輸出格式確認,station_format,station 格式,Station_1 / Station_2 / Station_3,yes,DataPreprocess,data_preprocess_output_format_contract.csv,DataPreprocessOutputContract,統一 DB / API / ontology 命名。
+8 輸出格式確認,missing_value_format,缺值格式,null / NaN / blank,yes,DataPreprocess,data_preprocess_output_format_contract.csv,DataPreprocessOutputContract,避免匯入 DB 或 API 時誤解缺值。
+Manual / Pending,paint_viscosity,塗料黏度,manual_measurement,not_for_realtime_input,Manual inspection,ManualInspectionField,ManualInspectionField,林聖堯補充此項為人工量測，不放入 sensor_1hz / TimeSeriesInput。

@@ -1,0 +1,15 @@
+sep=,
+threshold_id,sensor_name,station,normal_min,normal_max,warning_min,warning_max,alarm_min,alarm_max,unit,threshold_logic,threshold_source,status,note
+TH_FILTER_DIFF_ALL,filter_diff_pressure_bar,ALL,0.15,0.30,0.31,0.50,>0.50,,bar,value_above,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,"DataPreprocess threshold: normal 0.15-0.30, warning 0.31-0.50, bad above 0.50."
+TH_SERVO_TORQUE_ALL,servo_torque_load_pct,ALL,,<60,60,80,>80,,pct,value_above,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,"DataPreprocess threshold: normal below 60, warning 60-80, bad above 80."
+TH_SPRAY_WIDTH_STATION_1,spray_width_mm,Station_1,110,130,100,140,<100,>140,mm,base_120_abs_tolerance,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Base 120 mm; normal +/-10; warning +/-11 to +/-20; bad beyond +/-20.
+TH_SPRAY_WIDTH_STATION_2,spray_width_mm,Station_2,90,110,80,120,<80,>120,mm,base_100_abs_tolerance,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Base 100 mm; normal +/-10; warning +/-11 to +/-20; bad beyond +/-20.
+TH_SPRAY_WIDTH_STATION_3,spray_width_mm,Station_3,72,92,62,102,<62,>102,mm,base_82_abs_tolerance,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Base 82 mm; normal +/-10; warning +/-11 to +/-20; bad beyond +/-20.
+TH_FILM_THICKNESS_ALL,film_thickness_um,ALL,14.5,15.5,14.0,16.0,<14.0,>16.0,um,target_15_tolerance,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Target 15.0 um; warning outer boundary 14.0-16.0; bad outside.
+TH_PAINT_FLOW_ALL,paint_flow_ml_min,ALL,245.0,255.0,235.0,265.0,<235.0,>265.0,ml/min,target_250_tolerance,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Target 250.0 ml/min; warning outer boundary 235.0-265.0; bad outside.
+TH_VIBRATION_ALL,vibration_g,ALL,,<1.5,1.5,3.0,>3.0,,G,value_above,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Normal below 1.5 G; warning 1.5-3.0 G; bad above 3.0 G.
+TH_PATH_ERROR_ALL,path_error_mm,ALL,,<0.5,0.5,1.5,>1.5,,mm,value_above,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Normal below 0.5 mm; warning 0.5-1.5 mm; bad above 1.5 mm.
+TH_GEARBOX_TEMP_ALL,gearbox_temperature_c,ALL,,<55,55,70,>70,,degC,value_above,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Normal below 55 degC; warning 55-70 degC; bad above 70 degC.
+TH_TEMPERATURE_ALL,temperature_c,ALL,22,26,,,<22,>26,degC,outside_normal_range,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Normal 22-26 degC; outside range triggers environment alarm in source note.
+TH_HUMIDITY_ALL,humidity_rh,ALL,50,60,,,<50,>60,pctRH,outside_normal_range,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Normal 50-60 pctRH; outside range triggers environment alarm in source note.
+TH_AIR_PRESSURE_ALL,air_pressure_bar,ALL,>=1.5,,,,<1.5,,bar,low_limit,DataPreprocess_LinShengYao,preprocess_reference_pending_confirmation,Source note: air_pressure_bar below 1.5 bar triggers alert state.

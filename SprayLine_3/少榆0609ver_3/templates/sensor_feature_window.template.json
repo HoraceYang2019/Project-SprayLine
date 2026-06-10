@@ -1,0 +1,17 @@
+{
+  "station": null,
+  "sensor_name": null,
+  "window_start_time": null,
+  "window_end_time": null,
+  "aggregation_window": null,
+  "rolling_avg": null,
+  "rolling_std": null,
+  "max_value": null,
+  "min_value": null,
+  "change_rate": null,
+  "duration_over_threshold": null,
+  "anomaly_score": null,
+  "unit": null,
+  "feature_status": null,
+  "template_status": "structure_only_pending_values"
+}

@@ -1,0 +1,8 @@
+sep=,
+zone_id,zone_name_zh,purpose,tables_or_views
+config_zone,設定主資料,站點設定、感測門檻與基礎設定,station_config; sensor_threshold
+time_series_zone,時間序列資料,1Hz 感測資料與即時監控輸入,sensor_1hz
+batch_zone,批次生產資料,批次開始、完工、摘要與風險計算輸入,batch_run; batch_summary
+pdm_zone,預診斷 / 劣化資料,PDM 劣化紀錄與最新狀態 view,pdm_degradation_log; v_latest_pdm_status
+event_zone,事件 / 警示資料,Rule 觸發事件與未確認警示查詢,alert_event; v_unacknowledged_alerts
+dashboard_view_zone,Dashboard 查詢視圖,前端批次與狀態查詢用 view,v_latest_batch_per_station; v_latest_pdm_status; v_unacknowledged_alerts

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "event rule evaluation response",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema only. Template file; unknown values remain null or pending_confirmation.",
+  "required": [
+    "station",
+    "evaluated_at",
+    "triggered_events",
+    "rule_status"
+  ],
+  "properties": {
+    "station": {
+      "type": "string",
+      "enum": [
+        "Station_1",
+        "Station_2",
+        "Station_3"
+      ]
+    },
+    "evaluated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "triggered_events": {
+      "type": "array",
+      "items": {
+        "$ref": "./alert_event.schema.json"
+      }
+    },
+    "rule_status": {
+      "type": "string",
+      "enum": [
+        "contract_only",
+        "draft",
+        "confirmed"
+      ]
+    }
+  }
+}

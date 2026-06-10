@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "latest sensor snapshot response",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema only. Template file; unknown values remain null or pending_confirmation.",
+  "required": [
+    "station",
+    "timestamp",
+    "signals"
+  ],
+  "properties": {
+    "station": {
+      "type": "string",
+      "enum": [
+        "Station_1",
+        "Station_2",
+        "Station_3"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "signals": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "number",
+          "string",
+          "null"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "sensor_feature_window",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Derived feature contract for DataPreprocess. This is not treated as a confirmed DB table unless Database side confirms storage.",
+  "required": [
+    "station",
+    "sensor_name",
+    "window_start_time",
+    "window_end_time",
+    "aggregation_window",
+    "unit"
+  ],
+  "properties": {
+    "station": {
+      "type": "string",
+      "enum": [
+        "Station_1",
+        "Station_2",
+        "Station_3"
+      ]
+    },
+    "sensor_name": {
+      "type": "string"
+    },
+    "window_start_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "window_end_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "aggregation_window": {
+      "type": "string"
+    },
+    "rolling_avg": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "rolling_std": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "max_value": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "min_value": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "change_rate": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "duration_over_threshold": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "anomaly_score": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "unit": {
+      "type": "string"
+    },
+    "feature_status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "confirmed",
+        "pending_confirmation"
+      ]
+    }
+  }
+}

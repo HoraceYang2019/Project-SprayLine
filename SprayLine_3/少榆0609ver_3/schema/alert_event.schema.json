@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "alert_event",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema only. Enhanced in 0609ver_2 with source_value so alerts can be traced to the triggering signal value.",
+  "required": [
+    "event_id",
+    "event_time",
+    "station",
+    "event_type",
+    "severity",
+    "source_signal",
+    "source_value",
+    "trigger_rule_id",
+    "message",
+    "acknowledged_status"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "event_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "station": {
+      "type": "string",
+      "enum": [
+        "Station_1",
+        "Station_2",
+        "Station_3"
+      ]
+    },
+    "event_type": {
+      "type": "string"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High",
+        "Critical"
+      ]
+    },
+    "source_signal": {
+      "type": "string"
+    },
+    "source_value": {
+      "type": [
+        "number",
+        "string",
+        "null"
+      ]
+    },
+    "trigger_rule_id": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "acknowledged_status": {
+      "type": "string",
+      "enum": [
+        "unacknowledged",
+        "acknowledged"
+      ]
+    }
+  }
+}

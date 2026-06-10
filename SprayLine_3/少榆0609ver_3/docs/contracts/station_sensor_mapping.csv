@@ -1,0 +1,26 @@
+sep=,
+station,sensor_name,field_name,unit,asset,sampling_rate_hz,source,status,note
+Station_1,environment_temperature,temperature_c,°C,Chamber,1,By Time,contract_only,環境溫度訊號
+Station_1,environment_humidity,humidity_rh,%RH,Chamber,1,By Time,contract_only,環境濕度訊號
+Station_1,filter_diff_pressure,filter_diff_pressure_bar,bar,FilterMesh,1,By Time,contract_only,濾網壓差訊號
+Station_1,servo_torque_load,servo_torque_load_pct,%,RobotArm,1,By Time,contract_only,伺服馬達負載訊號
+Station_1,air_pressure,air_pressure_bar,bar,AirCompressor,1,By Time,contract_only,空氣壓力訊號
+Station_1,paint_flow,paint_flow_ml_min,ml/min,Nozzle,per_batch,By Batch,contract_only,塗料流量批次欄位
+Station_1,spray_width,spray_width_mm,mm,SprayWidth,per_batch,By Batch,contract_only,噴幅批次欄位
+Station_1,path_error,path_error_mm,mm,RobotArm,per_batch,By Batch,contract_only,軌跡追隨誤差批次欄位
+Station_2,environment_temperature,temperature_c,°C,Chamber,1,By Time,contract_only,環境溫度訊號
+Station_2,environment_humidity,humidity_rh,%RH,Chamber,1,By Time,contract_only,環境濕度訊號
+Station_2,filter_diff_pressure,filter_diff_pressure_bar,bar,FilterMesh,1,By Time,contract_only,濾網壓差訊號
+Station_2,servo_torque_load,servo_torque_load_pct,%,RobotArm,1,By Time,contract_only,伺服馬達負載訊號
+Station_2,air_pressure,air_pressure_bar,bar,AirCompressor,1,By Time,contract_only,空氣壓力訊號
+Station_2,paint_flow,paint_flow_ml_min,ml/min,Nozzle,per_batch,By Batch,contract_only,塗料流量批次欄位
+Station_2,spray_width,spray_width_mm,mm,SprayWidth,per_batch,By Batch,contract_only,噴幅批次欄位
+Station_2,path_error,path_error_mm,mm,RobotArm,per_batch,By Batch,contract_only,軌跡追隨誤差批次欄位
+Station_3,environment_temperature,temperature_c,°C,Chamber,1,By Time,contract_only,環境溫度訊號
+Station_3,environment_humidity,humidity_rh,%RH,Chamber,1,By Time,contract_only,環境濕度訊號
+Station_3,filter_diff_pressure,filter_diff_pressure_bar,bar,FilterMesh,1,By Time,contract_only,濾網壓差訊號
+Station_3,servo_torque_load,servo_torque_load_pct,%,RobotArm,1,By Time,contract_only,伺服馬達負載訊號
+Station_3,air_pressure,air_pressure_bar,bar,AirCompressor,1,By Time,contract_only,空氣壓力訊號
+Station_3,paint_flow,paint_flow_ml_min,ml/min,Nozzle,per_batch,By Batch,contract_only,塗料流量批次欄位
+Station_3,spray_width,spray_width_mm,mm,SprayWidth,per_batch,By Batch,contract_only,噴幅批次欄位
+Station_3,path_error,path_error_mm,mm,RobotArm,per_batch,By Batch,contract_only,軌跡追隨誤差批次欄位

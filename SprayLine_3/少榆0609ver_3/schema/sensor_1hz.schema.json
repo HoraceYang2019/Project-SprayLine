@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "sensor_1hz",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema only. Enhanced in 0609ver_2 to include DataPreprocess quality flags. Template file; unknown values remain null or pending_confirmation.",
+  "required": [
+    "timestamp",
+    "station",
+    "temperature_c",
+    "humidity_rh",
+    "filter_diff_pressure_bar",
+    "servo_torque_load_pct",
+    "air_pressure_bar",
+    "data_quality_flag",
+    "is_interpolated",
+    "is_outlier",
+    "preprocess_method",
+    "missing_value_flag"
+  ],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "station": {
+      "type": "string",
+      "enum": [
+        "Station_1",
+        "Station_2",
+        "Station_3"
+      ]
+    },
+    "temperature_c": {
+      "type": "number"
+    },
+    "humidity_rh": {
+      "type": "number"
+    },
+    "filter_diff_pressure_bar": {
+      "type": "number"
+    },
+    "servo_torque_load_pct": {
+      "type": "number"
+    },
+    "air_pressure_bar": {
+      "type": "number"
+    },
+    "data_quality_flag": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "missing",
+        "interpolated",
+        "outlier",
+        "questionable",
+        "pending_confirmation"
+      ]
+    },
+    "is_interpolated": {
+      "type": "boolean"
+    },
+    "is_outlier": {
+      "type": "boolean"
+    },
+    "preprocess_method": {
+      "type": "string",
+      "enum": [
+        "raw",
+        "cleaned",
+        "resampled",
+        "aggregated",
+        "smoothed",
+        "pending_confirmation"
+      ]
+    },
+    "missing_value_flag": {
+      "type": "boolean"
+    }
+  }
+}

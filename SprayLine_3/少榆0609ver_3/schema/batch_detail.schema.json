@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "batch detail response",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema only. Template file; unknown values remain null or pending_confirmation.",
+  "required": [
+    "batch"
+  ],
+  "properties": {
+    "batch": {
+      "$ref": "./batch_summary.schema.json"
+    },
+    "time_series_window": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

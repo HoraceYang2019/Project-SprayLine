@@ -1,0 +1,13 @@
+{
+  "event_id": null,
+  "event_time": null,
+  "station": null,
+  "event_type": null,
+  "severity": null,
+  "source_signal": null,
+  "source_value": null,
+  "trigger_rule_id": null,
+  "message": null,
+  "acknowledged_status": null,
+  "template_status": "structure_only_pending_values"
+}

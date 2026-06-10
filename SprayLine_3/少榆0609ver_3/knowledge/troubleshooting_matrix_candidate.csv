@@ -1,0 +1,7 @@
+sep=,
+issue_type,fault_symptom,possible_cause,affected_asset,observed_signal,candidate_response,status
+SprayWidthTooNarrow,噴幅過窄,噴嘴堵塞或濾網壓差異常,Nozzle / FilterMesh,spray_width_mm / filter_diff_pressure_bar,檢查噴嘴與濾網,candidate_pending_confirmation
+FilterPressureHigh,濾網壓差過高,濾網堵塞或材料雜質,FilterMesh,filter_diff_pressure_bar,清潔或更換濾網,candidate_pending_confirmation
+AirPressureAbnormal,空壓壓力異常,空壓供應不穩,AirCompressor,air_pressure_bar,檢查空壓壓力與供氣,candidate_pending_confirmation
+ServoLoadHigh,伺服負載過高,機械手臂負載或軌跡異常,RobotArm,servo_torque_load_pct,檢查機械手臂路徑與負載,candidate_pending_confirmation
+PathErrorHigh,軌跡追隨誤差過大,路徑追隨誤差或定位偏差,RobotArm,path_error_mm,回查機械手臂路徑設定,candidate_pending_confirmation

@@ -1,0 +1,13 @@
+sep=,
+table_or_view,type,zone_id,purpose,primary_key_or_key,important_fields,status,note
+station_config,table,config_zone,站點基本設定與站點名稱,station,station; display_name; station_order; enabled,active_contract,station 命名對齊 Station_1 / Station_2 / Station_3
+sensor_threshold,table,config_zone,感測欄位 normal / warning / alarm 門檻,threshold_id,threshold_id; sensor_name; station; normal_min; normal_max; warning_min; warning_max; alarm_min; alarm_max; unit; threshold_source; status,contract_pending_values,0609ver_2 補 threshold_source；只定義欄位，不填正式門檻值
+batch_run,table,batch_zone,批次生產主紀錄,batch_id,batch_id; station; batch_start_time; batch_end_time; completed_at; status,active_contract,保留 batch_start_time / batch_end_time 以便對應 sensor_1hz
+sensor_1hz,table,time_series_zone,時間序列感測資料,timestamp + station,timestamp; station; temperature_c; humidity_rh; filter_diff_pressure_bar; servo_torque_load_pct; air_pressure_bar; data_quality_flag; is_interpolated; is_outlier; preprocess_method; missing_value_flag,active_contract_enhanced,0609ver_2 補 DataPreprocess 狀態欄位
+batch_summary,table,batch_zone,批次結果摘要與風險計算輸入,batch_id,batch_id; station; completed_at; paint_flow_ml_min; spray_width_mm; path_error_mm; ok_count; ng_count; predicted_ok_rate; predicted_ng_count; quality_score; defect_type; defect_code; risk_level,contract_pending_optional_fields,0609ver_2 補品質 / 預測結果欄位；若非 DataPreprocess 負責，標示由 QC / Prediction / Dashboard service 提供
+pdm_degradation_log,table,pdm_zone,預診斷或劣化事件紀錄,pdm_log_id,pdm_log_id; station; asset_type; signal_name; degradation_level; source_signal; detected_at,contract_pending_logic,正式 PDM 判斷邏輯未定
+alert_event,table,event_zone,Rule 觸發事件紀錄,event_id,event_id; event_time; station; event_type; severity; source_signal; source_value; trigger_rule_id; message; acknowledged_status,active_contract_pending_rules,0609ver_2 補 source_value；對齊余宇承 event rule 需求
+v_latest_pdm_status,view,dashboard_view_zone,各站最新 PDM 狀態,station + asset_type,station; asset_type; degradation_level; detected_at,reference_contract,GitHub 0606 DB view 方向
+v_latest_batch_per_station,view,dashboard_view_zone,各站最新批次狀態,station,station; batch_id; completed_at; risk_level; status,reference_contract,給 Manager / Dashboard 查詢
+v_unacknowledged_alerts,view,dashboard_view_zone,未確認警示,event_id,event_id; station; severity; message; event_time; acknowledged_status,reference_contract,對應未確認警示列表
+sensor_feature_window,derived_output_contract,derived_feature_zone,DataPreprocess 時間窗統計特徵輸出契約,station + sensor_name + window_start_time + window_end_time,rolling_avg; rolling_std; max_value; min_value; change_rate; duration_over_threshold; anomaly_score,proposed_pending_db_confirmation,0609ver_2 新增；目前不是正式 DB v3 表，需 DB 組確認是否儲存

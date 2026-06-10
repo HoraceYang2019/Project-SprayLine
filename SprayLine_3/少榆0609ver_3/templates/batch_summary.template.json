@@ -1,0 +1,20 @@
+{
+  "batch_id": null,
+  "station": null,
+  "completed_at": null,
+  "batch_start_time": null,
+  "batch_end_time": null,
+  "paint_flow_ml_min": null,
+  "spray_width_mm": null,
+  "path_error_mm": null,
+  "ok_count": null,
+  "ng_count": null,
+  "predicted_ok_rate": null,
+  "predicted_ng_count": null,
+  "quality_score": null,
+  "defect_type": null,
+  "defect_code": null,
+  "risk_level": null,
+  "risk_rule_status": null,
+  "template_status": "structure_only_pending_values"
+}

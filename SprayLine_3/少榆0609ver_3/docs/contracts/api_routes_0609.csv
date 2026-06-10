@@ -1,0 +1,13 @@
+sep=,
+api_route,method,service_function,service_class,input_params,response_schema,reads_tables_or_views,writes_table,status,note
+/time-series,GET,get_time_series,TimeSeriesService,station; start_time; end_time; sensor_names,time_series_response.schema.json,sensor_1hz,,contract_only,取代 random demo，正式資料由 DB / API 實作決定
+/time-series/latest,GET,get_latest_sensor_snapshot,TimeSeriesService,station,sensor_snapshot.schema.json,sensor_1hz,,contract_only,Dashboard 最新即時資料
+/time-series/features,GET,get_sensor_feature_window,TimeSeriesService,station; sensor_name; start_time; end_time; aggregation_window,sensor_feature_window.schema.json,sensor_1hz or sensor_feature_window derived output,,proposed_pending_db_confirmation,0609ver_2：支援 rolling_avg / duration_over_threshold 等 derived features；是否落 DB 待確認
+/batches,GET,list_batches_filtered,BatchService,date; risk; start; end; station,batches_filtered.schema.json,batch_run; batch_summary; v_latest_batch_per_station,,draft_0604_discussion_api,對應討論 risk_level API 圖示
+/batches/{batch_id},GET,get_batch_detail,BatchService,batch_id,batch_detail.schema.json,batch_run; batch_summary; sensor_1hz,,contract_only,批次詳細查詢，可關聯 sensor 區間
+/alerts/unacknowledged,GET,list_unacknowledged_alert_events,EventRuleService,station; severity,alert_events.schema.json,v_unacknowledged_alerts; alert_event,,contract_only,未確認警示查詢
+/alerts/{event_id}/ack,POST,acknowledge_alert_event,EventRuleService,event_id; operator_id,alert_acknowledge.schema.json,alert_event,alert_event,contract_only,確認 alert_event
+/rules/evaluate,POST,evaluate_event_rules,EventRuleService,station; timestamp; sensor_payload,event_rule_evaluation.schema.json,sensor_1hz; sensor_threshold; batch_summary,alert_event,contract_pending_rule_logic,只定義接口，不產生正式 rule output
+/troubleshooting/issues,GET,get_troubleshooting_matrix,TroubleshootingService,asset_type; issue_type,troubleshooting_matrix.schema.json,troubleshooting_knowledge,,contract_only,原因對策查詢
+/troubleshooting/issues/{issue_type},GET,get_issue_recommendations,TroubleshootingService,issue_type; station,troubleshooting_issue.schema.json,troubleshooting_knowledge; sensor_1hz; sensor_threshold,,contract_only,回傳可能原因與候選處置，不代表正式 rule
+/dashboard/manager-summary,GET,get_manager_summary,DashboardService,date; station,manager_summary.schema.json,batch_summary; alert_event; v_latest_pdm_status,,contract_mock_ui_pending,對應 GitHub spray-manger 概念，正式 API binding pending

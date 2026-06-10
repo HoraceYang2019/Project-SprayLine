@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "manager dashboard summary response",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema only. Template file; unknown values remain null or pending_confirmation.",
+  "required": [
+    "date",
+    "station",
+    "open_alerts",
+    "data_status"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "station": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "Station_1",
+            "Station_2",
+            "Station_3"
+          ]
+        },
+        {
+          "type": "string",
+          "const": "ALL"
+        }
+      ]
+    },
+    "predicted_ok_rate": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "predicted_ng_count": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "utilization": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "performance": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "open_alerts": {
+      "type": "integer"
+    },
+    "data_status": {
+      "type": "string",
+      "enum": [
+        "mock_reference",
+        "api_pending",
+        "live"
+      ]
+    }
+  }
+}

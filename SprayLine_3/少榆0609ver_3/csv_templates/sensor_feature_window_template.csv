@@ -1,0 +1,2 @@
+sep=,
+station,sensor_name,window_start_time,window_end_time,aggregation_window,rolling_avg,rolling_std,max_value,min_value,change_rate,duration_over_threshold,anomaly_score,unit,feature_status

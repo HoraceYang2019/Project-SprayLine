@@ -1,0 +1,51 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+
+spray:AffectedAsset a owl:Class ;
+    rdfs:label "受影響資產"@zh ;
+    rdfs:subClassOf spray:TroubleshootingConcept .
+
+spray:ObservedSignal a owl:Class ;
+    rdfs:label "觀測欄位"@zh ;
+    rdfs:subClassOf spray:TroubleshootingConcept .
+
+spray:RecommendedResponse a owl:Class ;
+    rdfs:label "建議對策"@zh ;
+    rdfs:subClassOf spray:CandidateResponse .
+
+spray:affectsAsset a owl:ObjectProperty ;
+    rdfs:label "影響資產"@zh ;
+    rdfs:domain spray:FaultCause ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:hasCandidateResponse a owl:ObjectProperty ;
+    rdfs:label "具有候選對策"@zh ;
+    rdfs:domain spray:FaultCause ;
+    rdfs:range spray:CandidateResponse .
+
+spray:hasPossibleCause a owl:ObjectProperty ;
+    rdfs:label "具有可能原因"@zh ;
+    rdfs:domain spray:FaultSymptom ;
+    rdfs:range spray:FaultCause .
+
+spray:observedBySignal a owl:ObjectProperty ;
+    rdfs:label "由訊號觀測"@zh ;
+    rdfs:domain spray:FaultCause ;
+    rdfs:range spray:SensorSignal .
+
+spray:FaultSymptom a owl:Class ;
+    rdfs:label "故障現象"@zh ;
+    rdfs:subClassOf spray:TroubleshootingConcept .
+
+spray:CandidateResponse a owl:Class ;
+    rdfs:label "候選對策"@zh ;
+    rdfs:subClassOf spray:TroubleshootingConcept .
+
+spray:FaultCause a owl:Class ;
+    rdfs:label "可能原因"@zh ;
+    rdfs:subClassOf spray:TroubleshootingConcept .
+
+spray:TroubleshootingConcept a owl:Class ;
+    rdfs:label "原因對策概念"@zh .
+

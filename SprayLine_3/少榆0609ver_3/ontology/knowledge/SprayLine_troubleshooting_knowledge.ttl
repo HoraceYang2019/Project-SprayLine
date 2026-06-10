@@ -1,0 +1,122 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spray:AirPressureAbnormal a spray:FaultSymptom,
+        owl:NamedIndividual ;
+    rdfs:label "空壓壓力異常"@zh ;
+    spray:hasPossibleCause spray:AirSupplyCause .
+
+spray:FilterPressureHigh a spray:FaultSymptom,
+        owl:NamedIndividual ;
+    rdfs:label "濾網壓差過高"@zh ;
+    spray:hasPossibleCause spray:FilterCloggingCause .
+
+spray:PathErrorHigh a spray:FaultSymptom,
+        owl:NamedIndividual ;
+    rdfs:label "軌跡追隨誤差過大"@zh ;
+    spray:hasPossibleCause spray:RobotPathCause .
+
+spray:ServoLoadHigh a spray:FaultSymptom,
+        owl:NamedIndividual ;
+    rdfs:label "伺服負載過高"@zh ;
+    spray:hasPossibleCause spray:RobotLoadCause .
+
+spray:SprayWidthTooNarrow a spray:FaultSymptom,
+        owl:NamedIndividual ;
+    rdfs:label "噴幅過窄"@zh ;
+    spray:hasPossibleCause spray:NozzleCloggingCause .
+
+spray:affectsAsset a owl:ObjectProperty ;
+    rdfs:label "影響資產"@zh ;
+    rdfs:domain spray:FaultCause ;
+    rdfs:range spray:PhysicalAsset .
+
+spray:hasCandidateResponse a owl:ObjectProperty ;
+    rdfs:label "具有候選對策"@zh ;
+    rdfs:domain spray:FaultCause ;
+    rdfs:range spray:CandidateResponse .
+
+spray:hasPossibleCause a owl:ObjectProperty ;
+    rdfs:label "具有可能原因"@zh ;
+    rdfs:domain spray:FaultSymptom ;
+    rdfs:range spray:FaultCause .
+
+spray:observedBySignal a owl:ObjectProperty ;
+    rdfs:label "由訊號觀測"@zh ;
+    rdfs:domain spray:FaultCause ;
+    rdfs:range spray:SensorSignal .
+
+spray:requiresPendingDefinition a owl:DatatypeProperty ;
+    rdfs:label "需要待確認定義"@zh .
+
+spray:AirSupplyCause a spray:FaultCause,
+        owl:NamedIndividual ;
+    rdfs:label "空壓供應不穩"@zh ;
+    spray:affectsAsset spray:AirCompressor ;
+    spray:hasCandidateResponse spray:CheckAirPressure ;
+    spray:observedBySignal spray:air_pressure_bar .
+
+spray:CheckAirPressure a spray:CandidateResponse,
+        owl:NamedIndividual ;
+    rdfs:label "檢查空壓壓力與供氣"@zh ;
+    spray:requiresPendingDefinition true .
+
+spray:CheckNozzleAndFilter a spray:CandidateResponse,
+        owl:NamedIndividual ;
+    rdfs:label "檢查噴嘴與濾網"@zh ;
+    spray:requiresPendingDefinition true .
+
+spray:CheckRobotPath a spray:CandidateResponse,
+        owl:NamedIndividual ;
+    rdfs:label "檢查機械手臂路徑與負載"@zh ;
+    spray:requiresPendingDefinition true .
+
+spray:CleanOrReplaceFilter a spray:CandidateResponse,
+        owl:NamedIndividual ;
+    rdfs:label "清潔或更換濾網"@zh ;
+    spray:requiresPendingDefinition true .
+
+spray:FilterCloggingCause a spray:FaultCause,
+        owl:NamedIndividual ;
+    rdfs:label "濾網堵塞或材料雜質"@zh ;
+    spray:affectsAsset spray:FilterMesh ;
+    spray:hasCandidateResponse spray:CleanOrReplaceFilter ;
+    spray:observedBySignal spray:filter_diff_pressure_bar .
+
+spray:NozzleCloggingCause a spray:FaultCause,
+        owl:NamedIndividual ;
+    rdfs:label "噴嘴堵塞或濾網壓差異常"@zh ;
+    spray:affectsAsset spray:Nozzle ;
+    spray:hasCandidateResponse spray:CheckNozzleAndFilter ;
+    spray:observedBySignal spray:spray_width_mm .
+
+spray:ReviewRobotPath a spray:CandidateResponse,
+        owl:NamedIndividual ;
+    rdfs:label "回查機械手臂路徑設定"@zh ;
+    spray:requiresPendingDefinition true .
+
+spray:RobotLoadCause a spray:FaultCause,
+        owl:NamedIndividual ;
+    rdfs:label "機械手臂負載或軌跡異常"@zh ;
+    spray:affectsAsset spray:RobotArm ;
+    spray:hasCandidateResponse spray:CheckRobotPath ;
+    spray:observedBySignal spray:servo_torque_load_pct .
+
+spray:RobotPathCause a spray:FaultCause,
+        owl:NamedIndividual ;
+    rdfs:label "路徑追隨誤差或定位偏差"@zh ;
+    spray:affectsAsset spray:RobotArm ;
+    spray:hasCandidateResponse spray:ReviewRobotPath ;
+    spray:observedBySignal spray:path_error_mm .
+
+spray:CandidateResponse a owl:Class ;
+    rdfs:label "候選對策"@zh .
+
+spray:FaultSymptom a owl:Class ;
+    rdfs:label "故障現象"@zh .
+
+spray:FaultCause a owl:Class ;
+    rdfs:label "可能原因"@zh .
+

@@ -1,0 +1,2 @@
+sep=,
+event_id,event_time,station,event_type,severity,source_signal,source_value,trigger_rule_id,message,acknowledged_status

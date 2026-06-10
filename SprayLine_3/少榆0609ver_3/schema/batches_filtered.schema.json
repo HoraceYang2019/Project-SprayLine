@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GET /batches response",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Contract schema only. Template file; unknown values remain null or pending_confirmation.",
+  "required": [
+    "total",
+    "rows",
+    "rule_status"
+  ],
+  "properties": {
+    "total": {
+      "type": "integer"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "$ref": "./batch_summary.schema.json"
+      }
+    },
+    "rule_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "confirmed",
+        "pending"
+      ]
+    }
+  }
+}
