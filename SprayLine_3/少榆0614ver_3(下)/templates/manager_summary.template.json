@@ -1,0 +1,18 @@
+{
+  "date": null,
+  "station": null,
+  "total_batches": 0,
+  "ok_batches": 0,
+  "warning_batches": 0,
+  "bad_batches": 0,
+  "total_alerts": 0,
+  "unacknowledged_alerts": 0,
+  "station_breakdown": [],
+  "future_prediction_summary": {
+    "available": false,
+    "pending_db_table": true,
+    "latest_risk_level": null,
+    "latest_predicted_ok_rate": null,
+    "latest_predicted_ng_count": null
+  }
+}

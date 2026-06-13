@@ -1,0 +1,12 @@
+{
+  "prediction_id": null,
+  "batch_id": "BATCH_ID",
+  "station_id": "Station_1",
+  "prediction_time": "ISO_8601_DATETIME",
+  "predicted_ok_rate": null,
+  "predicted_ng_count": null,
+  "quality_score": null,
+  "risk_level": null,
+  "model_input_source": "sensor_1min;sensor_3min;batch_station_status",
+  "created_at": null
+}

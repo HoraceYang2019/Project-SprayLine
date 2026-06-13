@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Alert event",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "batch_id": {
+      "type": "string"
+    },
+    "station_id": {
+      "type": "string"
+    },
+    "sensor_name": {
+      "type": "string"
+    },
+    "measured_value": {
+      "type": "number"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "warning",
+        "fault"
+      ]
+    },
+    "cause": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "message": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "acknowledged_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "batch_id",
+    "station_id",
+    "sensor_name",
+    "measured_value",
+    "state",
+    "ts"
+  ],
+  "additionalProperties": false
+}
