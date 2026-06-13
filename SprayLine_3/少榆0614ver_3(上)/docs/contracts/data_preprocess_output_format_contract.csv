@@ -1,0 +1,5 @@
+sep=,
+dataset,output_format,timestamp_format,station_format,encoding,missing_value_policy,quality_field
+sensor_1min,JSON and CSV,ISO 8601,Station_1~3,UTF-8,forward fill then backward fill,data_quality_flag
+sensor_3min,DB aggregation / JSON response,ISO 8601,Station_1~3,UTF-8,derived from one-minute input,aggregation quality policy not implemented
+batch,JSON and CSV,ISO 8601,Station_1~3,UTF-8,source validation,data_quality_flag

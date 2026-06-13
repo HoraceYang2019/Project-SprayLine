@@ -1,0 +1,86 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+
+spray:ServiceOntology a owl:Ontology .
+
+spray:ServiceConcept a owl:Class ; rdfs:label "服務概念"@zh .
+spray:Service a owl:Class ; rdfs:label "服務"@zh ; rdfs:subClassOf spray:ServiceConcept .
+spray:ShaoYuService a owl:Class ; rdfs:label "少榆端服務邏輯"@zh ; rdfs:subClassOf spray:Service .
+spray:ExternalAPIRequirement a owl:Class ; rdfs:label "外部 DB/API 需求"@zh ; rdfs:subClassOf spray:ServiceConcept .
+spray:ServiceFunction a owl:Class ; rdfs:label "服務功能"@zh ; rdfs:subClassOf spray:ServiceConcept .
+
+spray:belongsToService a owl:ObjectProperty ; rdfs:label "屬於服務"@zh .
+spray:requiresExternalAPI a owl:ObjectProperty ; rdfs:label "需要外部 API"@zh .
+spray:readsTable a owl:ObjectProperty ; rdfs:label "讀取資料表"@zh .
+spray:writesTable a owl:ObjectProperty ; rdfs:label "寫入資料表"@zh .
+spray:producesPayloadFor a owl:ObjectProperty ; rdfs:label "產生資料給"@zh .
+
+spray:FutureService a owl:Class, owl:NamedIndividual, spray:ShaoYuService ;
+    rdfs:label "FutureService"@zh ;
+    rdfs:subClassOf spray:ShaoYuService .
+
+spray:build_future_prediction_payload a owl:Class, owl:NamedIndividual, spray:ServiceFunction ;
+    rdfs:label "build_future_prediction_payload"@zh ;
+    rdfs:subClassOf spray:FutureService ;
+    spray:belongsToService spray:FutureService ;
+    spray:readsTable spray:sensor_1min, spray:sensor_3min, spray:batch_run ;
+    spray:producesPayloadFor spray:REQ_insert_future_prediction_result .
+
+spray:MonitoringWorker a owl:Class, owl:NamedIndividual, spray:ShaoYuService ;
+    rdfs:label "MonitoringWorker"@zh ;
+    rdfs:subClassOf spray:ShaoYuService .
+
+spray:run_monitoring_once a owl:Class, owl:NamedIndividual, spray:ServiceFunction ;
+    rdfs:label "run_monitoring_once"@zh ;
+    rdfs:subClassOf spray:MonitoringWorker ;
+    spray:belongsToService spray:MonitoringWorker ;
+    spray:readsTable spray:sensor_1min, spray:sensor_3min ;
+    spray:producesPayloadFor spray:REQ_insert_alert_event, spray:REQ_upsert_batch_station_status .
+
+spray:EventRuleService a owl:Class, owl:NamedIndividual, spray:ShaoYuService ;
+    rdfs:label "EventRuleService"@zh ;
+    rdfs:subClassOf spray:ShaoYuService .
+
+spray:evaluate_event_rules a owl:Class, owl:NamedIndividual, spray:ServiceFunction ;
+    rdfs:label "evaluate_event_rules"@zh ;
+    rdfs:subClassOf spray:EventRuleService ;
+    spray:belongsToService spray:EventRuleService ;
+    spray:producesPayloadFor spray:REQ_insert_alert_event .
+
+spray:TroubleshootingService a owl:Class, owl:NamedIndividual, spray:ShaoYuService ;
+    rdfs:label "TroubleshootingService"@zh ;
+    rdfs:subClassOf spray:ShaoYuService .
+
+spray:get_troubleshooting_matrix a owl:Class, owl:NamedIndividual, spray:ServiceFunction ;
+    rdfs:label "get_troubleshooting_matrix"@zh ;
+    rdfs:subClassOf spray:TroubleshootingService ;
+    spray:belongsToService spray:TroubleshootingService ;
+    spray:readsTable spray:component_catalog, spray:issue_catalog, spray:solution_catalog, spray:component_issue_solution_map .
+
+spray:get_state_recommendations a owl:Class, owl:NamedIndividual, spray:ServiceFunction ;
+    rdfs:label "get_state_recommendations"@zh ;
+    rdfs:subClassOf spray:TroubleshootingService ;
+    spray:belongsToService spray:TroubleshootingService ;
+    spray:readsTable spray:issue_catalog, spray:solution_catalog, spray:component_catalog, spray:component_issue_solution_map .
+
+spray:REQ_query_sensor_1min a owl:NamedIndividual, spray:ExternalAPIRequirement ;
+    rdfs:label "需要余宇承提供 query sensor_1min"@zh .
+
+spray:REQ_query_sensor_3min a owl:NamedIndividual, spray:ExternalAPIRequirement ;
+    rdfs:label "需要余宇承提供 query sensor_3min"@zh .
+
+spray:REQ_insert_alert_event a owl:NamedIndividual, spray:ExternalAPIRequirement ;
+    rdfs:label "需要余宇承提供 insert alert_event"@zh .
+
+spray:REQ_upsert_batch_station_status a owl:NamedIndividual, spray:ExternalAPIRequirement ;
+    rdfs:label "需要余宇承提供 upsert batch_station_status"@zh .
+
+spray:REQ_insert_future_prediction_result a owl:NamedIndividual, spray:ExternalAPIRequirement ;
+    rdfs:label "需要余宇承提供 insert future_prediction_result"@zh .
+
+spray:MonitoringWorker spray:requiresExternalAPI spray:REQ_query_sensor_1min, spray:REQ_query_sensor_3min,
+    spray:REQ_insert_alert_event, spray:REQ_upsert_batch_station_status .
+
+spray:FutureService spray:requiresExternalAPI spray:REQ_query_sensor_1min, spray:REQ_query_sensor_3min,
+    spray:REQ_insert_future_prediction_result .

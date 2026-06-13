@@ -1,0 +1,10 @@
+sep=,
+requirement_id,needed_by,owner,api_or_function_needed,method_suggestion,input_params,output_or_action,source_tables,target_tables,priority,status,note
+REQ-001,少榆 MonitoringWorker / FutureService,余宇承 DB/API,query sensor_1min by station/time,GET,station_id; start_time; end_time; sensor_names,sensor_1min rows,sensor_1min,,high,pending_yucheng_api,少榆端不直接處理 raw data，需讀已進 DB 的一分鐘資料。
+REQ-002,少榆 MonitoringWorker / FutureService,余宇承 DB/API,query sensor_3min by station/time,GET,station_id; start_time; end_time; sensor_names,sensor_3min rows,sensor_3min,,high,pending_yucheng_api,溫度、濕度、gearbox_temperature 等三分鐘資料來源。
+REQ-003,少榆 MonitoringWorker,余宇承 DB/API,insert alert_event,POST,batch_id; station_id; sensor_name; measured_value; state; ts; message,created alert_event,,alert_event,high,pending_yucheng_api,Timer 判斷異常後需回寫 alert_event。
+REQ-004,少榆 MonitoringWorker,余宇承 DB/API,upsert batch_station_status,POST/PUT,batch_id; station_id; state_field; state_value,updated batch_station_status,,batch_station_status,high,pending_yucheng_api,支援 Manager UI / Engineer UI 看站別狀態。
+REQ-005,少榆 FutureService,余宇承 DB/API,insert future_prediction_result,POST,batch_id; station_id; prediction_time; predicted_ok_rate; predicted_ng_count; quality_score; risk_level; model_input_source,created future_prediction_result,,future_prediction_result,high,pending_new_table,需先新增 future_prediction_result table。
+REQ-006,Manager UI,余宇承 DB/API,query latest future prediction summary,GET,date; station_id; batch_id,predicted_ok_rate; predicted_ng_count; risk_level,future_prediction_result,,medium,pending_new_table,Manager UI 顯示簡潔預測摘要。
+REQ-007,Engineer UI,余宇承 DB/API,query troubleshooting detail by state,GET,state; station_id,possible_cause; affected_asset; countermeasure,issue_catalog; solution_catalog; component_issue_solution_map,,medium,pending_yucheng_api,Engineer UI 顯示完整原因對策。
+REQ-008,Engineer UI / Manager UI,余宇承 DB/API,ack alert_event,POST/PUT,event_id; operator_id,acknowledged_at,,alert_event,medium,pending_yucheng_api,UI 確認警示後更新 DB。

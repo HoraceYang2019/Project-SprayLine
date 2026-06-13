@@ -1,0 +1,8 @@
+sep=,
+item,owner,shaoyu_action,not_shaoyu_action,status
+Future Prediction Service,少榆,建立 payload、risk_level、schema/template，等待 DB table 後串接,不建立正式 DB API server,in_scope
+Monitoring Worker / Timer,少榆,定期讀取 sensor_1min/sensor_3min，產生 alert_event 與 batch_station_status 更新需求,不取代 DB trigger 或正式 API endpoint,in_scope
+Troubleshooting Logic,少榆,以 state 對應 possible cause / countermeasure，供 Engineer UI 使用,不負責 Engineer UI 前端畫面,in_scope
+Formal API Server,余宇承 / DB API端,提出少榆需要的 API / table 需求,不由少榆架設 FastAPI / uvicorn 正式後端,out_of_scope
+Database Table,余宇承 / DB API端,提出 future_prediction_result 與 data_quality_flag 需求,不直接修改正式 GitHub DB schema 作為最終版,out_of_scope
+Manager UI,UI組員,提供摘要欄位需求：prediction summary、risk_level、alert count,不負責畫面實作,out_of_scope

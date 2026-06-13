@@ -1,0 +1,28 @@
+sep=,
+input_field,target_table,db_field,unit_or_format,persistence,note
+timestamp,sensor_1min,ts,ISO 8601,stored,每一分鐘資料時間
+station,sensor_1min,station_id,Station_1~3,stored,站點
+batch_id,sensor_1min,batch_id,string,stored,批次關聯
+film_thickness_um,sensor_1min,film_thickness_um,um,stored,膜厚
+paint_flow_ml_min,sensor_1min,paint_flow_ml_min,ml/min,stored,塗料流量
+nozzle_roll,sensor_1min,nozzle_roll,degree,stored,噴嘴翻滾角
+filter_diff_pressure_bar,sensor_1min,filter_diff_pressure_bar,bar,stored,濾網壓差
+filter_inflow_ml_min,sensor_1min,filter_inflow_ml_min,ml/min,stored,濾網入口流量
+filter_outflow_ml_min,sensor_1min,filter_outflow_ml_min,ml/min,stored,濾網出口流量
+pump_current_a,sensor_1min,pump_current_a,A,stored,上游資料庫保留欄位；目前未建立對應實體資產
+air_pressure_bar,sensor_1min,air_pressure_bar,bar,stored,空氣壓力
+spray_width_mm,sensor_1min,spray_width_mm,mm,stored,噴幅寬度
+servo_torque_load_pct,sensor_1min,servo_torque_load_pct,%,stored,伺服負載
+path_error_mm,sensor_1min,path_error_mm,mm,stored,軌跡追隨誤差
+vibration_g,sensor_1min,vibration_g,G,stored,振動
+tcp_x_mm,sensor_1min,tcp_x_mm,mm,stored,TCP X
+tcp_y_mm,sensor_1min,tcp_y_mm,mm,stored,TCP Y
+tcp_z_mm,sensor_1min,tcp_z_mm,mm,stored,TCP Z
+speed_mm_s,sensor_1min,speed_mm_s,mm/s,stored,移動速度
+timestamp,sensor_3min,ts,ISO 8601,stored,三分鐘聚合時間
+station,sensor_3min,station_id,Station_1~3,stored,站點
+batch_id,sensor_3min,batch_id,string,stored,選填批次關聯
+gearbox_temperature_c,sensor_3min,gearbox_temperature_c,degC,stored,減速機溫度
+temperature_c,sensor_3min,temperature_c,degC,stored,三分鐘平均環境溫度
+humidity_rh,sensor_3min,humidity_rh,%RH,stored,三分鐘平均環境濕度
+data_quality_flag,DataPreprocess output,sensor_1min; sensor_3min,normal | interpolated,requested_in_db_api,由資料前處理標示；建議 DB/API 在 sensor_1min 與 sensor_3min 存放。

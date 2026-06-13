@@ -1,0 +1,11 @@
+sep=,
+service_class,service_function,owner,input,output_schema,reads,writes_or_payload,implementation_status,note
+FutureService,build_future_prediction_payload,少榆,batch_id; station_id; prediction_time; predicted_ok_rate; predicted_ng_count; quality_score; model_input_source,future_prediction_result.request.schema.json,sensor_1min; sensor_3min; batch_run,future_prediction_result payload,implemented_payload_only,正式寫回 DB 等 future_prediction_result table/API。
+MonitoringWorker,run_monitoring_once,少榆,station; lookback_minutes,event_rule_evaluation.schema.json,sensor_1min; sensor_3min; rules/sensor_thresholds.json,alert_event; batch_station_status payload/local_test_write,implemented_local_test,正式整合時改呼叫余宇承 DB/API。
+EventRuleService,evaluate_event_rules,少榆,station; batch_id; timestamp; sensor_payload; data_quality_flag,event_rule_evaluation.schema.json,rules/sensor_thresholds.json,alert_event payload/local_test_write,implemented_local_test,interpolated data 預設不觸發事件。
+TroubleshootingService,get_troubleshooting_matrix,少榆,asset_type; state,troubleshooting_matrix.schema.json,component_catalog; issue_catalog; solution_catalog; component_issue_solution_map,,implemented_logic,對外使用 state；DB 內部仍可能保留 issue_id。
+TroubleshootingService,get_state_recommendations,少榆,state; station,troubleshooting_state.schema.json,issue_catalog; solution_catalog; component_catalog; component_issue_solution_map,,implemented_logic,主要給 Engineer UI 看完整原因對策。
+ExternalDBAPI,query_sensor_1min,余宇承 DB/API,station_id; start_time; end_time,pending,sensor_1min,,required,少榆 MonitoringWorker / FutureService 需要。
+ExternalDBAPI,query_sensor_3min,余宇承 DB/API,station_id; start_time; end_time,pending,sensor_3min,,required,少榆 MonitoringWorker / FutureService 需要。
+ExternalDBAPI,insert_alert_event,余宇承 DB/API,alert_event payload,alert_event.schema.json,,alert_event,required,少榆產生 payload 後需回寫。
+ExternalDBAPI,insert_future_prediction_result,余宇承 DB/API,future_prediction_result payload,future_prediction_result.request.schema.json,,future_prediction_result,required_pending_table,需先新增 future_prediction_result table。

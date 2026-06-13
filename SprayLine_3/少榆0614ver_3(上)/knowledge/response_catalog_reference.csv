@@ -1,0 +1,21 @@
+sep=,
+response_id,description_zh,downtime_estimate_min,skill_required
+REPLACE_FILTER,更換濾網（壓差超過門檻觸發）,30,operator
+LUBRICATE_SERVO,定期潤滑伺服馬達與減速機,20,technician
+REPLACE_SERVO,更換伺服馬達或減速機總成,120,engineer
+RECALIBRATE_TCP,重新校正工具中心點（TCP）,45,technician
+TIGHTEN_BASE,緊固基座螺栓，檢查並更換防震墊,15,operator
+CLEAN_NOZZLE,拆卸清洗噴嘴，去除漆渣結塊,20,operator
+REPLACE_NOZZLE,更換磨損噴嘴,25,technician
+RECALIBRATE_NOZZLE_ANGLE,重新校正噴嘴翻滾角（roll angle）,30,technician
+BACKWASH_FILTER,反洗濾網管路，臨時恢復流量,20,technician
+INSTALL_DRYER,加裝或更換空氣乾燥機與油水分離器,180,engineer
+DRAIN_CONDENSATE,排放壓縮空氣系統冷凝水,5,operator
+CALIBRATE_PRESSURE_VALVE,校正壓力調節閥，恢復穩定壓力,30,technician
+ADJUST_TCP_Z,校正噴嘴與工件距離（TCP Z 軸偏移）,20,technician
+ADJUST_FLOW_PRESSURE,調整塗料流量與空壓比例至目標值,10,operator
+CCD_PATH_CORRECTION,啟用 CCD 視覺系統進行即時路徑補正,0,engineer
+ADJUST_SPEED_FLOW,調整噴塗移動速度與塗料流量,10,operator
+CALIBRATE_ENV_CONTROL,校正噴塗室溫濕度控制系統,60,engineer
+FORCED_COOLDOWN,強制降速並加強散熱，等待減速機降溫,30,operator
+EMERGENCY_STOP,緊急停機，排查異常振動源,60,engineer

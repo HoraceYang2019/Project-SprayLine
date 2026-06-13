@@ -1,0 +1,12 @@
+sep=,
+requested_table,field_name,type,required,description,request_status
+future_prediction_result,prediction_id,UUID / VARCHAR,recommended,預測結果唯一識別碼,pending_db_api_update
+future_prediction_result,batch_id,VARCHAR(32),yes,對應 batch_run.batch_id,pending_db_api_update
+future_prediction_result,station_id,VARCHAR(32),optional,若預測到站別層級則填入 Station_1~3,pending_db_api_update
+future_prediction_result,prediction_time,TIMESTAMPTZ,yes,預測產生時間,pending_db_api_update
+future_prediction_result,predicted_ok_rate,REAL,optional,預測良率,pending_db_api_update
+future_prediction_result,predicted_ng_count,INT,optional,預測 NG 數,pending_db_api_update
+future_prediction_result,quality_score,REAL,optional,品質分數,pending_db_api_update
+future_prediction_result,risk_level,VARCHAR(8),optional,low / medium / high,pending_db_api_update
+future_prediction_result,model_input_source,TEXT,optional,記錄輸入來源，例如 sensor_1min; sensor_3min; batch_station_status,pending_db_api_update
+future_prediction_result,created_at,TIMESTAMPTZ,recommended,寫入時間,pending_db_api_update

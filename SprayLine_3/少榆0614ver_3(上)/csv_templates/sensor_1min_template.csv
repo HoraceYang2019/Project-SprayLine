@@ -1,0 +1,3 @@
+sep=,
+ts,batch_id,station_id,film_thickness_um,paint_flow_ml_min,nozzle_roll,filter_diff_pressure_bar,filter_inflow_ml_min,filter_outflow_ml_min,pump_current_a,air_pressure_bar,spray_width_mm,servo_torque_load_pct,path_error_mm,vibration_g,tcp_x_mm,tcp_y_mm,tcp_z_mm,speed_mm_s,data_quality_flag
+,,,,,,,,,,,,,,,,,,,
