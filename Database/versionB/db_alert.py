@@ -237,12 +237,33 @@ def get_responses_for_cause(conn, cause_id: str) -> list[dict]:
         response_id, description_zh, downtime_estimate_min,
         skill_required, occurrence_count
     """
+    mapped_sql = """
+        SELECT
+            rc.response_id,
+            rc.description_zh,
+            rc.downtime_estimate_min,
+            rc.skill_required,
+            crm.priority,
+            crm.note,
+            NULL::bigint AS occurrence_count
+        FROM   cause_response_map crm
+        JOIN   response_catalog   rc ON rc.response_id = crm.response_id
+        WHERE  crm.cause_id = %s
+        ORDER  BY crm.priority ASC,
+                  rc.downtime_estimate_min ASC NULLS LAST
+    """
+    mapped = _fetch(conn, mapped_sql, (cause_id,))
+    if mapped:
+        return mapped
+
     sql = """
         SELECT
             rc.response_id,
             rc.description_zh,
             rc.downtime_estimate_min,
             rc.skill_required,
+            NULL::int AS priority,
+            NULL::text AS note,
             COUNT(DISTINCT ae.event_id) AS occurrence_count
         FROM   response_catalog    rc
         JOIN   alert_response_link arl ON rc.response_id  = arl.response_id

@@ -129,6 +129,43 @@ def get_issues_for_component(conn, component_id: str) -> list[dict]:
     return _fetch(conn, sql, (component_id,))
 
 
+def get_issues_by_state(conn, component_id: str, state: str) -> list[dict]:
+    """Map component state to likely issues for troubleshooting services.
+
+    The DB stores concrete issue_id values, while some services expose
+    coarse states such as ok, warning, and fault. This helper provides a
+    stable bridge without changing issue_catalog.
+    """
+    if state == "ok":
+        return []
+
+    if state == "fault":
+        severities = ("high", "medium")
+    elif state == "warning":
+        severities = ("medium", "low")
+    else:
+        severities = ("high", "medium", "low")
+
+    sql = """
+        SELECT DISTINCT ic.issue_id,
+               ic.display_name,
+               ic.description,
+               ic.severity
+        FROM   component_issue_solution_map m
+        JOIN   issue_catalog                ic ON ic.issue_id = m.issue_id
+        WHERE  m.component_id = %s
+          AND  ic.severity = ANY(%s)
+        ORDER  BY
+            CASE ic.severity
+                WHEN 'high' THEN 1
+                WHEN 'medium' THEN 2
+                ELSE 3
+            END,
+            ic.issue_id
+    """
+    return _fetch(conn, sql, (component_id, list(severities)))
+
+
 def get_cause_info(conn, cause_id: str) -> dict | None:
     """取得單筆故障原因的詳細資訊。
 

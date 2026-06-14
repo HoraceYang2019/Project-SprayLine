@@ -6,7 +6,12 @@
 -- ============================================================
 
 -- 清除舊表（重新建立時使用）
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 DROP TABLE IF EXISTS component_issue_solution_map CASCADE;
+DROP TABLE IF EXISTS cause_response_map CASCADE;
+DROP TABLE IF EXISTS future_prediction_result CASCADE;
+DROP TABLE IF EXISTS sensor_threshold CASCADE;
 DROP TABLE IF EXISTS solution_catalog  CASCADE;
 DROP TABLE IF EXISTS issue_catalog     CASCADE;
 DROP TABLE IF EXISTS component_catalog CASCADE;
@@ -55,6 +60,25 @@ CREATE TABLE response_catalog (
     created_at            TIMESTAMPTZ  NOT NULL DEFAULT now()
 );
 
+CREATE TABLE sensor_threshold (
+    sensor_name    VARCHAR(64)  NOT NULL,
+    threshold_type VARCHAR(16)  NOT NULL
+                   CHECK (threshold_type IN ('warning','fault','warning_lo','warning_hi','fault_lo','fault_hi')),
+    value          REAL         NOT NULL,
+    updated_at     TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    updated_by     VARCHAR(64),
+    note           TEXT,
+    PRIMARY KEY (sensor_name, threshold_type)
+);
+
+CREATE TABLE cause_response_map (
+    cause_id    VARCHAR(32) NOT NULL REFERENCES cause_catalog(cause_id),
+    response_id VARCHAR(32) NOT NULL REFERENCES response_catalog(response_id),
+    priority    INT         NOT NULL DEFAULT 0,
+    note        TEXT,
+    PRIMARY KEY (cause_id, response_id)
+);
+
 -- ============================================================
 -- ZONE 3: 感測資料
 -- ============================================================
@@ -79,6 +103,8 @@ CREATE TABLE sensor_1min (
     tcp_y_mm                 REAL,
     tcp_z_mm                 REAL,
     speed_mm_s               REAL,
+    data_quality_flag        VARCHAR(20) NOT NULL DEFAULT 'normal'
+                              CHECK (data_quality_flag IN ('normal','interpolated','outlier')),
     PRIMARY KEY (row_id, ts)
 );
 
@@ -95,6 +121,8 @@ CREATE TABLE sensor_3min (
     gearbox_temperature_c REAL,
     temperature_c         REAL,
     humidity_rh           REAL,
+    data_quality_flag     VARCHAR(20) NOT NULL DEFAULT 'normal'
+                          CHECK (data_quality_flag IN ('normal','interpolated','outlier')),
     PRIMARY KEY (row_id, ts)
 );
 
@@ -157,6 +185,24 @@ CREATE TABLE alert_response_link (
     operator_id VARCHAR(64),
     PRIMARY KEY (alert_id, response_id)
 );
+
+CREATE TABLE future_prediction_result (
+    prediction_id        UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
+    batch_id             VARCHAR(32)  NOT NULL REFERENCES batch_run(batch_id),
+    station_id           VARCHAR(32),
+    prediction_time      TIMESTAMPTZ  NOT NULL,
+    predicted_ok_rate    REAL,
+    predicted_ng_count   INT,
+    quality_score        REAL,
+    risk_level           VARCHAR(8)   CHECK (risk_level IN ('low','medium','high')),
+    model_input_source   TEXT,
+    created_at           TIMESTAMPTZ  NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_future_prediction_time
+    ON future_prediction_result (prediction_time DESC);
+CREATE INDEX idx_future_prediction_station
+    ON future_prediction_result (station_id, prediction_time DESC);
 
 -- ============================================================
 -- ZONE 5: 元件問題解方知識庫
@@ -331,3 +377,43 @@ INSERT INTO component_issue_solution_map (component_id, issue_id, solution_id, r
   ('QUALITY',   'FILM_THICKNESS_VARIATION', 'ADJUST_FLOW_PRESSURE',  1, 70.0),
   ('QUALITY',   'SURFACE_DEFECT',           'ADJUST_FLOW_PRESSURE',  1, 65.0),
   ('QUALITY',   'SURFACE_DEFECT',           'CALIBRATE_ENV_CONTROL', 2, 55.0);
+
+-- ============================================================
+-- SEED DATA: sensor_threshold
+-- ============================================================
+INSERT INTO sensor_threshold (sensor_name, threshold_type, value, updated_by, note) VALUES
+  ('filter_diff_pressure_bar', 'warning',    0.30, 'setup_db', 'Filter clog warning threshold'),
+  ('filter_diff_pressure_bar', 'fault',      0.50, 'setup_db', 'Filter clog fault threshold'),
+  ('servo_torque_load_pct',    'warning',   60.00, 'setup_db', 'Robot arm load warning threshold'),
+  ('servo_torque_load_pct',    'fault',     80.00, 'setup_db', 'Robot arm load fault threshold'),
+  ('film_thickness_um',        'warning_lo',14.50, 'setup_db', 'Film thickness lower warning'),
+  ('film_thickness_um',        'warning_hi',15.50, 'setup_db', 'Film thickness upper warning'),
+  ('film_thickness_um',        'fault_lo',  14.00, 'setup_db', 'Film thickness lower fault'),
+  ('film_thickness_um',        'fault_hi',  16.00, 'setup_db', 'Film thickness upper fault'),
+  ('air_pressure_bar',         'warning_lo', 2.70, 'setup_db', 'Air pressure lower warning aligned with generated data'),
+  ('air_pressure_bar',         'warning_hi', 3.80, 'setup_db', 'Air pressure upper warning aligned with generated data'),
+  ('spray_width_mm',           'warning_lo',60.00, 'setup_db', 'Spray width lower warning aligned with Station_3'),
+  ('spray_width_mm',           'warning_hi',140.0, 'setup_db', 'Spray width upper warning aligned with Station_1');
+
+-- ============================================================
+-- SEED DATA: cause_response_map
+-- ============================================================
+INSERT INTO cause_response_map (cause_id, response_id, priority, note) VALUES
+  ('FILTER_CLOG',           'REPLACE_FILTER',            1, 'Primary response for clogged filter'),
+  ('FILTER_CLOG',           'BACKWASH_FILTER',           2, 'Fallback response for clogged filter'),
+  ('FILTER_DAMAGE',         'REPLACE_FILTER',            1, 'Primary response for damaged filter'),
+  ('SERVO_WEAR',            'LUBRICATE_SERVO',           1, 'Primary response for servo wear'),
+  ('SERVO_WEAR',            'REPLACE_SERVO',             2, 'Escalation for servo wear'),
+  ('NOZZLE_CLOG',           'CLEAN_NOZZLE',              1, 'Primary response for nozzle clog'),
+  ('NOZZLE_CLOG',           'REPLACE_NOZZLE',            2, 'Escalation for nozzle clog'),
+  ('NOZZLE_WEAR',           'REPLACE_NOZZLE',            1, 'Primary response for nozzle wear'),
+  ('FLOW_UNSTABLE',         'ADJUST_FLOW_PRESSURE',      1, 'Primary response for unstable flow'),
+  ('THICKNESS_DRIFT',       'ADJUST_SPEED_FLOW',         1, 'Primary response for thickness drift'),
+  ('VIBRATION_HIGH',        'TIGHTEN_BASE',              1, 'Primary response for high vibration'),
+  ('PATH_ERROR_HIGH',       'RECALIBRATE_TCP',           1, 'Primary response for path error'),
+  ('GEARBOX_OVERHEAT',      'FORCED_COOLDOWN',           1, 'Primary response for gearbox overheat'),
+  ('AIR_PRESSURE_UNSTABLE', 'CALIBRATE_PRESSURE_VALVE',  1, 'Primary response for unstable pressure'),
+  ('AIR_MOISTURE_HIGH',     'DRAIN_CONDENSATE',          1, 'Quick response for air moisture'),
+  ('AIR_MOISTURE_HIGH',     'INSTALL_DRYER',             2, 'Engineering response for recurring moisture'),
+  ('ENV_TEMP_OUT',          'CALIBRATE_ENV_CONTROL',     1, 'Primary response for environment temperature'),
+  ('ENV_HUMID_OUT',         'CALIBRATE_ENV_CONTROL',     1, 'Primary response for environment humidity');

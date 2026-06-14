@@ -64,6 +64,9 @@ from db_sensor import (
     get_latest_sensor_3min,
     get_sensor_3min_series,
     insert_sensor_readings_batch,
+    insert_sensor_3min_readings_batch,
+    query_sensor_1min,
+    query_sensor_3min,
 )
 
 # ── 站點狀態快照 ──────────────────────────────────────────────────────────────
@@ -96,15 +99,26 @@ from db_knowledge import (
     get_single_threshold,
     get_solutions_for_issue,
     get_issues_for_component,
+    get_issues_by_state,
     get_cause_info,
     get_response_info,
     get_all_components,
+)
+
+# ── 未來預測 ─────────────────────────────────────────────────────────────────
+from db_future import (
+    insert_future_prediction_result,
+    get_latest_future_prediction,
+    get_future_predictions_by_range,
+    get_future_prediction_summary,
 )
 
 # ── 複合查詢 ──────────────────────────────────────────────────────────────────
 from db_composite import (
     get_station_dashboard_snapshot,
     diagnose_component,
+    get_batch_detail,
+    get_manager_summary,
 )
 
 

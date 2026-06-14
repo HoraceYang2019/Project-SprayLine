@@ -44,6 +44,8 @@ def get_sensor_1min_series(
     conn,
     station_id: str,
     batch_id: str | None = None,
+    ts_start: datetime | None = None,
+    ts_end: datetime | None = None,
     hours: float = 1.0,
 ) -> list[dict]:
     """取得指定站點最近 N 小時（或指定批次）的分鐘感測時間序列。
@@ -67,6 +69,15 @@ def get_sensor_1min_series(
             ORDER  BY ts ASC
         """
         return _fetch(conn, sql, (station_id, batch_id))
+    elif ts_start and ts_end:
+        sql = """
+            SELECT *
+            FROM   sensor_1min
+            WHERE  station_id = %s
+              AND  ts BETWEEN %s AND %s
+            ORDER  BY ts ASC
+        """
+        return _fetch(conn, sql, (station_id, ts_start, ts_end))
     else:
         sql = """
             SELECT *
@@ -188,8 +199,7 @@ def get_sensor_3min_series(
     """
     if ts_start and ts_end:
         sql = """
-            SELECT ts, station_id,
-                   gearbox_temperature_c, temperature_c, humidity_rh
+            SELECT *
             FROM   sensor_3min
             WHERE  station_id = %s
               AND  ts BETWEEN %s AND %s
@@ -198,8 +208,7 @@ def get_sensor_3min_series(
         return _fetch(conn, sql, (station_id, ts_start, ts_end))
     else:
         sql = """
-            SELECT ts, station_id,
-                   gearbox_temperature_c, temperature_c, humidity_rh
+            SELECT *
             FROM   sensor_3min
             WHERE  station_id = %s
               AND  ts >= NOW() - (%s || ' hours')::INTERVAL
@@ -257,9 +266,53 @@ def insert_sensor_readings_batch(conn, readings: list[dict]) -> None:
         "tcp_x_mm", "tcp_y_mm", "tcp_z_mm", "speed_mm_s",
         "data_quality_flag",
     ]
-    rows = [tuple(r.get(c) for c in cols) for r in readings]
+    rows = [
+        tuple(r.get(c, "normal") if c == "data_quality_flag" else r.get(c) for c in cols)
+        for r in readings
+    ]
     col_str = ", ".join(cols)
     sql = f"INSERT INTO sensor_1min ({col_str}) VALUES %s"
 
     with conn.cursor() as cur:
         psycopg2.extras.execute_values(cur, sql, rows)
+
+
+def insert_sensor_3min_readings_batch(conn, readings: list[dict]) -> None:
+    """Batch insert environment and gearbox readings into sensor_3min."""
+    if not readings:
+        return
+
+    cols = [
+        "ts", "batch_id", "station_id",
+        "gearbox_temperature_c", "temperature_c", "humidity_rh",
+        "data_quality_flag",
+    ]
+    rows = [
+        tuple(r.get(c, "normal") if c == "data_quality_flag" else r.get(c) for c in cols)
+        for r in readings
+    ]
+    col_str = ", ".join(cols)
+    sql = f"INSERT INTO sensor_3min ({col_str}) VALUES %s"
+
+    with conn.cursor() as cur:
+        psycopg2.extras.execute_values(cur, sql, rows)
+
+
+def query_sensor_1min(conn, station_id: str, start_time: datetime, end_time: datetime) -> list[dict]:
+    """Stable service wrapper for sensor_1min time-window reads."""
+    return get_sensor_1min_series(
+        conn,
+        station_id=station_id,
+        ts_start=start_time,
+        ts_end=end_time,
+    )
+
+
+def query_sensor_3min(conn, station_id: str, start_time: datetime, end_time: datetime) -> list[dict]:
+    """Stable service wrapper for sensor_3min time-window reads."""
+    return get_sensor_3min_series(
+        conn,
+        station_id=station_id,
+        ts_start=start_time,
+        ts_end=end_time,
+    )
