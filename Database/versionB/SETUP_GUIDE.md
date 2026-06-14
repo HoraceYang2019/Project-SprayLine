@@ -13,10 +13,11 @@
 4. [生成一週假資料](#4-生成一週假資料)
 5. [連接 Service 層](#5-連接-service-層)
 6. [使用 Python Query 函式庫](#6-使用-python-query-函式庫)
-7. [Schema 升版（Migration）](#7-schema-升版migration)
-8. [資料表結構速查](#8-資料表結構速查)
-9. [⚠️ 已知不一致與注意事項](#9-️-已知不一致與注意事項)
-10. [常見問題排除](#10-常見問題排除)
+7. [WebServices / UI 整合規格（Patch Spec）](#7-webservices--ui-整合規格patch-spec)
+8. [Schema 升版（Migration）](#8-schema-升版migration)
+9. [資料表結構速查](#9-資料表結構速查)
+10. [⚠️ 已知不一致與注意事項](#10-️-已知不一致與注意事項)
+11. [常見問題排除](#11-常見問題排除)
 
 ---
 
@@ -253,22 +254,43 @@ curl -X POST http://localhost:8000/api/time-series/ui/summary \
 
 ## 6. 使用 Python Query 函式庫
 
-`Database/versionB/sprayline_db_queries.py` 封裝了資料庫所有讀寫操作，共 **33 支函式**，
+`Database/versionB/sprayline_db_queries.py` 封裝了資料庫所有讀寫操作，共 **42 支函式**，
 讓推理引擎、DataPreprocess、Dashboard 等模組不需自行撰寫 SQL。
 
-### 6-1. 引入與連線
+### 6-1. 模組結構
+
+函式庫已依功能拆分為 7 個獨立模組，`sprayline_db_queries.py` 保留為統一入口（全部 re-export），現有呼叫端不需修改 import 路徑。
+
+```
+Database/versionB/
+├── db_connection.py      → 連線工具（get_connection, _fetch, _fetchone）
+├── db_batch.py           → 批次管理（7 支）
+├── db_sensor.py          → 感測資料（7 支）
+├── db_status.py          → 站點狀態快照（3 支）
+├── db_alert.py           → 告警事件 + UI 串聯（13 支）
+├── db_knowledge.py       → 門檻值 + 知識庫（7 支）
+├── db_composite.py       → 複合查詢（2 支）
+└── sprayline_db_queries.py → 統一入口（全部 re-export，維持向後相容）
+```
+
+### 6-2. 引入與連線
 
 ```python
+# 舊路徑維持不變（統一入口）
 from sprayline_db_queries import get_connection, get_latest_batches, insert_batch_run
+
+# 或直接引入特定模組
+from db_alert import get_alert_ui_card, get_responses_for_cause
+from db_batch import get_latest_batches
 
 conn = get_connection()                          # 讀取 DB_* 環境變數
 conn = get_connection(host="192.168.1.10", password="secret")  # 覆蓋連線參數
 conn.close()
 ```
 
-### 6-2. 函式總覽
+### 6-3. 函式總覽
 
-#### 讀取函式（16 支）
+#### 批次管理（db_batch.py，7 支）
 
 | 函式 | 說明 |
 |------|------|
@@ -277,20 +299,53 @@ conn.close()
 | `get_running_batches(conn)` | 所有進行中批次 |
 | `get_batches_by_date_range(conn, start, end, status)` | 日期區間 + 狀態篩選 |
 | `get_latest_completed_batch(conn, station_id)` | 最新已完成批次 |
+| `insert_batch_run(conn, batch_id, start_time, ...)` | 建立新批次 |
+| `update_batch_status(conn, batch_id, status, ended_time)` | 更新批次狀態與結束時間 |
+
+#### 感測資料（db_sensor.py，7 支）
+
+| 函式 | 說明 |
+|------|------|
 | `get_latest_sensor_1min(conn, station_id)` | 最新一筆感測值 |
 | `get_sensor_1min_series(conn, station_id, batch_id, hours)` | 時間序列（批次或小時）|
 | `get_pdm_trend(conn, station_id, hours)` | PdM 壓差 + 伺服折線圖資料 |
 | `get_batch_sensor_aggregates(conn, batch_id, station_id)` | 批次聚合統計（AVG/MAX/STDDEV）|
 | `get_latest_sensor_3min(conn, station_id)` | 最新環境感測值 |
 | `get_sensor_3min_series(conn, station_id, ts_start, ts_end, hours)` | 環境感測時間序列 |
+| `insert_sensor_readings_batch(conn, readings)` | 批次寫入 sensor_1min（含 data_quality_flag）|
+
+#### 站點狀態（db_status.py，3 支）
+
+| 函式 | 說明 |
+|------|------|
 | `get_batch_station_status(conn, batch_id, station_id)` | 批次診斷快照 |
 | `get_latest_station_status(conn, station_id)` | 最新站點狀態 |
+| `upsert_batch_station_status(conn, record)` | 寫入/更新批次站點診斷快照 |
+
+#### 告警事件（db_alert.py，13 支）
+
+| 函式 | 說明 |
+|------|------|
 | `get_unacknowledged_alerts(conn, station_id, limit)` | 未確認告警 |
 | `get_alert_history(conn, station_id, days, limit)` | 歷史告警 |
 | `get_alerts_by_filters(conn, station_id, state, acknowledged, days, limit)` | 複合條件告警查詢 |
 | `get_alert_detail(conn, event_id)` | 告警 + 原因 + 應對措施 |
 | `get_alert_causes(conn, event_id)` | 告警關聯原因清單 |
 | `get_alert_responses(conn, event_id)` | 告警關聯應對措施清單 |
+| `get_responses_for_cause(conn, cause_id)` | ★ 依故障原因查詢建議解方（含停機時間、技能需求） |
+| `get_alert_ui_card(conn, event_id)` | ★ UI 告警完整卡片（整合 cause + response + 聚合派生欄位） |
+| `insert_alert_event(conn, ...)` | 寫入告警，回傳 event_id |
+| `link_alert_cause(conn, event_id, cause_id, is_primary)` | 關聯告警 ↔ 原因 |
+| `link_alert_response(conn, event_id, response_id, ...)` | 關聯告警 ↔ 應對措施 |
+| `acknowledge_alert(conn, event_id)` | 單筆確認告警 |
+| `acknowledge_alerts_batch(conn, event_ids)` | 批量確認告警，回傳更新筆數 |
+
+> ★ 為本次新增函式，對應 UI 告警卡片的 cause→response+停機時間+負責人 串聯需求。
+
+#### 門檻值 + 知識庫（db_knowledge.py，7 支）
+
+| 函式 | 說明 |
+|------|------|
 | `get_sensor_thresholds(conn, sensor_name)` | 門檻值清單 |
 | `get_single_threshold(conn, sensor_name, threshold_type)` | 單一門檻值（純數值）|
 | `get_solutions_for_issue(conn, component_id, issue_id)` | 排序解方清單 |
@@ -298,26 +353,17 @@ conn.close()
 | `get_cause_info(conn, cause_id)` | 原因詳情 |
 | `get_response_info(conn, response_id)` | 應對措施詳情 |
 | `get_all_components(conn)` | 元件主檔清單 |
-| `get_station_dashboard_snapshot(conn, station_id)` | 儀表板快照（感測 + 狀態 + 告警數）|
-| `diagnose_component(conn, component_id, issue_id)` | 診斷 + 推薦解方 |
 
-#### 寫入函式（8 支）
+#### 複合查詢（db_composite.py，2 支）
 
 | 函式 | 說明 |
 |------|------|
-| `insert_batch_run(conn, batch_id, start_time, ...)` | 建立新批次 |
-| `update_batch_status(conn, batch_id, status, ended_time)` | 更新批次狀態與結束時間 |
-| `insert_sensor_readings_batch(conn, readings)` | 批次寫入 sensor_1min（含 data_quality_flag）|
-| `upsert_batch_station_status(conn, record)` | 寫入/更新批次站點診斷快照 |
-| `insert_alert_event(conn, ...)` | 寫入告警，回傳 event_id |
-| `link_alert_cause(conn, event_id, cause_id, is_primary)` | 關聯告警 ↔ 原因 |
-| `link_alert_response(conn, event_id, response_id, ...)` | 關聯告警 ↔ 應對措施 |
-| `acknowledge_alert(conn, event_id)` | 單筆確認告警 |
-| `acknowledge_alerts_batch(conn, event_ids)` | 批量確認告警，回傳更新筆數 |
+| `get_station_dashboard_snapshot(conn, station_id)` | 儀表板快照（感測 + 狀態 + 告警數）|
+| `diagnose_component(conn, component_id, issue_id)` | 診斷 + 推薦解方 |
 
 > 所有寫入函式均不自動 commit，由呼叫端在適當時機執行 `conn.commit()`。
 
-### 6-3. 典型使用範例
+### 6-4. 典型使用範例
 
 **推理引擎完整流程**：
 
@@ -394,7 +440,7 @@ conn.commit()
 conn.close()
 ```
 
-### 6-4. 快速自我測試
+### 6-5. 快速自我測試
 
 ```bash
 cd Database/versionB
@@ -405,7 +451,28 @@ DB_PASSWORD=your_pw python sprayline_db_queries.py
 
 ---
 
-## 7. Schema 升版（Migration）
+## 7. WebServices / UI 整合規格（Patch Spec）
+
+`Database/versionB/` 包含兩份修改規格文件，供後續整合 WebServices 與 UI 時參考：
+
+| 文件 | 說明 |
+|------|------|
+| `WEBSERVICES_PATCH_SPEC.md` | 新增 5 個 Alert API 端點的完整程式碼片段、Request/Response schema、與 `db_alert.py` 函式的對應關係 |
+| `UI_PATCH_SPEC.md` | `diagnosis_rules.json` 新增欄位規格、`renderStationDiagnosisCard()` 差異說明、停機時間/技能等級 badge CSS、確認告警按鈕 JS 實作 |
+
+**新增端點一覽**（詳見 WEBSERVICES_PATCH_SPEC.md）：
+
+```
+GET  /api/alerts                                  → 告警清單（複合條件過濾）
+GET  /api/alerts/{event_id}                       → 完整告警卡片（cause + response + 停機 + 技能）
+PATCH /api/alerts/{event_id}/acknowledge          → 確認告警
+GET  /api/alerts/causes/{cause_id}/responses      → 依原因查詢建議解方
+GET  /api/alerts/unacknowledged/{station_id}      → 站點未確認告警
+```
+
+---
+
+## 8. Schema 升版（Migration）
 
 ### v5 → v5.1：新增 data_quality_flag
 
@@ -423,7 +490,7 @@ DB_PASSWORD=your_pw python sprayline_db_queries.py
 **既有資料庫升版**：
 
 ```bash
-cd Database/2026-06-09
+cd Database/versionB
 DB_PASSWORD=your_pw python migrate_add_data_quality_flag.py
 ```
 
@@ -434,7 +501,7 @@ Migration 特性：
 
 ---
 
-## 8. 資料表結構速查
+## 9. 資料表結構速查
 
 ### 核心資料表
 
@@ -461,7 +528,7 @@ Migration 特性：
 
 ---
 
-## 9. ⚠️ 已知不一致與注意事項
+## 10. ⚠️ 已知不一致與注意事項
 
 ### 7-1. ~~`setup_db.py` 驗證步驟誤查 `sensor_1hour`~~（已修正）
 
@@ -562,7 +629,7 @@ WHERE br.batch_id IN (
 
 ---
 
-## 10. 常見問題排除
+## 11. 常見問題排除
 
 **Q：`connection refused` / `could not connect to server`**
 
