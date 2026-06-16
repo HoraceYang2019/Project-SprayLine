@@ -1,0 +1,211 @@
+{
+  "schema_version": "v1.0",
+  "generated_at": "2026-06-02T17:56:47.791638+00:00",
+  "service_name": "TimeSeriesService",
+  "request_id": "random_past_001",
+  "viewer_state": {
+    "mode": "time",
+    "window_type": "2hour",
+    "slider_value": -5,
+    "display_label": "past 5",
+    "time_type": "past",
+    "is_history": true,
+    "is_current": false,
+    "is_future": false
+  },
+  "summary": {
+    "total_station_count": 3,
+    "normal_count": null,
+    "warning_count": null,
+    "predict_risk_count": null
+  },
+  "stations": [
+    {
+      "line_id": "line_1",
+      "station_name_zh": "底漆站",
+      "station_name_en": "Primer Station",
+      "state": null,
+      "component_overview": [],
+      "metrics": {
+        "availability_pct": 76.5,
+        "clog_rate_pct": 25.491724000203632,
+        "pressure_bar": 2.5365,
+        "flow_rate_ml_min": 117.54849999999999,
+        "maintainability_pct": 45.605306799336645,
+        "quality_score_pct": 93.10344827586206,
+        "risk_text": null,
+        "spray_width_mm": 52.00599999999999
+      },
+      "process_parameters": {
+        "recipe_name": "Primer_A",
+        "temperature_c": 27.788999999999998,
+        "utilization_pct": 60.44444444444444,
+        "cycle_time_sec": 56
+      },
+      "component_metrics": {
+        "nozzle": {
+          "pressure_bar": 2.5365,
+          "flow_rate_ml_min": 117.54849999999999,
+          "nozzle_clog_rate_pct": 2.042916666666675,
+          "nozzle_maintainability_pct": 45.605306799336645
+        },
+        "filter_mesh": {
+          "flow_loss_pct": 25.491724000203632,
+          "filter_clog_rate_pct": 25.491724000203632,
+          "filter_maintainability_pct": 72.87630402384501
+        },
+        "spray_width": {
+          "spray_width_mm": 52.00599999999999,
+          "width_error_mm": 0.005999999999993122,
+          "width_error_pct": 0.01153846153844831,
+          "coverage_score_pct": 99.98846153846155,
+          "target_min_mm": 48,
+          "target_max_mm": 56
+        }
+      },
+      "fault_detail": [],
+      "spray_width_image": {
+        "spray_width_mm": 52.00599999999999,
+        "target_min_mm": 48,
+        "target_max_mm": 56,
+        "status": null,
+        "image_ref": null,
+        "note": null
+      }
+    },
+    {
+      "line_id": "line_2",
+      "station_name_zh": "面漆站",
+      "station_name_en": "Topcoat Station",
+      "state": null,
+      "component_overview": [],
+      "metrics": {
+        "availability_pct": 71.47222222222223,
+        "clog_rate_pct": 6.5040909090909205,
+        "pressure_bar": 2.118,
+        "flow_rate_ml_min": 102.84549999999999,
+        "maintainability_pct": 48.214285714285715,
+        "quality_score_pct": 95.1219512195122,
+        "risk_text": null,
+        "spray_width_mm": 51.459
+      },
+      "process_parameters": {
+        "recipe_name": "Topcoat_B",
+        "temperature_c": 27.124000000000002,
+        "utilization_pct": 59.44444444444444,
+        "cycle_time_sec": 51
+      },
+      "component_metrics": {
+        "nozzle": {
+          "pressure_bar": 2.118,
+          "flow_rate_ml_min": 102.84549999999999,
+          "nozzle_clog_rate_pct": 6.5040909090909205,
+          "nozzle_maintainability_pct": 48.214285714285715
+        },
+        "filter_mesh": {
+          "flow_loss_pct": 0.8477192514038309,
+          "filter_clog_rate_pct": 0.8477192514038309,
+          "filter_maintainability_pct": 70.17543859649122
+        },
+        "spray_width": {
+          "spray_width_mm": 51.459,
+          "width_error_mm": -0.5409999999999968,
+          "width_error_pct": 1.0403846153846092,
+          "coverage_score_pct": 98.95961538461539,
+          "target_min_mm": 48,
+          "target_max_mm": 56
+        }
+      },
+      "fault_detail": [],
+      "spray_width_image": {
+        "spray_width_mm": 51.459,
+        "target_min_mm": 48,
+        "target_max_mm": 56,
+        "status": null,
+        "image_ref": null,
+        "note": null
+      }
+    },
+    {
+      "line_id": "line_3",
+      "station_name_zh": "金漆站",
+      "station_name_en": "Gold Paint Station",
+      "state": null,
+      "component_overview": [],
+      "metrics": {
+        "availability_pct": 90.88888888888889,
+        "clog_rate_pct": 23.76541666666666,
+        "pressure_bar": 1.8,
+        "flow_rate_ml_min": 91.48150000000001,
+        "maintainability_pct": 32.44274809160305,
+        "quality_score_pct": 77.67857142857143,
+        "risk_text": null,
+        "spray_width_mm": 49.4905
+      },
+      "process_parameters": {
+        "recipe_name": "Gold_C",
+        "temperature_c": 26.6635,
+        "utilization_pct": 57.05555555555556,
+        "cycle_time_sec": 59
+      },
+      "component_metrics": {
+        "nozzle": {
+          "pressure_bar": 1.8,
+          "flow_rate_ml_min": 91.48150000000001,
+          "nozzle_clog_rate_pct": 23.76541666666666,
+          "nozzle_maintainability_pct": 32.44274809160305
+        },
+        "filter_mesh": {
+          "flow_loss_pct": 8.219119684535864,
+          "filter_clog_rate_pct": 8.219119684535864,
+          "filter_maintainability_pct": 86.13376835236541
+        },
+        "spray_width": {
+          "spray_width_mm": 49.4905,
+          "width_error_mm": -2.5095000000000027,
+          "width_error_pct": 4.825961538461543,
+          "coverage_score_pct": 95.17403846153846,
+          "target_min_mm": 48,
+          "target_max_mm": 56
+        }
+      },
+      "fault_detail": [],
+      "spray_width_image": {
+        "spray_width_mm": 49.4905,
+        "target_min_mm": 48,
+        "target_max_mm": 56,
+        "status": null,
+        "image_ref": null,
+        "note": null
+      }
+    }
+  ],
+  "calculation_info": {
+    "pipeline": [
+      "HandleTimeSeriesQuery",
+      "ValidateRequest",
+      "DetermineTimeType",
+      "QueryRawDataFromDatabase",
+      "ApplySampleMethods",
+      "CalculateLineMetrics",
+      "BuildOutput",
+      "SaveProcessedResultToDatabase"
+    ],
+    "raw_dataset_metadata": {
+      "generated_at": "2026-06-02T17:56:47.791376+00:00",
+      "data_type": "random_raw_data",
+      "time_type": "past",
+      "sample_count": 20,
+      "seed": null
+    },
+    "rule_stage": "external",
+    "note": "This service calculates metric values only. Rule Service should decide state, risk_text, fault_detail, and component_overview."
+  },
+  "database_info": {
+    "save_processed_result": true,
+    "save_target": "/mnt/data/time_series_service_random_time_out/time_series_service_random_time/examples/processed_result_database_demo.json",
+    "saved_at": "2026-06-02T17:56:47.791697+00:00",
+    "data_type": "processed_result",
+    "note": "Only processed/calculated data is saved. Raw data is generated randomly in prototype mode and not saved again by this service."
+  }
+}
