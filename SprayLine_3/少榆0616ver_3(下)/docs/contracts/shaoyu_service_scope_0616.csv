@@ -1,0 +1,7 @@
+﻿sep=,
+item,owner,shaoyu_action,not_shaoyu_action,status
+Future Prediction Service,少榆,產生與寫入 future_prediction_result payload,不負責 DB schema 最終維護,in_scope
+Monitoring Worker / Timer,少榆,讀 sensor_1min / sensor_3min，產生 alert_event 與 batch_station_status 更新,不負責正式 API Server,in_scope
+Troubleshooting Logic,少榆,state 對應 possible cause / countermeasure,不負責 Engineer UI 前端,in_scope
+Database/versionB Python functions,余宇承,少榆直接 import 使用,少榆不改 DB owner 的正式 function 設計,external_dependency
+Formal HTTP route,余宇承 / Backend,0616ver_3 不使用此路線,少榆不包 API Server,out_of_scope

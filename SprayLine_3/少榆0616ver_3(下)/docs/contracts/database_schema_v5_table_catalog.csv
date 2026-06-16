@@ -1,0 +1,15 @@
+﻿sep=,
+table_name,category,purpose,source_status
+batch_run,batch,批次開始、結束時間與批次狀態,schema_v5
+sensor_1min,sensor,每一分鐘設備與製程感測資料,schema_v5
+sensor_3min,sensor,每三分鐘環境與減速機溫度聚合資料,schema_v5
+batch_station_status,state,批次於各站點的元件與品質狀態,schema_v5
+alert_event,event,異常事件、量測值、狀態與確認時間,schema_v5
+alert_cause_link,event,異常事件與原因的多對多關聯,schema_v5
+alert_response_link,event,異常事件與處置的多對多關聯,schema_v5
+cause_catalog,knowledge,事件原因目錄,schema_v5
+response_catalog,knowledge,事件處置目錄,schema_v5
+component_catalog,troubleshooting,元件目錄,schema_v5
+issue_catalog,troubleshooting,問題目錄,schema_v5
+solution_catalog,troubleshooting,解方目錄,schema_v5
+component_issue_solution_map,troubleshooting,元件－問題－解方知識矩陣,schema_v5

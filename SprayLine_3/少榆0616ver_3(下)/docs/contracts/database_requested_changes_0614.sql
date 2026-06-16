@@ -1,0 +1,9 @@
+-- ARCHIVED / DO NOT RUN
+--
+-- 0614 的 DB 變更請求已由 Database/versionB 取代。
+-- 0616ver_3 不再要求余宇承新增 future_prediction_result，因為該表已在 Database/versionB/setup_db.sql 與 db_future.py 中提供。
+--
+-- 注意：
+-- 1. data_quality_flag 是否移除 outlier 仍待余宇承確認。
+-- 2. sensor_threshold table 目前仍存在於 Database/versionB，少榆端暫用 rules/sensor_thresholds.json。
+-- 3. 本檔僅保留作為歷史註記，請勿拿來 patch DB。

@@ -1,0 +1,9 @@
+﻿sep=,
+requirement_id,item,owner,status,note
+REQ-001,query sensor_1min,余宇承 Database/versionB,provided_in_db_sensor_py,少榆透過 integration_adapter 呼叫 db_sensor.query_sensor_1min。
+REQ-002,query sensor_3min,余宇承 Database/versionB,provided_in_db_sensor_py,少榆透過 integration_adapter 呼叫 db_sensor.query_sensor_3min。
+REQ-003,insert alert_event,余宇承 Database/versionB,provided_in_db_alert_py,少榆透過 integration_adapter 呼叫 db_alert.insert_alert_event。
+REQ-004,upsert batch_station_status,余宇承 Database/versionB,provided_in_db_status_py,少榆透過 integration_adapter 呼叫 db_status.upsert_batch_station_status。
+REQ-005,future_prediction_result table,余宇承 Database/versionB,provided_in_setup_db_sql,0615 後已提供 table。
+REQ-006,insert future_prediction_result,余宇承 Database/versionB,provided_in_db_future_py,少榆透過 integration_adapter 呼叫 db_future.insert_future_prediction_result。
+REQ-007,threshold source,少榆 rules/sensor_thresholds.json,use_json_config,DB 內雖有 sensor_threshold table，但依討論少榆端先用 JSON config。

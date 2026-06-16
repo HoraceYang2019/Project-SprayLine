@@ -1,0 +1,4 @@
+﻿sep=,
+field_name,allowed_value,producer,consumer,storage_target,note
+data_quality_flag,normal,DataPreprocess,FutureService; EventRuleService; Dashboard,sensor_1min; sensor_3min,原始資料正常，未經補值。
+data_quality_flag,interpolated,DataPreprocess,FutureService; EventRuleService; Dashboard,sensor_1min; sensor_3min,資料曾有空值，已補值；EventRuleService 預設不觸發事件。

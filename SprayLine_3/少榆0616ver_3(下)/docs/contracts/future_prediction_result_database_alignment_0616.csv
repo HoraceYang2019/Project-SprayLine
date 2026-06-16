@@ -1,0 +1,12 @@
+﻿sep=,
+field,status,note
+prediction_id,provided_by_database_versionB,db_future 可自動產生或傳入。
+batch_id,provided_by_database_versionB,必填，對應 batch_run。
+station_id,provided_by_database_versionB,可為 null 或 Station_1~3。
+prediction_time,provided_by_database_versionB,Future 預測時間。
+predicted_ok_rate,provided_by_database_versionB,少榆 FutureService 產生。
+predicted_ng_count,provided_by_database_versionB,少榆 FutureService 產生。
+quality_score,provided_by_database_versionB,少榆 FutureService 產生。
+risk_level,provided_by_database_versionB,low / medium / high。
+model_input_source,provided_by_database_versionB,記錄輸入來源。
+created_at,provided_by_database_versionB,可為 null，由 DB now() 補上。

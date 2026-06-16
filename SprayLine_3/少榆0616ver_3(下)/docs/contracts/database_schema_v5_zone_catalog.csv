@@ -1,0 +1,8 @@
+﻿sep=,
+zone_id,tables,purpose
+batch_zone,batch_run,批次生產
+sensor_zone,sensor_1min; sensor_3min,時間序列感測資料
+state_zone,batch_station_status,站點與元件狀態
+event_zone,alert_event; alert_cause_link; alert_response_link,事件與處置追蹤
+knowledge_zone,cause_catalog; response_catalog,事件原因與回應知識
+troubleshooting_zone,component_catalog; issue_catalog; solution_catalog; component_issue_solution_map,元件問題解方矩陣

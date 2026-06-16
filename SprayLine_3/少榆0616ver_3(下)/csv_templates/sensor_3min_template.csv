@@ -1,0 +1,3 @@
+﻿sep=,
+ts,batch_id,station_id,gearbox_temperature_c,temperature_c,humidity_rh,data_quality_flag
+,,,,,,
