@@ -1,3 +1,0 @@
-sep=,
-event_id,batch_id,station_id,sensor_name,measured_value,state,cause,ts,message,acknowledged_at
-,,,,,,,,,

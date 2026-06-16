@@ -1,6 +1,0 @@
-{
-  "files.autoGuessEncoding": true,
-  "files.associations": {
-    "*.csv": "csv"
-  }
-}
