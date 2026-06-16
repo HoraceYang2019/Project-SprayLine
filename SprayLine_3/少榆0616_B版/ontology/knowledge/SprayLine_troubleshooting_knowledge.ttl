@@ -1,0 +1,105 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+spray:TroubleshootingKnowledge a owl:Ontology .
+spray:ROBOT_ARM a owl:Class, owl:NamedIndividual, spray:ComponentConcept ; rdfs:label "機器手臂"@zh ; rdfs:subClassOf spray:ComponentConcept .
+spray:NOZZLE a owl:Class, owl:NamedIndividual, spray:ComponentConcept ; rdfs:label "噴嘴"@zh ; rdfs:subClassOf spray:ComponentConcept .
+spray:FILTER a owl:Class, owl:NamedIndividual, spray:ComponentConcept ; rdfs:label "濾網"@zh ; rdfs:subClassOf spray:ComponentConcept .
+spray:AIR_COMPRESSOR a owl:Class, owl:NamedIndividual, spray:ComponentConcept ; rdfs:label "空壓機"@zh ; rdfs:subClassOf spray:ComponentConcept .
+spray:SPRAY_WIDTH a owl:Class, owl:NamedIndividual, spray:ComponentConcept ; rdfs:label "噴幅"@zh ; rdfs:subClassOf spray:ComponentConcept .
+spray:QUALITY a owl:Class, owl:NamedIndividual, spray:ComponentConcept ; rdfs:label "品質（膜厚）"@zh ; rdfs:subClassOf spray:ComponentConcept .
+spray:SERVO_OVERLOAD a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "伺服馬達負載過高/磨損"@zh ; rdfs:comment "減速機磨損導致伺服馬達電流與扭矩負載上升，長期超標將導致故障"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:PATH_ERROR_HIGH a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "軌跡追蹤誤差過大（TCP 偏移）"@zh ; rdfs:comment "機械背隙增大或 TCP 校正偏移導致路徑誤差超過 0.5mm"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:VIBRATION_HIGH a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "異常振動（碰撞/軸承鬆動）"@zh ; rdfs:comment "振動加速度超過 1.5G，可能為碰撞、螺栓鬆動或軸承磨損"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:GEARBOX_OVERHEAT a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "減速機過熱"@zh ; rdfs:comment "減速機溫度持續超過 55°C，需加強散熱或潤滑"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:JOINT_BACKLASH a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "關節背隙增大"@zh ; rdfs:comment "長期使用後減速機背隙增大，影響定位精度"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:NOZZLE_CLOG a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "噴嘴堵塞（漆渣累積）"@zh ; rdfs:comment "塗料殘留在噴嘴孔徑累積，導致噴幅縮小或不均"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:NOZZLE_WEAR a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "噴嘴孔徑磨損擴大"@zh ; rdfs:comment "長期使用後噴嘴孔徑磨損，導致噴幅過寬或霧化不良"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:NOZZLE_ANGLE_DRIFT a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "噴嘴翻滾角偏移"@zh ; rdfs:comment "震動或撞擊導致噴嘴安裝角度偏移"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:FILTER_CLOG a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "濾網堵塞（壓差持續上升）"@zh ; rdfs:comment "漆渣累積導致濾網阻塞，壓差持續上升超過 0.30 bar"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:FILTER_DAMAGE a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "濾網破損洩漏"@zh ; rdfs:comment "濾網本體破損導致進出液流量不平衡"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:FLOW_IMBALANCE a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "進出液流量不平衡"@zh ; rdfs:comment "濾網或管路問題導致進出流量差異超過允許範圍"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:AIR_PRESSURE_UNSTABLE a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "空氣壓力不穩/不足"@zh ; rdfs:comment "壓力波動超過 ±10%，影響塗料霧化品質"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:AIR_MOISTURE_HIGH a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "壓縮空氣含水量過高"@zh ; rdfs:comment "冷凝水未排放或乾燥機失效，油漆附著不良"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:AIR_OIL_CONTAMINATION a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "油氣混入污染"@zh ; rdfs:comment "壓縮機潤滑油進入氣管，污染塗料"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:AIR_LEAKAGE a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "漏氣（管路接頭）"@zh ; rdfs:comment "管路接頭鬆脫或老化導致氣壓下降"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:SPRAY_WIDTH_DEVIATION a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "噴幅偏離基準值"@zh ; rdfs:comment "實際噴幅與目標值偏差超過 ±10mm"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:SPRAY_WIDTH_UNSTABLE a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "噴幅不均勻（批次內波動）"@zh ; rdfs:comment "同批次內噴幅標準差過大，影響覆蓋均勻性"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:FILM_THICKNESS_OOC a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "膜厚超出規格範圍"@zh ; rdfs:comment "膜厚低於 14.5μm 或高於 15.5μm（warning），超過 14.0/16.0 為 fault"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:FILM_THICKNESS_VARIATION a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "膜厚不均勻（批次標準差過高）"@zh ; rdfs:comment "同批次膜厚標準差超過 0.3μm，表示噴塗不穩定"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:SURFACE_DEFECT a owl:Class, owl:NamedIndividual, spray:FaultSymptom ; rdfs:label "表面缺陷（橘皮/流掛/氣泡）"@zh ; rdfs:comment "塗層表面出現橘皮、流掛或氣泡等外觀缺陷"@zh ; rdfs:subClassOf spray:FaultSymptom .
+spray:LUBRICATE_SERVO a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "定期潤滑伺服馬達與減速機"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:REPLACE_SERVO a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "更換伺服馬達或減速機總成"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:RECALIBRATE_TCP a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "重新校正工具中心點（TCP）"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:TIGHTEN_BASE a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "緊固基座螺栓，檢查並更換防震墊"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:FORCED_COOLDOWN a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "強制降速並加強散熱，等待降溫"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:CLEAN_NOZZLE a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "拆卸清洗噴嘴，去除漆渣結塊"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:REPLACE_NOZZLE a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "更換磨損噴嘴"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:RECALIBRATE_NOZZLE_ANGLE a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "重新校正噴嘴翻滾角"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:REPLACE_FILTER a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "更換濾網"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:BACKWASH_FILTER a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "反洗濾網管路"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:INSTALL_DRYER a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "加裝或更換空氣乾燥機與油水分離器"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:DRAIN_CONDENSATE a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "排放壓縮空氣冷凝水"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:CALIBRATE_PRESSURE_VALVE a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "校正壓力調節閥"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:ADJUST_TCP_Z a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "校正噴嘴與工件 TCP Z 軸距離"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:ADJUST_FLOW_PRESSURE a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "調整塗料流量與空壓比例"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:CCD_PATH_CORRECTION a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "啟用 CCD 視覺即時路徑補正"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:ADJUST_SPEED_FLOW a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "調整噴塗速度與流量"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:CALIBRATE_ENV_CONTROL a owl:Class, owl:NamedIndividual, spray:RecommendedResponse ; rdfs:label "校正環境溫濕度控制系統"@zh ; rdfs:subClassOf spray:RecommendedResponse .
+spray:ROBOT_ARM spray:hasIssue spray:SERVO_OVERLOAD .
+spray:SERVO_OVERLOAD spray:hasRecommendedResponse spray:LUBRICATE_SERVO .
+spray:ROBOT_ARM spray:hasIssue spray:SERVO_OVERLOAD .
+spray:SERVO_OVERLOAD spray:hasRecommendedResponse spray:REPLACE_SERVO .
+spray:ROBOT_ARM spray:hasIssue spray:PATH_ERROR_HIGH .
+spray:PATH_ERROR_HIGH spray:hasRecommendedResponse spray:RECALIBRATE_TCP .
+spray:ROBOT_ARM spray:hasIssue spray:VIBRATION_HIGH .
+spray:VIBRATION_HIGH spray:hasRecommendedResponse spray:TIGHTEN_BASE .
+spray:ROBOT_ARM spray:hasIssue spray:GEARBOX_OVERHEAT .
+spray:GEARBOX_OVERHEAT spray:hasRecommendedResponse spray:FORCED_COOLDOWN .
+spray:ROBOT_ARM spray:hasIssue spray:GEARBOX_OVERHEAT .
+spray:GEARBOX_OVERHEAT spray:hasRecommendedResponse spray:LUBRICATE_SERVO .
+spray:ROBOT_ARM spray:hasIssue spray:JOINT_BACKLASH .
+spray:JOINT_BACKLASH spray:hasRecommendedResponse spray:REPLACE_SERVO .
+spray:NOZZLE spray:hasIssue spray:NOZZLE_CLOG .
+spray:NOZZLE_CLOG spray:hasRecommendedResponse spray:CLEAN_NOZZLE .
+spray:NOZZLE spray:hasIssue spray:NOZZLE_CLOG .
+spray:NOZZLE_CLOG spray:hasRecommendedResponse spray:REPLACE_NOZZLE .
+spray:NOZZLE spray:hasIssue spray:NOZZLE_WEAR .
+spray:NOZZLE_WEAR spray:hasRecommendedResponse spray:REPLACE_NOZZLE .
+spray:NOZZLE spray:hasIssue spray:NOZZLE_ANGLE_DRIFT .
+spray:NOZZLE_ANGLE_DRIFT spray:hasRecommendedResponse spray:RECALIBRATE_NOZZLE_ANGLE .
+spray:FILTER spray:hasIssue spray:FILTER_CLOG .
+spray:FILTER_CLOG spray:hasRecommendedResponse spray:REPLACE_FILTER .
+spray:FILTER spray:hasIssue spray:FILTER_CLOG .
+spray:FILTER_CLOG spray:hasRecommendedResponse spray:BACKWASH_FILTER .
+spray:FILTER spray:hasIssue spray:FILTER_DAMAGE .
+spray:FILTER_DAMAGE spray:hasRecommendedResponse spray:REPLACE_FILTER .
+spray:FILTER spray:hasIssue spray:FLOW_IMBALANCE .
+spray:FLOW_IMBALANCE spray:hasRecommendedResponse spray:REPLACE_FILTER .
+spray:AIR_COMPRESSOR spray:hasIssue spray:AIR_PRESSURE_UNSTABLE .
+spray:AIR_PRESSURE_UNSTABLE spray:hasRecommendedResponse spray:CALIBRATE_PRESSURE_VALVE .
+spray:AIR_COMPRESSOR spray:hasIssue spray:AIR_MOISTURE_HIGH .
+spray:AIR_MOISTURE_HIGH spray:hasRecommendedResponse spray:INSTALL_DRYER .
+spray:AIR_COMPRESSOR spray:hasIssue spray:AIR_MOISTURE_HIGH .
+spray:AIR_MOISTURE_HIGH spray:hasRecommendedResponse spray:DRAIN_CONDENSATE .
+spray:AIR_COMPRESSOR spray:hasIssue spray:AIR_LEAKAGE .
+spray:AIR_LEAKAGE spray:hasRecommendedResponse spray:CALIBRATE_PRESSURE_VALVE .
+spray:SPRAY_WIDTH spray:hasIssue spray:SPRAY_WIDTH_DEVIATION .
+spray:SPRAY_WIDTH_DEVIATION spray:hasRecommendedResponse spray:ADJUST_TCP_Z .
+spray:SPRAY_WIDTH spray:hasIssue spray:SPRAY_WIDTH_DEVIATION .
+spray:SPRAY_WIDTH_DEVIATION spray:hasRecommendedResponse spray:ADJUST_FLOW_PRESSURE .
+spray:SPRAY_WIDTH spray:hasIssue spray:SPRAY_WIDTH_DEVIATION .
+spray:SPRAY_WIDTH_DEVIATION spray:hasRecommendedResponse spray:REPLACE_NOZZLE .
+spray:SPRAY_WIDTH spray:hasIssue spray:SPRAY_WIDTH_UNSTABLE .
+spray:SPRAY_WIDTH_UNSTABLE spray:hasRecommendedResponse spray:CCD_PATH_CORRECTION .
+spray:QUALITY spray:hasIssue spray:FILM_THICKNESS_OOC .
+spray:FILM_THICKNESS_OOC spray:hasRecommendedResponse spray:ADJUST_SPEED_FLOW .
+spray:QUALITY spray:hasIssue spray:FILM_THICKNESS_OOC .
+spray:FILM_THICKNESS_OOC spray:hasRecommendedResponse spray:CALIBRATE_ENV_CONTROL .
+spray:QUALITY spray:hasIssue spray:FILM_THICKNESS_VARIATION .
+spray:FILM_THICKNESS_VARIATION spray:hasRecommendedResponse spray:ADJUST_FLOW_PRESSURE .
+spray:QUALITY spray:hasIssue spray:SURFACE_DEFECT .
+spray:SURFACE_DEFECT spray:hasRecommendedResponse spray:ADJUST_FLOW_PRESSURE .
+spray:QUALITY spray:hasIssue spray:SURFACE_DEFECT .
+spray:SURFACE_DEFECT spray:hasRecommendedResponse spray:CALIBRATE_ENV_CONTROL .
