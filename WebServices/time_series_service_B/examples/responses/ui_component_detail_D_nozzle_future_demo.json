@@ -1,0 +1,90 @@
+{
+  "schema_version": "v1.0",
+  "service_name": "TimeSeriesService",
+  "output_type": "ui_component_detail",
+  "generated_at": "2026-06-14T14:44:10.640062+00:00",
+  "request_id": "demo_D_future",
+  "viewer_state": {
+    "mode": "time",
+    "window_type": "2hour",
+    "slider_value": 3,
+    "display_label": "future 3",
+    "time_type": "future",
+    "sample_method": "latest_valid",
+    "is_history": false,
+    "is_current": false,
+    "is_future": true
+  },
+  "line_id": "line_3",
+  "ui_id": "M3",
+  "station_name": "金漆站",
+  "component_name": "nozzle",
+  "component_name_zh": "噴嘴",
+  "component_state": {
+    "component_name": "nozzle",
+    "component_name_zh": "噴嘴",
+    "state": "fault",
+    "state_zh": "異常",
+    "triggered_sensors": [
+      "paint_flow_ml_min"
+    ]
+  },
+  "data": {
+    "air_pressure_bar": 2.53,
+    "pressure_bar": 2.53,
+    "paint_flow_ml_min": 93.64,
+    "flow_rate_ml_min": 93.64,
+    "nominal_flow_rate_ml_min": 120,
+    "nozzle_roll": -1.48,
+    "nozzle_clog_rate_pct": 21.966666666666665,
+    "nozzle_maintainability_pct": 41.8
+  },
+  "troubleshooting": [
+    {
+      "station_id": "Station_3",
+      "line_id": "line_3",
+      "batch_id": "BATCH_Station_3_DEMO",
+      "sensor_name": "paint_flow_ml_min",
+      "measured_value": 93.64,
+      "event_state": "fault",
+      "component_name": "nozzle",
+      "component_name_zh": "噴嘴",
+      "troubleshooting_state": "NOZZLE_CLOG",
+      "state_name": "噴嘴堵塞（漆渣累積）",
+      "state_description": "塗料殘留在噴嘴孔徑累積，導致噴幅縮小或不均",
+      "severity": "high",
+      "countermeasure_id": "CLEAN_NOZZLE",
+      "countermeasure": "拆卸清洗噴嘴，去除漆渣結塊",
+      "downtime_estimate_min": 20,
+      "skill_required": "operator",
+      "relevance_rank": 1,
+      "effectiveness_pct": 85.0,
+      "source_status": "database_seed_reference"
+    },
+    {
+      "station_id": "Station_3",
+      "line_id": "line_3",
+      "batch_id": "BATCH_Station_3_DEMO",
+      "sensor_name": "paint_flow_ml_min",
+      "measured_value": 93.64,
+      "event_state": "fault",
+      "component_name": "nozzle",
+      "component_name_zh": "噴嘴",
+      "troubleshooting_state": "NOZZLE_CLOG",
+      "state_name": "噴嘴堵塞（漆渣累積）",
+      "state_description": "塗料殘留在噴嘴孔徑累積，導致噴幅縮小或不均",
+      "severity": "high",
+      "countermeasure_id": "REPLACE_NOZZLE",
+      "countermeasure": "更換磨損噴嘴",
+      "downtime_estimate_min": 25,
+      "skill_required": "technician",
+      "relevance_rank": 2,
+      "effectiveness_pct": 95.0,
+      "source_status": "database_seed_reference"
+    }
+  ],
+  "source": {
+    "core_endpoint": "POST /api/time-series",
+    "adapter_endpoint": "POST /api/time-series/ui/component-detail"
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "prediction_id": "PRED_Station_1_BATCH_Station_1_DEMO",
+    "batch_id": "BATCH_Station_1_DEMO",
+    "station_id": "Station_1",
+    "prediction_time": "2026-06-14T14:45:21.369609+00:00",
+    "predicted_ok_rate": 91.63157894736842,
+    "predicted_ng_count": 18,
+    "quality_score": 92.63157894736842,
+    "risk_level": "low",
+    "model_input_source": "sensor_1min;sensor_3min;batch_run;TimeSeriesService_future_latest_valid",
+    "persistence_status": "payload_ready_pending_db_api"
+  },
+  {
+    "prediction_id": "PRED_Station_2_BATCH_Station_2_DEMO",
+    "batch_id": "BATCH_Station_2_DEMO",
+    "station_id": "Station_2",
+    "prediction_time": "2026-06-14T14:45:21.371260+00:00",
+    "predicted_ok_rate": 83.33333333333333,
+    "predicted_ng_count": 37,
+    "quality_score": 88.33333333333333,
+    "risk_level": "high",
+    "model_input_source": "sensor_1min;sensor_3min;batch_run;TimeSeriesService_future_latest_valid",
+    "persistence_status": "payload_ready_pending_db_api"
+  },
+  {
+    "prediction_id": "PRED_Station_3_BATCH_Station_3_DEMO",
+    "batch_id": "BATCH_Station_3_DEMO",
+    "station_id": "Station_3",
+    "prediction_time": "2026-06-14T14:45:21.373037+00:00",
+    "predicted_ok_rate": 79.07142857142857,
+    "predicted_ng_count": 46,
+    "quality_score": 91.07142857142857,
+    "risk_level": "high",
+    "model_input_source": "sensor_1min;sensor_3min;batch_run;TimeSeriesService_future_latest_valid",
+    "persistence_status": "payload_ready_pending_db_api"
+  }
+]

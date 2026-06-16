@@ -1,0 +1,38 @@
+{
+  "schema_version": "v1.0",
+  "service_name": "TimeSeriesService",
+  "output_type": "ui_component_detail",
+  "generated_at": "2026-06-14T14:07:43.724748+00:00",
+  "request_id": "B_integration_demo_current",
+  "viewer_state": {
+    "mode": "time",
+    "window_type": "current",
+    "slider_value": 0,
+    "display_label": "current",
+    "time_type": "current",
+    "is_history": false,
+    "is_current": true,
+    "is_future": false
+  },
+  "line_id": "line_2",
+  "ui_id": "M2",
+  "station_name": "面漆站",
+  "component_name": "robot_arm",
+  "component_name_zh": "機械手臂",
+  "data": {
+    "servo_torque_load_pct": 60.751999999999995,
+    "path_error_mm": 0.0872,
+    "vibration_g": 0.046200000000000005,
+    "tcp_position_mm": {
+      "x": 99.098,
+      "y": 49.38,
+      "z": 300.33599999999996
+    },
+    "speed_mm_s": 269.004,
+    "gearbox_temperature_c": 40.93
+  },
+  "source": {
+    "core_endpoint": "POST /api/time-series",
+    "adapter_endpoint": "POST /api/time-series/ui/component-detail"
+  }
+}

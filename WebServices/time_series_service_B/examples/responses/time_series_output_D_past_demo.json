@@ -1,0 +1,1631 @@
+{
+  "schema_version": "v1.0",
+  "generated_at": "2026-06-14T14:44:10.629705+00:00",
+  "service_name": "TimeSeriesService",
+  "request_id": "demo_D_past",
+  "viewer_state": {
+    "mode": "time",
+    "window_type": "2hour",
+    "slider_value": -3,
+    "display_label": "past 3",
+    "time_type": "past",
+    "sample_method": "mean",
+    "is_history": true,
+    "is_current": false,
+    "is_future": false
+  },
+  "summary": {
+    "total_station_count": 3,
+    "normal_count": 2,
+    "warning_count": 1,
+    "fault_count": 0,
+    "predict_risk_count": 1,
+    "monitoring_warning_count": 0,
+    "alert_event_count": 4,
+    "future_prediction_count": 0,
+    "troubleshooting_count": 7,
+    "rule_integrated": true,
+    "d_integration_enabled": true
+  },
+  "stations": [
+    {
+      "line_id": "line_1",
+      "station_id": "Station_1",
+      "station_name_zh": "底漆站",
+      "station_name_en": "Primer Station",
+      "state": "normal",
+      "component_overview": [
+        {
+          "component_name": "quality_module",
+          "component_name_zh": "品質模組",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "nozzle",
+          "component_name_zh": "噴嘴",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "filter_mesh",
+          "component_name_zh": "濾網",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "pump_unit",
+          "component_name_zh": "幫浦單元",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "air_compressor",
+          "component_name_zh": "空壓系統",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "spray_width",
+          "component_name_zh": "噴幅",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "robot_arm",
+          "component_name_zh": "機械手臂",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "environment",
+          "component_name_zh": "環境",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        }
+      ],
+      "metrics": {
+        "availability_pct": 75.77777777777777,
+        "clog_rate_pct": 6.937482360143264,
+        "air_pressure_bar": 2.5025,
+        "pressure_bar": 2.5025,
+        "paint_flow_ml_min": 116.617,
+        "flow_rate_ml_min": 116.617,
+        "maintainability_pct": 15.889830508474576,
+        "quality_score_pct": 92.63157894736842,
+        "risk_text": null,
+        "spray_width_mm": 115.3585,
+        "film_thickness_um": 25.057,
+        "temperature_c": 26.601499999999998,
+        "humidity_rh": 54.93300000000001
+      },
+      "process_parameters": {
+        "recipe_name": "Primer_A",
+        "temperature_c": 26.601499999999998,
+        "humidity_rh": 54.93300000000001,
+        "utilization_pct": 91.91666666666667,
+        "cycle_time_sec": 55,
+        "station_id": "Station_1",
+        "batch_id": "BATCH_Station_1_DEMO",
+        "timestamp": "2026-06-14T14:44:10.623985+00:00",
+        "data_quality_flag": "normal"
+      },
+      "component_metrics": {
+        "quality_module": {
+          "film_thickness_um": 25.057,
+          "target_film_thickness_um": 25.0,
+          "thickness_error_um": 0.05699999999999861,
+          "thickness_error_pct": 0.22799999999999443
+        },
+        "nozzle": {
+          "air_pressure_bar": 2.5025,
+          "pressure_bar": 2.5025,
+          "paint_flow_ml_min": 116.617,
+          "flow_rate_ml_min": 116.617,
+          "nominal_flow_rate_ml_min": 120,
+          "nozzle_roll": -0.21550000000000002,
+          "nozzle_clog_rate_pct": 2.819166666666663,
+          "nozzle_maintainability_pct": 15.889830508474576
+        },
+        "filter_mesh": {
+          "filter_diff_pressure_bar": 0.33649999999999997,
+          "filter_inflow_ml_min": 125.7805,
+          "filter_outflow_ml_min": 117.0545,
+          "flow_loss_pct": 6.937482360143264,
+          "filter_clog_rate_pct": 6.937482360143264,
+          "filter_maintainability_pct": 51.77865612648221
+        },
+        "pump_unit": {
+          "pump_current_a": 1.9140000000000001
+        },
+        "air_compressor": {
+          "air_pressure_bar": 2.5025,
+          "target_air_pressure_bar": 2.5,
+          "pressure_error_bar": 0.0024999999999999467,
+          "pressure_error_pct": 0.09999999999999788
+        },
+        "spray_width": {
+          "spray_width_mm": 115.3585,
+          "target_spray_width_mm": 115,
+          "width_error_mm": 0.3585000000000065,
+          "width_error_pct": 0.31173913043478824,
+          "coverage_score_pct": 99.68826086956521,
+          "target_min_mm": 105,
+          "target_max_mm": 125
+        },
+        "robot_arm": {
+          "servo_torque_load_pct": 50.8095,
+          "path_error_mm": 0.054349999999999996,
+          "vibration_g": 0.04815,
+          "tcp_position_mm": {
+            "x": 100.10650000000001,
+            "y": 49.3035,
+            "z": 301.2105
+          },
+          "speed_mm_s": 254.5145,
+          "gearbox_temperature_c": 41.132999999999996
+        },
+        "environment": {
+          "temperature_c": 26.601499999999998,
+          "humidity_rh": 54.93300000000001
+        }
+      },
+      "fault_detail": [],
+      "event_rule_evaluation": {
+        "station_id": "Station_1",
+        "line_id": "line_1",
+        "batch_id": "BATCH_Station_1_DEMO",
+        "timestamp": "2026-06-14T14:44:10.623985+00:00",
+        "data_quality_flag": "normal",
+        "station_state": "normal",
+        "risk_text": null,
+        "fault_detail": [],
+        "component_overview": [
+          {
+            "component_name": "quality_module",
+            "component_name_zh": "品質模組",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "nozzle",
+            "component_name_zh": "噴嘴",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "filter_mesh",
+            "component_name_zh": "濾網",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "pump_unit",
+            "component_name_zh": "幫浦單元",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "air_compressor",
+            "component_name_zh": "空壓系統",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "spray_width",
+            "component_name_zh": "噴幅",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "robot_arm",
+            "component_name_zh": "機械手臂",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "environment",
+            "component_name_zh": "環境",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          }
+        ],
+        "triggered_events": [],
+        "skipped": false,
+        "skip_reason": null
+      },
+      "sensor_payload": {
+        "film_thickness_um": 25.057,
+        "paint_flow_ml_min": 116.617,
+        "nozzle_roll": -0.21550000000000002,
+        "filter_diff_pressure_bar": 0.33649999999999997,
+        "filter_inflow_ml_min": 125.7805,
+        "filter_outflow_ml_min": 117.0545,
+        "pump_current_a": 1.9140000000000001,
+        "air_pressure_bar": 2.5025,
+        "spray_width_mm": 115.3585,
+        "servo_torque_load_pct": 50.8095,
+        "path_error_mm": 0.054349999999999996,
+        "vibration_g": 0.04815,
+        "tcp_x_mm": 100.10650000000001,
+        "tcp_y_mm": 49.3035,
+        "tcp_z_mm": 301.2105,
+        "speed_mm_s": 254.5145,
+        "gearbox_temperature_c": 41.132999999999996,
+        "temperature_c": 26.601499999999998,
+        "humidity_rh": 54.93300000000001
+      },
+      "spray_width_image": {
+        "spray_width_mm": 115.3585,
+        "target_min_mm": 105,
+        "target_max_mm": 125,
+        "status": "normal",
+        "image_ref": null,
+        "note": null
+      },
+      "d_payloads": {
+        "monitoring": {
+          "status": "normal",
+          "sensor_1min_received": true,
+          "sensor_3min_received": true,
+          "missing_sensor_1min_fields": [],
+          "missing_sensor_3min_fields": [],
+          "data_quality_flag": "normal",
+          "sample_method": "mean",
+          "last_update_time": "2026-06-14T14:44:10.623985+00:00",
+          "note": "D-stage Monitoring payload. Prototype checks field completeness and data_quality_flag; formal worker/DB polling can replace this block later."
+        },
+        "event_rule": {
+          "station_state": "normal",
+          "risk_text": null,
+          "alert_events": [],
+          "batch_station_status": {
+            "batch_id": "BATCH_Station_1_DEMO",
+            "station_id": "Station_1",
+            "line_id": "line_1",
+            "station_state": "normal",
+            "normal_component_count": 8,
+            "warning_component_count": 0,
+            "fault_component_count": 0,
+            "updated_at": "2026-06-14T14:44:10.626336+00:00",
+            "persistence_status": "payload_ready_demo_json"
+          },
+          "source": "B-stage local EventRule + D-stage DB payload adapter"
+        },
+        "future_prediction": null,
+        "troubleshooting": []
+      }
+    },
+    {
+      "line_id": "line_2",
+      "station_id": "Station_2",
+      "station_name_zh": "面漆站",
+      "station_name_en": "Topcoat Station",
+      "state": "normal",
+      "component_overview": [
+        {
+          "component_name": "quality_module",
+          "component_name_zh": "品質模組",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "nozzle",
+          "component_name_zh": "噴嘴",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "filter_mesh",
+          "component_name_zh": "濾網",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "pump_unit",
+          "component_name_zh": "幫浦單元",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "air_compressor",
+          "component_name_zh": "空壓系統",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "spray_width",
+          "component_name_zh": "噴幅",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "robot_arm",
+          "component_name_zh": "機械手臂",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "environment",
+          "component_name_zh": "環境",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        }
+      ],
+      "metrics": {
+        "availability_pct": 75.5,
+        "clog_rate_pct": 8.26833333333333,
+        "air_pressure_bar": 2.4675000000000002,
+        "pressure_bar": 2.4675000000000002,
+        "paint_flow_ml_min": 110.078,
+        "flow_rate_ml_min": 110.078,
+        "maintainability_pct": 45.10948905109489,
+        "quality_score_pct": 93.4065934065934,
+        "risk_text": null,
+        "spray_width_mm": 111.57249999999999,
+        "film_thickness_um": 24.7535,
+        "temperature_c": 28.9875,
+        "humidity_rh": 55.573
+      },
+      "process_parameters": {
+        "recipe_name": "Topcoat_B",
+        "temperature_c": 28.9875,
+        "humidity_rh": 55.573,
+        "utilization_pct": 55.86111111111111,
+        "cycle_time_sec": 52,
+        "station_id": "Station_2",
+        "batch_id": "BATCH_Station_2_DEMO",
+        "timestamp": "2026-06-14T14:44:10.624187+00:00",
+        "data_quality_flag": "normal"
+      },
+      "component_metrics": {
+        "quality_module": {
+          "film_thickness_um": 24.7535,
+          "target_film_thickness_um": 25.0,
+          "thickness_error_um": -0.24650000000000105,
+          "thickness_error_pct": 0.9860000000000042
+        },
+        "nozzle": {
+          "air_pressure_bar": 2.4675000000000002,
+          "pressure_bar": 2.4675000000000002,
+          "paint_flow_ml_min": 110.078,
+          "flow_rate_ml_min": 110.078,
+          "nominal_flow_rate_ml_min": 120,
+          "nozzle_roll": 0.049999999999999996,
+          "nozzle_clog_rate_pct": 8.26833333333333,
+          "nozzle_maintainability_pct": 45.10948905109489
+        },
+        "filter_mesh": {
+          "filter_diff_pressure_bar": 0.47750000000000004,
+          "filter_inflow_ml_min": 122.6445,
+          "filter_outflow_ml_min": 113.797,
+          "flow_loss_pct": 7.213939475475866,
+          "filter_clog_rate_pct": 7.213939475475866,
+          "filter_maintainability_pct": 49.10891089108911
+        },
+        "pump_unit": {
+          "pump_current_a": 1.8419999999999999
+        },
+        "air_compressor": {
+          "air_pressure_bar": 2.4675000000000002,
+          "target_air_pressure_bar": 2.5,
+          "pressure_error_bar": -0.03249999999999975,
+          "pressure_error_pct": 1.29999999999999
+        },
+        "spray_width": {
+          "spray_width_mm": 111.57249999999999,
+          "target_spray_width_mm": 115,
+          "width_error_mm": -3.427500000000009,
+          "width_error_pct": 2.9804347826087034,
+          "coverage_score_pct": 97.0195652173913,
+          "target_min_mm": 105,
+          "target_max_mm": 125
+        },
+        "robot_arm": {
+          "servo_torque_load_pct": 54.931999999999995,
+          "path_error_mm": 0.09075,
+          "vibration_g": 0.0385,
+          "tcp_position_mm": {
+            "x": 99.2735,
+            "y": 50.498000000000005,
+            "z": 299.46750000000003
+          },
+          "speed_mm_s": 245.4125,
+          "gearbox_temperature_c": 40.543
+        },
+        "environment": {
+          "temperature_c": 28.9875,
+          "humidity_rh": 55.573
+        }
+      },
+      "fault_detail": [],
+      "event_rule_evaluation": {
+        "station_id": "Station_2",
+        "line_id": "line_2",
+        "batch_id": "BATCH_Station_2_DEMO",
+        "timestamp": "2026-06-14T14:44:10.624187+00:00",
+        "data_quality_flag": "normal",
+        "station_state": "normal",
+        "risk_text": null,
+        "fault_detail": [],
+        "component_overview": [
+          {
+            "component_name": "quality_module",
+            "component_name_zh": "品質模組",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "nozzle",
+            "component_name_zh": "噴嘴",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "filter_mesh",
+            "component_name_zh": "濾網",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "pump_unit",
+            "component_name_zh": "幫浦單元",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "air_compressor",
+            "component_name_zh": "空壓系統",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "spray_width",
+            "component_name_zh": "噴幅",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "robot_arm",
+            "component_name_zh": "機械手臂",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "environment",
+            "component_name_zh": "環境",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          }
+        ],
+        "triggered_events": [],
+        "skipped": false,
+        "skip_reason": null
+      },
+      "sensor_payload": {
+        "film_thickness_um": 24.7535,
+        "paint_flow_ml_min": 110.078,
+        "nozzle_roll": 0.049999999999999996,
+        "filter_diff_pressure_bar": 0.47750000000000004,
+        "filter_inflow_ml_min": 122.6445,
+        "filter_outflow_ml_min": 113.797,
+        "pump_current_a": 1.8419999999999999,
+        "air_pressure_bar": 2.4675000000000002,
+        "spray_width_mm": 111.57249999999999,
+        "servo_torque_load_pct": 54.931999999999995,
+        "path_error_mm": 0.09075,
+        "vibration_g": 0.0385,
+        "tcp_x_mm": 99.2735,
+        "tcp_y_mm": 50.498000000000005,
+        "tcp_z_mm": 299.46750000000003,
+        "speed_mm_s": 245.4125,
+        "gearbox_temperature_c": 40.543,
+        "temperature_c": 28.9875,
+        "humidity_rh": 55.573
+      },
+      "spray_width_image": {
+        "spray_width_mm": 111.57249999999999,
+        "target_min_mm": 105,
+        "target_max_mm": 125,
+        "status": "normal",
+        "image_ref": null,
+        "note": null
+      },
+      "d_payloads": {
+        "monitoring": {
+          "status": "normal",
+          "sensor_1min_received": true,
+          "sensor_3min_received": true,
+          "missing_sensor_1min_fields": [],
+          "missing_sensor_3min_fields": [],
+          "data_quality_flag": "normal",
+          "sample_method": "mean",
+          "last_update_time": "2026-06-14T14:44:10.624187+00:00",
+          "note": "D-stage Monitoring payload. Prototype checks field completeness and data_quality_flag; formal worker/DB polling can replace this block later."
+        },
+        "event_rule": {
+          "station_state": "normal",
+          "risk_text": null,
+          "alert_events": [],
+          "batch_station_status": {
+            "batch_id": "BATCH_Station_2_DEMO",
+            "station_id": "Station_2",
+            "line_id": "line_2",
+            "station_state": "normal",
+            "normal_component_count": 8,
+            "warning_component_count": 0,
+            "fault_component_count": 0,
+            "updated_at": "2026-06-14T14:44:10.628019+00:00",
+            "persistence_status": "payload_ready_demo_json"
+          },
+          "source": "B-stage local EventRule + D-stage DB payload adapter"
+        },
+        "future_prediction": null,
+        "troubleshooting": []
+      }
+    },
+    {
+      "line_id": "line_3",
+      "station_id": "Station_3",
+      "station_name_zh": "金漆站",
+      "station_name_en": "Gold Paint Station",
+      "state": "warning",
+      "component_overview": [
+        {
+          "component_name": "quality_module",
+          "component_name_zh": "品質模組",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "nozzle",
+          "component_name_zh": "噴嘴",
+          "state": "warning",
+          "state_zh": "警告",
+          "triggered_sensors": [
+            "paint_flow_ml_min"
+          ]
+        },
+        {
+          "component_name": "filter_mesh",
+          "component_name_zh": "濾網",
+          "state": "warning",
+          "state_zh": "警告",
+          "triggered_sensors": [
+            "filter_diff_pressure_bar"
+          ]
+        },
+        {
+          "component_name": "pump_unit",
+          "component_name_zh": "幫浦單元",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "air_compressor",
+          "component_name_zh": "空壓系統",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "spray_width",
+          "component_name_zh": "噴幅",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        },
+        {
+          "component_name": "robot_arm",
+          "component_name_zh": "機械手臂",
+          "state": "warning",
+          "state_zh": "警告",
+          "triggered_sensors": [
+            "servo_torque_load_pct",
+            "path_error_mm"
+          ]
+        },
+        {
+          "component_name": "environment",
+          "component_name_zh": "環境",
+          "state": "normal",
+          "state_zh": "正常",
+          "triggered_sensors": []
+        }
+      ],
+      "metrics": {
+        "availability_pct": 74.58333333333333,
+        "clog_rate_pct": 18.201249999999998,
+        "air_pressure_bar": 2.4935,
+        "pressure_bar": 2.4935,
+        "paint_flow_ml_min": 98.1585,
+        "flow_rate_ml_min": 98.1585,
+        "maintainability_pct": 83.41232227488152,
+        "quality_score_pct": 87.5,
+        "risk_text": "4 項警告",
+        "spray_width_mm": 105.724,
+        "film_thickness_um": 24.9035,
+        "temperature_c": 28.879,
+        "humidity_rh": 52.9765
+      },
+      "process_parameters": {
+        "recipe_name": "Gold_C",
+        "temperature_c": 28.879,
+        "humidity_rh": 52.9765,
+        "utilization_pct": 68.47222222222223,
+        "cycle_time_sec": 44,
+        "station_id": "Station_3",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "timestamp": "2026-06-14T14:44:10.624383+00:00",
+        "data_quality_flag": "normal"
+      },
+      "component_metrics": {
+        "quality_module": {
+          "film_thickness_um": 24.9035,
+          "target_film_thickness_um": 25.0,
+          "thickness_error_um": -0.09649999999999892,
+          "thickness_error_pct": 0.3859999999999957
+        },
+        "nozzle": {
+          "air_pressure_bar": 2.4935,
+          "pressure_bar": 2.4935,
+          "paint_flow_ml_min": 98.1585,
+          "flow_rate_ml_min": 98.1585,
+          "nominal_flow_rate_ml_min": 120,
+          "nozzle_roll": -0.132,
+          "nozzle_clog_rate_pct": 18.201249999999998,
+          "nozzle_maintainability_pct": 89.02627511591963
+        },
+        "filter_mesh": {
+          "filter_diff_pressure_bar": 0.6145,
+          "filter_inflow_ml_min": 122.30799999999999,
+          "filter_outflow_ml_min": 115.174,
+          "flow_loss_pct": 5.832815514929511,
+          "filter_clog_rate_pct": 5.832815514929511,
+          "filter_maintainability_pct": 83.41232227488152
+        },
+        "pump_unit": {
+          "pump_current_a": 1.775
+        },
+        "air_compressor": {
+          "air_pressure_bar": 2.4935,
+          "target_air_pressure_bar": 2.5,
+          "pressure_error_bar": -0.00649999999999995,
+          "pressure_error_pct": 0.259999999999998
+        },
+        "spray_width": {
+          "spray_width_mm": 105.724,
+          "target_spray_width_mm": 115,
+          "width_error_mm": -9.275999999999996,
+          "width_error_pct": 8.066086956521735,
+          "coverage_score_pct": 91.93391304347827,
+          "target_min_mm": 105,
+          "target_max_mm": 125
+        },
+        "robot_arm": {
+          "servo_torque_load_pct": 66.0815,
+          "path_error_mm": 0.11755,
+          "vibration_g": 0.05450000000000001,
+          "tcp_position_mm": {
+            "x": 99.435,
+            "y": 49.38,
+            "z": 298.83000000000004
+          },
+          "speed_mm_s": 251.13850000000002,
+          "gearbox_temperature_c": 40.5935
+        },
+        "environment": {
+          "temperature_c": 28.879,
+          "humidity_rh": 52.9765
+        }
+      },
+      "fault_detail": [
+        {
+          "batch_id": "BATCH_Station_3_DEMO",
+          "station_id": "Station_3",
+          "line_id": "line_3",
+          "sensor_name": "paint_flow_ml_min",
+          "component_name": "nozzle",
+          "component_name_zh": "噴嘴",
+          "measured_value": 98.1585,
+          "state": "warning",
+          "state_zh": "警告",
+          "timestamp": "2026-06-14T14:44:10.624383+00:00",
+          "message": "paint_flow_ml_min classified as warning",
+          "rule_source": "config/rules/sensor_thresholds.json"
+        },
+        {
+          "batch_id": "BATCH_Station_3_DEMO",
+          "station_id": "Station_3",
+          "line_id": "line_3",
+          "sensor_name": "filter_diff_pressure_bar",
+          "component_name": "filter_mesh",
+          "component_name_zh": "濾網",
+          "measured_value": 0.6145,
+          "state": "warning",
+          "state_zh": "警告",
+          "timestamp": "2026-06-14T14:44:10.624383+00:00",
+          "message": "filter_diff_pressure_bar classified as warning",
+          "rule_source": "config/rules/sensor_thresholds.json"
+        },
+        {
+          "batch_id": "BATCH_Station_3_DEMO",
+          "station_id": "Station_3",
+          "line_id": "line_3",
+          "sensor_name": "servo_torque_load_pct",
+          "component_name": "robot_arm",
+          "component_name_zh": "機械手臂",
+          "measured_value": 66.0815,
+          "state": "warning",
+          "state_zh": "警告",
+          "timestamp": "2026-06-14T14:44:10.624383+00:00",
+          "message": "servo_torque_load_pct classified as warning",
+          "rule_source": "config/rules/sensor_thresholds.json"
+        },
+        {
+          "batch_id": "BATCH_Station_3_DEMO",
+          "station_id": "Station_3",
+          "line_id": "line_3",
+          "sensor_name": "path_error_mm",
+          "component_name": "robot_arm",
+          "component_name_zh": "機械手臂",
+          "measured_value": 0.11755,
+          "state": "warning",
+          "state_zh": "警告",
+          "timestamp": "2026-06-14T14:44:10.624383+00:00",
+          "message": "path_error_mm classified as warning",
+          "rule_source": "config/rules/sensor_thresholds.json"
+        }
+      ],
+      "event_rule_evaluation": {
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "timestamp": "2026-06-14T14:44:10.624383+00:00",
+        "data_quality_flag": "normal",
+        "station_state": "warning",
+        "risk_text": "4 項警告",
+        "fault_detail": [
+          {
+            "batch_id": "BATCH_Station_3_DEMO",
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "sensor_name": "paint_flow_ml_min",
+            "component_name": "nozzle",
+            "component_name_zh": "噴嘴",
+            "measured_value": 98.1585,
+            "state": "warning",
+            "state_zh": "警告",
+            "timestamp": "2026-06-14T14:44:10.624383+00:00",
+            "message": "paint_flow_ml_min classified as warning",
+            "rule_source": "config/rules/sensor_thresholds.json"
+          },
+          {
+            "batch_id": "BATCH_Station_3_DEMO",
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "sensor_name": "filter_diff_pressure_bar",
+            "component_name": "filter_mesh",
+            "component_name_zh": "濾網",
+            "measured_value": 0.6145,
+            "state": "warning",
+            "state_zh": "警告",
+            "timestamp": "2026-06-14T14:44:10.624383+00:00",
+            "message": "filter_diff_pressure_bar classified as warning",
+            "rule_source": "config/rules/sensor_thresholds.json"
+          },
+          {
+            "batch_id": "BATCH_Station_3_DEMO",
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "sensor_name": "servo_torque_load_pct",
+            "component_name": "robot_arm",
+            "component_name_zh": "機械手臂",
+            "measured_value": 66.0815,
+            "state": "warning",
+            "state_zh": "警告",
+            "timestamp": "2026-06-14T14:44:10.624383+00:00",
+            "message": "servo_torque_load_pct classified as warning",
+            "rule_source": "config/rules/sensor_thresholds.json"
+          },
+          {
+            "batch_id": "BATCH_Station_3_DEMO",
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "sensor_name": "path_error_mm",
+            "component_name": "robot_arm",
+            "component_name_zh": "機械手臂",
+            "measured_value": 0.11755,
+            "state": "warning",
+            "state_zh": "警告",
+            "timestamp": "2026-06-14T14:44:10.624383+00:00",
+            "message": "path_error_mm classified as warning",
+            "rule_source": "config/rules/sensor_thresholds.json"
+          }
+        ],
+        "component_overview": [
+          {
+            "component_name": "quality_module",
+            "component_name_zh": "品質模組",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "nozzle",
+            "component_name_zh": "噴嘴",
+            "state": "warning",
+            "state_zh": "警告",
+            "triggered_sensors": [
+              "paint_flow_ml_min"
+            ]
+          },
+          {
+            "component_name": "filter_mesh",
+            "component_name_zh": "濾網",
+            "state": "warning",
+            "state_zh": "警告",
+            "triggered_sensors": [
+              "filter_diff_pressure_bar"
+            ]
+          },
+          {
+            "component_name": "pump_unit",
+            "component_name_zh": "幫浦單元",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "air_compressor",
+            "component_name_zh": "空壓系統",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "spray_width",
+            "component_name_zh": "噴幅",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          },
+          {
+            "component_name": "robot_arm",
+            "component_name_zh": "機械手臂",
+            "state": "warning",
+            "state_zh": "警告",
+            "triggered_sensors": [
+              "servo_torque_load_pct",
+              "path_error_mm"
+            ]
+          },
+          {
+            "component_name": "environment",
+            "component_name_zh": "環境",
+            "state": "normal",
+            "state_zh": "正常",
+            "triggered_sensors": []
+          }
+        ],
+        "triggered_events": [
+          {
+            "batch_id": "BATCH_Station_3_DEMO",
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "sensor_name": "paint_flow_ml_min",
+            "component_name": "nozzle",
+            "component_name_zh": "噴嘴",
+            "measured_value": 98.1585,
+            "state": "warning",
+            "state_zh": "警告",
+            "timestamp": "2026-06-14T14:44:10.624383+00:00",
+            "message": "paint_flow_ml_min classified as warning",
+            "rule_source": "config/rules/sensor_thresholds.json"
+          },
+          {
+            "batch_id": "BATCH_Station_3_DEMO",
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "sensor_name": "filter_diff_pressure_bar",
+            "component_name": "filter_mesh",
+            "component_name_zh": "濾網",
+            "measured_value": 0.6145,
+            "state": "warning",
+            "state_zh": "警告",
+            "timestamp": "2026-06-14T14:44:10.624383+00:00",
+            "message": "filter_diff_pressure_bar classified as warning",
+            "rule_source": "config/rules/sensor_thresholds.json"
+          },
+          {
+            "batch_id": "BATCH_Station_3_DEMO",
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "sensor_name": "servo_torque_load_pct",
+            "component_name": "robot_arm",
+            "component_name_zh": "機械手臂",
+            "measured_value": 66.0815,
+            "state": "warning",
+            "state_zh": "警告",
+            "timestamp": "2026-06-14T14:44:10.624383+00:00",
+            "message": "servo_torque_load_pct classified as warning",
+            "rule_source": "config/rules/sensor_thresholds.json"
+          },
+          {
+            "batch_id": "BATCH_Station_3_DEMO",
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "sensor_name": "path_error_mm",
+            "component_name": "robot_arm",
+            "component_name_zh": "機械手臂",
+            "measured_value": 0.11755,
+            "state": "warning",
+            "state_zh": "警告",
+            "timestamp": "2026-06-14T14:44:10.624383+00:00",
+            "message": "path_error_mm classified as warning",
+            "rule_source": "config/rules/sensor_thresholds.json"
+          }
+        ],
+        "skipped": false,
+        "skip_reason": null
+      },
+      "sensor_payload": {
+        "film_thickness_um": 24.9035,
+        "paint_flow_ml_min": 98.1585,
+        "nozzle_roll": -0.132,
+        "filter_diff_pressure_bar": 0.6145,
+        "filter_inflow_ml_min": 122.30799999999999,
+        "filter_outflow_ml_min": 115.174,
+        "pump_current_a": 1.775,
+        "air_pressure_bar": 2.4935,
+        "spray_width_mm": 105.724,
+        "servo_torque_load_pct": 66.0815,
+        "path_error_mm": 0.11755,
+        "vibration_g": 0.05450000000000001,
+        "tcp_x_mm": 99.435,
+        "tcp_y_mm": 49.38,
+        "tcp_z_mm": 298.83000000000004,
+        "speed_mm_s": 251.13850000000002,
+        "gearbox_temperature_c": 40.5935,
+        "temperature_c": 28.879,
+        "humidity_rh": 52.9765
+      },
+      "spray_width_image": {
+        "spray_width_mm": 105.724,
+        "target_min_mm": 105,
+        "target_max_mm": 125,
+        "status": "warning",
+        "image_ref": null,
+        "note": "4 項警告"
+      },
+      "d_payloads": {
+        "monitoring": {
+          "status": "normal",
+          "sensor_1min_received": true,
+          "sensor_3min_received": true,
+          "missing_sensor_1min_fields": [],
+          "missing_sensor_3min_fields": [],
+          "data_quality_flag": "normal",
+          "sample_method": "mean",
+          "last_update_time": "2026-06-14T14:44:10.624383+00:00",
+          "note": "D-stage Monitoring payload. Prototype checks field completeness and data_quality_flag; formal worker/DB polling can replace this block later."
+        },
+        "event_rule": {
+          "station_state": "warning",
+          "risk_text": "4 項警告",
+          "alert_events": [
+            {
+              "event_id": "EVT_Station_3_1_paint_flow_ml_min",
+              "batch_id": "BATCH_Station_3_DEMO",
+              "station_id": "Station_3",
+              "line_id": "line_3",
+              "sensor_name": "paint_flow_ml_min",
+              "component_name": "nozzle",
+              "component_name_zh": "噴嘴",
+              "measured_value": 98.1585,
+              "state": "warning",
+              "state_zh": "警告",
+              "cause": "paint_flow_ml_min classified as warning",
+              "ts": "2026-06-14T14:44:10.624383+00:00",
+              "message": "paint_flow_ml_min classified as warning",
+              "acknowledged_at": null,
+              "persistence_status": "payload_ready_demo_json"
+            },
+            {
+              "event_id": "EVT_Station_3_2_filter_diff_pressure_bar",
+              "batch_id": "BATCH_Station_3_DEMO",
+              "station_id": "Station_3",
+              "line_id": "line_3",
+              "sensor_name": "filter_diff_pressure_bar",
+              "component_name": "filter_mesh",
+              "component_name_zh": "濾網",
+              "measured_value": 0.6145,
+              "state": "warning",
+              "state_zh": "警告",
+              "cause": "filter_diff_pressure_bar classified as warning",
+              "ts": "2026-06-14T14:44:10.624383+00:00",
+              "message": "filter_diff_pressure_bar classified as warning",
+              "acknowledged_at": null,
+              "persistence_status": "payload_ready_demo_json"
+            },
+            {
+              "event_id": "EVT_Station_3_3_servo_torque_load_pct",
+              "batch_id": "BATCH_Station_3_DEMO",
+              "station_id": "Station_3",
+              "line_id": "line_3",
+              "sensor_name": "servo_torque_load_pct",
+              "component_name": "robot_arm",
+              "component_name_zh": "機械手臂",
+              "measured_value": 66.0815,
+              "state": "warning",
+              "state_zh": "警告",
+              "cause": "servo_torque_load_pct classified as warning",
+              "ts": "2026-06-14T14:44:10.624383+00:00",
+              "message": "servo_torque_load_pct classified as warning",
+              "acknowledged_at": null,
+              "persistence_status": "payload_ready_demo_json"
+            },
+            {
+              "event_id": "EVT_Station_3_4_path_error_mm",
+              "batch_id": "BATCH_Station_3_DEMO",
+              "station_id": "Station_3",
+              "line_id": "line_3",
+              "sensor_name": "path_error_mm",
+              "component_name": "robot_arm",
+              "component_name_zh": "機械手臂",
+              "measured_value": 0.11755,
+              "state": "warning",
+              "state_zh": "警告",
+              "cause": "path_error_mm classified as warning",
+              "ts": "2026-06-14T14:44:10.624383+00:00",
+              "message": "path_error_mm classified as warning",
+              "acknowledged_at": null,
+              "persistence_status": "payload_ready_demo_json"
+            }
+          ],
+          "batch_station_status": {
+            "batch_id": "BATCH_Station_3_DEMO",
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "station_state": "warning",
+            "normal_component_count": 5,
+            "warning_component_count": 3,
+            "fault_component_count": 0,
+            "updated_at": "2026-06-14T14:44:10.629697+00:00",
+            "persistence_status": "payload_ready_demo_json"
+          },
+          "source": "B-stage local EventRule + D-stage DB payload adapter"
+        },
+        "future_prediction": null,
+        "troubleshooting": [
+          {
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "batch_id": "BATCH_Station_3_DEMO",
+            "sensor_name": "paint_flow_ml_min",
+            "measured_value": 98.1585,
+            "event_state": "warning",
+            "component_name": "nozzle",
+            "component_name_zh": "噴嘴",
+            "troubleshooting_state": "NOZZLE_CLOG",
+            "state_name": "噴嘴堵塞（漆渣累積）",
+            "state_description": "塗料殘留在噴嘴孔徑累積，導致噴幅縮小或不均",
+            "severity": "high",
+            "countermeasure_id": "CLEAN_NOZZLE",
+            "countermeasure": "拆卸清洗噴嘴，去除漆渣結塊",
+            "downtime_estimate_min": 20,
+            "skill_required": "operator",
+            "relevance_rank": 1,
+            "effectiveness_pct": 85.0,
+            "source_status": "database_seed_reference"
+          },
+          {
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "batch_id": "BATCH_Station_3_DEMO",
+            "sensor_name": "paint_flow_ml_min",
+            "measured_value": 98.1585,
+            "event_state": "warning",
+            "component_name": "nozzle",
+            "component_name_zh": "噴嘴",
+            "troubleshooting_state": "NOZZLE_CLOG",
+            "state_name": "噴嘴堵塞（漆渣累積）",
+            "state_description": "塗料殘留在噴嘴孔徑累積，導致噴幅縮小或不均",
+            "severity": "high",
+            "countermeasure_id": "REPLACE_NOZZLE",
+            "countermeasure": "更換磨損噴嘴",
+            "downtime_estimate_min": 25,
+            "skill_required": "technician",
+            "relevance_rank": 2,
+            "effectiveness_pct": 95.0,
+            "source_status": "database_seed_reference"
+          },
+          {
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "batch_id": "BATCH_Station_3_DEMO",
+            "sensor_name": "filter_diff_pressure_bar",
+            "measured_value": 0.6145,
+            "event_state": "warning",
+            "component_name": "filter_mesh",
+            "component_name_zh": "濾網",
+            "troubleshooting_state": "FILTER_CLOG",
+            "state_name": "濾網堵塞（壓差持續上升）",
+            "state_description": "漆渣累積導致濾網阻塞，壓差持續上升超過 0.30 bar",
+            "severity": "medium",
+            "countermeasure_id": "REPLACE_FILTER",
+            "countermeasure": "更換濾網",
+            "downtime_estimate_min": 30,
+            "skill_required": "operator",
+            "relevance_rank": 1,
+            "effectiveness_pct": 95.0,
+            "source_status": "database_seed_reference"
+          },
+          {
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "batch_id": "BATCH_Station_3_DEMO",
+            "sensor_name": "filter_diff_pressure_bar",
+            "measured_value": 0.6145,
+            "event_state": "warning",
+            "component_name": "filter_mesh",
+            "component_name_zh": "濾網",
+            "troubleshooting_state": "FILTER_CLOG",
+            "state_name": "濾網堵塞（壓差持續上升）",
+            "state_description": "漆渣累積導致濾網阻塞，壓差持續上升超過 0.30 bar",
+            "severity": "medium",
+            "countermeasure_id": "BACKWASH_FILTER",
+            "countermeasure": "反洗濾網管路",
+            "downtime_estimate_min": 20,
+            "skill_required": "technician",
+            "relevance_rank": 2,
+            "effectiveness_pct": 50.0,
+            "source_status": "database_seed_reference"
+          },
+          {
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "batch_id": "BATCH_Station_3_DEMO",
+            "sensor_name": "servo_torque_load_pct",
+            "measured_value": 66.0815,
+            "event_state": "warning",
+            "component_name": "robot_arm",
+            "component_name_zh": "機械手臂",
+            "troubleshooting_state": "SERVO_OVERLOAD",
+            "state_name": "伺服馬達負載過高/磨損",
+            "state_description": "減速機磨損導致伺服馬達電流與扭矩負載上升，長期超標將導致故障",
+            "severity": "medium",
+            "countermeasure_id": "LUBRICATE_SERVO",
+            "countermeasure": "定期潤滑伺服馬達與減速機",
+            "downtime_estimate_min": 20,
+            "skill_required": "technician",
+            "relevance_rank": 1,
+            "effectiveness_pct": 75.0,
+            "source_status": "database_seed_reference"
+          },
+          {
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "batch_id": "BATCH_Station_3_DEMO",
+            "sensor_name": "servo_torque_load_pct",
+            "measured_value": 66.0815,
+            "event_state": "warning",
+            "component_name": "robot_arm",
+            "component_name_zh": "機械手臂",
+            "troubleshooting_state": "SERVO_OVERLOAD",
+            "state_name": "伺服馬達負載過高/磨損",
+            "state_description": "減速機磨損導致伺服馬達電流與扭矩負載上升，長期超標將導致故障",
+            "severity": "medium",
+            "countermeasure_id": "REPLACE_SERVO",
+            "countermeasure": "更換伺服馬達或減速機總成",
+            "downtime_estimate_min": 120,
+            "skill_required": "engineer",
+            "relevance_rank": 2,
+            "effectiveness_pct": 95.0,
+            "source_status": "database_seed_reference"
+          },
+          {
+            "station_id": "Station_3",
+            "line_id": "line_3",
+            "batch_id": "BATCH_Station_3_DEMO",
+            "sensor_name": "path_error_mm",
+            "measured_value": 0.11755,
+            "event_state": "warning",
+            "component_name": "robot_arm",
+            "component_name_zh": "機械手臂",
+            "troubleshooting_state": "PATH_ERROR_HIGH",
+            "state_name": "軌跡追蹤誤差過大（TCP 偏移）",
+            "state_description": "機械背隙增大或 TCP 校正偏移導致路徑誤差超過 0.5mm",
+            "severity": "high",
+            "countermeasure_id": "RECALIBRATE_TCP",
+            "countermeasure": "重新校正工具中心點（TCP）",
+            "downtime_estimate_min": 45,
+            "skill_required": "technician",
+            "relevance_rank": 1,
+            "effectiveness_pct": 90.0,
+            "source_status": "database_seed_reference"
+          }
+        ]
+      }
+    }
+  ],
+  "d_integration": {
+    "alert_events": [
+      {
+        "event_id": "EVT_Station_3_1_paint_flow_ml_min",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "sensor_name": "paint_flow_ml_min",
+        "component_name": "nozzle",
+        "component_name_zh": "噴嘴",
+        "measured_value": 98.1585,
+        "state": "warning",
+        "state_zh": "警告",
+        "cause": "paint_flow_ml_min classified as warning",
+        "ts": "2026-06-14T14:44:10.624383+00:00",
+        "message": "paint_flow_ml_min classified as warning",
+        "acknowledged_at": null,
+        "persistence_status": "payload_ready_demo_json"
+      },
+      {
+        "event_id": "EVT_Station_3_2_filter_diff_pressure_bar",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "sensor_name": "filter_diff_pressure_bar",
+        "component_name": "filter_mesh",
+        "component_name_zh": "濾網",
+        "measured_value": 0.6145,
+        "state": "warning",
+        "state_zh": "警告",
+        "cause": "filter_diff_pressure_bar classified as warning",
+        "ts": "2026-06-14T14:44:10.624383+00:00",
+        "message": "filter_diff_pressure_bar classified as warning",
+        "acknowledged_at": null,
+        "persistence_status": "payload_ready_demo_json"
+      },
+      {
+        "event_id": "EVT_Station_3_3_servo_torque_load_pct",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "sensor_name": "servo_torque_load_pct",
+        "component_name": "robot_arm",
+        "component_name_zh": "機械手臂",
+        "measured_value": 66.0815,
+        "state": "warning",
+        "state_zh": "警告",
+        "cause": "servo_torque_load_pct classified as warning",
+        "ts": "2026-06-14T14:44:10.624383+00:00",
+        "message": "servo_torque_load_pct classified as warning",
+        "acknowledged_at": null,
+        "persistence_status": "payload_ready_demo_json"
+      },
+      {
+        "event_id": "EVT_Station_3_4_path_error_mm",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "sensor_name": "path_error_mm",
+        "component_name": "robot_arm",
+        "component_name_zh": "機械手臂",
+        "measured_value": 0.11755,
+        "state": "warning",
+        "state_zh": "警告",
+        "cause": "path_error_mm classified as warning",
+        "ts": "2026-06-14T14:44:10.624383+00:00",
+        "message": "path_error_mm classified as warning",
+        "acknowledged_at": null,
+        "persistence_status": "payload_ready_demo_json"
+      }
+    ],
+    "batch_station_status": [
+      {
+        "batch_id": "BATCH_Station_1_DEMO",
+        "station_id": "Station_1",
+        "line_id": "line_1",
+        "station_state": "normal",
+        "normal_component_count": 8,
+        "warning_component_count": 0,
+        "fault_component_count": 0,
+        "updated_at": "2026-06-14T14:44:10.626336+00:00",
+        "persistence_status": "payload_ready_demo_json"
+      },
+      {
+        "batch_id": "BATCH_Station_2_DEMO",
+        "station_id": "Station_2",
+        "line_id": "line_2",
+        "station_state": "normal",
+        "normal_component_count": 8,
+        "warning_component_count": 0,
+        "fault_component_count": 0,
+        "updated_at": "2026-06-14T14:44:10.628019+00:00",
+        "persistence_status": "payload_ready_demo_json"
+      },
+      {
+        "batch_id": "BATCH_Station_3_DEMO",
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "station_state": "warning",
+        "normal_component_count": 5,
+        "warning_component_count": 3,
+        "fault_component_count": 0,
+        "updated_at": "2026-06-14T14:44:10.629697+00:00",
+        "persistence_status": "payload_ready_demo_json"
+      }
+    ],
+    "future_prediction_results": [],
+    "troubleshooting_results": [
+      {
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "sensor_name": "paint_flow_ml_min",
+        "measured_value": 98.1585,
+        "event_state": "warning",
+        "component_name": "nozzle",
+        "component_name_zh": "噴嘴",
+        "troubleshooting_state": "NOZZLE_CLOG",
+        "state_name": "噴嘴堵塞（漆渣累積）",
+        "state_description": "塗料殘留在噴嘴孔徑累積，導致噴幅縮小或不均",
+        "severity": "high",
+        "countermeasure_id": "CLEAN_NOZZLE",
+        "countermeasure": "拆卸清洗噴嘴，去除漆渣結塊",
+        "downtime_estimate_min": 20,
+        "skill_required": "operator",
+        "relevance_rank": 1,
+        "effectiveness_pct": 85.0,
+        "source_status": "database_seed_reference"
+      },
+      {
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "sensor_name": "paint_flow_ml_min",
+        "measured_value": 98.1585,
+        "event_state": "warning",
+        "component_name": "nozzle",
+        "component_name_zh": "噴嘴",
+        "troubleshooting_state": "NOZZLE_CLOG",
+        "state_name": "噴嘴堵塞（漆渣累積）",
+        "state_description": "塗料殘留在噴嘴孔徑累積，導致噴幅縮小或不均",
+        "severity": "high",
+        "countermeasure_id": "REPLACE_NOZZLE",
+        "countermeasure": "更換磨損噴嘴",
+        "downtime_estimate_min": 25,
+        "skill_required": "technician",
+        "relevance_rank": 2,
+        "effectiveness_pct": 95.0,
+        "source_status": "database_seed_reference"
+      },
+      {
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "sensor_name": "filter_diff_pressure_bar",
+        "measured_value": 0.6145,
+        "event_state": "warning",
+        "component_name": "filter_mesh",
+        "component_name_zh": "濾網",
+        "troubleshooting_state": "FILTER_CLOG",
+        "state_name": "濾網堵塞（壓差持續上升）",
+        "state_description": "漆渣累積導致濾網阻塞，壓差持續上升超過 0.30 bar",
+        "severity": "medium",
+        "countermeasure_id": "REPLACE_FILTER",
+        "countermeasure": "更換濾網",
+        "downtime_estimate_min": 30,
+        "skill_required": "operator",
+        "relevance_rank": 1,
+        "effectiveness_pct": 95.0,
+        "source_status": "database_seed_reference"
+      },
+      {
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "sensor_name": "filter_diff_pressure_bar",
+        "measured_value": 0.6145,
+        "event_state": "warning",
+        "component_name": "filter_mesh",
+        "component_name_zh": "濾網",
+        "troubleshooting_state": "FILTER_CLOG",
+        "state_name": "濾網堵塞（壓差持續上升）",
+        "state_description": "漆渣累積導致濾網阻塞，壓差持續上升超過 0.30 bar",
+        "severity": "medium",
+        "countermeasure_id": "BACKWASH_FILTER",
+        "countermeasure": "反洗濾網管路",
+        "downtime_estimate_min": 20,
+        "skill_required": "technician",
+        "relevance_rank": 2,
+        "effectiveness_pct": 50.0,
+        "source_status": "database_seed_reference"
+      },
+      {
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "sensor_name": "servo_torque_load_pct",
+        "measured_value": 66.0815,
+        "event_state": "warning",
+        "component_name": "robot_arm",
+        "component_name_zh": "機械手臂",
+        "troubleshooting_state": "SERVO_OVERLOAD",
+        "state_name": "伺服馬達負載過高/磨損",
+        "state_description": "減速機磨損導致伺服馬達電流與扭矩負載上升，長期超標將導致故障",
+        "severity": "medium",
+        "countermeasure_id": "LUBRICATE_SERVO",
+        "countermeasure": "定期潤滑伺服馬達與減速機",
+        "downtime_estimate_min": 20,
+        "skill_required": "technician",
+        "relevance_rank": 1,
+        "effectiveness_pct": 75.0,
+        "source_status": "database_seed_reference"
+      },
+      {
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "sensor_name": "servo_torque_load_pct",
+        "measured_value": 66.0815,
+        "event_state": "warning",
+        "component_name": "robot_arm",
+        "component_name_zh": "機械手臂",
+        "troubleshooting_state": "SERVO_OVERLOAD",
+        "state_name": "伺服馬達負載過高/磨損",
+        "state_description": "減速機磨損導致伺服馬達電流與扭矩負載上升，長期超標將導致故障",
+        "severity": "medium",
+        "countermeasure_id": "REPLACE_SERVO",
+        "countermeasure": "更換伺服馬達或減速機總成",
+        "downtime_estimate_min": 120,
+        "skill_required": "engineer",
+        "relevance_rank": 2,
+        "effectiveness_pct": 95.0,
+        "source_status": "database_seed_reference"
+      },
+      {
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "batch_id": "BATCH_Station_3_DEMO",
+        "sensor_name": "path_error_mm",
+        "measured_value": 0.11755,
+        "event_state": "warning",
+        "component_name": "robot_arm",
+        "component_name_zh": "機械手臂",
+        "troubleshooting_state": "PATH_ERROR_HIGH",
+        "state_name": "軌跡追蹤誤差過大（TCP 偏移）",
+        "state_description": "機械背隙增大或 TCP 校正偏移導致路徑誤差超過 0.5mm",
+        "severity": "high",
+        "countermeasure_id": "RECALIBRATE_TCP",
+        "countermeasure": "重新校正工具中心點（TCP）",
+        "downtime_estimate_min": 45,
+        "skill_required": "technician",
+        "relevance_rank": 1,
+        "effectiveness_pct": 90.0,
+        "source_status": "database_seed_reference"
+      }
+    ],
+    "monitoring_results": [
+      {
+        "station_id": "Station_1",
+        "line_id": "line_1",
+        "status": "normal",
+        "sensor_1min_received": true,
+        "sensor_3min_received": true,
+        "missing_sensor_1min_fields": [],
+        "missing_sensor_3min_fields": [],
+        "data_quality_flag": "normal",
+        "sample_method": "mean",
+        "last_update_time": "2026-06-14T14:44:10.623985+00:00",
+        "note": "D-stage Monitoring payload. Prototype checks field completeness and data_quality_flag; formal worker/DB polling can replace this block later."
+      },
+      {
+        "station_id": "Station_2",
+        "line_id": "line_2",
+        "status": "normal",
+        "sensor_1min_received": true,
+        "sensor_3min_received": true,
+        "missing_sensor_1min_fields": [],
+        "missing_sensor_3min_fields": [],
+        "data_quality_flag": "normal",
+        "sample_method": "mean",
+        "last_update_time": "2026-06-14T14:44:10.624187+00:00",
+        "note": "D-stage Monitoring payload. Prototype checks field completeness and data_quality_flag; formal worker/DB polling can replace this block later."
+      },
+      {
+        "station_id": "Station_3",
+        "line_id": "line_3",
+        "status": "normal",
+        "sensor_1min_received": true,
+        "sensor_3min_received": true,
+        "missing_sensor_1min_fields": [],
+        "missing_sensor_3min_fields": [],
+        "data_quality_flag": "normal",
+        "sample_method": "mean",
+        "last_update_time": "2026-06-14T14:44:10.624383+00:00",
+        "note": "D-stage Monitoring payload. Prototype checks field completeness and data_quality_flag; formal worker/DB polling can replace this block later."
+      }
+    ]
+  },
+  "calculation_info": {
+    "pipeline": [
+      "HandleTimeSeriesQuery",
+      "ValidateRequest",
+      "DetermineTimeType",
+      "QueryRawDataFromDatabase",
+      "ApplySampleMethods",
+      "CalculateLineMetrics",
+      "EvaluateEventRules",
+      "BuildDIntegrationPayloads",
+      "BuildMonitoringPayload",
+      "BuildAlertEventPayload",
+      "BuildFuturePredictionPayload",
+      "BuildTroubleshootingPayload",
+      "BuildOutput",
+      "SaveProcessedResultToDatabase"
+    ],
+    "raw_dataset_metadata": {
+      "generated_at": "2026-06-14T14:44:10.624514+00:00",
+      "data_type": "random_raw_data_shaoyu_aligned",
+      "time_type": "past",
+      "sample_count": 20,
+      "seed": 42,
+      "field_contract": "Shaoyu 0614 station_sensor_mapping.csv",
+      "rule_source": "config/rules/sensor_thresholds.json"
+    },
+    "rule_stage": "integrated_D_monitoring_eventrule_future_troubleshooting_payload",
+    "rule_source": "config/rules/sensor_thresholds.json",
+    "knowledge_source": "config/knowledge/troubleshooting_matrix_reference.csv",
+    "sample_method": "mean",
+    "note": "D-stage integration: TimeSeriesService calculates full component_metrics, evaluates EventRule thresholds, builds Monitoring payload, alert_event payload, batch_station_status payload, Future prediction payload, and Troubleshooting payload. Runtime files are demo JSON outputs; formal DB API can replace them later."
+  },
+  "database_info": {
+    "save_processed_result": true,
+    "save_target": "/mnt/data/time_series_service_v3_D_integrated_clean_layout/data/runtime/processed_result_database_demo.json",
+    "saved_at": "2026-06-14T14:44:10.629740+00:00",
+    "data_type": "processed_result",
+    "note": "Only processed/calculated data is saved. Raw data is generated randomly in prototype mode and not saved again by this service.",
+    "latest_output_json_path": "/mnt/data/time_series_service_v3_D_integrated_clean_layout/data/runtime/time_series_latest_output.json",
+    "d_runtime_output_paths": {
+      "alert_events": "/mnt/data/time_series_service_v3_D_integrated_clean_layout/data/runtime/alert_event_demo.json",
+      "batch_station_status": "/mnt/data/time_series_service_v3_D_integrated_clean_layout/data/runtime/batch_station_status_demo.json",
+      "future_prediction_results": "/mnt/data/time_series_service_v3_D_integrated_clean_layout/data/runtime/future_prediction_result_demo.json",
+      "troubleshooting_results": "/mnt/data/time_series_service_v3_D_integrated_clean_layout/data/runtime/troubleshooting_result_demo.json",
+      "monitoring_results": "/mnt/data/time_series_service_v3_D_integrated_clean_layout/data/runtime/monitoring_result_demo.json"
+    }
+  }
+}
