@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Future prediction result payload",
+  "description": "Payload aligned with Database/versionB.future_prediction_result and db_future.insert_future_prediction_result.",
+  "type": "object",
+  "properties": {
+    "prediction_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "batch_id": {
+      "type": "string"
+    },
+    "station_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "prediction_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "predicted_ok_rate": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "predicted_ng_count": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "quality_score": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "risk_level": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        null
+      ]
+    },
+    "model_input_source": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "batch_id",
+    "prediction_time"
+  ],
+  "additionalProperties": false
+}

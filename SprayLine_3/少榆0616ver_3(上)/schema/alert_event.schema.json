@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Alert event",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "batch_id": {
+      "type": "string"
+    },
+    "station_id": {
+      "type": "string"
+    },
+    "sensor_name": {
+      "type": "string"
+    },
+    "measured_value": {
+      "type": "number"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "warning",
+        "fault"
+      ],
+      "description": "DB alert_event.state：severity_state，只能為 warning / fault。"
+    },
+    "cause": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "0616ver_3 暫依 Database/versionB/db_alert.py 說明放 cause_catalog.cause_id，例如 FILTER_CLOG；最終仍待余宇承確認。"
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "message": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "顯示文字，可包含 sensor、severity_state、issue_state、cause_id。"
+    },
+    "acknowledged_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "batch_id",
+    "station_id",
+    "sensor_name",
+    "measured_value",
+    "state",
+    "ts"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,9 @@
+{
+  "station": null,
+  "batch_id": null,
+  "timestamp": null,
+  "data_quality_flag": null,
+  "triggered_events": [],
+  "skipped": false,
+  "skip_reason": null
+}
