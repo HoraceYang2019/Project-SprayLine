@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Event rule evaluation",
+  "type": "object",
+  "properties": {
+    "station": {
+      "type": "string"
+    },
+    "batch_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "data_quality_flag": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "normal",
+        "interpolated",
+        null
+      ]
+    },
+    "triggered_events": {
+      "type": "array",
+      "items": {
+        "$ref": "alert_event.schema.json"
+      }
+    },
+    "skipped": {
+      "type": "boolean"
+    },
+    "skip_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "station",
+    "batch_id",
+    "timestamp",
+    "triggered_events",
+    "skipped"
+  ],
+  "additionalProperties": false
+}

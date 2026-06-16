@@ -1,0 +1,8 @@
+sep=,
+service_class,service_function,owner,input,output_or_action,database_function_used,status
+FutureService,build_future_prediction_payload,ㅦ량,batch_id; station_id; prediction_time; predicted_ok_rate; predicted_ng_count; quality_score,future_prediction_result payload,none,implemented
+FutureService,save_future_prediction_result,ㅦ량,conn; payload,insert future_prediction_result,db_future.insert_future_prediction_result,implemented
+MonitoringWorker,fetch_rows,ㅦ량,conn; table; station; lookback_minutes,sensor rows,db_sensor.query_sensor_1min / query_sensor_3min,implemented
+MonitoringWorker,write_alert_event,ㅦ량,row; detected,insert alert_event,db_alert.insert_alert_event,implemented_pending_field_confirmation
+MonitoringWorker,upsert_batch_station_status,ㅦ량,batch_id; station_id; detected,upsert batch_station_status,db_status.upsert_batch_station_status,implemented
+EventRuleService,classify_value,ㅦ량,sensor_name; value,normal / warning / fault,rules/sensor_thresholds.json,implemented
