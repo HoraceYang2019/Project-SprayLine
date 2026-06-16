@@ -1,0 +1,35 @@
+[
+  {
+    "batch_id": "BATCH_Station_1_DEMO",
+    "station_id": "Station_1",
+    "line_id": "line_1",
+    "station_state": "normal",
+    "normal_component_count": 8,
+    "warning_component_count": 0,
+    "fault_component_count": 0,
+    "updated_at": "2026-06-14T14:45:21.369624+00:00",
+    "persistence_status": "payload_ready_demo_json"
+  },
+  {
+    "batch_id": "BATCH_Station_2_DEMO",
+    "station_id": "Station_2",
+    "line_id": "line_2",
+    "station_state": "warning",
+    "normal_component_count": 4,
+    "warning_component_count": 4,
+    "fault_component_count": 0,
+    "updated_at": "2026-06-14T14:45:21.371272+00:00",
+    "persistence_status": "payload_ready_demo_json"
+  },
+  {
+    "batch_id": "BATCH_Station_3_DEMO",
+    "station_id": "Station_3",
+    "line_id": "line_3",
+    "station_state": "fault",
+    "normal_component_count": 5,
+    "warning_component_count": 2,
+    "fault_component_count": 1,
+    "updated_at": "2026-06-14T14:45:21.373047+00:00",
+    "persistence_status": "payload_ready_demo_json"
+  }
+]

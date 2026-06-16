@@ -1,0 +1,41 @@
+[
+  {
+    "station_id": "Station_1",
+    "line_id": "line_1",
+    "status": "normal",
+    "sensor_1min_received": true,
+    "sensor_3min_received": true,
+    "missing_sensor_1min_fields": [],
+    "missing_sensor_3min_fields": [],
+    "data_quality_flag": "normal",
+    "sample_method": "latest_valid",
+    "last_update_time": "2026-06-14T14:45:21.367447+00:00",
+    "note": "D-stage Monitoring payload. Prototype checks field completeness and data_quality_flag; formal worker/DB polling can replace this block later."
+  },
+  {
+    "station_id": "Station_2",
+    "line_id": "line_2",
+    "status": "normal",
+    "sensor_1min_received": true,
+    "sensor_3min_received": true,
+    "missing_sensor_1min_fields": [],
+    "missing_sensor_3min_fields": [],
+    "data_quality_flag": "normal",
+    "sample_method": "latest_valid",
+    "last_update_time": "2026-06-14T14:45:21.367530+00:00",
+    "note": "D-stage Monitoring payload. Prototype checks field completeness and data_quality_flag; formal worker/DB polling can replace this block later."
+  },
+  {
+    "station_id": "Station_3",
+    "line_id": "line_3",
+    "status": "normal",
+    "sensor_1min_received": true,
+    "sensor_3min_received": true,
+    "missing_sensor_1min_fields": [],
+    "missing_sensor_3min_fields": [],
+    "data_quality_flag": "normal",
+    "sample_method": "latest_valid",
+    "last_update_time": "2026-06-14T14:45:21.367608+00:00",
+    "note": "D-stage Monitoring payload. Prototype checks field completeness and data_quality_flag; formal worker/DB polling can replace this block later."
+  }
+]
