@@ -1,0 +1,6 @@
+UI_V6 Local
+Built: 2026-06-16
+Base UI: UI_V5
+Integration contract: SprayLine_3/少榆0616_B版
+Database: disabled in this package
+Added: past/current/future trend charts

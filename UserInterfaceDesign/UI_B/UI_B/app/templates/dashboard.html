@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>噴塗產線監控系統 UI_V6</title>
+    <link rel="stylesheet" href="/static/dashboard.css">
+</head>
+<body>
+    <header class="header">
+        <div>
+            <h1>噴塗產線監控系統</h1>
+            <p>SprayingLineMonitoringSystem · UI_V6 Local</p>
+        </div>
+        <div class="header-meta">
+            <div id="updateTime">最後更新時間：--</div>
+            <div class="local-badge">本機整合版｜暫不連資料庫</div>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="summary">
+            <article class="summary-card"><h3>總站數 TotalStations</h3><div class="number" id="totalCount">0</div></article>
+            <article class="summary-card"><h3>正常 Normal</h3><div class="number" id="normalCount">0</div></article>
+            <article class="summary-card"><h3>注意 Warning</h3><div class="number" id="warningCount">0</div></article>
+            <article class="summary-card"><h3>預測風險 PredictRisk</h3><div class="number" id="riskCount">0</div></article>
+        </section>
+
+        <section class="source-panel" id="sourceStatus">資料來源檢查中...</section>
+        <section class="station-area" id="stationArea"></section>
+
+        <section class="timeline-panel">
+            <div class="timeline-top">
+                <div>
+                    <h2>單一時間點檢視 TimePointViewer <span id="liveStatusBadge" class="live-badge">即時更新中｜每15秒</span></h2>
+                    <p>原本的單點狀態保留；滑動時間軸後，三站卡片會切換到指定的過去、現在或未來時間點。</p>
+                </div>
+                <div class="mode-buttons">
+                    <button id="timeModeBtn" class="active" onclick="setMode('time')">時間模式 TimeMode</button>
+                    <button id="batchModeBtn" onclick="setMode('batch')">批次模式 BatchMode</button>
+                    <button onclick="backToLive()">回到即時 BackToLive</button>
+                </div>
+            </div>
+
+            <div class="time-chips">
+                <div class="time-chip" id="pastChip">過去 Past</div>
+                <div class="time-chip active" id="nowChip">現在 Now</div>
+                <div class="time-chip" id="futureChip">未來 Future</div>
+            </div>
+
+            <div class="slider-area">
+                <input type="range" id="timeSlider" min="-6" max="4" step="1" value="0" oninput="handleSliderChange()">
+                <div class="time-labels time-mode" id="sliderLabels">
+                    <span class="left-label">過去6小時</span>
+                    <span class="now-label">現在</span>
+                    <span class="right-label">未來2小時</span>
+                </div>
+                <div class="selected-time" id="selectedTimeText">目前時間點：現在</div>
+            </div>
+            <div class="timeline-result" id="timelineResult">資料載入中...</div>
+        </section>
+    </main>
+
+    <script src="/static/trend_chart.js"></script>
+    <script src="/static/dashboard.js"></script>
+</body>
+</html>
