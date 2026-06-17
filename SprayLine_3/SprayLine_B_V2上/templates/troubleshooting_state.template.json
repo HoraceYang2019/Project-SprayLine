@@ -1,0 +1,10 @@
+{
+  "state": {
+    "state": null,
+    "state_name": null,
+    "state_description": null,
+    "severity": null
+  },
+  "station": null,
+  "recommendations": []
+}
