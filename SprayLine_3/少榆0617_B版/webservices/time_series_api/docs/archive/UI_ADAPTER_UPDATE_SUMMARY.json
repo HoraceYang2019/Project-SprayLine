@@ -1,0 +1,19 @@
+{
+  "ui_adapter_endpoints": [
+    "POST /api/time-series/ui/summary",
+    "POST /api/time-series/ui/station-detail",
+    "POST /api/time-series/ui/component-detail"
+  ],
+  "core_endpoint": "POST /api/time-series",
+  "new_files": [
+    "src/ui_adapter.py",
+    "examples/ui_summary_request.json",
+    "examples/ui_summary_output_demo.json",
+    "examples/ui_station_detail_request.json",
+    "examples/ui_station_detail_output_demo.json",
+    "examples/ui_component_detail_request.json",
+    "examples/ui_component_detail_output_demo.json",
+    "report/time_series_service_ui_adapter_report.md",
+    "report/time_series_service_ui_adapter_report.ipynb"
+  ]
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "batch_id": "BATCH_Station_1_DEMO",
+    "station_id": "Station_1",
+    "line_id": "line_1",
+    "station_state": "normal",
+    "normal_component_count": 8,
+    "warning_component_count": 0,
+    "fault_component_count": 0,
+    "updated_at": "2026-06-17T02:22:12.675029+00:00",
+    "persistence_status": "payload_ready_demo_json"
+  }
+]
