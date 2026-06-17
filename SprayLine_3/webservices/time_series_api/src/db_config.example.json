@@ -1,0 +1,8 @@
+{
+  "host": "localhost",
+  "port": 5432,
+  "dbname": "sprayline",
+  "user": "postgres",
+  "password": "your_password_here",
+  "connect_timeout": 5
+}

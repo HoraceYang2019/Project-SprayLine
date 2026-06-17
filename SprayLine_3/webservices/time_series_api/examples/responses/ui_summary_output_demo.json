@@ -1,0 +1,92 @@
+{
+  "schema_version": "v1.0",
+  "service_name": "TimeSeriesService",
+  "output_type": "ui_summary",
+  "generated_at": "2026-06-06T14:18:50.815614+00:00",
+  "request_id": "ui_summary_001",
+  "viewer_state": {
+    "mode": "time",
+    "window_type": "current",
+    "slider_value": 0,
+    "display_label": "current",
+    "time_type": "current",
+    "is_history": false,
+    "is_current": true,
+    "is_future": false
+  },
+  "summary": {
+    "total_station_count": 3,
+    "normal_count": null,
+    "warning_count": null,
+    "predict_risk_count": null
+  },
+  "stations": [
+    {
+      "id": "M1",
+      "line_id": "line_1",
+      "name": "底漆站",
+      "english_name": "Primer Station",
+      "recipe": "Primer_A",
+      "pressure_bar": 2.48,
+      "flow_rate_ml_min": 117.69,
+      "spray_width_mm": 53.26,
+      "target_min_mm": 48,
+      "target_max_mm": 56,
+      "temperature_c": 27.7,
+      "availability_pct": 98.0,
+      "maintainability_pct": 41.35,
+      "clog_rate_pct": 6.4,
+      "quality_score_pct": 95.4,
+      "utilization_pct": 58.17,
+      "cycle_time_sec": 53,
+      "state": null,
+      "risk_text": null
+    },
+    {
+      "id": "M2",
+      "line_id": "line_2",
+      "name": "面漆站",
+      "english_name": "Topcoat Station",
+      "recipe": "Topcoat_B",
+      "pressure_bar": 2.08,
+      "flow_rate_ml_min": 103.34,
+      "spray_width_mm": 50.51,
+      "target_min_mm": 48,
+      "target_max_mm": 56,
+      "temperature_c": 27.25,
+      "availability_pct": 93.92,
+      "maintainability_pct": 32.82,
+      "clog_rate_pct": 6.79,
+      "quality_score_pct": 92.86,
+      "utilization_pct": 91.39,
+      "cycle_time_sec": 63,
+      "state": null,
+      "risk_text": null
+    },
+    {
+      "id": "M3",
+      "line_id": "line_3",
+      "name": "金漆站",
+      "english_name": "Gold Paint Station",
+      "recipe": "Gold_C",
+      "pressure_bar": 1.68,
+      "flow_rate_ml_min": 81.54,
+      "spray_width_mm": 50.5,
+      "target_min_mm": 48,
+      "target_max_mm": 56,
+      "temperature_c": 27.07,
+      "availability_pct": 74.11,
+      "maintainability_pct": 8.44,
+      "clog_rate_pct": 32.05,
+      "quality_score_pct": 88.76,
+      "utilization_pct": 58.53,
+      "cycle_time_sec": 49,
+      "state": null,
+      "risk_text": null
+    }
+  ],
+  "source": {
+    "core_endpoint": "POST /api/time-series",
+    "adapter_endpoint": "POST /api/time-series/ui/summary"
+  }
+}
