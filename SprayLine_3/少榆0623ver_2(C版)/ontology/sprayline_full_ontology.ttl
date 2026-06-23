@@ -1,0 +1,185 @@
+@prefix sl: <http://example.org/sprayline#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sl:SprayLineOntology a owl:Ontology ;
+    rdfs:label "SprayLine Ontology 0623ver_2" ;
+    rdfs:comment "Ontology for SprayLine station, component, sensor metric, threshold, state, cause, response action, and rule inference." .
+
+#################################################################
+# Classes
+#################################################################
+
+sl:SprayLineSystem a owl:Class ; rdfs:label "Spray Line System" .
+sl:Station a owl:Class ; rdfs:label "Station" .
+sl:Component a owl:Class ; rdfs:label "Component" .
+sl:SensorMetric a owl:Class ; rdfs:label "Sensor Metric" .
+sl:SensorThreshold a owl:Class ; rdfs:label "Sensor Threshold" .
+sl:ThresholdSet a owl:Class ; rdfs:label "Threshold Set" .
+sl:State a owl:Class ; rdfs:label "State" .
+sl:Cause a owl:Class ; rdfs:label "Abnormal Cause" .
+sl:ResponseAction a owl:Class ; rdfs:label "Response Action" .
+sl:InferenceRule a owl:Class ; rdfs:label "Inference Rule" .
+
+#################################################################
+# Object Properties
+#################################################################
+
+sl:hasStation a owl:ObjectProperty ; rdfs:domain sl:SprayLineSystem ; rdfs:range sl:Station ; rdfs:label "has station" .
+sl:hasComponent a owl:ObjectProperty ; rdfs:domain sl:Station ; rdfs:range sl:Component ; rdfs:label "has component" .
+sl:monitorsMetric a owl:ObjectProperty ; rdfs:domain sl:Component ; rdfs:range sl:SensorMetric ; rdfs:label "monitors metric" .
+sl:hasThreshold a owl:ObjectProperty ; rdfs:domain sl:SensorMetric ; rdfs:range sl:SensorThreshold ; rdfs:label "has threshold" .
+sl:belongsToThresholdSet a owl:ObjectProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range sl:ThresholdSet ; rdfs:label "belongs to threshold set" .
+sl:hasNormalState a owl:ObjectProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range sl:State ; rdfs:label "has normal state" .
+sl:hasWarningState a owl:ObjectProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range sl:State ; rdfs:label "has warning state" .
+sl:hasFaultState a owl:ObjectProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range sl:State ; rdfs:label "has fault state" .
+sl:indicatesCause a owl:ObjectProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range sl:Cause ; rdfs:label "indicates cause" .
+sl:recommendsAction a owl:ObjectProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range sl:ResponseAction ; rdfs:label "recommends action" .
+sl:usesThreshold a owl:ObjectProperty ; rdfs:domain sl:InferenceRule ; rdfs:range sl:SensorThreshold ; rdfs:label "uses threshold" .
+
+#################################################################
+# Data Properties
+#################################################################
+
+sl:stationId a owl:DatatypeProperty ; rdfs:domain sl:Station ; rdfs:range xsd:string ; rdfs:label "station id" .
+sl:componentName a owl:DatatypeProperty ; rdfs:domain sl:Component ; rdfs:range xsd:string ; rdfs:label "component name" .
+sl:metricName a owl:DatatypeProperty ; rdfs:domain sl:SensorMetric ; rdfs:range xsd:string ; rdfs:label "metric name" .
+sl:unit a owl:DatatypeProperty ; rdfs:domain sl:SensorMetric ; rdfs:range xsd:string ; rdfs:label "unit" .
+sl:normalMin a owl:DatatypeProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range xsd:decimal ; rdfs:label "normal minimum" .
+sl:normalMax a owl:DatatypeProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range xsd:decimal ; rdfs:label "normal maximum" .
+sl:warningLowMin a owl:DatatypeProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range xsd:decimal ; rdfs:label "warning low minimum" .
+sl:warningLowMax a owl:DatatypeProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range xsd:decimal ; rdfs:label "warning low maximum" .
+sl:warningHighMin a owl:DatatypeProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range xsd:decimal ; rdfs:label "warning high minimum" .
+sl:warningHighMax a owl:DatatypeProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range xsd:decimal ; rdfs:label "warning high maximum" .
+sl:faultLowMax a owl:DatatypeProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range xsd:decimal ; rdfs:label "fault low maximum" .
+sl:faultHighMin a owl:DatatypeProperty ; rdfs:domain sl:SensorThreshold ; rdfs:range xsd:decimal ; rdfs:label "fault high minimum" .
+sl:causeId a owl:DatatypeProperty ; rdfs:domain sl:Cause ; rdfs:range xsd:string ; rdfs:label "cause id" .
+sl:responseId a owl:DatatypeProperty ; rdfs:domain sl:ResponseAction ; rdfs:range xsd:string ; rdfs:label "response id" .
+sl:description a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "description" .
+
+#################################################################
+# System / Station / Component
+#################################################################
+
+sl:SprayLine_A a sl:SprayLineSystem ;
+    rdfs:label "SprayLine A" ;
+    sl:hasStation sl:Station_1, sl:Station_2, sl:Station_3 .
+
+sl:Station_1 a sl:Station ; rdfs:label "Station 1" ; sl:stationId "Station_1" ;
+    sl:hasComponent sl:AirCompressor, sl:FilterMesh, sl:Nozzle, sl:SprayWidthModule, sl:QualityModule, sl:RobotArm .
+sl:Station_2 a sl:Station ; rdfs:label "Station 2" ; sl:stationId "Station_2" ;
+    sl:hasComponent sl:AirCompressor, sl:FilterMesh, sl:Nozzle, sl:SprayWidthModule, sl:QualityModule, sl:RobotArm .
+sl:Station_3 a sl:Station ; rdfs:label "Station 3" ; sl:stationId "Station_3" ;
+    sl:hasComponent sl:AirCompressor, sl:FilterMesh, sl:Nozzle, sl:SprayWidthModule, sl:QualityModule, sl:RobotArm .
+
+sl:Normal a sl:State ; rdfs:label "Normal" .
+sl:Warning a sl:State ; rdfs:label "Warning" .
+sl:Fault a sl:State ; rdfs:label "Fault" .
+
+sl:ThresholdSet_0623ver_2 a sl:ThresholdSet ;
+    rdfs:label "Threshold Set 0623ver_2" ;
+    sl:description "Threshold set generated from threshold_reference.csv for 0623ver_2." .
+
+sl:AirCompressor a sl:Component ; rdfs:label "Air Compressor" ; sl:componentName "air_compressor" ; sl:monitorsMetric sl:Metric_air_pressure_bar .
+sl:FilterMesh a sl:Component ; rdfs:label "Filter Mesh" ; sl:componentName "filter_mesh" ; sl:monitorsMetric sl:Metric_filter_diff_pressure_bar .
+sl:Nozzle a sl:Component ; rdfs:label "Nozzle" ; sl:componentName "nozzle" ; sl:monitorsMetric sl:Metric_paint_flow_ml_min .
+sl:SprayWidthModule a sl:Component ; rdfs:label "Spray Width Module" ; sl:componentName "spray_width" ; sl:monitorsMetric sl:Metric_spray_width_mm .
+sl:QualityModule a sl:Component ; rdfs:label "Quality Module" ; sl:componentName "quality" ; sl:monitorsMetric sl:Metric_film_thickness_um .
+sl:RobotArm a sl:Component ; rdfs:label "Robot Arm" ; sl:componentName "robot_arm" ; sl:monitorsMetric sl:Metric_servo_torque_load_pct, sl:Metric_path_error_mm .
+
+#################################################################
+# Metrics / Thresholds
+#################################################################
+
+sl:Metric_air_pressure_bar a sl:SensorMetric ; rdfs:label "Air pressure" ; sl:metricName "air_pressure_bar" ; sl:unit "bar" ; sl:hasThreshold sl:Threshold_air_pressure_bar .
+sl:Threshold_air_pressure_bar a sl:SensorThreshold ; rdfs:label "Threshold for air_pressure_bar" ;
+    sl:normalMin "2.7"^^xsd:decimal ; sl:normalMax "3.8"^^xsd:decimal ;
+    sl:warningLowMin "2.5"^^xsd:decimal ; sl:warningLowMax "2.7"^^xsd:decimal ;
+    sl:warningHighMin "3.8"^^xsd:decimal ; sl:warningHighMax "4.0"^^xsd:decimal ;
+    sl:faultLowMax "2.5"^^xsd:decimal ; sl:faultHighMin "4.0"^^xsd:decimal ;
+    sl:belongsToThresholdSet sl:ThresholdSet_0623ver_2 ; sl:hasNormalState sl:Normal ; sl:hasWarningState sl:Warning ; sl:hasFaultState sl:Fault ;
+    sl:indicatesCause sl:Cause_AIR_PRESSURE_UNSTABLE ; sl:recommendsAction sl:Action_CALIBRATE_PRESSURE_VALVE ;
+    sl:description "Air pressure outside the threshold may cause unstable atomization and uneven coating." .
+
+sl:Metric_spray_width_mm a sl:SensorMetric ; rdfs:label "Spray width" ; sl:metricName "spray_width_mm" ; sl:unit "mm" ; sl:hasThreshold sl:Threshold_spray_width_mm .
+sl:Threshold_spray_width_mm a sl:SensorThreshold ; rdfs:label "Threshold for spray_width_mm" ;
+    sl:normalMin "70"^^xsd:decimal ; sl:normalMax "130"^^xsd:decimal ;
+    sl:warningLowMin "60"^^xsd:decimal ; sl:warningLowMax "70"^^xsd:decimal ;
+    sl:warningHighMin "130"^^xsd:decimal ; sl:warningHighMax "140"^^xsd:decimal ;
+    sl:faultLowMax "60"^^xsd:decimal ; sl:faultHighMin "140"^^xsd:decimal ;
+    sl:belongsToThresholdSet sl:ThresholdSet_0623ver_2 ; sl:hasNormalState sl:Normal ; sl:hasWarningState sl:Warning ; sl:hasFaultState sl:Fault ;
+    sl:indicatesCause sl:Cause_SPRAY_WIDTH_DEVIATION ; sl:recommendsAction sl:Action_ADJUST_FLOW_PRESSURE, sl:Action_INSPECT_NOZZLE ;
+    sl:description "Spray width deviation may indicate abnormal flow pressure or nozzle condition." .
+
+sl:Metric_filter_diff_pressure_bar a sl:SensorMetric ; rdfs:label "Filter differential pressure" ; sl:metricName "filter_diff_pressure_bar" ; sl:unit "bar" ; sl:hasThreshold sl:Threshold_filter_diff_pressure_bar .
+sl:Threshold_filter_diff_pressure_bar a sl:SensorThreshold ; rdfs:label "Threshold for filter_diff_pressure_bar" ;
+    sl:normalMin "0.1"^^xsd:decimal ; sl:normalMax "0.5"^^xsd:decimal ;
+    sl:warningHighMin "0.5"^^xsd:decimal ; sl:warningHighMax "0.7"^^xsd:decimal ; sl:faultHighMin "0.7"^^xsd:decimal ;
+    sl:belongsToThresholdSet sl:ThresholdSet_0623ver_2 ; sl:hasNormalState sl:Normal ; sl:hasWarningState sl:Warning ; sl:hasFaultState sl:Fault ;
+    sl:indicatesCause sl:Cause_FILTER_CLOG ; sl:recommendsAction sl:Action_CHECK_FILTER, sl:Action_REPLACE_FILTER ;
+    sl:description "High filter differential pressure indicates clogging risk." .
+
+sl:Metric_film_thickness_um a sl:SensorMetric ; rdfs:label "Film thickness" ; sl:metricName "film_thickness_um" ; sl:unit "um" ; sl:hasThreshold sl:Threshold_film_thickness_um .
+sl:Threshold_film_thickness_um a sl:SensorThreshold ; rdfs:label "Threshold for film_thickness_um" ;
+    sl:normalMin "13.5"^^xsd:decimal ; sl:normalMax "16.5"^^xsd:decimal ;
+    sl:warningLowMin "12.5"^^xsd:decimal ; sl:warningLowMax "13.5"^^xsd:decimal ;
+    sl:warningHighMin "16.5"^^xsd:decimal ; sl:warningHighMax "17.5"^^xsd:decimal ;
+    sl:faultLowMax "12.5"^^xsd:decimal ; sl:faultHighMin "17.5"^^xsd:decimal ;
+    sl:belongsToThresholdSet sl:ThresholdSet_0623ver_2 ; sl:hasNormalState sl:Normal ; sl:hasWarningState sl:Warning ; sl:hasFaultState sl:Fault ;
+    sl:indicatesCause sl:Cause_FILM_THICKNESS_OOC ; sl:recommendsAction sl:Action_ADJUST_FILM_THICKNESS, sl:Action_ADJUST_FLOW_PRESSURE ;
+    sl:description "Film thickness outside the control range indicates unstable coating quality." .
+
+sl:Metric_paint_flow_ml_min a sl:SensorMetric ; rdfs:label "Paint flow" ; sl:metricName "paint_flow_ml_min" ; sl:unit "ml/min" ; sl:hasThreshold sl:Threshold_paint_flow_ml_min .
+sl:Threshold_paint_flow_ml_min a sl:SensorThreshold ; rdfs:label "Threshold for paint_flow_ml_min" ;
+    sl:normalMin "80"^^xsd:decimal ; sl:normalMax "130"^^xsd:decimal ;
+    sl:warningLowMin "60"^^xsd:decimal ; sl:warningLowMax "80"^^xsd:decimal ;
+    sl:warningHighMin "130"^^xsd:decimal ; sl:warningHighMax "150"^^xsd:decimal ;
+    sl:faultLowMax "60"^^xsd:decimal ; sl:faultHighMin "150"^^xsd:decimal ;
+    sl:belongsToThresholdSet sl:ThresholdSet_0623ver_2 ; sl:hasNormalState sl:Normal ; sl:hasWarningState sl:Warning ; sl:hasFaultState sl:Fault ;
+    sl:indicatesCause sl:Cause_FLOW_IMBALANCE ; sl:recommendsAction sl:Action_ADJUST_FLOW_PRESSURE, sl:Action_INSPECT_NOZZLE ;
+    sl:description "Paint flow imbalance affects spray width and film thickness stability." .
+
+sl:Metric_servo_torque_load_pct a sl:SensorMetric ; rdfs:label "Servo torque load" ; sl:metricName "servo_torque_load_pct" ; sl:unit "%" ; sl:hasThreshold sl:Threshold_servo_torque_load_pct .
+sl:Threshold_servo_torque_load_pct a sl:SensorThreshold ; rdfs:label "Threshold for servo_torque_load_pct" ;
+    sl:normalMin "0"^^xsd:decimal ; sl:normalMax "55"^^xsd:decimal ;
+    sl:warningHighMin "55"^^xsd:decimal ; sl:warningHighMax "70"^^xsd:decimal ; sl:faultHighMin "70"^^xsd:decimal ;
+    sl:belongsToThresholdSet sl:ThresholdSet_0623ver_2 ; sl:hasNormalState sl:Normal ; sl:hasWarningState sl:Warning ; sl:hasFaultState sl:Fault ;
+    sl:indicatesCause sl:Cause_SERVO_WEAR ; sl:recommendsAction sl:Action_CHECK_SERVO, sl:Action_REDUCE_SPEED ;
+    sl:description "High servo torque load may indicate mechanical resistance or wear." .
+
+sl:Metric_path_error_mm a sl:SensorMetric ; rdfs:label "Path error" ; sl:metricName "path_error_mm" ; sl:unit "mm" ; sl:hasThreshold sl:Threshold_path_error_mm .
+sl:Threshold_path_error_mm a sl:SensorThreshold ; rdfs:label "Threshold for path_error_mm" ;
+    sl:normalMin "0"^^xsd:decimal ; sl:normalMax "0.8"^^xsd:decimal ;
+    sl:warningHighMin "0.8"^^xsd:decimal ; sl:warningHighMax "1.5"^^xsd:decimal ; sl:faultHighMin "1.5"^^xsd:decimal ;
+    sl:belongsToThresholdSet sl:ThresholdSet_0623ver_2 ; sl:hasNormalState sl:Normal ; sl:hasWarningState sl:Warning ; sl:hasFaultState sl:Fault ;
+    sl:indicatesCause sl:Cause_PATH_ERROR_HIGH ; sl:recommendsAction sl:Action_CCD_PATH_CORRECTION ;
+    sl:description "High path error may affect coating position and quality." .
+
+#################################################################
+# Causes / Response Actions / Rule
+#################################################################
+
+sl:Cause_AIR_PRESSURE_UNSTABLE a sl:Cause ; rdfs:label "Air pressure unstable" ; sl:causeId "AIR_PRESSURE_UNSTABLE" .
+sl:Cause_SPRAY_WIDTH_DEVIATION a sl:Cause ; rdfs:label "Spray width deviation" ; sl:causeId "SPRAY_WIDTH_DEVIATION" .
+sl:Cause_FILTER_CLOG a sl:Cause ; rdfs:label "Filter clog" ; sl:causeId "FILTER_CLOG" .
+sl:Cause_FILM_THICKNESS_OOC a sl:Cause ; rdfs:label "Film thickness out of control" ; sl:causeId "FILM_THICKNESS_OOC" .
+sl:Cause_FLOW_IMBALANCE a sl:Cause ; rdfs:label "Flow imbalance" ; sl:causeId "FLOW_IMBALANCE" .
+sl:Cause_SERVO_WEAR a sl:Cause ; rdfs:label "Servo wear" ; sl:causeId "SERVO_WEAR" .
+sl:Cause_PATH_ERROR_HIGH a sl:Cause ; rdfs:label "Path error high" ; sl:causeId "PATH_ERROR_HIGH" .
+
+sl:Action_CALIBRATE_PRESSURE_VALVE a sl:ResponseAction ; rdfs:label "Calibrate pressure valve" ; sl:responseId "CALIBRATE_PRESSURE_VALVE" .
+sl:Action_ADJUST_FLOW_PRESSURE a sl:ResponseAction ; rdfs:label "Adjust flow pressure" ; sl:responseId "ADJUST_FLOW_PRESSURE" .
+sl:Action_INSPECT_NOZZLE a sl:ResponseAction ; rdfs:label "Inspect nozzle" ; sl:responseId "INSPECT_NOZZLE" .
+sl:Action_CHECK_FILTER a sl:ResponseAction ; rdfs:label "Check filter" ; sl:responseId "CHECK_FILTER" .
+sl:Action_REPLACE_FILTER a sl:ResponseAction ; rdfs:label "Replace filter" ; sl:responseId "REPLACE_FILTER" .
+sl:Action_ADJUST_FILM_THICKNESS a sl:ResponseAction ; rdfs:label "Adjust film thickness" ; sl:responseId "ADJUST_FILM_THICKNESS" .
+sl:Action_CHECK_SERVO a sl:ResponseAction ; rdfs:label "Check servo" ; sl:responseId "CHECK_SERVO" .
+sl:Action_REDUCE_SPEED a sl:ResponseAction ; rdfs:label "Reduce speed" ; sl:responseId "REDUCE_SPEED" .
+sl:Action_CCD_PATH_CORRECTION a sl:ResponseAction ; rdfs:label "CCD path correction" ; sl:responseId "CCD_PATH_CORRECTION" .
+
+sl:Rule_Threshold_State_Inference a sl:InferenceRule ;
+    rdfs:label "Threshold state inference rule" ;
+    sl:description "If the real-time metric value is within normal range, return Normal. If it is near the boundary, return Warning. If it exceeds fault boundary, return Fault and mapped cause/action." ;
+    sl:usesThreshold sl:Threshold_air_pressure_bar, sl:Threshold_spray_width_mm, sl:Threshold_filter_diff_pressure_bar, sl:Threshold_film_thickness_um, sl:Threshold_paint_flow_ml_min, sl:Threshold_servo_torque_load_pct, sl:Threshold_path_error_mm .

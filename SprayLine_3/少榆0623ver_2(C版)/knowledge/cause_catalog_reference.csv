@@ -1,0 +1,19 @@
+sep=,
+cause_id,category,description_zh,typical_component,severity
+FILTER_CLOG,pdm_core,漆渣累積導致濾網阻塞，壓差持續上升,filter,medium
+SERVO_WEAR,pdm_core,減速機磨損導致伺服負載升高,servo,medium
+PUMP_DEGRADATION,pdm_core,幫浦老化導致流量不穩定,pump,medium
+NOZZLE_CLOG,quality_fluid,塗料殘留堵塞噴嘴孔徑，噴幅變窄,nozzle,high
+NOZZLE_WEAR,quality_fluid,噴嘴孔徑磨損擴大，影響霧化品質,nozzle,medium
+FLOW_UNSTABLE,quality_fluid,流量波動導致膜厚不均勻,pump,medium
+THICKNESS_DRIFT,quality_fluid,膜厚漂移超出管制範圍,process,medium
+VIBRATION_HIGH,protection,振動加速度超標，疑似碰撞或軸承鬆動,robot,high
+PATH_ERROR_HIGH,protection,軌跡追蹤誤差過大，需重新校正 TCP,robot,high
+GEARBOX_OVERHEAT,protection,減速機溫度過高，需強制降速,gearbox,high
+AIR_PRESSURE_UNSTABLE,quality_fluid,空壓機壓力不穩，影響霧化品質,compressor,medium
+AIR_MOISTURE_HIGH,quality_fluid,壓縮空氣含水量過高，影響附著性,compressor,medium
+ENV_TEMP_OUT,environment,環境溫度超出最佳噴塗範圍（22~26°C）,chamber,medium
+ENV_HUMID_OUT,environment,環境濕度超出最佳範圍（50~60%RH）,chamber,medium
+FILTER_DAMAGE,pdm_core,濾網破損導致洩漏，進出流量異常,filter,high
+MANUAL_STOP,process,操作員手動緊急停機,,low
+SCHEDULED_MAINT,process,計畫性預防保養停機,,low

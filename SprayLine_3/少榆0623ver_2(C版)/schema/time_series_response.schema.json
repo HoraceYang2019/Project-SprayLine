@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Time series response",
+  "type": "object",
+  "properties": {
+    "station": {
+      "type": "string"
+    },
+    "start_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sensor_1min": {
+      "type": "array",
+      "items": {
+        "$ref": "sensor_1min.schema.json"
+      }
+    },
+    "sensor_3min": {
+      "type": "array",
+      "items": {
+        "$ref": "sensor_3min.schema.json"
+      }
+    }
+  },
+  "required": [
+    "station",
+    "sensor_1min",
+    "sensor_3min"
+  ],
+  "additionalProperties": false
+}

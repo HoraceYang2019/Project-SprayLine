@@ -1,0 +1,19 @@
+{
+  "total": 1,
+  "rows": [
+    {
+      "component_id": "FILTER",
+      "component_name": "濾網",
+      "state": "FILTER_CLOG",
+      "state_name": "濾網阻塞",
+      "state_description": "濾網壓差升高時的候選狀態",
+      "severity": "medium",
+      "countermeasure_id": "REPLACE_FILTER",
+      "countermeasure": "更換濾網",
+      "downtime_estimate_min": 30,
+      "skill_required": "operator",
+      "relevance_rank": 1,
+      "effectiveness_pct": 95
+    }
+  ]
+}

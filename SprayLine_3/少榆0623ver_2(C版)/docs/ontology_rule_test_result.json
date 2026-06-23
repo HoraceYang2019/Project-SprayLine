@@ -1,0 +1,256 @@
+[
+  {
+    "metric": "air_pressure_bar",
+    "component": "air_compressor",
+    "component_zh": "空壓機",
+    "value": 3.2,
+    "unit": "bar",
+    "state": "normal",
+    "level": "ok",
+    "issue": "目前狀態位於正常範圍。",
+    "cause_id": null,
+    "response_ids": [],
+    "threshold": {
+      "normal_min": 2.7,
+      "normal_max": 3.8,
+      "warning_low_min": 2.5,
+      "warning_low_max": 2.7,
+      "warning_high_min": 3.8,
+      "warning_high_max": 4.0,
+      "fault_low_max": 2.5,
+      "fault_high_min": 4.0
+    },
+    "source": "ontology/sprayline_threshold.ttl",
+    "rule_engine": "ontology.rule_inference"
+  },
+  {
+    "metric": "air_pressure_bar",
+    "component": "air_compressor",
+    "component_zh": "空壓機",
+    "value": 4.1,
+    "unit": "bar",
+    "state": "fault",
+    "level": "fault",
+    "issue": "空壓機壓力過低或過高會造成霧化不穩與噴塗不均",
+    "cause_id": "AIR_PRESSURE_UNSTABLE",
+    "response_ids": [
+      "CALIBRATE_PRESSURE_VALVE"
+    ],
+    "threshold": {
+      "normal_min": 2.7,
+      "normal_max": 3.8,
+      "warning_low_min": 2.5,
+      "warning_low_max": 2.7,
+      "warning_high_min": 3.8,
+      "warning_high_max": 4.0,
+      "fault_low_max": 2.5,
+      "fault_high_min": 4.0
+    },
+    "source": "ontology/sprayline_threshold.ttl",
+    "rule_engine": "ontology.rule_inference"
+  },
+  {
+    "metric": "spray_width_mm",
+    "component": "spray_width",
+    "component_zh": "噴幅",
+    "value": 99.0,
+    "unit": "mm",
+    "state": "normal",
+    "level": "ok",
+    "issue": "目前狀態位於正常範圍。",
+    "cause_id": null,
+    "response_ids": [],
+    "threshold": {
+      "normal_min": 70.0,
+      "normal_max": 130.0,
+      "warning_low_min": 60.0,
+      "warning_low_max": 70.0,
+      "warning_high_min": 130.0,
+      "warning_high_max": 140.0,
+      "fault_low_max": 60.0,
+      "fault_high_min": 140.0
+    },
+    "source": "ontology/sprayline_threshold.ttl",
+    "rule_engine": "ontology.rule_inference"
+  },
+  {
+    "metric": "spray_width_mm",
+    "component": "spray_width",
+    "component_zh": "噴幅",
+    "value": 145.0,
+    "unit": "mm",
+    "state": "fault",
+    "level": "fault",
+    "issue": "噴幅寬度偏離正常範圍可能代表流量壓力或噴嘴狀態異常",
+    "cause_id": "SPRAY_WIDTH_DEVIATION",
+    "response_ids": [
+      "ADJUST_FLOW_PRESSURE",
+      "INSPECT_NOZZLE"
+    ],
+    "threshold": {
+      "normal_min": 70.0,
+      "normal_max": 130.0,
+      "warning_low_min": 60.0,
+      "warning_low_max": 70.0,
+      "warning_high_min": 130.0,
+      "warning_high_max": 140.0,
+      "fault_low_max": 60.0,
+      "fault_high_min": 140.0
+    },
+    "source": "ontology/sprayline_threshold.ttl",
+    "rule_engine": "ontology.rule_inference"
+  },
+  {
+    "metric": "filter_diff_pressure_bar",
+    "component": "filter_mesh",
+    "component_zh": "濾網",
+    "value": 0.48,
+    "unit": "bar",
+    "state": "normal",
+    "level": "ok",
+    "issue": "目前狀態位於正常範圍。",
+    "cause_id": null,
+    "response_ids": [],
+    "threshold": {
+      "normal_min": 0.1,
+      "normal_max": 0.5,
+      "warning_low_min": null,
+      "warning_low_max": null,
+      "warning_high_min": 0.5,
+      "warning_high_max": 0.7,
+      "fault_low_max": null,
+      "fault_high_min": 0.7
+    },
+    "source": "ontology/sprayline_threshold.ttl",
+    "rule_engine": "ontology.rule_inference"
+  },
+  {
+    "metric": "filter_diff_pressure_bar",
+    "component": "filter_mesh",
+    "component_zh": "濾網",
+    "value": 0.72,
+    "unit": "bar",
+    "state": "fault",
+    "level": "fault",
+    "issue": "濾網壓差升高代表阻塞風險增加",
+    "cause_id": "FILTER_CLOG",
+    "response_ids": [
+      "CHECK_FILTER",
+      "REPLACE_FILTER"
+    ],
+    "threshold": {
+      "normal_min": 0.1,
+      "normal_max": 0.5,
+      "warning_low_min": null,
+      "warning_low_max": null,
+      "warning_high_min": 0.5,
+      "warning_high_max": 0.7,
+      "fault_low_max": null,
+      "fault_high_min": 0.7
+    },
+    "source": "ontology/sprayline_threshold.ttl",
+    "rule_engine": "ontology.rule_inference"
+  },
+  {
+    "metric": "film_thickness_um",
+    "component": "quality",
+    "component_zh": "品質",
+    "value": 14.8,
+    "unit": "um",
+    "state": "normal",
+    "level": "ok",
+    "issue": "目前狀態位於正常範圍。",
+    "cause_id": null,
+    "response_ids": [],
+    "threshold": {
+      "normal_min": 13.5,
+      "normal_max": 16.5,
+      "warning_low_min": 12.5,
+      "warning_low_max": 13.5,
+      "warning_high_min": 16.5,
+      "warning_high_max": 17.5,
+      "fault_low_max": 12.5,
+      "fault_high_min": 17.5
+    },
+    "source": "ontology/sprayline_threshold.ttl",
+    "rule_engine": "ontology.rule_inference"
+  },
+  {
+    "metric": "film_thickness_um",
+    "component": "quality",
+    "component_zh": "品質",
+    "value": 17.8,
+    "unit": "um",
+    "state": "fault",
+    "level": "fault",
+    "issue": "膜厚超出管制範圍代表噴塗品質可能不穩",
+    "cause_id": "FILM_THICKNESS_OOC",
+    "response_ids": [
+      "ADJUST_FILM_THICKNESS",
+      "ADJUST_FLOW_PRESSURE"
+    ],
+    "threshold": {
+      "normal_min": 13.5,
+      "normal_max": 16.5,
+      "warning_low_min": 12.5,
+      "warning_low_max": 13.5,
+      "warning_high_min": 16.5,
+      "warning_high_max": 17.5,
+      "fault_low_max": 12.5,
+      "fault_high_min": 17.5
+    },
+    "source": "ontology/sprayline_threshold.ttl",
+    "rule_engine": "ontology.rule_inference"
+  },
+  {
+    "metric": "paint_flow_ml_min",
+    "component": "nozzle",
+    "component_zh": "噴嘴",
+    "value": 107.0,
+    "unit": "ml/min",
+    "state": "normal",
+    "level": "ok",
+    "issue": "目前狀態位於正常範圍。",
+    "cause_id": null,
+    "response_ids": [],
+    "threshold": {
+      "normal_min": 80.0,
+      "normal_max": 130.0,
+      "warning_low_min": 60.0,
+      "warning_low_max": 80.0,
+      "warning_high_min": 130.0,
+      "warning_high_max": 150.0,
+      "fault_low_max": 60.0,
+      "fault_high_min": 150.0
+    },
+    "source": "ontology/sprayline_threshold.ttl",
+    "rule_engine": "ontology.rule_inference"
+  },
+  {
+    "metric": "servo_torque_load_pct",
+    "component": "robot_arm",
+    "component_zh": "機械手臂",
+    "value": 58.9,
+    "unit": "%",
+    "state": "warning",
+    "level": "warning",
+    "issue": "目前狀態接近管制邊界，建議觀察趨勢。",
+    "cause_id": "SERVO_WEAR",
+    "response_ids": [
+      "CHECK_SERVO",
+      "REDUCE_SPEED"
+    ],
+    "threshold": {
+      "normal_min": 0.0,
+      "normal_max": 55.0,
+      "warning_low_min": null,
+      "warning_low_max": null,
+      "warning_high_min": 55.0,
+      "warning_high_max": 70.0,
+      "fault_low_max": null,
+      "fault_high_min": 70.0
+    },
+    "source": "ontology/sprayline_threshold.ttl",
+    "rule_engine": "ontology.rule_inference"
+  }
+]

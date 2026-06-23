@@ -1,0 +1,12 @@
+{
+  "event_id": null,
+  "batch_id": null,
+  "station_id": null,
+  "sensor_name": null,
+  "measured_value": null,
+  "state": null,
+  "cause": null,
+  "ts": null,
+  "message": null,
+  "acknowledged_at": null
+}

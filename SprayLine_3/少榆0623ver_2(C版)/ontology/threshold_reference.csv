@@ -1,0 +1,9 @@
+sep=,
+metric,component,component_zh,unit,normal_min,normal_max,warning_low_min,warning_low_max,warning_high_min,warning_high_max,fault_low_max,fault_high_min,cause_id,response_ids,description
+air_pressure_bar,air_compressor,空壓機,bar,2.7,3.8,2.5,2.7,3.8,4.0,2.5,4.0,AIR_PRESSURE_UNSTABLE,CALIBRATE_PRESSURE_VALVE,空壓機壓力過低或過高會造成霧化不穩與噴塗不均
+spray_width_mm,spray_width,噴幅,mm,70,130,60,70,130,140,60,140,SPRAY_WIDTH_DEVIATION,ADJUST_FLOW_PRESSURE|INSPECT_NOZZLE,噴幅寬度偏離正常範圍可能代表流量壓力或噴嘴狀態異常
+filter_diff_pressure_bar,filter_mesh,濾網,bar,0.1,0.5,,,0.5,0.7,,0.7,FILTER_CLOG,CHECK_FILTER|REPLACE_FILTER,濾網壓差升高代表阻塞風險增加
+film_thickness_um,quality,品質,um,13.5,16.5,12.5,13.5,16.5,17.5,12.5,17.5,FILM_THICKNESS_OOC,ADJUST_FILM_THICKNESS|ADJUST_FLOW_PRESSURE,膜厚超出管制範圍代表噴塗品質可能不穩
+paint_flow_ml_min,nozzle,噴嘴,ml/min,80,130,60,80,130,150,60,150,FLOW_IMBALANCE,ADJUST_FLOW_PRESSURE|INSPECT_NOZZLE,塗料流量過低或過高會影響噴幅與膜厚穩定性
+servo_torque_load_pct,robot_arm,機械手臂,%,0,55,,,55,70,,70,SERVO_WEAR,CHECK_SERVO|REDUCE_SPEED,伺服負載升高可能代表機構阻力或磨耗增加
+path_error_mm,robot_arm,機械手臂,mm,0,0.8,,,0.8,1.5,,1.5,PATH_ERROR_HIGH,CCD_PATH_CORRECTION,路徑誤差偏高可能影響噴塗位置與品質
