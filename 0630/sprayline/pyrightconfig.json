@@ -1,0 +1,13 @@
+{
+  "include": [
+    "api",
+    "services",
+    "database",
+    "ui"
+  ],
+  "extraPaths": [
+    "./api",
+    "./services",
+    "./database"
+  ]
+}

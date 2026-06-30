@@ -1,0 +1,16 @@
+{
+  "note": "僅供 UI_V6 本機展示使用；不覆蓋少榆0616_B版規則。",
+  "film_thickness_um": {
+    "unit": "um",
+    "normal": {"min": 13.0, "max": 17.0},
+    "warning": [
+      {"min": 11.0, "max_exclusive": 13.0},
+      {"min_exclusive": 17.0, "max": 19.0}
+    ],
+    "fault": [
+      {"max_exclusive": 11.0},
+      {"min_exclusive": 19.0}
+    ],
+    "source": "少榆0616_B版 future demo 使用 15um 作為品質中心值；UI本機版僅為畫面測試建立 ±2um 正常參考帶"
+  }
+}
