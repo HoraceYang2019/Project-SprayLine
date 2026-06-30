@@ -1,0 +1,5 @@
+sep=,
+state_id,state_class,knowledge_category,min_pressure_error_ratio,max_pressure_error_ratio,min_spray_width_error_ratio,max_spray_width_error_ratio,severity_rank,confidence,dataset
+NozzleEarly,NozzleEarly,nozzle_condition,0.0,0.10,0.0,0.10,0,0.94,sprayline_2026_batch_A
+NozzleWear,NozzleWear,nozzle_condition,0.10,0.25,0.10,0.25,1,0.94,sprayline_2026_batch_A
+NozzleBlock,NozzleBlock,nozzle_condition,0.25,1.00,0.25,1.00,2,0.94,sprayline_2026_batch_A

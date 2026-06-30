@@ -1,0 +1,9 @@
+sep=,
+requirement_id,item,owner,status,note
+REQ-001,query sensor_1min,§E¦t©Ó Database/versionB,provided_in_db_sensor_py,¤Ö·®³z¹L integration_adapter ©I¥s db_sensor.query_sensor_1min¡C
+REQ-002,query sensor_3min,§E¦t©Ó Database/versionB,provided_in_db_sensor_py,¤Ö·®³z¹L integration_adapter ©I¥s db_sensor.query_sensor_3min¡C
+REQ-003,insert alert_event,§E¦t©Ó Database/versionB,provided_in_db_alert_py,¤Ö·®³z¹L integration_adapter ©I¥s db_alert.insert_alert_event¡C
+REQ-004,upsert batch_station_status,§E¦t©Ó Database/versionB,provided_in_db_status_py,¤Ö·®³z¹L integration_adapter ©I¥s db_status.upsert_batch_station_status¡C
+REQ-005,future_prediction_result table,§E¦t©Ó Database/versionB,provided_in_setup_db_sql,0615 «á¤w´£¨Ñ table¡C
+REQ-006,insert future_prediction_result,§E¦t©Ó Database/versionB,provided_in_db_future_py,¤Ö·®³z¹L integration_adapter ©I¥s db_future.insert_future_prediction_result¡C
+REQ-007,threshold source,¤Ö·® rules/sensor_thresholds.json,use_json_config,DB ¤ºÁö¦³ sensor_threshold table¡A¦ý¨Ì°Q½×¤Ö·®ºÝ¥ý¥Î JSON config¡C
