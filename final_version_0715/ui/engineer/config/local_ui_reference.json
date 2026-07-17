@@ -1,0 +1,3 @@
+{
+  "note": "UI_V16 不再用本機自訂門檻覆蓋 Service API；未出現在少榆0617ver_1 sensor_thresholds.json 的欄位只顯示數值，不自行判定門檻。"
+}

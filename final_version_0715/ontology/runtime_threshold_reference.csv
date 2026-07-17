@@ -1,0 +1,14 @@
+metric,component,component_zh,unit,normal_min,normal_max,warning_low_min,warning_low_max,warning_high_min,warning_high_max,fault_low_max,fault_high_min,cause_id,response_ids,description
+air_pressure_bar,air_compressor,空壓系統,bar,2.7,3.8,2.5,2.7,3.8,4.0,2.5,4.0,AIR_PRESSURE_UNSTABLE,CALIBRATE_PRESSURE_VALVE,空壓壓力過低或過高會造成霧化不穩與噴塗不均
+spray_width_mm,spray_width,噴幅,mm,70,130,60,70,130,140,60,140,SPRAY_WIDTH_DEVIATION,ADJUST_TCP_Z|ADJUST_FLOW_PRESSURE|REPLACE_NOZZLE,噴幅寬度偏離安全範圍可能代表流量壓力或噴嘴狀態異常
+filter_diff_pressure_bar,filter_mesh,濾網,bar,0.1,0.5,,,0.5,0.7,,0.7,FILTER_CLOG,REPLACE_FILTER|BACKWASH_FILTER,濾網壓差升高代表阻塞風險增加
+film_thickness_um,quality,品質,um,13.5,16.5,12.5,13.5,16.5,17.5,12.5,17.5,THICKNESS_DRIFT,ADJUST_SPEED_FLOW|CALIBRATE_ENV_CONTROL,膜厚超出管制範圍代表噴塗品質可能不穩
+paint_flow_ml_min,nozzle,噴嘴,ml/min,105,125,95,105,,,95,125,NOZZLE_CLOG,CLEAN_NOZZLE|REPLACE_NOZZLE,塗料流量偏離正式製程範圍可能代表噴嘴阻塞或供料異常
+servo_torque_load_pct,robot_arm,機械手臂,%,40,60,0,40,60,75,,75,SERVO_WEAR,LUBRICATE_SERVO|REPLACE_SERVO,伺服負載偏離正常範圍可能代表機構阻力或磨耗增加
+path_error_mm,robot_arm,機械手臂,mm,0,0.1,,,0.1,0.15,,0.15,PATH_ERROR_HIGH,RECALIBRATE_TCP,路徑誤差偏高可能影響噴塗位置與品質
+temperature_c,environment,環境溫度,degC,20,30,15,20,30,35,15,35,ENV_TEMP_OUT,CALIBRATE_ENV_CONTROL,環境溫度超出製程範圍可能影響塗料黏度與成膜品質
+humidity_rh,environment,環境濕度,%RH,45,65,35,45,65,75,35,75,ENV_HUMID_OUT,CALIBRATE_ENV_CONTROL,環境濕度超出製程範圍可能影響附著與乾燥品質
+quality_score_pct,quality,製程品質分數,%,90,100,70,90,,,70,,THICKNESS_DRIFT,ADJUST_SPEED_FLOW|CALIBRATE_ENV_CONTROL,製程品質分數由流量壓力噴幅與路徑誤差估算並非實際檢驗良品率
+estimated_defect_rate_pct,quality,估計異常樣本率,%,0,10,,,10,30,,30,THICKNESS_DRIFT,ADJUST_SPEED_FLOW|CALIBRATE_ENV_CONTROL,估計異常樣本率超過門檻時應檢查製程條件
+qc_pct,quality,估計異常樣本率,%,0,10,,,10,30,,30,THICKNESS_DRIFT,ADJUST_SPEED_FLOW|CALIBRATE_ENV_CONTROL,Qc目前表示估計異常樣本率並非實際產品不良率
+estimated_film_thickness_um,quality,估計膜厚,um,13.5,16.5,12.5,13.5,16.5,17.5,12.5,17.5,THICKNESS_DRIFT,ADJUST_SPEED_FLOW|CALIBRATE_ENV_CONTROL,估計膜厚超出管制範圍時應檢查流量噴幅與環境條件

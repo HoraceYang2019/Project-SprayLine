@@ -1,0 +1,2 @@
+UI_V29 Engineer UI: display timestamps mapped to current 2026 viewer time, original DB timestamp preserved as data_timestamp
+Based on UI_V28 Engineer Integrated version

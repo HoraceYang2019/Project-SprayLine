@@ -1,0 +1,38 @@
+{
+  "line_1": {
+    "station_id":               "Station_1",
+    "recipe_name":              "Primer_A",
+    "nominal_flow_rate_ml_min": 120.0,
+    "target_spray_width_mm":    52.0,
+    "target_min_mm":            48.0,
+    "target_max_mm":            56.0,
+    "nozzle_design_life_hr":    400,
+    "filter_design_life_hr":    600,
+    "nozzle_installed_at":      "2026-04-01",
+    "filter_installed_at":      "2026-05-15"
+  },
+  "line_2": {
+    "station_id":               "Station_2",
+    "recipe_name":              "Topcoat_B",
+    "nominal_flow_rate_ml_min": 110.0,
+    "target_spray_width_mm":    52.0,
+    "target_min_mm":            47.0,
+    "target_max_mm":            56.0,
+    "nozzle_design_life_hr":    400,
+    "filter_design_life_hr":    600,
+    "nozzle_installed_at":      "2026-04-01",
+    "filter_installed_at":      "2026-05-15"
+  },
+  "line_3": {
+    "station_id":               "Station_3",
+    "recipe_name":              "Gold_C",
+    "nominal_flow_rate_ml_min": 120.0,
+    "target_spray_width_mm":    52.0,
+    "target_min_mm":            40.0,
+    "target_max_mm":            56.0,
+    "nozzle_design_life_hr":    400,
+    "filter_design_life_hr":    600,
+    "nozzle_installed_at":      "2026-04-01",
+    "filter_installed_at":      "2026-05-15"
+  }
+}
