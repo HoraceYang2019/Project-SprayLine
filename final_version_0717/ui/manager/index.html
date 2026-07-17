@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SprayLine Manager Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="manager-shell">
+    <header class="manager-header" id="managerHeader"></header>
+    <div id="managerErrorBanner"></div>
+    <main class="manager-main">
+      <section id="managerOverviewSection"></section>
+      <section id="managerRecommendationSection"></section>
+    </main>
+  </div>
+
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="trend-drawer" id="recommendationPanel" aria-hidden="true"></aside>
+  <div class="toast-host" id="managerToastHost" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="main/config.js"></script>
+  <script src="main/api-client.js"></script>
+  <script src="main/engineer-task-api.js"></script>
+  <script src="main/manager-api-validation.js"></script>
+  <script src="main/time-review.js"></script>
+  <script src="main/summary-state.js"></script>
+  <script src="main/render-overview.js"></script>
+  <script src="main/render-diagnosis.js"></script>
+  <script src="main/render-recommendations.js"></script>
+  <script src="main/engineer-ack.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
