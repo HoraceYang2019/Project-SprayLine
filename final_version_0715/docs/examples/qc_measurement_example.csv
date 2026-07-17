@@ -1,0 +1,10 @@
+measurement_id,measured_at,batch_id,station_id,actual_film_thickness_um,target_film_thickness_um,lower_spec_um,upper_spec_um,actual_quality_result,quality_state,measurement_source,is_demo_data
+DEMO_QC_001,2026-07-15T09:10:00+08:00,DEMO_B_20260715_0900,Station_1,15.02,15,14,16,ok,normal,demo_qc_gauge,true
+DEMO_QC_002,2026-07-15T09:20:00+08:00,DEMO_B_20260715_0900,Station_2,14.96,15,14,16,ok,normal,demo_qc_gauge,true
+DEMO_QC_003,2026-07-15T09:29:00+08:00,DEMO_B_20260715_0900,Station_3,15.08,15,14,16,ok,normal,demo_qc_gauge,true
+DEMO_QC_004,2026-07-15T10:10:00+08:00,DEMO_B_20260715_1000,Station_1,15.63,15,14,16,ok,warning,demo_qc_gauge,true
+DEMO_QC_005,2026-07-15T10:20:00+08:00,DEMO_B_20260715_1000,Station_2,14.36,15,14,16,ok,warning,demo_qc_gauge,true
+DEMO_QC_006,2026-07-15T10:29:00+08:00,DEMO_B_20260715_1000,Station_3,15.2,15,14,16,ok,normal,demo_qc_gauge,true
+DEMO_QC_007,2026-07-15T11:10:00+08:00,DEMO_B_20260715_1100,Station_1,16.18,15,14,16,ng,fault,demo_qc_gauge,true
+DEMO_QC_008,2026-07-15T11:20:00+08:00,DEMO_B_20260715_1100,Station_2,13.82,15,14,16,ng,fault,demo_qc_gauge,true
+DEMO_QC_009,2026-07-15T11:29:00+08:00,DEMO_B_20260715_1100,Station_3,15.12,15,14,16,ok,normal,demo_qc_gauge,true
