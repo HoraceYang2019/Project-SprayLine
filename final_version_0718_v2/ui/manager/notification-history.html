@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>通知紀錄與工程師任務</title>
+  <link rel="stylesheet" href="engineer-task.css">
+  <link rel="stylesheet" href="notification-history-detail.css">
+</head>
+<body>
+  <main class="workflow-shell">
+    <header class="workflow-hero">
+      <div><p class="eyebrow">SPRAYLINE OPERATIONS</p><h1>通知紀錄</h1><p>PostgreSQL 為唯一正式狀態來源</p></div>
+      <a class="button secondary" href="index.html">返回 Dashboard</a>
+    </header>
+    <nav class="tabs" aria-label="通知紀錄分類">
+      <button class="tab active" data-tab="decisions">通知決策</button>
+      <button class="tab" data-tab="tasks">工程師任務</button>
+    </nav>
+    <section class="panel filters">
+      <label>起日<input type="date" id="dateFrom"></label>
+      <label>迄日<input type="date" id="dateTo"></label>
+      <label>小時<input type="number" id="hour" min="0" max="23" placeholder="0-23"></label>
+      <label>站別<input id="stationId" placeholder="Station_1"></label>
+      <label>批次<input id="batchId"></label>
+      <label>決策<select id="decisionType"><option value="">全部</option><option>email_task_created</option><option>dashboard_only</option><option>suppressed</option><option>cooldown_skipped</option></select></label>
+      <label>寄送<select id="deliveryStatus"><option value="">全部</option><option>pending</option><option>sent</option><option>failed</option><option>acknowledged</option></select></label>
+      <label>流程<select id="workflowStatus"><option value="">全部</option><option>unacknowledged</option><option>acknowledged</option><option>in_progress</option><option>completion_submitted</option><option>completed</option></select></label>
+      <label>工程師 Email<input id="engineerEmail"></label>
+      <label>Task ID<input id="taskId"></label>
+      <button class="button" id="searchButton">查詢</button>
+    </section>
+    <section class="panel"><div id="statusLine" class="status-line"></div><div class="table-wrap"><table><thead id="historyHead"></thead><tbody id="historyBody"></tbody></table></div><div class="pager"><button class="button secondary" id="previousPage">上一頁</button><span id="pageLabel"></span><button class="button secondary" id="nextPage">下一頁</button></div></section>
+  </main>
+  <dialog id="taskDialog"><button class="dialog-close" id="closeDialog">關閉</button><div id="taskDetail"></div></dialog>
+  <script src="main/config.js"></script><script src="main/api-client.js"></script><script src="main/engineer-task-api.js"></script><script src="notification-history.js"></script>
+</body>
+</html>
