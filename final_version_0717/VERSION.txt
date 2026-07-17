@@ -1,0 +1,14 @@
+final_version_0717
+
+Base package: user-uploaded final_version_0715(3).zip (latest inner project)
+Database volume: final_version_0627_sprayline_pgdata (external, preserved)
+Engineer UI: UI_0717 Engineer Integrated
+0717 integration fixes:
+- UI/DB time alignment
+- Time slider hour-to-minute conversion
+- Batch query pre-limit and PostgreSQL shm increase
+- Slider query only on release
+- Lazy component-detail requests
+- Missing trend fields show no-data instead of 502
+- No UI trend smoothing or fabricated fallback values
+- Batch temperature/humidity nearest real sensor_3min fallback
