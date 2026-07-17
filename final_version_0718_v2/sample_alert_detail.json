@@ -1,0 +1,47 @@
+﻿{
+    "schema_version":  "v1.0",
+    "service_name":  "TimeSeriesService",
+    "output_type":  "versionb_alert_card",
+    "db_available":  true,
+    "alert":  {
+                  "event_id":  "0676f322-f628-4be0-8ec2-08a8bb62f946",
+                  "station_id":  "Station_3",
+                  "sensor_name":  "filter_diff_pressure_bar",
+                  "state":  "warning",
+                  "ts":  "2026-08-20T11:46:50+00:00",
+                  "message":  "filter_diff_pressure_bar classified as warning; issue_state=FILTER_CLOG; cause_id=FILTER_CLOG",
+                  "acknowledged":  false,
+                  "acknowledged_at":  null,
+                  "causes":  [
+                                 {
+                                     "cause_id":  "FILTER_CLOG",
+                                     "is_primary":  true,
+                                     "description_zh":  "æ¼æ¸£ç´¯ç©å°è´æ¿¾ç¶²é»å¡ï¼å£å·®æçºä¸å",
+                                     "category":  "pdm_core",
+                                     "severity":  "medium"
+                                 }
+                             ],
+                  "responses":  [
+                                    {
+                                        "response_id":  "REPLACE_FILTER",
+                                        "executed_at":  null,
+                                        "operator_id":  null,
+                                        "description_zh":  "æ´ææ¿¾ç¶²ï¼å£å·®è¶\u0085ééæª»è§¸ç¼ï¼",
+                                        "downtime_estimate_min":  30,
+                                        "skill_required":  "operator"
+                                    },
+                                    {
+                                        "response_id":  "BACKWASH_FILTER",
+                                        "executed_at":  null,
+                                        "operator_id":  null,
+                                        "description_zh":  "åæ´æ¿¾ç¶²ç®¡è·¯ï¼è¨ææ¢å¾©æµé",
+                                        "downtime_estimate_min":  20,
+                                        "skill_required":  "technician"
+                                    }
+                                ],
+                  "primary_cause_zh":  "æ¼æ¸£ç´¯ç©å°è´æ¿¾ç¶²é»å¡ï¼å£å·®æçºä¸å",
+                  "max_downtime_min":  30,
+                  "min_skill_required":  "operator",
+                  "top_response_zh":  "æ´ææ¿¾ç¶²ï¼å£å·®è¶\u0085ééæª»è§¸ç¼ï¼"
+              }
+}
