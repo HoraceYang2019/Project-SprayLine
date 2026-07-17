@@ -1,0 +1,195 @@
+{
+  "version": "step2_formal_db_metrics",
+  "mapping_status": "draft_pending_yucheng_confirmation",
+  "note": "本檔先依 Database/versionB 目前的 cause_catalog / response_catalog / batch_station_status 欄位建立少榆端可用 mapping；cause_id / response_id 最終仍待余宇承確認。 Step2 adds derived quality_score_pct / estimated_defect_rate_pct mapping; film_thickness_um is no longer required by formal UI route.",
+  "defaults": {
+    "robot_arm_state": "ok",
+    "nozzle_state": "ok",
+    "filter_state": "ok",
+    "compressor_state": "ok",
+    "spray_width_state": "ok",
+    "quality_state": "ok"
+  },
+  "sensor_mapping": {
+    "filter_diff_pressure_bar": {
+      "component_id": "FILTER",
+      "state_field": "filter_state",
+      "response_field": "filter_response_id",
+      "issue_state": "FILTER_CLOG",
+      "cause_id": "FILTER_CLOG",
+      "response_ids": [
+        "REPLACE_FILTER",
+        "BACKWASH_FILTER"
+      ]
+    },
+    "filter_inflow_ml_min": {
+      "component_id": "FILTER",
+      "state_field": "filter_state",
+      "response_field": "filter_response_id",
+      "issue_state": "FLOW_IMBALANCE",
+      "cause_id": "FLOW_IMBALANCE",
+      "response_ids": [
+        "REPLACE_FILTER"
+      ]
+    },
+    "filter_outflow_ml_min": {
+      "component_id": "FILTER",
+      "state_field": "filter_state",
+      "response_field": "filter_response_id",
+      "issue_state": "FLOW_IMBALANCE",
+      "cause_id": "FLOW_IMBALANCE",
+      "response_ids": [
+        "REPLACE_FILTER"
+      ]
+    },
+    "paint_flow_ml_min": {
+      "component_id": "NOZZLE",
+      "state_field": "nozzle_state",
+      "response_field": "nozzle_response_id",
+      "issue_state": "NOZZLE_CLOG",
+      "cause_id": "NOZZLE_CLOG",
+      "response_ids": [
+        "CLEAN_NOZZLE",
+        "REPLACE_NOZZLE"
+      ]
+    },
+    "nozzle_roll": {
+      "component_id": "NOZZLE",
+      "state_field": "nozzle_state",
+      "response_field": "nozzle_response_id",
+      "issue_state": "NOZZLE_ANGLE_DRIFT",
+      "cause_id": "NOZZLE_ANGLE_DRIFT",
+      "response_ids": [
+        "RECALIBRATE_NOZZLE_ANGLE"
+      ]
+    },
+    "air_pressure_bar": {
+      "component_id": "AIR_COMPRESSOR",
+      "state_field": "compressor_state",
+      "response_field": "compressor_response_id",
+      "issue_state": "AIR_PRESSURE_UNSTABLE",
+      "cause_id": "AIR_PRESSURE_UNSTABLE",
+      "response_ids": [
+        "CALIBRATE_PRESSURE_VALVE"
+      ]
+    },
+    "spray_width_mm": {
+      "component_id": "SPRAY_WIDTH",
+      "state_field": "spray_width_state",
+      "response_field": "spray_width_response_id",
+      "issue_state": "SPRAY_WIDTH_DEVIATION",
+      "cause_id": "SPRAY_WIDTH_DEVIATION",
+      "response_ids": [
+        "ADJUST_TCP_Z",
+        "ADJUST_FLOW_PRESSURE",
+        "REPLACE_NOZZLE"
+      ]
+    },
+    "servo_torque_load_pct": {
+      "component_id": "ROBOT_ARM",
+      "state_field": "robot_arm_state",
+      "response_field": "robot_arm_response_id",
+      "issue_state": "SERVO_OVERLOAD",
+      "cause_id": "SERVO_WEAR",
+      "response_ids": [
+        "LUBRICATE_SERVO",
+        "REPLACE_SERVO"
+      ]
+    },
+    "path_error_mm": {
+      "component_id": "ROBOT_ARM",
+      "state_field": "robot_arm_state",
+      "response_field": "robot_arm_response_id",
+      "issue_state": "PATH_ERROR_HIGH",
+      "cause_id": "PATH_ERROR_HIGH",
+      "response_ids": [
+        "RECALIBRATE_TCP"
+      ]
+    },
+    "vibration_g": {
+      "component_id": "ROBOT_ARM",
+      "state_field": "robot_arm_state",
+      "response_field": "robot_arm_response_id",
+      "issue_state": "VIBRATION_HIGH",
+      "cause_id": "VIBRATION_HIGH",
+      "response_ids": [
+        "TIGHTEN_BASE"
+      ]
+    },
+    "gearbox_temperature_c": {
+      "component_id": "ROBOT_ARM",
+      "state_field": "robot_arm_state",
+      "response_field": "robot_arm_response_id",
+      "issue_state": "GEARBOX_OVERHEAT",
+      "cause_id": "GEARBOX_OVERHEAT",
+      "response_ids": [
+        "FORCED_COOLDOWN",
+        "LUBRICATE_SERVO"
+      ]
+    },
+    "film_thickness_um": {
+      "component_id": "QUALITY",
+      "state_field": "quality_state",
+      "response_field": "quality_response_id",
+      "issue_state": "FILM_THICKNESS_OOC",
+      "cause_id": "THICKNESS_DRIFT",
+      "response_ids": [
+        "ADJUST_SPEED_FLOW",
+        "CALIBRATE_ENV_CONTROL"
+      ]
+    },
+    "temperature_c": {
+      "component_id": "QUALITY",
+      "state_field": "quality_state",
+      "response_field": "quality_response_id",
+      "issue_state": "SURFACE_DEFECT",
+      "cause_id": "ENV_TEMP_OUT",
+      "response_ids": [
+        "CALIBRATE_ENV_CONTROL"
+      ]
+    },
+    "humidity_rh": {
+      "component_id": "QUALITY",
+      "state_field": "quality_state",
+      "response_field": "quality_response_id",
+      "issue_state": "SURFACE_DEFECT",
+      "cause_id": "ENV_HUMID_OUT",
+      "response_ids": [
+        "CALIBRATE_ENV_CONTROL"
+      ]
+    },
+    "quality_score_pct": {
+      "component_id": "QUALITY",
+      "state_field": "quality_state",
+      "response_field": "quality_response_id",
+      "issue_state": "PROCESS_QUALITY_RISK",
+      "cause_id": "THICKNESS_DRIFT",
+      "response_ids": [
+        "ADJUST_SPEED_FLOW",
+        "CALIBRATE_ENV_CONTROL"
+      ]
+    },
+    "estimated_defect_rate_pct": {
+      "component_id": "QUALITY",
+      "state_field": "quality_state",
+      "response_field": "quality_response_id",
+      "issue_state": "PROCESS_QUALITY_RISK",
+      "cause_id": "THICKNESS_DRIFT",
+      "response_ids": [
+        "ADJUST_SPEED_FLOW",
+        "CALIBRATE_ENV_CONTROL"
+      ]
+    },
+    "qc_pct": {
+      "component_id": "QUALITY",
+      "state_field": "quality_state",
+      "response_field": "quality_response_id",
+      "issue_state": "PROCESS_QUALITY_RISK",
+      "cause_id": "THICKNESS_DRIFT",
+      "response_ids": [
+        "ADJUST_SPEED_FLOW",
+        "CALIBRATE_ENV_CONTROL"
+      ]
+    }
+  }
+}

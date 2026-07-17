@@ -1,0 +1,27 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+
+spray:DashboardOntology a owl:Ontology .
+spray:DashboardConcept a owl:Class ; rdfs:label "儀表板概念"@zh .
+spray:DashboardInterface a owl:Class ; rdfs:label "儀表板介面"@zh ; rdfs:subClassOf spray:DashboardConcept .
+spray:DashboardPanel a owl:Class ; rdfs:label "儀表板區塊"@zh ; rdfs:subClassOf spray:DashboardConcept .
+spray:ManagerDashboard a owl:Class, owl:NamedIndividual, spray:DashboardInterface ; rdfs:label "管理者儀表板"@zh ; rdfs:subClassOf spray:DashboardInterface .
+spray:EngineerDashboard a owl:Class, owl:NamedIndividual, spray:DashboardInterface ; rdfs:label "工程端儀表板"@zh ; rdfs:subClassOf spray:DashboardInterface .
+spray:ManagerSummaryPanel a owl:Class, owl:NamedIndividual, spray:DashboardPanel ; rdfs:label "管理摘要區塊"@zh ; rdfs:subClassOf spray:ManagerDashboard .
+spray:BatchStatusPanel a owl:Class, owl:NamedIndividual, spray:DashboardPanel ; rdfs:label "批次狀態區塊"@zh ; rdfs:subClassOf spray:ManagerDashboard .
+spray:AlertPanel a owl:Class, owl:NamedIndividual, spray:DashboardPanel ; rdfs:label "事件警示區塊"@zh ; rdfs:subClassOf spray:EngineerDashboard .
+spray:SensorTrendPanel a owl:Class, owl:NamedIndividual, spray:DashboardPanel ; rdfs:label "感測趨勢區塊"@zh ; rdfs:subClassOf spray:EngineerDashboard .
+spray:TroubleshootingPanel a owl:Class, owl:NamedIndividual, spray:DashboardPanel ; rdfs:label "原因對策區塊"@zh ; rdfs:subClassOf spray:EngineerDashboard .
+spray:DataQualityIndicator a owl:Class, owl:NamedIndividual, spray:DashboardPanel ; rdfs:label "資料品質標記區塊"@zh ; rdfs:subClassOf spray:EngineerDashboard .
+spray:usesEndpoint a owl:ObjectProperty ; rdfs:label "使用 API 端點"@zh ; rdfs:domain spray:DashboardPanel ; rdfs:range spray:RESTEndpoint .
+spray:ManagerSummaryPanel spray:usesEndpoint spray:EP_dashboard_manager_summary_GET .
+spray:BatchStatusPanel spray:usesEndpoint spray:EP_batches_GET .
+spray:AlertPanel spray:usesEndpoint spray:EP_alerts_unacknowledged_GET .
+spray:SensorTrendPanel spray:usesEndpoint spray:EP_time_series_GET, spray:EP_time_series_features_GET .
+spray:TroubleshootingPanel spray:usesEndpoint spray:EP_troubleshooting_states_GET .
+
+
+spray:EngineerTroubleshootingDetailPanel a owl:Class, owl:NamedIndividual, spray:DashboardPanel ; rdfs:label "EngineerTroubleshootingDetailPanel"@zh ; rdfs:subClassOf spray:EngineerDashboard ; spray:usesEndpoint spray:EP_troubleshooting_states_state_GET .
+spray:ManagerRiskSummaryPanel a owl:Class, owl:NamedIndividual, spray:DashboardPanel ; rdfs:label "ManagerRiskSummaryPanel"@zh ; rdfs:subClassOf spray:ManagerDashboard ; spray:usesEndpoint spray:EP_dashboard_manager_summary_GET .
