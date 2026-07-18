@@ -1,0 +1,174 @@
+services:
+
+  # ── PostgreSQL 16 ────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16
+    container_name: sprayline_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - sprayline_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # ── DB Setup (one-shot, profile: setup) ─────────────────────────────────────
+  db-setup:
+    profiles:
+      - setup
+    build:
+      context: .
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: sprayline
+      PYTHONPATH: /app/database
+      PYTHONIOENCODING: utf-8
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["python", "database/setup_db.py"]
+    restart: "no"
+
+  # ── API (time-series + service orchestration) ────────────────────────────────
+  api:
+    build:
+      context: .
+    container_name: sprayline_api
+    working_dir: /app/api
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: sprayline
+      SPRAYLINE_DB_HOST: db
+      SPRAYLINE_DB_PORT: "5432"
+      SPRAYLINE_DB_USER: postgres
+      SPRAYLINE_DB_PASSWORD: postgres
+      SPRAYLINE_DB_NAME: sprayline
+      VERSIONB_PATH: /app/database
+      SPRAYLINE_DB_FUNCTION_PATH: /app/database
+      PYTHONPATH: /app/api:/app/services:/app/database
+      PYTHONIOENCODING: utf-8
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8011:8000"
+    restart: unless-stopped
+    command: ["python", "-m", "uvicorn", "api_server:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  # ── Manager UI (spray-manager dashboard) ─────────────────────────────────────
+  frontend:
+    build:
+      context: .
+    container_name: sprayline_frontend
+    working_dir: /app/ui/manager
+    environment:
+      PYTHONIOENCODING: utf-8
+    command: ["python", "server.py", "--host", "0.0.0.0", "--port", "8002"]
+    ports:
+      - "8012:8002"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # ── Engineer UI ───────────────────────────────────────────────────────────────
+  engineer:
+    container_name: sprayline_engineer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app/ui/engineer
+    environment:
+      MANAGER_UI_URL: "http://localhost:8012"
+      SPRAYLINE_API_BASE: "http://api:8000"
+      WEBSERVICES_URL: "http://api:8000"
+      API_BASE_URL: "http://api:8000"
+      WEBSERVICES_SOURCE_MODE: "integrated"
+      PYTHONIOENCODING: utf-8
+    command: ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8013:8000"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # ── DataProcess (continuous sensor data generator, profile: data) ────────────
+  dataprocess:
+    build:
+      context: .
+    profiles:
+      - data
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: sprayline
+      PYTHONPATH: /app/database
+      PYTHONIOENCODING: utf-8
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["python", "dataprocess/dataprocess.py"]
+    restart: unless-stopped
+ # ── Monitoring Worker（感測資料異常判斷與 Alert 回寫）────────────────────────
+  monitoring_worker:
+    build:
+      context: .
+    container_name: sprayline_monitoring_worker
+    working_dir: /app
+
+    # 先使用獨立 profile，避免啟動 dataprocess 時連 Worker 一起啟動
+    profiles:
+      - monitor
+
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: sprayline
+
+      SPRAYLINE_DB_FUNCTION_PATH: /app/database
+      SPRAYLINE_PROJECT_ROOT: /app
+
+      PYTHONPATH: /app/services:/app/database:/app
+      PYTHONIOENCODING: utf-8
+
+      SPRAYLINE_MONITOR_TIME_MODE: data_anchor
+      SPRAYLINE_MONITOR_RUN_MODE: once
+      SPRAYLINE_MONITOR_INTERVAL_SECONDS: "10"
+      SPRAYLINE_MONITOR_LOOKBACK_MINUTES: "10"
+      SPRAYLINE_DUPLICATE_ALERT_SUPPRESSION_MINUTES: "5"
+      SPRAYLINE_MONITOR_CHECKPOINT_FILE: /app/runtime/monitoring_checkpoint.json
+      SPRAYLINE_MONITOR_STATIONS: Station_1,Station_2,Station_3
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    command:
+      - python
+      - -m
+      - monitoring_worker.monitoring_worker
+
+    volumes:
+      - ./runtime:/app/runtime
+
+    # 目前程式仍只執行一次，先不要使用 unless-stopped，避免反覆重啟
+    restart: "no"
+
+volumes:
+  sprayline_pgdata:

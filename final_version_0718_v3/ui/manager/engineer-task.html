@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>工程師任務</title><link rel="stylesheet" href="engineer-task.css"></head>
+<body>
+  <main class="workflow-shell narrow">
+    <header class="workflow-hero"><div><p class="eyebrow">SPRAYLINE FIELD WORK</p><h1>工程師任務</h1><p id="pageStatus">正在驗證安全連結...</p></div></header>
+    <section id="errorPanel" class="panel error hidden"></section>
+    <section id="taskPanel" class="panel hidden">
+      <div class="task-heading"><div><span id="workflowBadge" class="badge"></span><h2 id="taskTitle"></h2></div><button class="button" id="ackButton">確認收到任務</button></div>
+      <dl id="taskSummary"></dl><h3>指派工程師</h3><div id="assigneeList" class="card-grid"></div>
+      <div class="action-row"><button class="button" id="startButton">開始處理</button><button class="button secondary" id="completeButton">Primary 提交完成</button></div>
+    </section>
+    <section id="reportPanel" class="panel hidden"><h2>新增現場回報</h2><form id="reportForm" class="report-form"><label>觀察狀況 *<textarea id="observedCondition" required></textarea></label><label>確認原因<textarea id="confirmedCause"></textarea></label><label>採取措施 *<textarea id="actionTaken" required></textarea></label><label>處理結果 *<textarea id="resultDescription" required></textarea></label><label>剩餘問題<textarea id="remainingIssue"></textarea></label><label>備註<textarea id="reportNote"></textarea></label><label>照片（JPG/PNG/WEBP，每次最多 5 張）<input id="reportFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><button class="button" type="submit">送出回報</button></form></section>
+    <section id="reportsPanel" class="panel hidden"><h2>回報與附件</h2><div id="reportList"></div></section>
+    <section id="timelinePanel" class="panel hidden"><h2>完整 Timeline</h2><ol id="timelineList" class="timeline"></ol></section>
+  </main>
+  <script src="engineer-task.js"></script>
+</body>
+</html>

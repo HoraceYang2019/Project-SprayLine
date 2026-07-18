@@ -1,0 +1,17 @@
+final_version_0718_v3
+
+Base package: final_version_0718_v2.zip
+Base SHA256: 85DD47455CBD6A524A242812DE343900848B4CB765F2983065AC242ED0206CB4
+Database volume: final_version_0627_sprayline_pgdata (external, preserved)
+API version: 0718.3
+Future prediction method: linear_trend_v1
+Ontology runtime source: ontology/sprayline_threshold.ttl
+
+0718_v3 backend changes:
+- automatic non-destructive DB migration before API startup
+- correct HTTP error status codes without client traceback leakage
+- Future rule_evaluations, cause_ids and response_ids
+- process-quality score semantics separated from measured yield
+- idempotent Future DB upsert
+
+Engineer UI remains the teammate-provided UI_0718_v2 build and was not modified.

@@ -1,0 +1,93 @@
+.report-detail-section {
+  margin: 24px 0;
+}
+
+.manager-report-card {
+  margin: 12px 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #faf7f0;
+}
+
+.manager-report-card > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.manager-report-card > header div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.manager-report-card time,
+.attachment-card small,
+.empty-state {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.report-fields {
+  margin: 16px 0;
+  grid-template-columns: 110px 1fr;
+}
+
+.manager-report-card h4 {
+  margin: 18px 0 10px;
+}
+
+.attachment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.attachment-card {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+}
+
+.attachment-card img {
+  display: block;
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  background: #ebe6da;
+}
+
+.attachment-card figcaption,
+.attachment-card.deleted {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+}
+
+.attachment-card figcaption strong {
+  overflow-wrap: anywhere;
+}
+
+.attachment-card figcaption a {
+  color: var(--green);
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .report-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .manager-report-card > header {
+    flex-direction: column;
+  }
+
+  .attachment-grid {
+    grid-template-columns: 1fr;
+  }
+}

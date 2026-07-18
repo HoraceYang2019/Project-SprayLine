@@ -1,0 +1,4822 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SprayLine API final_version_0718_v3",
+    "description": "Unified API for SprayLine past/current/future UI query and Shaoyu service orchestration.",
+    "version": "0718.3"
+  },
+  "paths": {
+    "/api/manager/engineer-tasks": {
+      "post": {
+        "tags": [
+          "Manager Engineer Tasks"
+        ],
+        "summary": "Createengineertask",
+        "operationId": "CreateEngineerTask_api_manager_engineer_tasks_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/EngineerTaskCreateV2Request"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EngineerTaskCreateRequest"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/EngineerTaskResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/EngineerTaskDetailResponse"
+                    }
+                  ],
+                  "title": "Response Createengineertask Api Manager Engineer Tasks Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Manager Engineer Tasks"
+        ],
+        "summary": "Getengineertasks",
+        "operationId": "GetEngineerTasks_api_manager_engineer_tasks_get",
+        "parameters": [
+          {
+            "name": "delivery_status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "pending",
+                    "sent",
+                    "failed",
+                    "acknowledged"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Delivery Status"
+            }
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          },
+          {
+            "name": "hour",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 23,
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Hour"
+            }
+          },
+          {
+            "name": "station_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Station Id"
+            }
+          },
+          {
+            "name": "batch_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Batch Id"
+            }
+          },
+          {
+            "name": "decision_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Decision Type"
+            }
+          },
+          {
+            "name": "workflow_status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Workflow Status"
+            }
+          },
+          {
+            "name": "engineer_email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Engineer Email"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskHistoryListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/engineer-tasks/{task_id}": {
+      "get": {
+        "tags": [
+          "Manager Engineer Tasks"
+        ],
+        "summary": "Getengineertask",
+        "operationId": "GetEngineerTask_api_manager_engineer_tasks__task_id__get",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/engineer-tasks/{task_id}/sync-ack": {
+      "post": {
+        "tags": [
+          "Manager Engineer Tasks"
+        ],
+        "summary": "Syncengineertaskack",
+        "operationId": "SyncEngineerTaskAck_api_manager_engineer_tasks__task_id__sync_ack_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/EngineerTaskSyncAckRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": " Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/station-engineer-assignments": {
+      "get": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Liststationassignments",
+        "operationId": "ListStationAssignments_api_manager_station_engineer_assignments_get",
+        "parameters": [
+          {
+            "name": "station_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Station Id"
+            }
+          },
+          {
+            "name": "active_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Active Only"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StationEngineerAssignmentResponse"
+                  },
+                  "title": "Response Liststationassignments Api Manager Station Engineer Assignments Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Createstationassignment",
+        "operationId": "CreateStationAssignment_api_manager_station_engineer_assignments_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StationEngineerAssignmentCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StationEngineerAssignmentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/station-engineer-assignments/{assignment_id}": {
+      "patch": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Updatestationassignment",
+        "operationId": "UpdateStationAssignment_api_manager_station_engineer_assignments__assignment_id__patch",
+        "parameters": [
+          {
+            "name": "assignment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assignment Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StationEngineerAssignmentUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StationEngineerAssignmentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/notification-decisions": {
+      "get": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Listnotificationdecisions",
+        "operationId": "ListNotificationDecisions_api_manager_notification_decisions_get",
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "station_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Station Id"
+            }
+          },
+          {
+            "name": "decision_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Decision Type"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationDecisionListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/notification-decisions/evaluate": {
+      "post": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Evaluatenotificationdecision",
+        "operationId": "EvaluateNotificationDecision_api_manager_notification_decisions_evaluate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationDecisionEvaluateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationDecisionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/engineer-tasks/{task_id}/timeline": {
+      "get": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Gettasktimeline",
+        "operationId": "GetTaskTimeline_api_manager_engineer_tasks__task_id__timeline_get",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskTimelineResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/engineer-tasks/{task_id}/resend": {
+      "post": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Resendtask",
+        "operationId": "ResendTask_api_manager_engineer_tasks__task_id__resend_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineerTaskResendRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/engineer-tasks/{task_id}/assignees": {
+      "patch": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Updatetaskassignments",
+        "operationId": "UpdateTaskAssignments_api_manager_engineer_tasks__task_id__assignees_patch",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineerTaskAssignmentUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/engineer-tasks/{task_id}/review": {
+      "post": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Reviewtask",
+        "operationId": "ReviewTask_api_manager_engineer_tasks__task_id__review_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineerTaskManagerReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/engineer-tasks/{task_id}/reopen": {
+      "post": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Reopentask",
+        "operationId": "ReopenTask_api_manager_engineer_tasks__task_id__reopen_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineerTaskReopenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/engineer-tasks/{task_id}/supplementation/open": {
+      "post": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Opensupplementation",
+        "operationId": "OpenSupplementation_api_manager_engineer_tasks__task_id__supplementation_open_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineerTaskSupplementationOpenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/engineer-tasks/{task_id}/supplementation/close": {
+      "post": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Closesupplementation",
+        "operationId": "CloseSupplementation_api_manager_engineer_tasks__task_id__supplementation_close_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineerTaskSupplementationCloseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/engineer-task-attachments/{attachment_id}": {
+      "get": {
+        "tags": [
+          "Manager Engineer Workflow"
+        ],
+        "summary": "Downloadmanagerattachment",
+        "operationId": "DownloadManagerAttachment_api_manager_engineer_task_attachments__attachment_id__get",
+        "parameters": [
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Attachment Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/webp": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/engineer-task-access/task": {
+      "get": {
+        "tags": [
+          "Engineer Task Access"
+        ],
+        "summary": "Gettokentask",
+        "operationId": "GetTokenTask_api_engineer_task_access_task_get",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Token"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskTokenAccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/engineer-task-access/ack": {
+      "post": {
+        "tags": [
+          "Engineer Task Access"
+        ],
+        "summary": "Acktokentask",
+        "operationId": "AckTokenTask_api_engineer_task_access_ack_post",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Token"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineerTaskTokenActionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskTokenAccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/engineer-task-access/start": {
+      "post": {
+        "tags": [
+          "Engineer Task Access"
+        ],
+        "summary": "Starttokentask",
+        "operationId": "StartTokenTask_api_engineer_task_access_start_post",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Token"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineerTaskTokenActionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskTokenAccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/engineer-task-access/reports": {
+      "post": {
+        "tags": [
+          "Engineer Task Access"
+        ],
+        "summary": "Addtokenreport",
+        "operationId": "AddTokenReport_api_engineer_task_access_reports_post",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Token"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineerTaskReportCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskReportResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/engineer-task-access/completion-submit": {
+      "post": {
+        "tags": [
+          "Engineer Task Access"
+        ],
+        "summary": "Submittokentask",
+        "operationId": "SubmitTokenTask_api_engineer_task_access_completion_submit_post",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Token"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EngineerTaskCompletionSubmitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineerTaskTokenAccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/engineer-task-access/reports/{report_id}/attachments": {
+      "post": {
+        "tags": [
+          "Engineer Task Access"
+        ],
+        "summary": "Uploadattachments",
+        "operationId": "UploadAttachments_api_engineer_task_access_reports__report_id__attachments_post",
+        "parameters": [
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Report Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_UploadAttachments_api_engineer_task_access_reports__report_id__attachments_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EngineerTaskAttachmentResponse"
+                  },
+                  "title": "Response Uploadattachments Api Engineer Task Access Reports  Report Id  Attachments Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/engineer-task-access/attachments/{attachment_id}": {
+      "get": {
+        "tags": [
+          "Engineer Task Access"
+        ],
+        "summary": "Downloadattachment",
+        "operationId": "DownloadAttachment_api_engineer_task_access_attachments__attachment_id__get",
+        "parameters": [
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Attachment Id"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Token"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/webp": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bundle": {
+      "get": {
+        "summary": "Getv1Bundle",
+        "operationId": "GetV1Bundle_api_v1_bundle_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/available-dates": {
+      "get": {
+        "summary": "Getmanageravailabledates",
+        "operationId": "GetManagerAvailableDates_api_manager_available_dates_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manager/dashboard": {
+      "get": {
+        "summary": "Getmanagerdashboard",
+        "operationId": "GetManagerDashboard_api_manager_dashboard_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date"
+            }
+          },
+          {
+            "name": "hour",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Hour"
+            }
+          },
+          {
+            "name": "batch_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Batch Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "Health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Apihealth",
+        "operationId": "ApiHealth_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/database/status": {
+      "get": {
+        "summary": "Apidatabasestatus",
+        "description": "Database connectivity contract used by Engineer UI V29.",
+        "operationId": "ApiDatabaseStatus_api_database_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/time-series": {
+      "post": {
+        "summary": "Handletimeseriesrequest",
+        "description": "UI core query.\n\nFormal DB mode: call IntegratedSprayLineService only.\nEmpty request is rejected so it cannot silently create demo data.",
+        "operationId": "HandleTimeSeriesRequest_api_time_series_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/time-series/ui/summary": {
+      "post": {
+        "summary": "Handletimeseriesuisummaryrequest",
+        "operationId": "HandleTimeSeriesUiSummaryRequest_api_time_series_ui_summary_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/time-series/ui/station-detail": {
+      "post": {
+        "summary": "Handletimeseriesuistationdetailrequest",
+        "operationId": "HandleTimeSeriesUiStationDetailRequest_api_time_series_ui_station_detail_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/time-series/ui/component-detail": {
+      "post": {
+        "summary": "Handletimeseriesuicomponentdetailrequest",
+        "operationId": "HandleTimeSeriesUiComponentDetailRequest_api_time_series_ui_component_detail_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/versionb/status": {
+      "get": {
+        "summary": "Getversionbstatus",
+        "operationId": "GetVersionBStatus_api_versionb_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/alerts": {
+      "get": {
+        "summary": "Getversionbalerts",
+        "operationId": "GetVersionBAlerts_api_alerts_get",
+        "parameters": [
+          {
+            "name": "station_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Station Id"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "name": "acknowledged",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Acknowledged"
+            }
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 7,
+              "title": "Days"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/alerts/causes/{cause_id}/responses": {
+      "get": {
+        "summary": "Getversionbresponsesforcause",
+        "operationId": "GetVersionBResponsesForCause_api_alerts_causes__cause_id__responses_get",
+        "parameters": [
+          {
+            "name": "cause_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cause Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/alerts/unacknowledged/{station_id}": {
+      "get": {
+        "summary": "Getversionbunacknowledgedalerts",
+        "operationId": "GetVersionBUnacknowledgedAlerts_api_alerts_unacknowledged__station_id__get",
+        "parameters": [
+          {
+            "name": "station_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Station Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/alerts/{event_id}": {
+      "get": {
+        "summary": "Getversionbalertcard",
+        "operationId": "GetVersionBAlertCard_api_alerts__event_id__get",
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/alerts/{event_id}/acknowledge": {
+      "patch": {
+        "summary": "Acknowledgeversionbalert",
+        "operationId": "AcknowledgeVersionBAlert_api_alerts__event_id__acknowledge_patch",
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/service-orchestration/status": {
+      "get": {
+        "summary": "Getserviceorchestrationstatus",
+        "operationId": "GetServiceOrchestrationStatus_api_service_orchestration_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/service-orchestration/integrated/query": {
+      "post": {
+        "summary": "Runintegratedservicequery",
+        "operationId": "RunIntegratedServiceQuery_api_service_orchestration_integrated_query_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/service-orchestration/integrated/run-once": {
+      "post": {
+        "summary": "Runintegratedserviceonce",
+        "operationId": "RunIntegratedServiceOnce_api_service_orchestration_integrated_run_once_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/service-orchestration/future/payload": {
+      "post": {
+        "summary": "Buildfuturepredictionpayload",
+        "operationId": "BuildFuturePredictionPayload_api_service_orchestration_future_payload_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/service-orchestration/future/save": {
+      "post": {
+        "summary": "Savefuturepredictionpayload",
+        "operationId": "SaveFuturePredictionPayload_api_service_orchestration_future_save_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/service-orchestration/monitoring/run": {
+      "post": {
+        "summary": "Runmonitoringonce",
+        "operationId": "RunMonitoringOnce_api_service_orchestration_monitoring_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/service-orchestration/troubleshooting/matrix": {
+      "get": {
+        "summary": "Gettroubleshootingmatrix",
+        "operationId": "GetTroubleshootingMatrix_api_service_orchestration_troubleshooting_matrix_get",
+        "parameters": [
+          {
+            "name": "asset_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Asset Type"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/service-orchestration/troubleshooting/states/{state}/recommendations": {
+      "get": {
+        "summary": "Getstaterecommendations",
+        "operationId": "GetStateRecommendations_api_service_orchestration_troubleshooting_states__state__recommendations_get",
+        "parameters": [
+          {
+            "name": "state",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "State"
+            }
+          },
+          {
+            "name": "station",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Station"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/routes": {
+      "get": {
+        "summary": "Getroutes",
+        "operationId": "GetRoutes_api_routes_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Healthcheck",
+        "operationId": "HealthCheck__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_UploadAttachments_api_engineer_task_access_reports__report_id__attachments_post": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "type": "array",
+            "title": "Files"
+          }
+        },
+        "type": "object",
+        "required": [
+          "files"
+        ],
+        "title": "Body_UploadAttachments_api_engineer_task_access_reports__report_id__attachments_post"
+      },
+      "EngineerTaskAssigneeInput": {
+        "properties": {
+          "stationAssignmentId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stationassignmentid"
+          },
+          "engineerName": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Engineername"
+          },
+          "engineerEmail": {
+            "type": "string",
+            "maxLength": 320,
+            "minLength": 3,
+            "title": "Engineeremail"
+          },
+          "isPrimary": {
+            "type": "boolean",
+            "title": "Isprimary",
+            "default": false
+          },
+          "isRequiredParticipant": {
+            "type": "boolean",
+            "title": "Isrequiredparticipant",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "engineerName",
+          "engineerEmail"
+        ],
+        "title": "EngineerTaskAssigneeInput"
+      },
+      "EngineerTaskAssigneeResponse": {
+        "properties": {
+          "assigneeId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Assigneeid"
+          },
+          "taskId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Taskid"
+          },
+          "assignmentRound": {
+            "type": "integer",
+            "title": "Assignmentround"
+          },
+          "engineerName": {
+            "type": "string",
+            "title": "Engineername"
+          },
+          "engineerEmail": {
+            "type": "string",
+            "title": "Engineeremail"
+          },
+          "isPrimary": {
+            "type": "boolean",
+            "title": "Isprimary"
+          },
+          "isRequiredParticipant": {
+            "type": "boolean",
+            "title": "Isrequiredparticipant"
+          },
+          "isActive": {
+            "type": "boolean",
+            "title": "Isactive"
+          },
+          "deliveryStatus": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "sent",
+              "failed"
+            ],
+            "title": "Deliverystatus"
+          },
+          "deliveryError": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deliveryerror"
+          },
+          "sentAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentat"
+          },
+          "acknowledgedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledgedat"
+          },
+          "acknowledgedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledgedby"
+          },
+          "acknowledgedEmail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledgedemail"
+          },
+          "ackSource": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acksource"
+          },
+          "ackNote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknote"
+          },
+          "supplementationAllowed": {
+            "type": "boolean",
+            "title": "Supplementationallowed",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "assigneeId",
+          "taskId",
+          "assignmentRound",
+          "engineerName",
+          "engineerEmail",
+          "isPrimary",
+          "isRequiredParticipant",
+          "isActive",
+          "deliveryStatus"
+        ],
+        "title": "EngineerTaskAssigneeResponse"
+      },
+      "EngineerTaskAssignmentUpdateRequest": {
+        "properties": {
+          "assignees": {
+            "items": {
+              "$ref": "#/components/schemas/EngineerTaskAssigneeInput"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Assignees"
+          }
+        },
+        "type": "object",
+        "required": [
+          "assignees"
+        ],
+        "title": "EngineerTaskAssignmentUpdateRequest"
+      },
+      "EngineerTaskAttachmentResponse": {
+        "properties": {
+          "attachmentId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Attachmentid"
+          },
+          "taskId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Taskid"
+          },
+          "reportId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Reportid"
+          },
+          "originalFilename": {
+            "type": "string",
+            "title": "Originalfilename"
+          },
+          "mimeType": {
+            "type": "string",
+            "title": "Mimetype"
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "title": "Sizebytes"
+          },
+          "attachmentStatus": {
+            "type": "string",
+            "title": "Attachmentstatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "attachmentId",
+          "taskId",
+          "reportId",
+          "originalFilename",
+          "mimeType",
+          "sizeBytes",
+          "attachmentStatus",
+          "createdAt"
+        ],
+        "title": "EngineerTaskAttachmentResponse"
+      },
+      "EngineerTaskCompletionSubmitRequest": {
+        "properties": {
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 4000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "title": "EngineerTaskCompletionSubmitRequest"
+      },
+      "EngineerTaskCreateRequest": {
+        "properties": {
+          "sourceAlertEventId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourcealerteventid"
+          },
+          "stationId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Stationid"
+          },
+          "stationName": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Stationname"
+          },
+          "processName": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Processname"
+          },
+          "batchId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchid"
+          },
+          "batchLabel": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchlabel"
+          },
+          "dataDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datadate"
+          },
+          "dataHour": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datahour"
+          },
+          "level": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Level",
+            "default": "warning"
+          },
+          "issue": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Issue"
+          },
+          "recommendation": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Recommendation"
+          },
+          "engineerName": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engineername"
+          },
+          "engineerEmail": {
+            "type": "string",
+            "maxLength": 320,
+            "minLength": 3,
+            "title": "Engineeremail"
+          },
+          "messageText": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 12000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Messagetext"
+          }
+        },
+        "type": "object",
+        "required": [
+          "stationId",
+          "stationName",
+          "processName",
+          "issue",
+          "recommendation",
+          "engineerEmail"
+        ],
+        "title": "EngineerTaskCreateRequest"
+      },
+      "EngineerTaskCreateV2Request": {
+        "properties": {
+          "sourceAlertEventId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourcealerteventid"
+          },
+          "stationId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Stationid"
+          },
+          "stationName": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Stationname"
+          },
+          "processName": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Processname"
+          },
+          "batchId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchid"
+          },
+          "batchLabel": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchlabel"
+          },
+          "dataDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datadate"
+          },
+          "dataHour": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datahour"
+          },
+          "dataHourIndex": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 23.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datahourindex"
+          },
+          "level": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Level",
+            "default": "warning"
+          },
+          "issue": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Issue"
+          },
+          "issueType": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuetype"
+          },
+          "causeId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Causeid"
+          },
+          "recommendation": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Recommendation"
+          },
+          "messageText": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 12000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Messagetext"
+          },
+          "assignees": {
+            "items": {
+              "$ref": "#/components/schemas/EngineerTaskAssigneeInput"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Assignees"
+          }
+        },
+        "type": "object",
+        "required": [
+          "stationId",
+          "stationName",
+          "processName",
+          "issue",
+          "recommendation",
+          "assignees"
+        ],
+        "title": "EngineerTaskCreateV2Request"
+      },
+      "EngineerTaskDetailResponse": {
+        "properties": {
+          "taskId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Taskid"
+          },
+          "sourceAlertEventId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourcealerteventid"
+          },
+          "stationId": {
+            "type": "string",
+            "title": "Stationid"
+          },
+          "stationName": {
+            "type": "string",
+            "title": "Stationname"
+          },
+          "processName": {
+            "type": "string",
+            "title": "Processname"
+          },
+          "batchId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchid"
+          },
+          "batchLabel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchlabel"
+          },
+          "dataDate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datadate"
+          },
+          "dataHour": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datahour"
+          },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "issue": {
+            "type": "string",
+            "title": "Issue"
+          },
+          "recommendation": {
+            "type": "string",
+            "title": "Recommendation"
+          },
+          "engineerName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engineername"
+          },
+          "engineerEmail": {
+            "type": "string",
+            "title": "Engineeremail"
+          },
+          "deliveryStatus": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "sent",
+              "failed",
+              "acknowledged"
+            ],
+            "title": "Deliverystatus"
+          },
+          "deliveryError": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deliveryerror"
+          },
+          "sentAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentat"
+          },
+          "acknowledgedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledgedat"
+          },
+          "acknowledgedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledgedby"
+          },
+          "acknowledgedEmail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledgedemail"
+          },
+          "ackSource": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acksource"
+          },
+          "ackNote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknote"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          },
+          "workflowStatus": {
+            "type": "string",
+            "enum": [
+              "unacknowledged",
+              "acknowledged",
+              "in_progress",
+              "completion_submitted",
+              "completed"
+            ],
+            "title": "Workflowstatus",
+            "default": "unacknowledged"
+          },
+          "deliverySummaryStatus": {
+            "type": "string",
+            "title": "Deliverysummarystatus",
+            "default": "pending"
+          },
+          "currentAssignmentRound": {
+            "type": "integer",
+            "title": "Currentassignmentround",
+            "default": 1
+          },
+          "completionSubmittedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completionsubmittedat"
+          },
+          "completionSubmittedByAssigneeId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completionsubmittedbyassigneeid"
+          },
+          "completedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completedat"
+          },
+          "completedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completedby"
+          },
+          "reopenedCount": {
+            "type": "integer",
+            "title": "Reopenedcount",
+            "default": 0
+          },
+          "supplementationOpen": {
+            "type": "boolean",
+            "title": "Supplementationopen",
+            "default": false
+          },
+          "supplementationReason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplementationreason"
+          },
+          "supplementationOpenedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplementationopenedat"
+          },
+          "supplementationOpenedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplementationopenedby"
+          },
+          "supplementationClosedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplementationclosedat"
+          },
+          "supplementationClosedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplementationclosedby"
+          },
+          "supplementationConclusion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplementationconclusion"
+          },
+          "legacyAckSyncRequired": {
+            "type": "boolean",
+            "title": "Legacyacksyncrequired",
+            "default": false
+          },
+          "assignees": {
+            "items": {
+              "$ref": "#/components/schemas/EngineerTaskAssigneeResponse"
+            },
+            "type": "array",
+            "title": "Assignees"
+          },
+          "reports": {
+            "items": {
+              "$ref": "#/components/schemas/EngineerTaskReportResponse"
+            },
+            "type": "array",
+            "title": "Reports"
+          },
+          "attachments": {
+            "items": {
+              "$ref": "#/components/schemas/EngineerTaskAttachmentResponse"
+            },
+            "type": "array",
+            "title": "Attachments"
+          }
+        },
+        "type": "object",
+        "required": [
+          "taskId",
+          "stationId",
+          "stationName",
+          "processName",
+          "level",
+          "issue",
+          "recommendation",
+          "engineerEmail",
+          "deliveryStatus",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "EngineerTaskDetailResponse"
+      },
+      "EngineerTaskEventResponse": {
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Eventid"
+          },
+          "taskId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Taskid"
+          },
+          "assigneeId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assigneeid"
+          },
+          "eventType": {
+            "type": "string",
+            "title": "Eventtype"
+          },
+          "eventStatus": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Eventstatus"
+          },
+          "eventTime": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Eventtime"
+          },
+          "actorType": {
+            "type": "string",
+            "title": "Actortype"
+          },
+          "actorName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actorname"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "eventId",
+          "taskId",
+          "eventType",
+          "eventTime",
+          "actorType"
+        ],
+        "title": "EngineerTaskEventResponse"
+      },
+      "EngineerTaskHistoryListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/EngineerTaskDetailResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "count",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "EngineerTaskHistoryListResponse"
+      },
+      "EngineerTaskManagerReviewRequest": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "accept",
+              "reject"
+            ],
+            "title": "Action"
+          },
+          "managerName": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Managername"
+          },
+          "applicableChecks": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Applicablechecks"
+          },
+          "confirmedChecks": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Confirmedchecks"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 4000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "notifyAssigneeIds": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Notifyassigneeids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action",
+          "managerName",
+          "applicableChecks",
+          "confirmedChecks"
+        ],
+        "title": "EngineerTaskManagerReviewRequest"
+      },
+      "EngineerTaskReopenRequest": {
+        "properties": {
+          "batchId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchid"
+          },
+          "managerName": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Managername"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Reason"
+          },
+          "assignees": {
+            "items": {
+              "$ref": "#/components/schemas/EngineerTaskAssigneeInput"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Assignees"
+          }
+        },
+        "type": "object",
+        "required": [
+          "managerName",
+          "reason",
+          "assignees"
+        ],
+        "title": "EngineerTaskReopenRequest"
+      },
+      "EngineerTaskReportCreateRequest": {
+        "properties": {
+          "observedCondition": {
+            "type": "string",
+            "maxLength": 12000,
+            "minLength": 1,
+            "title": "Observedcondition"
+          },
+          "confirmedCause": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 12000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmedcause"
+          },
+          "actionTaken": {
+            "type": "string",
+            "maxLength": 12000,
+            "minLength": 1,
+            "title": "Actiontaken"
+          },
+          "resultDescription": {
+            "type": "string",
+            "maxLength": 12000,
+            "minLength": 1,
+            "title": "Resultdescription"
+          },
+          "remainingIssue": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 12000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remainingissue"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 12000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "reportType": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "correction",
+              "post_submission_addendum",
+              "post_completion_supplement"
+            ],
+            "title": "Reporttype",
+            "default": "standard"
+          },
+          "supersedesReportId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supersedesreportid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "observedCondition",
+          "actionTaken",
+          "resultDescription"
+        ],
+        "title": "EngineerTaskReportCreateRequest"
+      },
+      "EngineerTaskReportResponse": {
+        "properties": {
+          "reportId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Reportid"
+          },
+          "taskId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Taskid"
+          },
+          "reportedByAssigneeId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Reportedbyassigneeid"
+          },
+          "reportType": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "correction",
+              "post_submission_addendum",
+              "post_completion_supplement"
+            ],
+            "title": "Reporttype"
+          },
+          "observedCondition": {
+            "type": "string",
+            "title": "Observedcondition"
+          },
+          "confirmedCause": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmedcause"
+          },
+          "actionTaken": {
+            "type": "string",
+            "title": "Actiontaken"
+          },
+          "resultDescription": {
+            "type": "string",
+            "title": "Resultdescription"
+          },
+          "remainingIssue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remainingissue"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "supersedesReportId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supersedesreportid"
+          },
+          "reportedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Reportedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reportId",
+          "taskId",
+          "reportedByAssigneeId",
+          "reportType",
+          "observedCondition",
+          "actionTaken",
+          "resultDescription",
+          "reportedAt"
+        ],
+        "title": "EngineerTaskReportResponse"
+      },
+      "EngineerTaskResendRequest": {
+        "properties": {
+          "assigneeIds": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Assigneeids"
+          },
+          "warningConfirmed": {
+            "type": "boolean",
+            "title": "Warningconfirmed",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "assigneeIds"
+        ],
+        "title": "EngineerTaskResendRequest"
+      },
+      "EngineerTaskResponse": {
+        "properties": {
+          "taskId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Taskid"
+          },
+          "sourceAlertEventId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourcealerteventid"
+          },
+          "stationId": {
+            "type": "string",
+            "title": "Stationid"
+          },
+          "stationName": {
+            "type": "string",
+            "title": "Stationname"
+          },
+          "processName": {
+            "type": "string",
+            "title": "Processname"
+          },
+          "batchId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchid"
+          },
+          "batchLabel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchlabel"
+          },
+          "dataDate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datadate"
+          },
+          "dataHour": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datahour"
+          },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "issue": {
+            "type": "string",
+            "title": "Issue"
+          },
+          "recommendation": {
+            "type": "string",
+            "title": "Recommendation"
+          },
+          "engineerName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engineername"
+          },
+          "engineerEmail": {
+            "type": "string",
+            "title": "Engineeremail"
+          },
+          "deliveryStatus": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "sent",
+              "failed",
+              "acknowledged"
+            ],
+            "title": "Deliverystatus"
+          },
+          "deliveryError": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deliveryerror"
+          },
+          "sentAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentat"
+          },
+          "acknowledgedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledgedat"
+          },
+          "acknowledgedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledgedby"
+          },
+          "acknowledgedEmail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledgedemail"
+          },
+          "ackSource": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acksource"
+          },
+          "ackNote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknote"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "taskId",
+          "stationId",
+          "stationName",
+          "processName",
+          "level",
+          "issue",
+          "recommendation",
+          "engineerEmail",
+          "deliveryStatus",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "EngineerTaskResponse"
+      },
+      "EngineerTaskSupplementationCloseRequest": {
+        "properties": {
+          "managerName": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Managername"
+          },
+          "conclusion": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Conclusion"
+          }
+        },
+        "type": "object",
+        "required": [
+          "managerName",
+          "conclusion"
+        ],
+        "title": "EngineerTaskSupplementationCloseRequest"
+      },
+      "EngineerTaskSupplementationOpenRequest": {
+        "properties": {
+          "managerName": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Managername"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Reason"
+          },
+          "assigneeIds": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Assigneeids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "managerName",
+          "reason",
+          "assigneeIds"
+        ],
+        "title": "EngineerTaskSupplementationOpenRequest"
+      },
+      "EngineerTaskSyncAckRequest": {
+        "properties": {
+          "force": {
+            "type": "boolean",
+            "title": "Force",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "EngineerTaskSyncAckRequest"
+      },
+      "EngineerTaskTimelineResponse": {
+        "properties": {
+          "taskId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Taskid"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/EngineerTaskEventResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "taskId",
+          "items",
+          "count"
+        ],
+        "title": "EngineerTaskTimelineResponse"
+      },
+      "EngineerTaskTokenAccessResponse": {
+        "properties": {
+          "task": {
+            "$ref": "#/components/schemas/EngineerTaskDetailResponse"
+          },
+          "currentAssignee": {
+            "$ref": "#/components/schemas/EngineerTaskAssigneeResponse"
+          },
+          "timeline": {
+            "items": {
+              "$ref": "#/components/schemas/EngineerTaskEventResponse"
+            },
+            "type": "array",
+            "title": "Timeline"
+          }
+        },
+        "type": "object",
+        "required": [
+          "task",
+          "currentAssignee",
+          "timeline"
+        ],
+        "title": "EngineerTaskTokenAccessResponse"
+      },
+      "EngineerTaskTokenActionRequest": {
+        "properties": {
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 4000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "title": "EngineerTaskTokenActionRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "NotificationDecisionEvaluateRequest": {
+        "properties": {
+          "sourceAlertEventId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourcealerteventid"
+          },
+          "stationId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Stationid"
+          },
+          "batchId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchid"
+          },
+          "dataDate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datadate"
+          },
+          "dataHour": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 23.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datahour"
+          },
+          "riskLevel": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Risklevel"
+          },
+          "causeId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Causeid"
+          },
+          "issueType": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuetype"
+          },
+          "emailRequested": {
+            "type": "boolean",
+            "title": "Emailrequested",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "stationId",
+          "riskLevel"
+        ],
+        "title": "NotificationDecisionEvaluateRequest"
+      },
+      "NotificationDecisionListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NotificationDecisionResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "count",
+          "total"
+        ],
+        "title": "NotificationDecisionListResponse"
+      },
+      "NotificationDecisionResponse": {
+        "properties": {
+          "decisionId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Decisionid"
+          },
+          "taskId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Taskid"
+          },
+          "stationId": {
+            "type": "string",
+            "title": "Stationid"
+          },
+          "batchId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batchid"
+          },
+          "riskLevel": {
+            "type": "string",
+            "title": "Risklevel"
+          },
+          "decisionType": {
+            "type": "string",
+            "title": "Decisiontype"
+          },
+          "decisionReason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decisionreason"
+          },
+          "notificationFingerprint": {
+            "type": "string",
+            "title": "Notificationfingerprint"
+          },
+          "suppressedCount": {
+            "type": "integer",
+            "title": "Suppressedcount"
+          },
+          "firstSeenAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Firstseenat"
+          },
+          "lastSeenAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Lastseenat"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "decisionId",
+          "stationId",
+          "riskLevel",
+          "decisionType",
+          "notificationFingerprint",
+          "suppressedCount",
+          "firstSeenAt",
+          "lastSeenAt",
+          "createdAt"
+        ],
+        "title": "NotificationDecisionResponse"
+      },
+      "StationEngineerAssignmentCreateRequest": {
+        "properties": {
+          "stationId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Stationid"
+          },
+          "engineerName": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Engineername"
+          },
+          "engineerEmail": {
+            "type": "string",
+            "maxLength": 320,
+            "minLength": 3,
+            "title": "Engineeremail"
+          },
+          "assignmentRole": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Assignmentrole",
+            "default": "engineer"
+          },
+          "priority": {
+            "type": "integer",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Priority",
+            "default": 100
+          }
+        },
+        "type": "object",
+        "required": [
+          "stationId",
+          "engineerName",
+          "engineerEmail"
+        ],
+        "title": "StationEngineerAssignmentCreateRequest"
+      },
+      "StationEngineerAssignmentResponse": {
+        "properties": {
+          "assignmentId": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Assignmentid"
+          },
+          "stationId": {
+            "type": "string",
+            "title": "Stationid"
+          },
+          "engineerName": {
+            "type": "string",
+            "title": "Engineername"
+          },
+          "engineerEmail": {
+            "type": "string",
+            "title": "Engineeremail"
+          },
+          "assignmentRole": {
+            "type": "string",
+            "title": "Assignmentrole"
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority"
+          },
+          "isActive": {
+            "type": "boolean",
+            "title": "Isactive"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "assignmentId",
+          "stationId",
+          "engineerName",
+          "engineerEmail",
+          "assignmentRole",
+          "priority",
+          "isActive",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "StationEngineerAssignmentResponse"
+      },
+      "StationEngineerAssignmentUpdateRequest": {
+        "properties": {
+          "engineerName": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engineername"
+          },
+          "engineerEmail": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 320,
+                "minLength": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engineeremail"
+          },
+          "assignmentRole": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignmentrole"
+          },
+          "priority": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 10000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority"
+          },
+          "isActive": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isactive"
+          }
+        },
+        "type": "object",
+        "title": "StationEngineerAssignmentUpdateRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
