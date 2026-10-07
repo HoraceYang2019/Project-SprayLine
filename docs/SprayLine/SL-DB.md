@@ -1,1 +1,0 @@
-## This Database schema for SL

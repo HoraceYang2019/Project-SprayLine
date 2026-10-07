@@ -1,1 +1,0 @@
-## This knowledge management for Spray Line
