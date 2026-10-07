@@ -1,4 +1,4 @@
-# installation
+## Installation
 ### pip install mkdocs, mkdocstrings, mkdocs-material
-# running
+# Running
 ### python -m mkdocs serve
