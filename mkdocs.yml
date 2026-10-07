@@ -1,0 +1,45 @@
+
+site_name: MISLab at NKUST
+site_description: This is a website for MISLab.
+site_author: horace.yang@gmail.com
+nav:
+  - Home: index.md
+  - Add Manu.: 
+    - User Interface: 
+      - PartView: AddManu/AM-user-guide.md
+    - Web Service: AddManu/AM-WS.md
+    - Knowledge Management: AddManu/AM-KM.md
+  - Sub Manu.: 
+    - Smart Tool Holder: SubManu/STH-manual.md
+    - Smart Edge: SubManu/SmartEdge.md
+    - Machining Assistant: SubManu/MachiningAssistant.md
+    - Example: SubManu/RecordWithTimePlot_MkDocs_AI.md
+  - Spray Line: 
+    - User Interface: SprayLine/SL-UI.md
+    - Web Service: SprayLine/SL-WS.md
+    - Database: SprayLine/SL-DB.md
+    - Knowledge Management: SprayLine/SL-KM.md
+  - About: about.md
+  - Contact: contact.md
+theme: 
+  name: material # mkdocs
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust
+  navigation_depth: 3
+plugins:
+  - search
+  - mkdocstrings
