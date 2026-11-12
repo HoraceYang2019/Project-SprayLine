@@ -1,0 +1,3 @@
+# 部署主機上的連線設定與密鑰，從 final_version_0718_v3 複製後不可提交
+.env
+__pycache__/

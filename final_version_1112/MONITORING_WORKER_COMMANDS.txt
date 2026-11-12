@@ -1,0 +1,55 @@
+SprayLine MonitoringWorker 操作指令
+===================================
+
+一、只檢查 docker-compose.yml，不啟動服務
+
+檢查預設服務：
+docker compose config
+
+檢查 MonitoringWorker：
+docker compose --profile monitor config
+
+檢查 DataProcess 與 MonitoringWorker：
+docker compose --profile data --profile monitor config
+
+輸出檢查結果：
+docker compose --profile monitor config > compose_check_monitor.txt
+docker compose --profile data --profile monitor config > compose_check_all.txt
+
+
+二、程式修改完成後，先執行單次測試
+
+尚未確定指令。
+必須完成以下修正後才能測試：
+
+1. MonitoringWorker 改用 DB Data Anchor
+2. MonitoringWorker 讀取 Checkpoint
+3. Duplicate Guard 改用感測資料時間
+4. 確認 Alert 寫入與 FK 正常
+
+
+三、單次測試通過後，才啟動常駐 Worker
+
+建立並啟動：
+docker compose --profile monitor up -d --build monitoring_worker
+
+查看狀態：
+docker compose ps
+
+查看 Log：
+docker logs -f sprayline_monitoring_worker
+
+停止 Worker：
+docker compose stop monitoring_worker
+
+再次啟動：
+docker compose --profile monitor start monitoring_worker
+
+移除 Worker Container：
+docker compose --profile monitor rm -sf monitoring_worker
+
+
+重要：
+在 Data Anchor、Checkpoint、Duplicate Guard、
+常駐模式與單次寫入測試完成前，
+不要執行 docker compose up。

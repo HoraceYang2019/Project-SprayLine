@@ -1,0 +1,22 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+spray:EventRuleOntology a owl:Ontology .
+spray:RuleConcept a owl:Class ; rdfs:label "規則概念"@zh .
+spray:EventRule a owl:Class ; rdfs:label "事件規則"@zh ; rdfs:subClassOf spray:RuleConcept .
+spray:RuleCondition a owl:Class ; rdfs:label "規則條件"@zh ; rdfs:subClassOf spray:RuleConcept .
+spray:RuleAction a owl:Class ; rdfs:label "規則動作"@zh ; rdfs:subClassOf spray:RuleConcept .
+spray:SensorThresholdReference a owl:Class ; rdfs:label "感測門檻參考"@zh ; rdfs:subClassOf spray:RuleConcept .
+spray:AlertEvent a owl:Class ; rdfs:label "異常事件"@zh ; rdfs:subClassOf spray:RuleConcept .
+spray:usesThresholdReference a owl:ObjectProperty ; rdfs:label "使用門檻參考"@zh .
+spray:triggeredBySignal a owl:ObjectProperty ; rdfs:label "由訊號觸發"@zh .
+spray:createsAlertEvent a owl:ObjectProperty ; rdfs:label "產生異常事件"@zh .
+spray:FilterPressureEventRule a owl:Class, owl:NamedIndividual, spray:EventRule ; rdfs:label "FilterPressureEventRule"@zh ; rdfs:subClassOf spray:EventRule ; spray:triggeredBySignal spray:filter_diff_pressure_bar ; spray:usesThresholdReference spray:TH_FILTER_DIFF_ALL ; spray:createsAlertEvent spray:alert_event .
+spray:ServoTorqueEventRule a owl:Class, owl:NamedIndividual, spray:EventRule ; rdfs:label "ServoTorqueEventRule"@zh ; rdfs:subClassOf spray:EventRule ; spray:triggeredBySignal spray:servo_torque_load_pct ; spray:usesThresholdReference spray:TH_SERVO_TORQUE_ALL ; spray:createsAlertEvent spray:alert_event .
+spray:AirPressureEventRule a owl:Class, owl:NamedIndividual, spray:EventRule ; rdfs:label "AirPressureEventRule"@zh ; rdfs:subClassOf spray:EventRule ; spray:triggeredBySignal spray:air_pressure_bar ; spray:usesThresholdReference spray:TH_AIR_PRESSURE_ALL ; spray:createsAlertEvent spray:alert_event .
+spray:TemperatureEventRule a owl:Class, owl:NamedIndividual, spray:EventRule ; rdfs:label "TemperatureEventRule"@zh ; rdfs:subClassOf spray:EventRule ; spray:triggeredBySignal spray:temperature_c ; spray:usesThresholdReference spray:TH_TEMPERATURE_ALL ; spray:createsAlertEvent spray:alert_event .
+spray:HumidityEventRule a owl:Class, owl:NamedIndividual, spray:EventRule ; rdfs:label "HumidityEventRule"@zh ; rdfs:subClassOf spray:EventRule ; spray:triggeredBySignal spray:humidity_rh ; spray:usesThresholdReference spray:TH_HUMIDITY_ALL ; spray:createsAlertEvent spray:alert_event .
+spray:PaintFlowEventRule a owl:Class, owl:NamedIndividual, spray:EventRule ; rdfs:label "PaintFlowEventRule"@zh ; rdfs:subClassOf spray:EventRule ; spray:triggeredBySignal spray:paint_flow_ml_min ; spray:usesThresholdReference spray:TH_PAINT_FLOW_ALL ; spray:createsAlertEvent spray:alert_event .
+spray:SprayWidthEventRule a owl:Class, owl:NamedIndividual, spray:EventRule ; rdfs:label "SprayWidthEventRule"@zh ; rdfs:subClassOf spray:EventRule ; spray:triggeredBySignal spray:spray_width_mm ; spray:usesThresholdReference spray:TH_SPRAY_WIDTH_ALL ; spray:createsAlertEvent spray:alert_event .
+spray:PathErrorEventRule a owl:Class, owl:NamedIndividual, spray:EventRule ; rdfs:label "PathErrorEventRule"@zh ; rdfs:subClassOf spray:EventRule ; spray:triggeredBySignal spray:path_error_mm ; spray:usesThresholdReference spray:TH_PATH_ERROR_ALL ; spray:createsAlertEvent spray:alert_event .

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SprayLine Manager Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="manager-shell">
+    <header class="manager-header" id="managerHeader"></header>
+    <div id="managerErrorBanner"></div>
+    <main class="manager-main">
+      <section id="managerOverviewSection"></section>
+      <section id="managerRecommendationSection"></section>
+    </main>
+  </div>
+
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="trend-drawer" id="recommendationPanel" aria-hidden="true"></aside>
+  <div class="toast-host" id="managerToastHost" aria-live="polite" aria-atomic="true"></div>
+  <dialog id="assignmentDialog" class="assignment-dialog">
+    <form method="dialog" id="assignmentForm">
+      <h2>選擇工程師</h2>
+      <p id="assignmentDialogStation"></p>
+      <div id="assignmentChoices"></div>
+      <div class="dialog-actions">
+        <button value="cancel" class="notify-btn">取消</button>
+        <button value="default" class="notify-btn" id="confirmAssignment">建立並寄送</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="main/config.js"></script>
+  <script src="main/api-client.js"></script>
+  <script src="main/engineer-task-api.js"></script>
+  <script src="main/manager-api-validation.js"></script>
+  <script src="main/time-review.js"></script>
+  <script src="main/summary-state.js"></script>
+  <script src="main/render-overview.js"></script>
+  <script src="main/render-diagnosis.js"></script>
+  <script src="main/render-recommendations.js"></script>
+  <script src="main/engineer-ack.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

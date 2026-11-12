@@ -1,0 +1,16 @@
+final_version_1112
+
+Base package: final_version_0718_v3 (Project-SprayLine GitHub commit 65fbd43)
+Database volume: final_version_0627_sprayline_pgdata (external, preserved)
+API version: 1112.1
+Future prediction method: linear_trend_v1
+Ontology runtime source: ontology/sprayline_threshold.ttl
+Database migrations: unchanged from 0718_v3 (no schema change)
+
+1112 changes:
+- read-only alert history APIs: GET /api/alerts/history, /api/alerts/summary, /api/alerts/episodes
+
+Not copied from 0718_v3 (still available there): .env, backups/*.dump,
+old code backup folders, run output files, 0718_v3_DataProcess notebook.
+
+Engineer UI remains the teammate-provided UI_0718_v2 build and was not modified.

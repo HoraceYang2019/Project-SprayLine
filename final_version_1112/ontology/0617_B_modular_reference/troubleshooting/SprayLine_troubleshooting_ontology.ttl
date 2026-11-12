@@ -1,0 +1,14 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix spray: <http://nkust.edu.tw/mislab/spraying/ontology#> .
+
+spray:TroubleshootingOntology a owl:Ontology .
+spray:TroubleshootingConcept a owl:Class ; rdfs:label "原因對策概念"@zh .
+spray:ComponentConcept a owl:Class ; rdfs:label "元件概念"@zh ; rdfs:subClassOf spray:TroubleshootingConcept .
+spray:FaultSymptom a owl:Class ; rdfs:label "問題現象"@zh ; rdfs:subClassOf spray:TroubleshootingConcept .
+spray:RecommendedResponse a owl:Class ; rdfs:label "建議解方"@zh ; rdfs:subClassOf spray:TroubleshootingConcept .
+spray:hasIssue a owl:ObjectProperty ; rdfs:label "具有問題"@zh ; rdfs:domain spray:ComponentConcept ; rdfs:range spray:FaultSymptom .
+spray:hasRecommendedResponse a owl:ObjectProperty ; rdfs:label "具有建議解方"@zh ; rdfs:domain spray:FaultSymptom ; rdfs:range spray:RecommendedResponse .
+spray:hasRelevanceRank a owl:DatatypeProperty ; rdfs:label "關聯排序"@zh ; rdfs:range xsd:integer .
+spray:hasEffectivenessPct a owl:DatatypeProperty ; rdfs:label "有效率百分比"@zh ; rdfs:range xsd:decimal .

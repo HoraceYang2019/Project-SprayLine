@@ -1,0 +1,70 @@
+﻿{
+    "schema_version":  "v1.0",
+    "service_name":  "TimeSeriesService",
+    "output_type":  "versionb_alert_list",
+    "db_available":  true,
+    "versionb_path":  "/app/database",
+    "alerts":  [
+                   {
+                       "event_id":  "4af30802-880d-448e-97a7-26b5b77758a8",
+                       "batch_id":  "B_20260820_114000",
+                       "station_id":  "Station_3",
+                       "sensor_name":  "path_error_mm",
+                       "measured_value":  0.111,
+                       "state":  "warning",
+                       "cause":  "PATH_ERROR_HIGH",
+                       "ts":  "2026-08-20T11:46:50+00:00",
+                       "message":  "path_error_mm classified as warning; issue_state=PATH_ERROR_HIGH; cause_id=PATH_ERROR_HIGH",
+                       "acknowledged_at":  null
+                   },
+                   {
+                       "event_id":  "0676f322-f628-4be0-8ec2-08a8bb62f946",
+                       "batch_id":  "B_20260820_114000",
+                       "station_id":  "Station_3",
+                       "sensor_name":  "filter_diff_pressure_bar",
+                       "measured_value":  0.564,
+                       "state":  "warning",
+                       "cause":  "FILTER_CLOG",
+                       "ts":  "2026-08-20T11:46:50+00:00",
+                       "message":  "filter_diff_pressure_bar classified as warning; issue_state=FILTER_CLOG; cause_id=FILTER_CLOG",
+                       "acknowledged_at":  null
+                   },
+                   {
+                       "event_id":  "85cba8c2-015c-4e8a-8882-3fbeedf54c0b",
+                       "batch_id":  "B_20260820_114000",
+                       "station_id":  "Station_3",
+                       "sensor_name":  "spray_width_mm",
+                       "measured_value":  58.14,
+                       "state":  "fault",
+                       "cause":  "SPRAY_WIDTH_DEVIATION",
+                       "ts":  "2026-08-20T11:46:50+00:00",
+                       "message":  "spray_width_mm classified as fault; issue_state=SPRAY_WIDTH_DEVIATION; cause_id=SPRAY_WIDTH_DEVIATION",
+                       "acknowledged_at":  null
+                   },
+                   {
+                       "event_id":  "e1d0ab78-4be2-4c0c-8bbf-c98677d5b8ab",
+                       "batch_id":  "B_20260820_114000",
+                       "station_id":  "Station_3",
+                       "sensor_name":  "servo_torque_load_pct",
+                       "measured_value":  79.76,
+                       "state":  "fault",
+                       "cause":  "SERVO_WEAR",
+                       "ts":  "2026-08-20T11:46:50+00:00",
+                       "message":  "servo_torque_load_pct classified as fault; issue_state=SERVO_OVERLOAD; cause_id=SERVO_WEAR",
+                       "acknowledged_at":  null
+                   },
+                   {
+                       "event_id":  "9cba6cd8-4734-485a-8575-226ab29b6db6",
+                       "batch_id":  "B_20260820_113900",
+                       "station_id":  "Station_3",
+                       "sensor_name":  "spray_width_mm",
+                       "measured_value":  65.27,
+                       "state":  "warning",
+                       "cause":  "SPRAY_WIDTH_DEVIATION",
+                       "ts":  "2026-08-20T11:45:50+00:00",
+                       "message":  "spray_width_mm classified as warning; issue_state=SPRAY_WIDTH_DEVIATION; cause_id=SPRAY_WIDTH_DEVIATION",
+                       "acknowledged_at":  null
+                   }
+               ],
+    "total":  5
+}
