@@ -33,7 +33,7 @@ API 版本：`1112.1`
 以下名稱刻意不改：
 
 - **migration 檔名與內容**，例如 `database/migrate_0718_v3_backend.sql`。`db-migrate` 會比對已套用檔案的檢核碼，改了會讓 API 無法啟動。
-- **Docker 容器名稱**（`sprayline_api`、`sprayline_db` 等）與外部資料庫 volume `final_version_0627_sprayline_pgdata`。新版本沿用同一個資料庫。
+- **Docker 容器名稱**（`sprayline_api`、`sprayline_db` 等）與外部資料庫 volume `final_version_0717_sprayline_pgdata`。新版本沿用同一個資料庫。
 
 `VERIFY_1112.ps1` 另外會檢查 API 版本與 `/api/alerts/summary` 是否有回應。
 
@@ -60,7 +60,7 @@ API 版本：`1112.1`
 要回到 0718_v3 時，先執行 `STOP_1112.bat`，再於 0718_v3 執行 `START_0718_v3.bat`。
 
 - **新舊兩版不能同時啟動**：兩版的容器名稱相同，請先停止一版再啟動另一版。
-- **不要清空或重建資料庫**：不要執行 `docker compose down -v`、`database/setup_db.sql`，也不要刪除 `final_version_0627_sprayline_pgdata`。
+- **不要清空或重建資料庫**：不要執行 `docker compose down -v`、`database/setup_db.sql`，也不要刪除 `final_version_0717_sprayline_pgdata`。
 - **DataProcess 只能有一套**：啟動前請確認主機上只有一套 DataProcess 在執行。
 
 ## 驗證結果
@@ -128,3 +128,12 @@ API 版本號維持 `1112.1`。可用 `GET /api/routes` 回應中新增的 `api_
 - 部署主機目前是 0718_v3，還沒有這次的修改，需依交接說明另外套用。
 - 工程師從外網開啟工單連結（`/api/engineer-task-access/*`，會寫入）這次沒有處理，目前仍只能在內網使用。需要和 Manager UI 負責人討論。
 - 對外入口目前直接使用 `postgres` 帳號。之後可以改成資料庫唯讀帳號，需要和資料庫負責人討論。
+
+## 2026-11-17：資料庫 volume 名稱更正
+
+- 部署主機的 `sprayline_db` 實際掛載 `final_version_0717_sprayline_pgdata`（2026-11-17 以 `docker inspect sprayline_db` 確認）。1112 原本沿用 GitHub 上 0718_v3 的設定，寫成 `final_version_0627_sprayline_pgdata`，在主機上啟動 1112 會接錯資料庫或啟動失敗。
+- 已把 `docker-compose.yml`、`start.ps1`、`START_1112.bat`、`VERSION.txt` 與本日誌中的 volume 名稱改為 `final_version_0717_sprayline_pgdata`。
+- 沒有修改的部分：
+  - GitHub 上的 `final_version_0718_v3` 仍寫 0627，和主機上的 0718_v3 不同。0718_v3 資料夾保持原樣，作為修改前版本的紀錄。
+  - 本資料夾內從舊版本帶過來的紀錄檔（`README_0718_v3_修改日誌.md`、`README_0718_v2.md`、`CHANGELOG_0718_v2.md`）記載的是當時的狀況，不修改。
+- 跨模組待辦：資料庫文件 `SL-DB_*.md`、Web Service 文件 `SL-WS*.md` 仍寫 0627，需要通知各文件負責人確認。

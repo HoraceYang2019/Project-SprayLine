@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-echo Starting final_version_1112 with the existing 0627 database...
+echo Starting final_version_1112 with the existing 0717 database...
 powershell -NoProfile -ExecutionPolicy Bypass -File ".\start.ps1" -Mode start
 if errorlevel 1 (
   echo.

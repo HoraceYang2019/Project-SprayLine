@@ -91,7 +91,7 @@ function Show-Status {
 function Invoke-Down {
     Write-Header "Stop Services (data preserved)"
     docker compose down
-    if ($LASTEXITCODE -eq 0) { Write-OK "All containers stopped"; Write-OK "External DB volume [final_version_0627_sprayline_pgdata] kept" }
+    if ($LASTEXITCODE -eq 0) { Write-OK "All containers stopped"; Write-OK "External DB volume [final_version_0717_sprayline_pgdata] kept" }
     else { Write-Fail "docker compose down failed"; exit 1 }
 }
 
@@ -166,7 +166,7 @@ function Wait-DbMigration([int]$maxSec = 90) {
 }
 
 function Invoke-Start {
-    Write-Header "Start 1112 Services (existing 0627 database)"
+    Write-Header "Start 1112 Services (existing 0717 database)"
 
     Write-Info "Step 1/3: Starting external PostgreSQL volume (no db-setup)"
     docker compose up -d db
@@ -175,7 +175,7 @@ function Invoke-Start {
     $dbOk = Wait-DbHealthy -maxSec 90
     if (-not $dbOk) { exit 1 }
 
-    Write-Warn "1112 is configured for final_version_0627_sprayline_pgdata."
+    Write-Warn "1112 is configured for final_version_0717_sprayline_pgdata."
     Write-Warn "Normal start will NOT run db-setup and will NOT start dataprocess."
 
     Write-Info "Step 2/3: Apply non-destructive backend DB migrations"
@@ -225,7 +225,7 @@ Set-Location $SCRIPT_DIR
 switch ($Mode) {
     "status"  { Invoke-Validate; Show-Status }
     "down"    { Invoke-Validate; Invoke-Down }
-    "reset"   { Invoke-Validate; Write-Fail "Reset is disabled in 1112 to protect final_version_0627_sprayline_pgdata."; exit 1 }
+    "reset"   { Invoke-Validate; Write-Fail "Reset is disabled in 1112 to protect final_version_0717_sprayline_pgdata."; exit 1 }
     "restart" { Invoke-Validate; Invoke-Restart }
     "start"   { Invoke-Validate; Invoke-Start }
 }
