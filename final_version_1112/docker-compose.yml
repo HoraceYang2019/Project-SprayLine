@@ -93,6 +93,45 @@ services:
     restart: unless-stopped
     command: ["python", "-m", "uvicorn", "api_server:app", "--host", "0.0.0.0", "--port", "8000"]
 
+  # ── Public read-only API (profile: public) ─────────────────────────────────
+  # 對外唯讀入口：只保留讀取類端點，資料端點需帶 X-API-Key。
+  # 金鑰設在 .env 的 SPRAYLINE_PUBLIC_API_KEYS；沒有金鑰時容器會拒絕啟動。
+  # 啟動：docker compose --profile public up -d --build api_public
+  # 停止：docker compose --profile public stop api_public
+  api_public:
+    profiles:
+      - public
+    build:
+      context: .
+    container_name: sprayline_api_public
+    working_dir: /app/api
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: sprayline
+      SPRAYLINE_DB_HOST: db
+      SPRAYLINE_DB_PORT: "5432"
+      SPRAYLINE_DB_USER: postgres
+      SPRAYLINE_DB_PASSWORD: postgres
+      SPRAYLINE_DB_NAME: sprayline
+      VERSIONB_PATH: /app/database
+      SPRAYLINE_DB_FUNCTION_PATH: /app/database
+      PYTHONPATH: /app/api:/app/services:/app/database
+      PYTHONIOENCODING: utf-8
+      SPRAYLINE_API_MODE: public_readonly
+      SPRAYLINE_PUBLIC_API_KEYS: ${SPRAYLINE_PUBLIC_API_KEYS:-}
+    depends_on:
+      db:
+        condition: service_healthy
+      db-migrate:
+        condition: service_completed_successfully
+    ports:
+      - "8014:8000"
+    restart: "no"
+    command: ["python", "-m", "uvicorn", "api_server:app", "--host", "0.0.0.0", "--port", "8000"]
+
   # ── Manager UI (spray-manager dashboard) ─────────────────────────────────────
   frontend:
     build:

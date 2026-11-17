@@ -77,3 +77,54 @@ API 版本：`1112.1`
 - **Engineer UI**：異常歷程入口可以改用 `/api/alerts/episodes` 與 `/api/alerts/history`，需要 Engineer UI 負責人配合。
 - **「有沒有人處理」的判斷**：目前依 `acknowledged_at` 與 `alert_response_link.executed_at`，還沒有連到 engineer task 工單狀態。
 - **第七、八項**：Threshold 統一與 Future 回測尚未合併；之後合併時以本資料夾為基底。
+
+## 2026-11-17：API 對外開放前的安全處理
+
+API 版本號維持 `1112.1`。可用 `GET /api/routes` 回應中新增的 `api_mode` 欄位，判斷是否包含本次修改。
+
+### 修正：`write_back` 與 `commit` 的判斷
+
+- 原本 `POST /api/service-orchestration/integrated/query` 用 `bool()` 轉換 `write_back`，字串 `"false"` 會被當成要回寫。`POST /api/service-orchestration/future/save` 的 `commit` 也有同樣問題。
+- 現在兩者只接受布林值 `true`／`false`，或字串 `"true"`／`"false"`、`"1"`／`"0"`、`"yes"`／`"no"`（不分大小寫），也接受數字 `1`／`0`。其他值回 `422`（`error_code` 為 `invalid_request`），不會執行查詢或寫入。
+- 預設值不變：`write_back` 預設不回寫，`commit` 預設提交。`run-once` 仍固定回寫。
+
+### 新增：對外唯讀入口
+
+- 內部入口（埠 `8011`）維持原樣，給 Manager UI 與 Engineer UI 使用。Manager UI 是由瀏覽器直接呼叫 8011，其中包含工單、確認告警等寫入類端點，所以 8011 只能在內網或 VPN 內使用，不可對外開放。
+- 同一份映像以 `SPRAYLINE_API_MODE=public_readonly` 啟動時，會成為對外唯讀入口。`docker-compose.yml` 新增 `api_public` 服務，對應主機埠 `8014`，放在 `public` profile。`START_1112.bat` 不會啟動它。
+- 唯讀模式只保留白名單內的端點，其他端點全部移除，回 `404`，也不會出現在 `/openapi.json` 與 `/api/routes`。白名單在 `api/public_readonly.py` 的 `PUBLIC_ROUTE_ALLOWLIST`，與 `SL-KM_1027_v2.md` 第 7.5 節第 4 點一致：
+  - 告警歷程三個端點、單筆告警、原因對應處置
+  - 兩個 troubleshooting 查詢
+  - `POST /api/time-series/ui/summary`、`station-detail`、`component-detail`，這三個在程式中固定不回寫
+- `integrated/query` 雖然可以只查詢，但能回寫，所以不放進白名單。人員、工單、通知、資料庫狀態等管理端點也不放進白名單。
+- 資料端點要帶 `X-API-Key` 標頭，金鑰設在主機 `.env` 的 `SPRAYLINE_PUBLIC_API_KEYS`，可用逗號設定多組。沒有設定金鑰時，唯讀模式拒絕啟動。`/`、`/health`、`/api/health`、`/api/routes`、`/openapi.json`、`/docs` 不需要金鑰。
+- 修改檔案：
+  - 新增 `api/public_readonly.py`、`tests/test_public_readonly.py`
+  - 修改 `api/api_server.py`、`docker-compose.yml`、`.env.example`
+  - 內部入口的 `openapi_current.json` 沒有變動，已重新產生後比對確認。
+
+### 啟動與停止（在 API 主機上）
+
+1. 在 `final_version_1112\.env` 加上 `SPRAYLINE_PUBLIC_API_KEYS=<金鑰>`。金鑰可用 `python -c "import secrets; print(secrets.token_urlsafe(32))"` 產生，不要提交到 GitHub。
+2. 啟動：`docker compose --profile public up -d --build api_public`
+3. 停止：`docker compose --profile public stop api_public`。`STOP_1112.bat` 執行的 `docker compose down` 沒有指定 `public` profile，可能不會停止這個容器，切換版本前請先手動停止。
+4. 對外開放時，只轉發主機的 8014，不要轉發 8011、8012、8013、5433。
+
+### 驗證結果
+
+- **完整 pytest**：在本資料夾執行，114 項通過、1 項略過。新增 54 項，原有 60 項全部通過；略過的是需要 `SPRAYLINE_TEST_PG_DSN` 的 PostgreSQL 整合測試，本次修改不涉及。
+- **本機 uvicorn 實測**（沒有資料庫）：
+  - 沒有設定金鑰時，唯讀模式拒絕啟動。
+  - `/health`、`/openapi.json`、`/api/routes` 回 `200`，`api_mode` 為 `public_readonly`，路由數 12。
+  - 資料端點沒帶金鑰或金鑰錯誤回 `401`；金鑰正確時通過檢查，因為沒有資料庫回 `503`。
+  - `run-once`、`integrated/query`、`acknowledge`、工單端點都回 `404`。
+- **還沒驗證的部分**：
+  - Docker 映像建置與 `api_public` 容器啟動，因為這台電腦沒有安裝 Docker。
+  - 部署主機上的實際資料。
+  - 對外網路轉發、HTTPS、限流都還沒有設定。
+
+### 待辦
+
+- 部署主機目前是 0718_v3，還沒有這次的修改，需依交接說明另外套用。
+- 工程師從外網開啟工單連結（`/api/engineer-task-access/*`，會寫入）這次沒有處理，目前仍只能在內網使用。需要和 Manager UI 負責人討論。
+- 對外入口目前直接使用 `postgres` 帳號。之後可以改成資料庫唯讀帳號，需要和資料庫負責人討論。

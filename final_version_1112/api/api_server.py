@@ -48,6 +48,13 @@ from integrated_service.quality_score_common import quality_score_from_formal_ro
 from manager_dashboard_service import build_manager_dashboard_payload
 from engineer_task_router import router as engineer_task_router
 from engineer_task_workflow_router import manager_workflow_router, token_access_router
+from public_readonly import (
+    API_KEY_HEADER,
+    PUBLIC_READONLY_MODE,
+    apply_public_readonly,
+    get_api_mode,
+    load_public_api_keys,
+)
 from manager_date_service import (
     LINE_TO_STATION,
     STATION_TO_LINE,
@@ -83,6 +90,9 @@ app.include_router(manager_workflow_router)
 app.include_router(token_access_router)
 
 LOGGER = logging.getLogger(__name__)
+
+# Read once at import: "internal" (default, port 8011) or "public_readonly".
+API_MODE = get_api_mode()
 
 
 def _json_error(stage: str, exc: BaseException) -> Dict[str, Any]:
@@ -128,6 +138,42 @@ def _run_integrated_for_ui(request: Dict[str, Any], fallback_to_demo: bool = Fal
         err = _json_error("_run_integrated_for_ui", exc)
         err["source_mode"] = "integrated"
         return err
+
+
+_TRUE_STRINGS = frozenset({"true", "1", "yes"})
+_FALSE_STRINGS = frozenset({"false", "0", "no"})
+
+
+def _parse_bool_flag(value: Any, field: str, default: bool) -> bool:
+    """Parse a write flag strictly; bool("false") is True, so never use bool()."""
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, int) and value in (0, 1):
+        return bool(value)
+    if isinstance(value, str):
+        text = value.strip().lower()
+        if text in _TRUE_STRINGS:
+            return True
+        if text in _FALSE_STRINGS:
+            return False
+    raise ValueError(
+        f"{field} must be a boolean (true/false); got {value!r}"
+    )
+
+
+def _invalid_flag_response(stage: str, exc: ValueError) -> JSONResponse:
+    return JSONResponse(
+        status_code=422,
+        content={
+            "success": False,
+            "stage": stage,
+            "error_code": "invalid_request",
+            "error_type": exc.__class__.__name__,
+            "error_message": str(exc),
+        },
+    )
 
 
 def _force_integrated_request(request: Dict[str, Any]) -> Dict[str, Any]:
@@ -1022,7 +1068,10 @@ def GetServiceOrchestrationStatus():
 
 @app.post("/api/service-orchestration/integrated/query")
 def RunIntegratedServiceQuery(request: Dict[str, Any] = Body(default_factory=dict)):
-    write_back = bool(request.pop("write_back", False))
+    try:
+        write_back = _parse_bool_flag(request.pop("write_back", None), "write_back", default=False)
+    except ValueError as exc:
+        return _invalid_flag_response("RunIntegratedServiceQuery", exc)
     if not request:
         request = BuildOrchestrationIntegratedRequest(slider_value=0, station_scope="Station_1", window_minutes=30)
     return _service_json_response(
@@ -1043,7 +1092,10 @@ def BuildFuturePredictionPayload(request: Dict[str, Any] = Body(default_factory=
 
 @app.post("/api/service-orchestration/future/save")
 def SaveFuturePredictionPayload(request: Dict[str, Any] = Body(default_factory=dict)):
-    commit = bool(request.pop("commit", True))
+    try:
+        commit = _parse_bool_flag(request.pop("commit", None), "commit", default=True)
+    except ValueError as exc:
+        return _invalid_flag_response("SaveFuturePredictionPayload", exc)
     return _service_json_response(
         save_future_prediction_payload_for_api(request, commit=commit)
     )
@@ -1081,11 +1133,27 @@ def GetRoutes():
         path = getattr(route, "path", None)
         if path and path.startswith("/api"):
             routes.append({"path": path, "methods": methods})
-    return {"service_name": "SprayLine_API_1112", "route_count": len(routes), "routes": routes}
+    return {
+        "service_name": "SprayLine_API_1112",
+        "api_mode": API_MODE,
+        "route_count": len(routes),
+        "routes": routes,
+    }
 
 
 @app.get("/")
 def HealthCheck():
+    if API_MODE == PUBLIC_READONLY_MODE:
+        return {
+            "service_name": "SprayLine API final_version_1112",
+            "version": "1112.1",
+            "status": "running",
+            "api_mode": PUBLIC_READONLY_MODE,
+            "note": "Public read-only API. Endpoints that write to the database are not available here.",
+            "docs": "/docs",
+            "routes": "/api/routes",
+            "auth": f"Send the {API_KEY_HEADER} header on data endpoints.",
+        }
     return {
         "service_name": "SprayLine API final_version_1112",
         "version": "1112.1",
@@ -1117,3 +1185,8 @@ def HealthCheck():
         },
         "ui_rule": "UI slider query endpoints default to no DB write-back. Write-back is explicit only under /api/service-orchestration/* save/run endpoints.",
     }
+
+
+# Public read-only mode: must run after every route above is registered.
+if API_MODE == PUBLIC_READONLY_MODE:
+    apply_public_readonly(app, load_public_api_keys())
