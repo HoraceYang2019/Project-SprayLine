@@ -137,3 +137,12 @@ API 版本號維持 `1112.1`。可用 `GET /api/routes` 回應中新增的 `api_
   - GitHub 上的 `final_version_0718_v3` 仍寫 0627，和主機上的 0718_v3 不同。0718_v3 資料夾保持原樣，作為修改前版本的紀錄。
   - 本資料夾內從舊版本帶過來的紀錄檔（`README_0718_v3_修改日誌.md`、`README_0718_v2.md`、`CHANGELOG_0718_v2.md`）記載的是當時的狀況，不修改。
 - 跨模組待辦：資料庫文件 `SL-DB_*.md`、Web Service 文件 `SL-WS*.md` 仍寫 0627，需要通知各文件負責人確認。
+
+## 2026-11-18：對外唯讀入口的網頁加上金鑰輸入
+
+- 唯讀模式的 `/openapi.json` 宣告 `X-API-Key` 標頭金鑰（`ApiKeyHeader`）。`/docs` 網頁因此出現 **Authorize** 按鈕，輸入金鑰後按 **Try it out**／**Execute** 會自動帶上標頭。
+- 只有資料端點標示需要金鑰；`/`、`/health`、`/api/health`、`/api/routes` 不需要。實際的金鑰檢查仍由原本的中介層負責，行為不變。
+- 內部入口（8011）的規格不變，已重新產生後與 `openapi_current.json` 比對確認。
+- 修改檔案：`api/public_readonly.py`、`tests/test_public_readonly.py`（新增 2 項測試）。完整 pytest 116 項通過、1 項略過。
+- 網頁操作方式見 `SL-KM_1027_v2.md` 第 7.7 節。
+- 部署主機的 8014 需要重新建置 `api_public` 才會出現這個按鈕；套用前要依當時主機狀況另外安排。

@@ -240,3 +240,26 @@ def test_public_mode_spec_and_health_need_no_key(public_server):
     spec = client.get("/openapi.json").json()
     spec_pairs = {(m.upper(), p) for p, ops in spec["paths"].items() for m in ops}
     assert spec_pairs == set(PUBLIC_ROUTE_ALLOWLIST)
+
+
+def test_public_mode_openapi_declares_api_key(public_server):
+    spec = TestClient(public_server.app).get("/openapi.json").json()
+    scheme = spec["components"]["securitySchemes"]["ApiKeyHeader"]
+    assert scheme == {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": scheme["description"],
+    }
+    for path, operations in spec["paths"].items():
+        for operation in operations.values():
+            if path in ("/", "/health", "/api/health", "/api/routes"):
+                assert "security" not in operation
+            else:
+                assert operation["security"] == [{"ApiKeyHeader": []}]
+
+
+def test_internal_mode_openapi_has_no_api_key():
+    spec = TestClient(internal_app).get("/openapi.json").json()
+    assert "securitySchemes" not in spec.get("components", {})
+    assert all("security" not in op for ops in spec["paths"].values() for op in ops.values())

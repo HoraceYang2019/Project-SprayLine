@@ -90,6 +90,38 @@ def _key_matches(candidate: str | None, keys: Iterable[str]) -> bool:
     return matched
 
 
+OPENAPI_SECURITY_SCHEME = "ApiKeyHeader"
+
+
+def _declare_api_key_in_openapi(app: FastAPI) -> None:
+    """Declare the X-API-Key header in /openapi.json.
+
+    Swagger UI (/docs) then shows an Authorize button, and "Try it out" sends
+    the key on data routes. The middleware below still does the actual check.
+    """
+    build_default_schema = app.openapi
+
+    def openapi_with_api_key() -> dict:
+        if app.openapi_schema:
+            return app.openapi_schema
+        schema = build_default_schema()
+        schema.setdefault("components", {}).setdefault("securitySchemes", {})[OPENAPI_SECURITY_SCHEME] = {
+            "type": "apiKey",
+            "in": "header",
+            "name": API_KEY_HEADER,
+            "description": "Access key for data endpoints of the public read-only API.",
+        }
+        for path, operations in schema.get("paths", {}).items():
+            if path in NO_KEY_PATHS:
+                continue
+            for operation in operations.values():
+                operation["security"] = [{OPENAPI_SECURITY_SCHEME: []}]
+        app.openapi_schema = schema
+        return schema
+
+    app.openapi = openapi_with_api_key  # type: ignore[method-assign]
+
+
 def apply_public_readonly(app: FastAPI, keys: List[str]) -> None:
     """Strip non-allowlisted routes from app and require an API key on data routes."""
     if not keys:
@@ -105,6 +137,7 @@ def apply_public_readonly(app: FastAPI, keys: List[str]) -> None:
         f"Send the {API_KEY_HEADER} header on data endpoints."
     )
     allowed_keys = tuple(keys)
+    _declare_api_key_in_openapi(app)
 
     @app.middleware("http")
     async def _require_api_key(request, call_next):  # type: ignore[no-untyped-def]
